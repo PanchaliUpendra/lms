@@ -1,0 +1,21 @@
+.erro-con{
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.erro-con>h2{
+    font-size: 1.4rem;
+}
+.erro-con>button{
+    padding: 10px 25px;
+    border: none;
+    font-weight: 600;
+    color: green;
+    cursor: pointer;
+    background-color: rgba(173, 255, 47,0.1);
+}
+

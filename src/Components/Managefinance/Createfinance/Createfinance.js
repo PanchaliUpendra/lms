@@ -1,0 +1,151 @@
+import React, {useContext, useState } from "react";
+import './Createfinance.css';
+import SearchIcon from '@mui/icons-material/Search';
+import PersonIcon from '@mui/icons-material/Person';
+import MenuIcon from '@mui/icons-material/Menu';
+import Sidenav from "../../Sidenav/Sidenav";
+import MyContext from "../../../MyContext";
+//import from here on words for other components
+import {createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../Firebase";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { writeBatch, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { db } from "../../../Firebase";
+function Createfinance(){
+    const sharedvalue = useContext(MyContext);
+
+    const navigate = useNavigate();
+    const batch = writeBatch(db);// Get a new write batch
+    const [showprogress,setshowprogress]=useState(false);
+    const [formdetails,setformdetails]=useState({//form details will take here
+        name:'',
+        email:'',
+        password:'',
+        cnfpassword:'',
+        role:'finance'
+    })
+    //code only for toggle the menu bar
+    const [menutoggle,setmenutoggle] = useState(false);
+    function handlemenutoggle(){
+        setmenutoggle(prev=>!prev);
+    }
+    // toggle menu bar code ends here
+    //form registration start's here
+    async function handleregistration(){
+        setshowprogress(true);
+        try{
+            if(formdetails.email.trim()!=='' && formdetails.name.trim()!=='' && formdetails.password.trim()!=='' && formdetails.cnfpassword.trim()!=='' && formdetails.password===formdetails.cnfpassword){
+                const userCredential = await createUserWithEmailAndPassword(auth, formdetails.email, formdetails.password);
+                // Signed up
+                const user = userCredential.user;
+                //we have to take user.email,user.uid
+                // Update the workers of 'lms'
+                if(user){
+                    const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
+                    batch.update(sfRef, {[user.uid]:{
+                        "uid":user.uid,
+                        "name":formdetails.name,
+                        "email":formdetails.email,
+                        "role":formdetails.role,
+                        "password":formdetails.password,
+                        "disable":false
+                    }});
+                    await batch.commit();
+                }
+                navigate('/');
+            }else{
+                alert('please fill the form correctly!!');
+            }
+        }
+        catch(error){
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage);
+            if(errorCode==='auth/email-already-exists'){
+                alert('email already exists');
+            }else if(errorCode==='auth/invalid-credential'){
+                alert('invalid credentials');
+            }else if(errorCode==='invalid-email'){
+                alert('invalid email');
+            }else if(errorCode==='auth/email-already-in-use'){
+                alert('email already in use')
+            }
+            else{
+                alert('you got an error while creating the manager');
+            }
+        }
+        setshowprogress(false);
+    }
+    //form registyration completed here
+    return(
+        <>
+            <div className='manlead-con'>
+                <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
+                <div className='manage-con-inner'>
+
+                    {/* inner navbar container */}
+                    <div className='top-bar'>
+                        <div className='top-nav-tog'>
+                            <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
+                        </div>
+                        <div className='search-icon-top-nav'>
+                            <SearchIcon />
+                        </div>
+                        <PersonIcon/>
+                        <p>{sharedvalue.userdtl.email}</p>
+                    </div>
+                    {/* your createfinance starts from here */}
+                    <div className="createmanager-innner-form-con">
+                        <div className="createmanager-innner-form">
+                            <div className="create-manager-form-header">
+                                <h1>create finance profile</h1>
+                                <p>enter email and password to create profile</p>
+                            </div>
+                            <div>
+                                <label>employee name<span>*</span></label>
+                                <input type='text' value={formdetails.name} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    name:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>employee email<span>*</span></label>
+                                <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    email:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>password<span>*</span></label>
+                                <input type='password' value={formdetails.password} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    password:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>confirm password<span>*</span></label>
+                                <input type='password' value={formdetails.cnfpassword} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cnfpassword:e.target.value
+                                }))}/>
+                            </div>
+                            <button onClick={()=>handleregistration()}>Create finance profile</button>
+
+                        </div>
+                        {/* form completed here */}
+                    </div>
+                </div>
+            </div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showprogress}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        </>
+    );
+}
+
+export default Createfinance

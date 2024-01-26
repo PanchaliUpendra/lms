@@ -1,0 +1,202 @@
+.view-manager-list-con{
+    margin-left: 30px;
+    margin-right: 30px;
+    padding-top: 60px;
+}
+.view-list-of-all-search>div{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.view-list-of-all-search>div label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.view-list-of-all-search>div input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    min-width: 210px;
+    font-size: 0.9rem;
+}
+.view-list-of-all-search>div input::placeholder{
+    color: rgb(150, 150, 150);
+    font-weight: 500;
+}
+/* view-manager-list-table-con */
+.view-list-table-con{
+    width: 100%;
+    overflow-x: auto;
+}
+table{
+    width: 100%;
+    background-color:white;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-collapse: collapse;
+    border: none;
+}
+
+.table-head-row{
+    height: 40px;
+    
+}
+
+
+table>thead th{
+    min-width: 150px;
+    max-width: 100%;
+    background-color:white;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    border-bottom: 1px solid #d2d6da;
+    font-size: 0.75rem;
+    color: #7b809a;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+table>tbody tr td{
+    /* min-height: 40px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid black;
+    height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.view-manager-list-name{
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #344767;
+}
+.view-manager-list-email{
+    font-size: 1rem;
+    color: #7b809a;
+    font-weight: 500;
+}
+
+.view-manager-list-role{
+    padding: 5px 7px;
+    border-radius: 4px;
+    color: white;
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+    width: fit-content;
+    margin: auto;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+.view-manager-list-sino{
+    font-size: 1rem;
+    color: #7b809a;
+    font-weight: 500;
+}
+
+/* popup to delete css */
+.view-manager-list-popup-delete{
+    width: 600px;
+    min-height: 150px;
+    background-color: white;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.45s ease;
+    border-radius: 5px;
+    box-shadow: 0px 0px 17px -6px rgba(0,0,0,0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.view-manager-list-popup-delete>p{
+    text-transform: capitalize;
+    font-size: 1rem;
+
+    color: #344767;
+    font-weight: 500;
+}
+.view-manager-list-popup-delete>p span{
+    color: red;
+    font-weight: 700;
+}
+.view-manager-list-popup-delete>div{
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+.view-manager-list-popup-delete>div button{
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.view-manager-list-popup-delete>div button:nth-child(1){
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+}
+.view-manager-list-popup-delete>div button:nth-child(2){
+    background-image: linear-gradient(195deg, #fc0d05 0%, #e60707 100%);
+}
+
+.active-delete-popup{
+    visibility: visible;
+    opacity: 1;
+    top: 45%;
+    width: 600px;
+    min-height: 150px;
+    background-color: white;
+    position: absolute;
+    border-radius: 5px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0px 0px 17px -6px rgba(194,194,194,1);
+}
+.view-manager-list-acttion-icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media all and (max-width:600px){
+    .view-list-of-all-search>div{
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .view-list-of-all-search>div input{
+        width:100%;
+        min-width: fit-content;
+    }
+    .view-manager-list-name, .view-manager-list-sino, .view-manager-list-email{
+        font-size: 0.9rem;
+    }
+    .view-manager-list-popup-delete, .active-delete-popup{
+        width: 98%;
+        padding: 10px;
+        text-align: center;
+    }
+    .view-manager-list-popup-delete>div{
+        justify-content: center;
+    }
+}

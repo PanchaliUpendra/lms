@@ -1,0 +1,108 @@
+.createmanager-innner-form-con{
+    width: 97%;
+    margin: auto;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.createmanager-innner-form{
+    width: 600px;
+    min-height: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 14px -6px rgba(240,242,245,1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 45px;
+    padding-right: 45px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+.create-manager-form-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 5px;
+}
+.create-manager-form-header>h1{
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    color: #344767;
+    font-weight: 600;
+    text-align: center;
+}
+.create-manager-form-header>p{
+    text-transform: capitalize;
+    font-size: 0.95rem;
+    color: #7b809a;
+    font-weight: 300;
+    text-align: center;
+}
+.createmanager-innner-form>div{
+    display: flex;
+    flex-direction: column;
+}
+.createmanager-innner-form>div label{
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #7b809a;
+    letter-spacing: 0.6px;
+}
+.createmanager-innner-form>div label span{
+    color: red;
+}
+.createmanager-innner-form>div input{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border: 1px solid #d2d6da;
+    border-top: hidden;
+    border-left: hidden;
+    border-right: hidden;
+
+}
+.createmanager-innner-form>button{
+    text-align: center;
+    width: 100%;
+    min-height: 43px;
+    text-transform: uppercase;
+    border: none;
+    color: white;
+    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight:500 ;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+.createmanager-innner-form>button:hover{
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
+}
+
+
+@media all and (max-width:602px){
+    .createmanager-innner-form{
+        width: 99%;
+        border-radius: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .create-manager-form-header>h1{
+        font-size: 1.15rem;
+    }
+    .create-manager-form-header>p{
+        font-size: 0.85rem;
+    }
+}

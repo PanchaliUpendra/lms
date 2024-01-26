@@ -1,0 +1,715 @@
+
+.manlead-con{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    background: #f0f2f5;
+    min-height: 100vh;
+    font-size: 0.9rem;
+    
+}
+.manlead-con-inactive{
+    filter: blur(10px);
+    pointer-events:none;
+    user-select:none
+}
+.manage-con-inner{
+    /* min-height: 110vh; */
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* top bar */
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-right: 30px;
+    font-family: 'roboto';
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7b809a;
+    min-height: 80px;
+}
+
+.top-nav-tog{
+    display: none;
+
+}
+.search-icon-top-nav{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+/* create lead starts from here */
+.create-lead-con{
+    background-color: white;
+    width: 97%;
+    margin: auto;
+    min-height: 300px;
+    border-radius: 15px;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
+}
+
+/* create-lead-head */
+.create-lead-head{
+    padding-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 40px;
+}
+.create-lead-head>h1{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #344767;
+}
+
+/* customer inquiry form */
+.con-per-dtl, .customer-inquiry-form{
+    margin-top: 40px;
+    margin-left: 30px;
+    margin-right: 20px;
+}
+.con-per-dtl-head>h1, .cust-inq-form-head>h1{
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    color: #344767;
+}
+
+.cust-inq-inner-form{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    margin-top: 10px;
+    gap: 10px;
+}
+.cust-inq-customer-type-status{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+.cust-inq-customer-type{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+.cust-inq-customer-type>select{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+
+/* label of the inquiry form  css*/
+.cust-inq-customer-type>label, .cust-inq-customer-status>label, .cust-inq-start-date>label, .cust-inq-end-date>label, .cust-inq-next-date>label, .cust-inq-source-of-enquiry>label, .cust-inq-company-name>label{
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    font-weight:400 ;
+    color: #7b809a;
+}  
+.cust-inq-customer-status{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+.cust-inq-customer-status>select{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+/* second row */
+.cust-inq-start-end-next-date{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+.cust-inq-start-date,.cust-inq-end-date ,.cust-inq-next-date{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.cust-inq-start-date>input{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+.cust-inq-end-date>input{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+.cust-inq-next-date>input{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+
+/* third row */
+.cust-inq-source-of-enquiry{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+.cust-inq-source-of-enquiry>select{
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+}
+/* fourth row */
+.cust-inq-company-name{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+.cust-inq-company-name>input{
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    width: 50%;
+}
+
+/* contact personal details css starts from here */
+.con-per-dtl{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.con-contact-designation-person{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    width: 1005;
+}
+.con-contact-person, .con-designation-person{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.con-contact-person>label, .con-designation-person>label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+
+}
+
+.con-contact-person>input, .con-designation-person>select{
+    width: 100%;
+    gap: 20px;
+    height: 40px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    padding-left: 10px;
+    padding-right: 5px;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+/* personal second row */
+.con-person-email-number{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+.con-person-contact-number{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.con-person-contact-number-inner{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+.con-person-contact-number-inner>select{
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #d2d6da;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 150px;
+}
+.con-person-contact-number-inner>input{
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #d2d6da;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.con-person-contact-email{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    
+}
+.con-person-contact-email>input{
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #d2d6da;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.con-person-contact-number>label, .con-person-contact-email>label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+/* con-alternate-personal-info */
+.contact-person-alternate-number{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.alternate-number-form-head{
+    margin-top: 20px;
+    /* margin-bottom: 10px; */
+}
+.alternate-number-form-head>h1{
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    color: #344767;
+}
+.con-alternate-personal-info{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 30px;
+}
+.con-alternate-personal-info>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.con-alternate-personal-info>div input{
+    width: 15px;
+    height: 15px;
+}
+.con-alternate-personal-info>div label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.con-per-alter-num-each{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.con-per-alter-num-each>label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+
+}
+.con-per-alter-num-each>input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+
+}
+/* create lead office details comes here */
+.create-lead-office-details-con{
+    margin-left: 30px;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 20px;
+}
+/* .create-lead-office-details-head{
+    margin-bottom: 10px;
+} */
+.create-lead-office-details-head>h1{
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    color: #344767;
+}
+
+/* cl-office-dtl-country-form */
+.cl-office-dtl-country-form{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    width: 100%;
+    gap: 30px;
+}
+.cl-office-dtl-form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+.cl-office-dtl-country{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+.cl-office-dtl-country>label, .cl-office-dtl-form>label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.cl-office-dtl-form>textarea{
+    resize: vertical;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    width: 100%;
+    min-height: 40px;
+    outline:none;
+}
+.cl-office-dtl-country>select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 100%;
+}
+/* grid for remaing office details */
+.office-details-remaining{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: baseline;
+    column-gap: 30px;
+    row-gap: 10px;
+}
+.office-details-remaining>div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.office-details-remaining>div label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.office-details-remaining>div select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 100%;
+}
+.office-details-remaining>div input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+/* office details radio buttons starts here*/
+.office-factory-alternate{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 60px;
+}
+.office-factory-alternate>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.office-factory-alternate>div input{
+    width: 15px;
+    height: 15px;
+}
+/*factory bdetails starts from here  */
+.clead-factory-details{
+    margin-left: 30px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 20px;
+}
+.create-lead-requirements-head>h1,.clead-factory-details-lead>h1{
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    color: #344767;
+}
+.clead-factory-details>div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+.clead-factory-details>div label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.clead-factory-details>div textarea{
+    min-height: 40px;
+    resize: vertical;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding: 10px;
+}
+.clead-factory-details>div input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.clead-factory-details>div select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 100%;
+}
+/* create lead requirements starts here */
+.create-lead-requirements{
+    margin-left: 30px;
+    margin-top: 30px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.create-lead-mill-businesstype{
+    width: 100%;
+}
+.create-lead-mill-businesstype>select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 100%;
+
+}
+.create-lead-req-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    row-gap: 10px;
+    column-gap: 30px;
+}
+.create-lead-req-grid>div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 1005;
+}
+.create-lead-req-grid>div label{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.create-lead-req-grid>div input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.create-lead-req-grid>div select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 100%;
+}
+.create-lead-req-grid>div textarea{
+    width: 100%;
+    min-height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    resize: vertical;
+    padding: 10px;
+}
+
+/* create lead button starts here */
+.create-lead-submit-btns{
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 25px;
+    
+}
+.create-lead-submit-btns>button{
+    text-align: center;
+    width: 100%;
+    min-height: 40px;
+    text-transform: uppercase;
+    border: none;
+    color: white;
+    background-color: #1a73e8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight:500 ;
+    cursor: pointer;
+}
+/* media quaries css */
+@media all and (max-width:1150px){
+    .top-nav-tog{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media all and (max-width:600px){
+    .search-icon-top-nav{
+        display: none;
+    }
+    .top-bar{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: 25px;
+    }
+    .top-bar>p{
+        display: none;
+    }
+
+    .cust-inq-customer-type-status, .cust-inq-start-end-next-date, .cust-inq-source-of-enquiry, .cust-inq-company-name{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .cust-inq-company-name>input{
+        width: 100%;
+    }
+
+    .con-contact-designation-person{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .con-person-email-number{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .cl-office-dtl-country-form{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media all and (max-width:450px){
+    .office-details-remaining{
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+    }
+    .office-details-remaining>div{
+        width: 100%;
+    }
+    .create-lead-req-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media all and (max-width:350px){
+    .con-person-contact-number-inner{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
