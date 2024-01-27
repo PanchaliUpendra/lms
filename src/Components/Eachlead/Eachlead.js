@@ -65,30 +65,49 @@ function Eachlead(){
                                 <h1>CUSTOMER INQUIRY FORM</h1>
                             </div>
                             <div className='create-lead-requirements-all-fields'>
+                                {
+                                    showdetails && 
                                     <div>
                                         <label>Customer Type</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custtype} readOnly/>
                                     </div>
+                                }
+                                {
+                                    showdetails &&
                                     <div>
                                         <label>Customer Status</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custstatus} readOnly/>
                                     </div>
+                                }
+                                {
+                                    showdetails &&
                                     <div>
                                         <label>Start Date</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custstartdate} readOnly/>
                                     </div>
+                                }
+                                {
+                                    showdetails &&
                                     <div>
                                         <label>End Date</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custenddate} readOnly/>
                                     </div>
+                                }
+                                {
+                                    showdetails &&
                                     <div>
                                         <label>Revert Date</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custnextdate} readOnly/>
                                     </div>
+                                }
+                                {
+                                    showdetails &&
                                     <div>
                                         <label>Source of Enquiry</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custsourceofenquiry} readOnly/>
                                     </div>
+                                }
+                                
                                     <div>
                                         <label>Company Name</label>
                                         <input type='text' value={sharedvalue.leadsdata[leadid].custcompanyname} readOnly/>
@@ -121,6 +140,8 @@ function Eachlead(){
                             </div>
                         </div>
                         {/* lead contact details end's here */}
+                        {
+                        showdetails &&
                         <div className='create-lead-requirements'>
                             <div className='create-lead-requirements-head'>
                                 <h1>OFFICE DETAILS</h1>
@@ -160,6 +181,7 @@ function Eachlead(){
                                 </div>
                             </div>
                         </div>
+                        }
                         {/* office details ends herfe */}
                         <div className='create-lead-requirements'>
                             <div className='create-lead-requirements-head'>
@@ -178,22 +200,34 @@ function Eachlead(){
                                     <label>Chute</label>
                                     <input type='number' value={sharedvalue.leadsdata[leadid].chutes} readOnly/>
                                 </div>
+                                {
+                                    showdetails &&
                                 <div>
                                     <label>Capacity Required (per Hour)</label>
                                     <input type='text' value={sharedvalue.leadsdata[leadid].capreq} readOnly/>
                                 </div>
+                                }
+                                {
+                                    showdetails &&
                                 <div>
                                     <label>Machine Required</label>
                                     <input type='text' value={sharedvalue.leadsdata[leadid].machinereq} readOnly/>
                                 </div>
+                                }
+                                {
+                                    showdetails &&
                                 <div>
                                     <label>Make</label>
                                     <input type='text' value={sharedvalue.leadsdata[leadid].make} readOnly/>
                                 </div>
+                                }
+                                {
+                                    showdetails &&
                                 <div>
                                     <label>Machine Type</label>
                                     <input type='text' value={sharedvalue.leadsdata[leadid].machinetype} readOnly/>
                                 </div>
+                                }
                                 <div>
                                     <label>Type</label>
                                     <input type='text' value={sharedvalue.leadsdata[leadid].std} readOnly/>
