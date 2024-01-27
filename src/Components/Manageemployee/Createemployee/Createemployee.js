@@ -43,7 +43,7 @@ function Createemployee(){
      const loginformerror = () => toast.warn('please fill the form correctly');
      const invalidmail = () => toast.error('Invalid Mail');
      const emailalreadyexists = () =>toast.error('email already exists');
-     const notcreated = () => toast.error('you got an error while creating the manager');
+     const notcreated = () => toast.error('you got an error while creating the employee');
 
     //form registration start's here
     async function handleregistration(){
