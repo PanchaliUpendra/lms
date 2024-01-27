@@ -6,9 +6,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Eachlead(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     //show details starts here
     const [showdetails,setshowdetails] = useState(false);
     const [showmodificationdetail,setmodificationdetail] = useState(false);
@@ -55,7 +57,7 @@ function Eachlead(){
                                 <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {sharedvalue.leadsdata[leadid].custstatus}</p>
                             </div>
                             <div className='top-eachlead-buttons-inner'>
-                                <button>edit</button>
+                                <button onClick={()=>navigate(`/managelead/updatelead/${leadid}`)}>edit</button>
                                 <button>Next Meeting</button>
                             </div>
                         </div>

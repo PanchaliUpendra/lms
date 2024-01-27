@@ -20,6 +20,8 @@ import Viewcustomer from './Components/Managecustomer/Viewcustomer/Viewcustomer'
 import Createexpense from './Components/Manageexpense/Createexpense/Createexpense';
 import Viewexpense from './Components/Manageexpense/Viewexpense/Viewexpense';
 import Eachlead from './Components/Eachlead/Eachlead';
+import Updatelead from './Components/Updatelead/Updatelead';
+import Eachticket from './Components/Eachticket/Eachticket';
 
 
 function App() {
@@ -28,12 +30,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed)?<Dashboard/>:<Login/>}/>
+        {/* manage lead nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
         {/* manage ticket navlinks */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
         {/* manager nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}

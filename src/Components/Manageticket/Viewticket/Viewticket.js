@@ -8,9 +8,11 @@ import MyContext from "../../../MyContext";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useNavigate } from "react-router-dom";
 
 function Viewticket(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
         //deleting user input
         const [workerdelete,setworkerdelete] = useState({
             active:false,
@@ -90,49 +92,49 @@ function Viewticket(){
                                             sharedvalue.ticketskeys.filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* Tkt ID */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {ticket}
                                                         </p>
                                                     </td>
                                                     {/* country */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktcountry}
                                                         </p>
                                                     </td>
                                                     {/* state */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktstate}
                                                         </p>
                                                     </td>
                                                     {/* district */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktdist}
                                                         </p>
                                                     </td>
                                                     {/* customer */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktcustname}
                                                         </p>
                                                     </td>
                                                     {/* call type */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktcalltype}
                                                         </p>
                                                     </td>
                                                     {/* category */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktcate}
                                                         </p>
                                                     </td>
                                                     {/* priority */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktpriority}
                                                         </p>
@@ -146,25 +148,25 @@ function Viewticket(){
                                                         </div>
                                                     </td>
                                                     {/* manager */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktmanager}
                                                         </p>
                                                     </td>
                                                     {/* ctktemployee */}
-                                                    <td>
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].ctktemployee}
                                                         </p>
                                                     </td>
                                                      {/* status */}
-                                                     <td>
+                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-role">
                                                             {sharedvalue.ticketsdata[ticket].status===true?'Active':'Close'}
                                                         </p>
                                                     </td>
                                                      {/* working status */}
-                                                     <td>
+                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.ticketsdata[ticket].workingstatus}
                                                         </p>
@@ -172,7 +174,7 @@ function Viewticket(){
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
-                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
+                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>
                                                             <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"
                                                             onClick={()=>setworkerdelete(prev=>({
                                                                 ...prev,
