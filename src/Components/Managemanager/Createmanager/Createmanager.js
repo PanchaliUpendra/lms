@@ -6,17 +6,22 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //import from here on words for other components
-import {createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../Firebase";
+import {createUserWithEmailAndPassword,signOut } from "firebase/auth";
+
+import { secondauth } from "../../../Firebase";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { writeBatch, doc } from "firebase/firestore"; 
 import { db } from "../../../Firebase";
-import { useNavigate } from "react-router-dom";
+
+//toastify importing
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 function Createmanager(){
     const sharedvalue = useContext(MyContext);
 
-    const navigate = useNavigate();
+    
     const batch = writeBatch(db);// Get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     const [formdetails,setformdetails]=useState({//form details will take here
@@ -32,15 +37,25 @@ function Createmanager(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+     // adding notifications 
+    const loginsuccess = () =>toast.success('Successfully Added the manager');
+    const loginerror = () =>toast.error('please check your credientials');
+    const loginformerror = () => toast.warn('please fill the form correctly');
+    const invalidmail = () => toast.error('Invalid Mail');
+    const emailalreadyexists = () =>toast.error('email already exists');
+    const notcreated = () => toast.error('you got an error while creating the manager');
+
     
     //form registration start's here
     async function handleregistration(){
         setshowprogress(true);
         try{
             if(formdetails.email.trim()!=='' && formdetails.name.trim()!=='' && formdetails.password.trim()!=='' && formdetails.cnfpassword.trim()!=='' && formdetails.password===formdetails.cnfpassword){
-                const userCredential = await createUserWithEmailAndPassword(auth, formdetails.email, formdetails.password);
+                // const userCredential = await createUserWithEmailAndPassword(auth, formdetails.email, formdetails.password);
+                const secondusercredential = await createUserWithEmailAndPassword(secondauth, formdetails.email, formdetails.password)
                 // Signed up
-                const user = userCredential.user;
+                const user = secondusercredential.user;
                 //we have to take user.email,user.uid
                 // Update the workers of 'lms'
                 if(user){
@@ -55,9 +70,18 @@ function Createmanager(){
                     }});
                     await batch.commit();
                 }
-                navigate('/');
+                await signOut(secondauth)
+                loginsuccess();
+                setformdetails({
+                    name:'',
+                    email:'',
+                    password:'',
+                    cnfpassword:'',
+                    role:'manager'
+                });
+
             }else{
-                alert('please fill the form correctly!!');
+                loginformerror();
             }
         }
         catch(error){
@@ -65,16 +89,16 @@ function Createmanager(){
             const errorMessage = error.message;
             console.log(errorMessage);
             if(errorCode==='auth/email-already-exists'){
-                alert('email already exists');
+                emailalreadyexists();
             }else if(errorCode==='auth/invalid-credential'){
-                alert('invalid credentials');
+                loginerror();
             }else if(errorCode==='invalid-email'){
-                alert('invalid email');
+                invalidmail();
             }else if(errorCode==='auth/email-already-in-use'){
-                alert('email already in use')
+                emailalreadyexists();
             }
             else{
-                alert('you got an error while creating the manager');
+                notcreated();
             }
         }
         setshowprogress(false);
@@ -146,6 +170,20 @@ function Createmanager(){
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
+            {/* adding the notifications */}
+            <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    limit={1}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover
+                    theme="light"
+                    />
         </>
     );
 }

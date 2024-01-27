@@ -9,6 +9,10 @@ import { useParams } from 'react-router-dom';
 
 function Eachlead(){
     const sharedvalue = useContext(MyContext);
+    //show details starts here
+    const [showdetails,setshowdetails] = useState(false);
+    const [showmodificationdetail,setmodificationdetail] = useState(false);
+    //show details ends here
     const {leadid} = useParams();
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -16,6 +20,7 @@ function Eachlead(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+    
     return(
         <>
             {sharedvalue.leadskeys.length>0 &&
@@ -205,7 +210,17 @@ function Eachlead(){
                             <textarea className='eachlead-requirements-textarea' value={sharedvalue.leadsdata[leadid].reqdes} readOnly/>
                         </div>
                         {/* inquiry form ends here */}
-
+                        <div className='each-lead-show-details-modification-div'>
+                            <div>
+                                <input type="checkbox" checked={showdetails} onChange={()=>setshowdetails(prev=>!prev)}/>
+                                <p>Show Details</p>
+                            </div>
+                            <div>
+                                <input type="checkbox" checked={showmodificationdetail} onChange={()=>setmodificationdetail(prev=>!prev)} />
+                                <p>Show Modification Details</p>
+                            </div>
+                        </div>
+                        {/* your sjow modification details will ends  here */}
                     </div>
                     {/* create customer ends here */}
                 </div>
