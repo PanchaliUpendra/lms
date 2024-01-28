@@ -20,7 +20,7 @@ import Viewcustomer from './Components/Managecustomer/Viewcustomer/Viewcustomer'
 import Createexpense from './Components/Manageexpense/Createexpense/Createexpense';
 import Viewexpense from './Components/Manageexpense/Viewexpense/Viewexpense';
 import Eachlead from './Components/Eachlead/Eachlead';
-import Updatelead from './Components/Updatelead/Updatelead';
+import Updatelead from './Components/Managelead/Updatelead/Updatelead';
 import Eachticket from './Components/Eachticket/Eachticket';
 
 

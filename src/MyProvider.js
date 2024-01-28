@@ -53,7 +53,8 @@ function MyProvider({children}){
                     const tempticketsdata = doc.data();
                     setticketsdata(tempticketsdata);
                     const tempticketskeys = Object.keys(tempticketsdata);
-                    setticketskeys(tempticketskeys);
+                    const sorttempticketskeys = [...tempticketskeys].sort((a,b)=>b-a);
+                    setticketskeys(sorttempticketskeys);
 
                   })
                 }catch(e){
@@ -69,7 +70,8 @@ function MyProvider({children}){
                     const leadsdata = doc.data();
                     setleadsdata(leadsdata);
                     const leadskeyarray = Object.keys(leadsdata);
-                    setleadskeys(leadskeyarray);
+                    const sortleadskeyarray = [...leadskeyarray].sort((a,b)=>b-a);
+                    setleadskeys(sortleadskeyarray);
 
                   })
                 }catch(e){

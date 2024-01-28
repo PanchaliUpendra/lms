@@ -117,6 +117,23 @@ function Eachlead(){
                             </div>
                         </div>
                         {/* customer inquiry ends here */}
+                        {/* view manqager and employee starts here*/}
+                        <div className='create-lead-requirements'>
+                            <div className='create-lead-requirements-head'>
+                                <h1>manager and employee</h1>
+                            </div>
+                            <div className='create-lead-requirements-all-fields'>
+                                <div>
+                                    <label>Manager</label>
+                                    <input type='text' value={sharedvalue.leadsdata[leadid].managerid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[leadid].managerid].name:'-'} readOnly/>
+                                </div>
+                                <div>
+                                    <label>Employee</label>
+                                    <input type='text' value={sharedvalue.leadsdata[leadid].employeeid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[leadid].employeeid].name:'-'} readOnly/>
+                                </div>
+                            </div>
+                        </div>
+                        {/* view manager and employee ends here */}
                         {/* status and edit buttons div ends here */}
                         <div className='create-lead-requirements'>
                             <div className='create-lead-requirements-head'>

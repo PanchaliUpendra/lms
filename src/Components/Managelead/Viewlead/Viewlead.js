@@ -7,6 +7,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 
@@ -89,7 +90,7 @@ function Viewlead(){
                                     </thead>
                                     <tbody>
                                         {
-                                            sharedvalue.leadskeys.length>0 &&
+                                            sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.leadskeys.filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker))).map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* REGID */}
@@ -163,18 +164,19 @@ function Viewlead(){
                                                     {/* manager*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            -
+                                                            {sharedvalue.leadsdata[lead].managerid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].managerid].name:'-'}
                                                         </p>
                                                     </td>
                                                     {/* employee*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            -
+                                                        {sharedvalue.leadsdata[lead].employeeid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].employeeid].name:'-'}
                                                         </p>
                                                     </td>
                                                     {/* action */}
                                                     <td >
                                                         <div className='view-manager-list-acttion-icon'>
+                                                            <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
                                                             <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
                                                             onClick={()=>setworkerdelete(prev=>({
