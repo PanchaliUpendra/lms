@@ -22,6 +22,7 @@ import Viewexpense from './Components/Manageexpense/Viewexpense/Viewexpense';
 import Eachlead from './Components/Eachlead/Eachlead';
 import Updatelead from './Components/Managelead/Updatelead/Updatelead';
 import Eachticket from './Components/Eachticket/Eachticket';
+import Updateticket from './Components/Manageticket/Updateticket/Updateticket';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
         {/* manager nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}

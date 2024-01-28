@@ -5,9 +5,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 function Eachticket(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
      //show details ends here
      const {tktid} = useParams();
      //code only for toggle the menu bar
@@ -44,7 +45,7 @@ function Eachticket(){
                                     <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {sharedvalue.ticketsdata[tktid].status===true?'Active':'Closed'}</p>
                                 </div>
                                 <div className='top-eachlead-buttons-inner'>
-                                    <button>edit</button>
+                                    <button onClick={()=>navigate(`/manageticket/updateticket/${tktid}`)}>edit</button>
                                     <button>
                                         <a href={sharedvalue.ticketsdata[tktid].fileurl} rel="noreferrer" target="_blank">Open File</a>
                                     </button>
@@ -85,6 +86,16 @@ function Eachticket(){
                                     <label>Priority</label>
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktpriority} readOnly/>
                                 </div>
+                                {/* employee and manager starts here */}
+                                <div>
+                                    <label>manager</label>
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktmanager!=='-'?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktmanager].name:'-'} readOnly/>
+                                </div>
+                                <div>
+                                    <label>employee</label>
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktemployee!=='-'?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktemployee].name:'-'} readOnly/>
+                                </div>
+                                {/* employee and manager ends here */}
                                 <div>
                                     <label>Associated Lead Code</label>
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktasslc} readOnly/>

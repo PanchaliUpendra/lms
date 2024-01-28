@@ -9,6 +9,7 @@ import MyContext from "../../../MyContext";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 
 function Viewticket(){
     const sharedvalue = useContext(MyContext);
@@ -88,7 +89,7 @@ function Viewticket(){
                                     </thead>
                                     <tbody>
                                         {
-                                            sharedvalue.ticketskeys.length>0 &&
+                                            sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.ticketskeys.filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* Tkt ID */}
@@ -150,13 +151,13 @@ function Viewticket(){
                                                     {/* manager */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.ticketsdata[ticket].ctktmanager}
+                                                            {sharedvalue.ticketsdata[ticket].ctktmanager!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktmanager].name:'-'}
                                                         </p>
                                                     </td>
                                                     {/* ctktemployee */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.ticketsdata[ticket].ctktemployee}
+                                                        {sharedvalue.ticketsdata[ticket].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktemployee].name:'-'}
                                                         </p>
                                                     </td>
                                                      {/* status */}
@@ -174,6 +175,7 @@ function Viewticket(){
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
+                                                            <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>
                                                             <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"
                                                             onClick={()=>setworkerdelete(prev=>({
