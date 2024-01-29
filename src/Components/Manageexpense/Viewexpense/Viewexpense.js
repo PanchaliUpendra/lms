@@ -9,6 +9,9 @@ function Viewexpense(){
     const sharedvalue = useContext(MyContext);
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
+    // search bar input 
+    const [searchworker,setsearchworker]=useState('');
+    console.log(searchworker);
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
     }
@@ -31,7 +34,56 @@ function Viewexpense(){
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
+                    {/* table view part starts from here!!! */}
+                    <div className='create-lead-con'>
+                        <div className="create-header-starts-here">
+                            <div className="new-ticket-header">
+                                <h1>View Expense</h1>
+                            </div>
+                        </div>
+                        {/* list starts from here */}
+                        <div className="view-manager-list-con">
+                            <div className="view-list-of-all-search">
+                                <div>
+                                    <label>Search:</label>
+                                    <input type='text' placeholder="Customer/ExpID" onChange={(e)=>setsearchworker(e.target.value)}/>
+                                </div>
+                            </div>
+                            {/* table starts from here */}
+                            <div className="view-list-table-con">
+                                <table>
+                                    <thead>
+                                        <tr className="table-head-row">
+                                            <th>Exp.ID</th>
+                                            <th>
+                                                <p>from</p>
+                                                <p>date /time/ place</p>
+                                            </th>
+                                            <th>
+                                                <p>to</p>
+                                                <p>date /time/ place</p>
+                                            </th>
+                                            <th>mode</th>
+                                            <th>Transport cost</th>
+                                            <th>food cost</th>
+                                            <th>purpose</th>
+                                            <th>customer name</th>
+                                            <th>remark</th>
+                                            <th>amount paid</th>
+                                            <th>amount pending</th>
+                                            <th>final amount</th>
+                                            <th>date added</th>
+                                            <th>action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                         </div>
+                    </div>
+                    {/* table view part ends here */}
+
                 </div>
+                {/* mange con inner ends here */}
             </div>
         </>
     );

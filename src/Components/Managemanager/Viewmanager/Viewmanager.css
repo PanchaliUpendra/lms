@@ -65,6 +65,10 @@ table>thead th{
     padding-left: 10px;
     padding-right: 10px;
 }
+table>thead th>p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
 table>tbody tr td{
     /* min-height: 40px; */
