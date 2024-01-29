@@ -14,7 +14,7 @@ function Viewexpense(){
     const [menutoggle,setmenutoggle] = useState(false);
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
-    console.log(searchworker);
+    
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
     }
@@ -82,7 +82,7 @@ function Viewexpense(){
                                     <tbody>
                                         {
                                             sharedvalue.expenseskeys.length>0 && sharedvalue.workerskeys.length>0 &&
-                                            sharedvalue.expenseskeys.map((expense,idx)=>(
+                                            sharedvalue.expenseskeys.filter(item=>(sharedvalue.expensesdata[item].expcustomername.includes(searchworker)||JSON.stringify(item).includes(searchworker))).map((expense,idx)=>(
                                                 <tr key={idx}>
                                                     {/* 1 expense ID */}
                                                     <td >

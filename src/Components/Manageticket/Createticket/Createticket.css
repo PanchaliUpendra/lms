@@ -24,7 +24,7 @@
 }
 /* create-ticket-form-starts */
 .create-ticket-form-starts{
-    padding-top:20px ;
+    padding-top:60px ;
     display: flex;
     flex-direction: column;
     gap: 10px;
