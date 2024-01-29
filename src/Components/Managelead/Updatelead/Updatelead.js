@@ -17,6 +17,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useParams, useNavigate} from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Error from '../../../Error/Error';
 
 function Updatelead(){
     const sharedvalue = useContext(MyContext);
@@ -208,7 +209,7 @@ function Updatelead(){
             custenddate:formatDateString(futureDate),
             custnextdate:formatDateString(futureweek)
         }))
-        if(sharedvalue.leadskeys.length>0){
+        if(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid)){
             //setselectmanager
             setselectmanager(prev=>({
                 ...prev,
@@ -286,7 +287,7 @@ function Updatelead(){
     },[leadid,sharedvalue.leadsdata,sharedvalue.leadskeys]);
     return(
         <>
-        {sharedvalue.leadskeys.length>0 &&
+        {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true?
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -893,7 +894,7 @@ function Updatelead(){
                         {/* create lead button ends here */}
                     </div>
                 </div>
-            </div>
+            </div>:<Error/>
             }
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

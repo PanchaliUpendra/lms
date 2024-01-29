@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import Error from '../../Error/Error';
 function Eachticket(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Eachticket(){
     return(
         <>
             {
-                sharedvalue.ticketskeys.length>0 &&
+                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid))===true?
                 <div className='manlead-con'>
                     <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                     <div className='manage-con-inner'>
@@ -104,7 +105,7 @@ function Eachticket(){
                             {/* form ends here */}
                         </div>
                     </div>
-                </div>
+                </div>:<Error/>
             }
         </>
     );

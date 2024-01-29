@@ -7,6 +7,7 @@ import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Error from '../../Error/Error';
 
 function Eachlead(){
     const sharedvalue = useContext(MyContext);
@@ -25,7 +26,7 @@ function Eachlead(){
     
     return(
         <>
-            {sharedvalue.leadskeys.length>0 &&
+            {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true?
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -277,7 +278,7 @@ function Eachlead(){
                     </div>
                     {/* create customer ends here */}
                 </div>
-            </div>
+            </div>:<Error/>
             }
         </>
     );

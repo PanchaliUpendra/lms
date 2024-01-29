@@ -231,7 +231,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </div>
                     {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') &&
                     <div className='snav-inner-each'>
                         <div
                         className={`snav-mle-inner-div ${location.pathname==='/manageexpense/createexpense'||location.pathname==='/manageexpense/viewexpense'?'snav-mle-inner-div-active':''}`}

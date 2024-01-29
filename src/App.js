@@ -24,6 +24,7 @@ import Updatelead from './Components/Managelead/Updatelead/Updatelead';
 import Eachticket from './Components/Eachticket/Eachticket';
 import Updateticket from './Components/Manageticket/Updateticket/Updateticket';
 import Verifyexpense from './Components/Manageexpense/Verifyexpense/Verifyexpense';
+import Editexpense from './Components/Manageexpense/Editexpense/Editexpense';
 
 
 function App() {
@@ -55,9 +56,10 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/createcustomer' element={<Createcustomer/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/viewcustomer' element={<Viewcustomer/>}/>}
         {/* expense nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
         <Route path='/*' element={<Error/>}/>
       </Routes>
       

@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import loading from '../../../Assets/loading.gif';
 import { useNavigate, useParams } from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Error from '../../../Error/Error';
 
 function Updateticket(){
     const sharedvalue = useContext(MyContext);
@@ -132,7 +133,7 @@ function Updateticket(){
         setpleasewait(false);
     }
     useEffect(()=>{
-        if(sharedvalue.ticketskeys.length>0){
+        if(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid)){
             setticketinfo(prev=>({
                 ...prev,
                 ctktcountry:sharedvalue.ticketsdata[tktid].ctktcountry,
@@ -152,7 +153,7 @@ function Updateticket(){
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
     return(
         <>
-        {sharedvalue.ticketskeys.length>0 &&
+        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid))===true?
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -386,7 +387,7 @@ function Updateticket(){
                     </div>
                     {/* form completes here */}
                 </div>
-            </div>
+            </div>:<Error/>
             }
             <ToastContainer
                     position="top-center"

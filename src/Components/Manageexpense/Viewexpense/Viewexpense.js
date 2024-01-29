@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 function Viewexpense(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     // search bar input 
@@ -88,7 +89,7 @@ function Viewexpense(){
                                     <tbody>
                                         {
                                             sharedvalue.expenseskeys.length>0 && sharedvalue.workerskeys.length>0 &&
-                                            sharedvalue.expenseskeys.filter(item=>(sharedvalue.expensesdata[item].expcustomername.includes(searchworker)||JSON.stringify(item).includes(searchworker))).map((expense,idx)=>(
+                                            sharedvalue.expenseskeys.filter(prod=>(sharedvalue.expensesdata[prod].expcreatedbyid===sharedvalue.uid || sharedvalue.expensesdata[prod].expfinanceid===sharedvalue.uid || sharedvalue.role==='admin')).filter(item=>(sharedvalue.expensesdata[item].expcustomername.includes(searchworker)||JSON.stringify(item).includes(searchworker))).map((expense,idx)=>(
                                                 <tr key={idx}>
                                                     {/* 1 expense ID */}
                                                     <td >
@@ -215,7 +216,7 @@ function Viewexpense(){
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
-                                                             {sharedvalue.expensesdata[expense].expcreatedbyid===sharedvalue.uid && (sharedvalue.expensesdata[expense].expstatus==='open'||sharedvalue.expensesdata[expense].expstatus==='rejected') && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" />}
+                                                             {sharedvalue.expensesdata[expense].expcreatedbyid===sharedvalue.uid && (sharedvalue.expensesdata[expense].expstatus==='open'||sharedvalue.expensesdata[expense].expstatus==='rejected') && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/editexpense/${expense}`)}/>}
                                                             {sharedvalue.role==='admin' && sharedvalue.expensesdata[expense].expstatus!=='closed' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/verifyexpense/${expense}`)}/>}
                                                             {/* <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"/> */}
                                                             {sharedvalue.role==='finance' && sharedvalue.expensesdata[expense].expfinanceid===sharedvalue.uid && sharedvalue.expensesdata[expense].expstatus==='approved' && <p>close</p>}
