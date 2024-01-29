@@ -5,11 +5,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-// import VisibilityIcon from '@mui/icons-material/Visibility';
-// import EditIcon from '@mui/icons-material/Edit';
+// import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from "react-router-dom";
 function Viewexpense(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     // search bar input 
@@ -71,11 +73,15 @@ function Viewexpense(){
                                             <th>food cost</th>
                                             <th>purpose</th>
                                             <th>customer name</th>
+                                            <th>Created by</th>
+                                            <th>finance manager</th>
                                             <th>remark</th>
                                             <th>amount paid</th>
                                             <th>amount pending</th>
                                             <th>final amount</th>
+                                            <th>status</th>
                                             <th>date added</th>
+                                            <th>latest comment</th>
                                             <th>action</th>
                                         </tr>
                                     </thead>
@@ -144,6 +150,18 @@ function Viewexpense(){
                                                             {sharedvalue.expensesdata[expense].expcustomername}
                                                         </p>
                                                     </td>
+                                                    {/* created by */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.workersdata[sharedvalue.expensesdata[expense].expcreatedbyid].name}
+                                                        </p>
+                                                    </td>
+                                                    {/* finance manager */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.expensesdata[expense].expfinanceid!==''?sharedvalue.workersdata[sharedvalue.expensesdata[expense].expfinanceid].name:'-'}
+                                                        </p>
+                                                    </td>
                                                     {/* remark */}
                                                     <td>
                                                         {/* <div className='view-manager-list-acttion-icon'>
@@ -169,8 +187,17 @@ function Viewexpense(){
                                                     </td>
                                                      {/* final amount */}
                                                      <td >
-                                                        <p className="view-manager-list-role">
+                                                        {/* <p className="view-manager-list-role">
                                                             {Number(sharedvalue.expensesdata[expense].expamountpending)}
+                                                        </p> */}
+                                                        <p className="view-manager-list-name">
+                                                            {Number(sharedvalue.expensesdata[expense].expfinalamount)}
+                                                        </p>
+                                                    </td>
+                                                    {/* open/closed */}
+                                                    <td>
+                                                    <p className={`view-manager-list-name ${sharedvalue.expensesdata[expense].expstatus==='open'?'open-active':sharedvalue.expensesdata[expense].expstatus==='close'?'closed-active':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved-active':'rejected-active'}`}>
+                                                            {sharedvalue.expensesdata[expense].expstatus==='open'?'open':sharedvalue.expensesdata[expense].expstatus==='close'?'close':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved':'rejected'}
                                                         </p>
                                                     </td>
                                                      {/* date added */}
@@ -179,14 +206,19 @@ function Viewexpense(){
                                                             {sharedvalue.expensesdata[expense].expaddeddate}
                                                         </p>
                                                     </td>
+                                                    {/* latest comment */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.expensesdata[expense].explatestcomment!==''?sharedvalue.expensesdata[expense].explatestcomment:'-'}
+                                                        </p>
+                                                    </td>
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
-                                                            {/* <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" />
-                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" /> */}
-                                                            <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"
-                                                            
-                                                            />
+                                                             {sharedvalue.expensesdata[expense].expcreatedbyid===sharedvalue.uid && (sharedvalue.expensesdata[expense].expstatus==='open'||sharedvalue.expensesdata[expense].expstatus==='rejected') && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" />}
+                                                            {sharedvalue.role==='admin' && sharedvalue.expensesdata[expense].expstatus!=='closed' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/verifyexpense/${expense}`)}/>}
+                                                            {/* <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"/> */}
+                                                            {sharedvalue.role==='finance' && sharedvalue.expensesdata[expense].expfinanceid===sharedvalue.uid && sharedvalue.expensesdata[expense].expstatus==='approved' && <p>close</p>}
                                                         </div>
                                                     </td>
                                                 </tr>

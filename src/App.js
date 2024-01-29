@@ -23,6 +23,7 @@ import Eachlead from './Components/Eachlead/Eachlead';
 import Updatelead from './Components/Managelead/Updatelead/Updatelead';
 import Eachticket from './Components/Eachticket/Eachticket';
 import Updateticket from './Components/Manageticket/Updateticket/Updateticket';
+import Verifyexpense from './Components/Manageexpense/Verifyexpense/Verifyexpense';
 
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
         {/* expense nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
         <Route path='/*' element={<Error/>}/>
       </Routes>
       

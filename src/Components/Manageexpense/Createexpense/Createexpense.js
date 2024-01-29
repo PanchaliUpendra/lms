@@ -40,12 +40,13 @@ function Createexpense(){
         expamountpending:0,
         expremarks:'',
         expid:'',
-        expverify:false,
-        expstatus:true,
+        expfinalamount:'',
+        expstatus:'open',
         expfinanceid:'',
         expcreatedbyid:'',
         expcustomername:'',
-        expaddeddate:''
+        expaddeddate:'',
+        explatestcomment:''
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -105,12 +106,13 @@ function Createexpense(){
                                 expamountpending:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
                                 expremarks:expenseinfo.expremarks,
                                 expid:result,
-                                expverify:false,
-                                expstatus:true,
+                                expfinalamount:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
+                                expstatus:'open',
                                 expfinanceid:expenseinfo.expfinanceid,
                                 expcreatedbyid:sharedvalue.uid,
                                 expcustomername:expenseinfo.expcustomername,
-                                expaddeddate:expenseinfo.expaddeddate
+                                expaddeddate:expenseinfo.expaddeddate,
+                                explatestcomment:''
                             }
                         });
 
@@ -136,11 +138,12 @@ function Createexpense(){
                             expamountpending:0,
                             expremarks:'',
                             expid:'',
-                            expverify:false,
-                            expstatus:true,
+                            expfinalamount:'',
+                            expstatus:'open',
                             expfinanceid:'',
                             expcreatedbyid:'',
-                            expcustomername:''
+                            expcustomername:'',
+                            explatestcomment:''
                         }));
                 }
             }else{
