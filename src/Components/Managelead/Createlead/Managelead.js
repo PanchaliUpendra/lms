@@ -9,7 +9,7 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { onSnapshot, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createleadiddoc, leaddoc } from '../../../Data/Docs';
+import { createleadiddoc, leaddoc , createmeetings } from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -173,6 +173,20 @@ function Managelead(){
                         modifiedby:[],
                         createdbyid:sharedvalue.uid
                     }});
+                
+                //updating the meeting
+                await batch.update(createmeetings,{
+                    [result]:[
+                        {
+                            date:custinquiry.custnextdate,
+                            title:'first meeting',
+                            subtitle:'first one will come here',
+                            comment:'no comments',
+                            addedby:sharedvalue.uid
+
+                        }
+                    ]
+                })
 
                 //this is for updating the lead uuid
                 await batch.update(createleadiddoc,{
