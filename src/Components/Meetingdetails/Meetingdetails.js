@@ -63,6 +63,7 @@ function Meetingdetails(){
                     await batch.update(leaddoc,{
                         [leadid]:{
                             ...sharedvalue.leadsdata[leadid],
+                            custnextdate:nextmeetingdetails.date,
                             latesttitle:[nextmeetingdetails.title],
                             latestsubtitle:[nextmeetingdetails.subtitle],
                             latestcomment:[nextmeetingdetails.comment]
