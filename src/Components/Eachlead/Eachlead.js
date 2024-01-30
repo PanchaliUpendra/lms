@@ -275,6 +275,67 @@ function Eachlead(){
                             </div>
                         </div>
                         {/* your sjow modification details will ends  here */}
+                        {/* sshow modification details table starts from here */}
+                        <div className='eachlead-show-modification-details'>
+                            
+                        {
+                            showmodificationdetail &&
+                            <div className="view-list-table-con">
+                                <div className='create-lead-requirements-head'>
+                                    <h1>Modification Details</h1>
+                                </div>
+                                <table>
+                                    <thead>
+                                        <tr className="table-head-row">
+                                            <th>si.no</th>
+                                            <th>date</th>
+                                            <th>time</th>
+                                            <th>modified by</th>
+                                            <th>action performed</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            sharedvalue.leadsdata[leadid].modifiedby.map((modi,idx)=>(
+                                                <tr key={idx} className="each-table-row-view" >
+                                                     <td >
+                                                        <p className="view-manager-list-name">
+                                                            {idx+1}
+                                                        </p>
+                                                    </td>
+                                                    {/* customer */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {modi.date}
+                                                        </p>
+                                                    </td>
+                                                    {/* country */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {modi.time}
+                                                        </p>
+                                                    </td>
+                                                    {/* state */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.workersdata[modi.uid].name}
+                                                        </p>
+                                                    </td>
+                                                    {/* district */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            updation
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        </div>
+                        {/* show modification details table ends here */}
                     </div>
                     {/* create customer ends here */}
                 </div>

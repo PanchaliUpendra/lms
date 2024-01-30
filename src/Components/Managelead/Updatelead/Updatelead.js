@@ -123,7 +123,20 @@ function Updatelead(){
              
             if(leadid!==0){
                 //this batch is for updating the leads document!!!
+                const temppresentDate = new Date();//lets creating the present date
+                const formatDateString = (date) => date.toISOString().split('T')[0];
+                const formatDateTimeString = (dateTime) => {
+                    const options = {
+                        timeZone: 'Asia/Kolkata', // Set the time zone to Indian Standard Time
+                        hour12: false, // Use 24-hour format
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                      };
+                      return dateTime.toLocaleTimeString('en-US', options);
+                };
                 await batch.update(leaddoc, {[leadid]:{
+                        ...sharedvalue.leadsdata[leadid],
                         custtype:custinquiry.custtype,//customer type
                         custstatus:custinquiry.custstatus,//customer status
                         custstartdate:custinquiry.custstartdate,//customer start date
@@ -164,13 +177,16 @@ function Updatelead(){
                         payment:leadrequirements.payment,//lead requirements payment
                         chutes:leadrequirements.chutes,//leads requirement chutes
                         reqdes:leadrequirements.reqdes,//lead requirement description,
-                        manager:'-',
-                        employee:'-',
                         employeeid:selectmanager.employeeid,
                         managerid:selectmanager.managerid,
                         latesttitle:['started now'],
                         latestsubtitle:['No subtitle'],
-                        latestcomment:['No Comment']
+                        latestcomment:['No Comment'],
+                        modifiedby:[...sharedvalue.leadsdata[leadid].modifiedby,{
+                            uid:sharedvalue.uid,
+                            date:formatDateString(temppresentDate),
+                            time:formatDateTimeString(temppresentDate)
+                        }]
                     }});
 
                 

@@ -79,6 +79,7 @@ function Viewlead(){
                                             <th>district</th>
                                             <th>machine model</th>
                                             <th>number of chutes</th>
+                                            <th>created by</th>
                                             <th>next meeting date</th>
                                             <th>latest title</th>
                                             <th>latest sub-title</th>
@@ -135,6 +136,12 @@ function Viewlead(){
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].chutes}
+                                                        </p>
+                                                    </td>
+                                                    {/* created by*/}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-'}
                                                         </p>
                                                     </td>
                                                     {/* next meeting date*/}

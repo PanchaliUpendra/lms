@@ -59,7 +59,7 @@ function Managelead(){
         ofd:'',//office details
         ofdcountry:'',//office details country
         ofdst:'',//oofice details state
-        ofddst:'-',//ofice details district
+        ofddst:'',//ofice details district
         ofdcty:'',//office city
         ofdpinc:'',//office pincode
         ofdgstin:'',//GSTIN
@@ -165,13 +165,13 @@ function Managelead(){
                         payment:leadrequirements.payment,//lead requirements payment
                         chutes:leadrequirements.chutes,//leads requirement chutes
                         reqdes:leadrequirements.reqdes,//lead requirement description,
-                        manager:'-',
-                        employee:'-',
                         employeeid:'',
                         managerid:'',
                         latesttitle:['started now'],
                         latestsubtitle:['No subtitle'],
-                        latestcomment:['No Comment']
+                        latestcomment:['No Comment'],
+                        modifiedby:[],
+                        createdbyid:sharedvalue.uid
                     }});
 
                 //this is for updating the lead uuid
