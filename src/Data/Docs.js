@@ -7,3 +7,5 @@ export const createtickets = doc(db,"tickets","ynF6FDMS2w9wwS82vean");
 export const createexpenseid = doc(db,"createexpenseID","1Oo3vlubLKwRqA9jjvBw");
 export const createexpense = doc(db,"expenses","zitABqYQwdvVCAqUR7HP");
 export const createmeetings = doc(db,"meetings","JqCkRuz9W6HVkhuERsrV");
+export const createquoteid = doc(db,"createquoteID","AGQPw48poYCctNB6TaRH");
+export const createquotes = doc(db,"quotes","HntCeIfNJlZJBU6gzIj5");

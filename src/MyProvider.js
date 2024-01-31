@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense} from "./Data/Docs";
+import { createtickets, leaddoc,createexpense, createquotes} from "./Data/Docs";
 
 function MyProvider({children}){
 
@@ -22,6 +22,8 @@ function MyProvider({children}){
     const [ticketskeys , setticketskeys] = useState([]);//all ticket keys
     const [expensesdata,setexpensesdata] = useState({});//expenses data
     const [expenseskeys,setexpenseskeys] = useState([]);//expenses keys
+    const [quoteskeys,setquoteskeys] = useState([]);//quote keys
+    const [quotesdata,setquotesdata] = useState({});//quotes data
    
     
     const sharedvalue ={
@@ -36,6 +38,8 @@ function MyProvider({children}){
         ticketsdata:ticketsdata,
         expensesdata:expensesdata,
         expenseskeys:expenseskeys,
+        quotesdata:quotesdata,
+        quoteskeys:quoteskeys,
         role:user.role
     }
 
@@ -51,6 +55,21 @@ function MyProvider({children}){
                 uid:uid,
                 userdtl:userd
               }))
+              //fetching the quotes
+              const fetchquotationsdata = async() =>{
+                try{
+                  await onSnapshot(createquotes,(doc)=>{
+                    const tempquotesdata = doc.data();
+                    setquotesdata(tempquotesdata);
+                    const tempquoteskeys = Object.keys(tempquotesdata);
+                    const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
+                    setquoteskeys(sorttempquoteskeys);
+                  })
+                }catch(e){
+                  console.log('you got an error while fetching the quotations data',e);
+                }
+              }
+              fetchquotationsdata();//calling the function  to fetch quotation data
               //fetching the expenses
               const fetchexpensesdata = async() =>{
                 try{

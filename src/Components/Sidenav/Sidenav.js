@@ -208,7 +208,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     
                     <div className='snav-inner-each'>
                         <div 
-                        className='snav-mle-inner-div'
+                        className={`snav-mle-inner-div ${location.pathname==='/managequotation/createquotation'||location.pathname==='/managequotation/viewquotation'?'snav-mle-inner-div-active':''}`}
                         onClick={() => handleImageClick('uniqueDiv6')}
                         >
                             <div className='snav-mle-names'>
@@ -220,13 +220,13 @@ function Sidenav({menutoggle,handlemenutoggle}){
                             </div>
                         </div>
                         <div className={`snav-each-dropdown ${rotationStates['uniqueDiv6'] ? 'extendmenu':''}`}>
-                            <div>
+                            <div onClick={()=>navigate('/managequotation/createquotation')}>
                                 <AddIcon/>
-                                <h2>Create Lead</h2>
+                                <h2>Create Quotation</h2>
                             </div>
-                            <div>
+                            <div onClick={()=>navigate('/managequotation/viewquotation')}>
                                 <FilterListIcon/>
-                                <h2>View All Leads</h2>
+                                <h2>View Quotation</h2>
                             </div>
                         </div>
                     </div>

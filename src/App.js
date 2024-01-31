@@ -26,6 +26,8 @@ import Updateticket from './Components/Manageticket/Updateticket/Updateticket';
 import Verifyexpense from './Components/Manageexpense/Verifyexpense/Verifyexpense';
 import Editexpense from './Components/Manageexpense/Editexpense/Editexpense';
 import Meetingdetails from './Components/Meetingdetails/Meetingdetails';
+import Createquotation from './Components/Managequotation/Createquotation/Createquotation';
+import Viewquotation from './Components/Managequotation/Viewquotation/Viewquotation';
 
 
 function App() {
@@ -62,6 +64,9 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
+        {/* manage quotation nav links*/}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
         <Route path='/*' element={<Error/>}/>
       </Routes>
       
