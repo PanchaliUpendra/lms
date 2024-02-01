@@ -31,7 +31,7 @@ function Verifyexpense(){
     const [open, setOpen] = useState(false);//this is for loading image
     const batch = writeBatch(db);// Get a new write batch
     // adding notifications 
-    const loginsuccess = () =>toast.success('Successfully Updated The LEAD');
+    const loginsuccess = () =>toast.success('Successfully Updated The Expense');
     const loginerror = () =>toast.error('Getting error while updaing the VERIFY EXPENSE data');
     const formerror = () =>toast.warn('please fill form correctly ');
 

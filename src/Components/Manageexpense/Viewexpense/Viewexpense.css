@@ -31,13 +31,14 @@
 }
 
 .open-active{
-    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    
 }
 .closed-active{
     background-image: linear-gradient(195deg, #f34f25 0%, #df1f06 100%);
 }
 .approved-active{
-    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
 }
 
 .rejected-active{

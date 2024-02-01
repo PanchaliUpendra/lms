@@ -303,7 +303,7 @@ function Updatelead(){
     },[leadid,sharedvalue.leadsdata,sharedvalue.leadskeys]);
     return(
         <>
-        {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true?
+        {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true && (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.leadsdata[leadid].employeeid===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.leadsdata[leadid].managerid===sharedvalue.uid))===true?
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -335,10 +335,14 @@ function Updatelead(){
                         </div>
                         {/* view manqager and employee starts here*/}
                         <div className='create-lead-requirements'>
+                            {(sharedvalue.role==='admin' || sharedvalue.role==='manager') && 
                                 <div className='create-lead-requirements-head'>
                                     <h1>manager and employee</h1>
                                 </div>
+                            }
                                 <div className='create-lead-requirements-all-fields'>
+                                {/* manger  */}
+                                {sharedvalue.role==='admin' && 
                                 <div>
                                     <label>Manager</label>
                                     
@@ -356,6 +360,9 @@ function Updatelead(){
                                     </select>
                                     
                                 </div>
+                                }
+                                {/* employee */}
+                                {(sharedvalue.role==='admin' || (sharedvalue.role==='manager' && sharedvalue.uid===sharedvalue.leadsdata[leadid].managerid)) &&
                                 <div>
                                     <label>Employee</label>
                                     <select value={selectmanager.employeeid} onChange={(e)=>setselectmanager(prev=>({
@@ -364,12 +371,13 @@ function Updatelead(){
                                     }))}>
                                         <option value=''>select employee</option>
                                         {
-                                            sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='customer').map((employee,idx)=>(
+                                            sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='employee' && sharedvalue.workersdata[item].managerid===selectmanager.managerid).map((employee,idx)=>(
                                                 <option value={employee} key={idx}>{sharedvalue.workersdata[employee].name}</option>
                                             ))
                                         }
                                     </select>
                                 </div>
+                                }
                             </div>
                         </div>
                         {/* view manager and employee ends here */}

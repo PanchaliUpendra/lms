@@ -106,7 +106,7 @@ function Viewemployee(){
                                             <th>email</th>
                                             <th>status</th>
                                             {sharedvalue.role==='admin'?<th>Assign Manager</th>:<th>manager</th>}
-                                            <th>action</th>
+                                            {sharedvalue.role==='admin' && <th>action</th>}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,6 +145,7 @@ function Viewemployee(){
                                                         <p className="view-manager-list-name">{sharedvalue.workersdata[sharedvalue.uid].name}</p>
                                                     </td>
                                                     }
+                                                    {sharedvalue.role==='admin' && 
                                                     <td >
                                                         <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
                                                         onClick={()=>setworkerdelete(prev=>({
@@ -153,6 +154,7 @@ function Viewemployee(){
                                                             uid:worker
                                                         }))}/>
                                                     </td>
+                                                    }
                                                 </tr>
                                             ))
                                         }

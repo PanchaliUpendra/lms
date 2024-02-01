@@ -28,6 +28,7 @@ import Editexpense from './Components/Manageexpense/Editexpense/Editexpense';
 import Meetingdetails from './Components/Meetingdetails/Meetingdetails';
 import Createquotation from './Components/Managequotation/Createquotation/Createquotation';
 import Viewquotation from './Components/Managequotation/Viewquotation/Viewquotation';
+import Financeverify from './Components/Manageexpense/Financeverify/Financeverify';
 
 
 function App() {
@@ -37,11 +38,11 @@ function App() {
       <Routes>
         <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed)?<Dashboard/>:<Login/>}/>
         {/* manage lead nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
         {/* manage ticket navlinks */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
@@ -63,6 +64,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='finance' && <Route path='/manageexpense/financeverify/:expid' element={<Financeverify/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
         {/* manage quotation nav links*/}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}

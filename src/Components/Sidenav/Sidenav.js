@@ -67,7 +67,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </NavLink>
 
                     {/* snav each div --> MANAGE LEAD */}
-
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
                     <div className='snav-inner-each'>
                         <div
                         className={`snav-mle-inner-div ${location.pathname==='/managelead/leadcreate'||location.pathname==='/managelead/viewlead'?'snav-mle-inner-div-active':''}`}
@@ -93,6 +93,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                             </div>
                         </div>
                     </div>
+                    }
                     {/* MANAGE LEAD END */}
 
                     {/* snav each div  */}
@@ -205,7 +206,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
-                    
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
                     <div className='snav-inner-each'>
                         <div 
                         className={`snav-mle-inner-div ${location.pathname==='/managequotation/createquotation'||location.pathname==='/managequotation/viewquotation'?'snav-mle-inner-div-active':''}`}
@@ -230,6 +231,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                             </div>
                         </div>
                     </div>
+                    }
                     {/* snav each div  */}
                     {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') &&
                     <div className='snav-inner-each'>
@@ -258,6 +260,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
                     <div className='snav-inner-each'>
                         <div 
                         className={`snav-mle-inner-div ${location.pathname==='/manageticket/createticket'||location.pathname==='/manageticket/viewticket'?'snav-mle-inner-div-active':''}`}
@@ -282,6 +285,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                             </div>
                         </div>
                     </div>
+                    }
                     {/* snav each div  */}
                     <div className='snav-inner-each-diff'>
                         <div className='snav-mle-names'>

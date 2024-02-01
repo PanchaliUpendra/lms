@@ -165,8 +165,8 @@ function Managelead(){
                         payment:leadrequirements.payment,//lead requirements payment
                         chutes:leadrequirements.chutes,//leads requirement chutes
                         reqdes:leadrequirements.reqdes,//lead requirement description,
-                        employeeid:'',
-                        managerid:'',
+                        employeeid:sharedvalue.role==='employee'?sharedvalue.uid:'',
+                        managerid:sharedvalue.role==='manager'?sharedvalue.uid:sharedvalue.role==='employee'?sharedvalue.workersdata[sharedvalue.uid].managerid:'',
                         latesttitle:['started now'],
                         latestsubtitle:['No subtitle'],
                         latestcomment:['No Comment'],

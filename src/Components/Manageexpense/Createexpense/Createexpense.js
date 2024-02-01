@@ -112,7 +112,8 @@ function Createexpense(){
                                 expcreatedbyid:sharedvalue.uid,
                                 expcustomername:expenseinfo.expcustomername,
                                 expaddeddate:expenseinfo.expaddeddate,
-                                explatestcomment:''
+                                explatestcomment:'',
+                                expcloseremarks:''
                             }
                         });
 
@@ -326,7 +327,7 @@ function Createexpense(){
                         </div>
                         {/* create lead button starts here */}
                         <div className='create-expense-submit-btns'>
-                            <button onClick={()=>handlesubmitdata()}>create lead</button>
+                            <button onClick={()=>handlesubmitdata()}>create Expense</button>
                         </div>
                         {/* create lead button ends here */}
                     </div>

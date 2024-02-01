@@ -82,7 +82,8 @@ function Viewexpense(){
                                             <th>final amount</th>
                                             <th>status</th>
                                             <th>date added</th>
-                                            <th>latest comment</th>
+                                            <th>Admin comment</th>
+                                            <th>Finance Comment</th>
                                             <th>action</th>
                                         </tr>
                                     </thead>
@@ -197,8 +198,8 @@ function Viewexpense(){
                                                     </td>
                                                     {/* open/closed */}
                                                     <td>
-                                                    <p className={`view-manager-list-name ${sharedvalue.expensesdata[expense].expstatus==='open'?'open-active':sharedvalue.expensesdata[expense].expstatus==='close'?'closed-active':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved-active':'rejected-active'}`}>
-                                                            {sharedvalue.expensesdata[expense].expstatus==='open'?'open':sharedvalue.expensesdata[expense].expstatus==='close'?'close':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved':'rejected'}
+                                                    <p className={`view-manager-list-name ${sharedvalue.expensesdata[expense].expstatus==='open'?'open-active':sharedvalue.expensesdata[expense].expstatus==='closed'?'closed-active':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved-active':'rejected-active'}`}>
+                                                            {sharedvalue.expensesdata[expense].expstatus==='open'?'open':sharedvalue.expensesdata[expense].expstatus==='closed'?'closed':sharedvalue.expensesdata[expense].expstatus==='approved'?'approved':'rejected'}
                                                         </p>
                                                     </td>
                                                      {/* date added */}
@@ -213,13 +214,19 @@ function Viewexpense(){
                                                             {sharedvalue.expensesdata[expense].explatestcomment!==''?sharedvalue.expensesdata[expense].explatestcomment:'-'}
                                                         </p>
                                                     </td>
+                                                    {/* finance comment */}
+                                                    <td >
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.expensesdata[expense].expcloseremarks!==''?sharedvalue.expensesdata[expense].expcloseremarks:'-'}
+                                                        </p>
+                                                    </td>
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
                                                              {sharedvalue.expensesdata[expense].expcreatedbyid===sharedvalue.uid && (sharedvalue.expensesdata[expense].expstatus==='open'||sharedvalue.expensesdata[expense].expstatus==='rejected') && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/editexpense/${expense}`)}/>}
                                                             {sharedvalue.role==='admin' && sharedvalue.expensesdata[expense].expstatus!=='closed' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/verifyexpense/${expense}`)}/>}
                                                             {/* <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"/> */}
-                                                            {sharedvalue.role==='finance' && sharedvalue.expensesdata[expense].expfinanceid===sharedvalue.uid && sharedvalue.expensesdata[expense].expstatus==='approved' && <p>close</p>}
+                                                            {sharedvalue.role==='finance' && sharedvalue.expensesdata[expense].expfinanceid===sharedvalue.uid && sharedvalue.expensesdata[expense].expstatus==='approved' && <p className="view-expense-finance-close" onClick={()=>navigate(`/manageexpense/financeverify/${expense}`)}>close</p>}
                                                         </div>
                                                     </td>
                                                 </tr>
