@@ -28,7 +28,7 @@ function Createemployee(){
         email:'',
         password:'',
         cnfpassword:'',
-        role:'employee'
+        role:'employee',
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -64,7 +64,8 @@ function Createemployee(){
                         "email":formdetails.email,
                         "role":formdetails.role,
                         "password":formdetails.password,
-                        "disable":false
+                        "disable":false,
+                        "managerid":sharedvalue.role==='manager'?sharedvalue.uid:''
                     }});
                     await batch.commit();
                 }

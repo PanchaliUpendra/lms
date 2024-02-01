@@ -66,7 +66,8 @@ function Createmanager(){
                         "email":formdetails.email,
                         "role":formdetails.role,
                         "password":formdetails.password,
-                        "disable":false
+                        "disable":false,
+                        "managerid":''
                     }});
                     await batch.commit();
                 }

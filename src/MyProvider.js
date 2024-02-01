@@ -130,7 +130,8 @@ function MyProvider({children}){
                       role:workerdata[uid].role
                     }))
                     const keysarray = Object.keys(workerdata);
-                    setworkerskeys(keysarray);
+                    const sortkeysarray = [...keysarray].sort((a,b)=>b-a);
+                    setworkerskeys(sortkeysarray);
                   })
                 }catch(e){
                   console.log('you got an error while fetching the users data');
