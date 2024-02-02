@@ -44,10 +44,10 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
         {/* manage ticket navlinks */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
         {/* manager nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}

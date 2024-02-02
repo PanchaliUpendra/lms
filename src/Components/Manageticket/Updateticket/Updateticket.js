@@ -153,7 +153,7 @@ function Updateticket(){
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
     return(
         <>
-        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid))===true?
+        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) && (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)))===true?
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -331,11 +331,14 @@ function Updateticket(){
                                     <option value={false}>False</option>
                                 </select>
                             </div>
+                            {/* manager div */}
+                            {sharedvalue.role==='admin' && 
                             <div>
                                 <label>manager</label>
                                 <select value={ticketinfo.ctktmanager} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
-                                    ctktmanager:e.target.value
+                                    ctktmanager:e.target.value,
+                                    ctktemployee:''
                                 }))}>
                                     <option value='-'> select manager</option>
                                     {sharedvalue.workerskeys.filter(item=> sharedvalue.workersdata[item].role==='manager' ).map((manager,idx)=>(
@@ -343,18 +346,21 @@ function Updateticket(){
                                     ))}
                                 </select>
                             </div>
+                            }
+                            {/* employee div */}
+                            {(sharedvalue.role==='admin'||sharedvalue.role==='manager') && 
                             <div>
                                 <label>employee</label>
                                 <select value={ticketinfo.ctktemployee} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktemployee:e.target.value
                                 }))}>
-                                    <option value='-'>select employee</option>
-                                    {sharedvalue.workerskeys.filter(item=> sharedvalue.workersdata[item].role==='employee' ).map((employee,idx)=>(
+                                    <option value=''>select employee</option>
+                                    {sharedvalue.workerskeys.filter(item=> sharedvalue.workersdata[item].role==='employee' && sharedvalue.workersdata[item].managerid===ticketinfo.ctktmanager).map((employee,idx)=>(
                                         <option key={idx} value={employee}>{sharedvalue.workersdata[employee].name}</option>
                                     ))}
                                 </select>
-                            </div>
+                            </div>}
                                 {/* employee and manager ends here */}
                                 <div>
                                     <label>Associated Lead Code</label>

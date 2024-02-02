@@ -21,7 +21,7 @@ function Eachticket(){
     return(
         <>
             {
-                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid))===true?
+                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)))===true?
                 <div className='manlead-con'>
                     <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                     <div className='manage-con-inner'>

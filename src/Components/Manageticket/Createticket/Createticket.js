@@ -115,8 +115,8 @@ function Createticket(){
                             ctktdes:ticketinfo.ctktdes,
                             ctktpriority:ticketinfo.ctktpriority,
                             ctktasslc:ticketinfo.ctktasslc,
-                            ctktmanager:'',
-                            ctktemployee:'',
+                            ctktmanager:sharedvalue.role==='manager'?sharedvalue.uid:sharedvalue.role==='employee'?sharedvalue.workersdata[sharedvalue.uid].managerid:'',
+                            ctktemployee:sharedvalue.role==='employee'?sharedvalue.uid:'',
                             status:true,
                             workingstatus:'',
                             fileurl:fileurl,
@@ -320,7 +320,9 @@ function Createticket(){
                                     }))}>
                                         <option value='' selected>Select Lead</option>
                                         {
-                                            sharedvalue.leadskeys.map((leads,idx)=>(
+                                            sharedvalue.leadskeys
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid)))
+                                            .map((leads,idx)=>(
                                                 <option value={leads} key={idx}>{leads}</option>
                                             ))
                                         }
