@@ -29,6 +29,7 @@ import Meetingdetails from './Components/Meetingdetails/Meetingdetails';
 import Createquotation from './Components/Managequotation/Createquotation/Createquotation';
 import Viewquotation from './Components/Managequotation/Viewquotation/Viewquotation';
 import Financeverify from './Components/Manageexpense/Financeverify/Financeverify';
+import Search from './Components/Searchbar/Search';
 
 
 function App() {
@@ -69,7 +70,10 @@ function App() {
         {/* manage quotation nav links*/}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
+        {/* search bar nav link */}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/search' element={<Search/>} />}
         <Route path='/*' element={<Error/>}/>
+
       </Routes>
       
     </BrowserRouter>

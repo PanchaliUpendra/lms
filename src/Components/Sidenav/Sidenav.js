@@ -287,12 +287,16 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
-                    <div className='snav-inner-each-diff'>
-                        <div className='snav-mle-names'>
-                            <FindInPageIcon/>
-                            <h2>Search</h2>
+                    {sharedvalue.role==='admin' &&
+                    <NavLink to='/search'>
+                        <div className='snav-inner-each-diff'>
+                            <div className='snav-mle-names'>
+                                <FindInPageIcon/>
+                                <h2>Search</h2>
+                            </div>
                         </div>
-                    </div>
+                    </NavLink>
+                    }
                     {/* snav each div  */}
                     <div className='snav-inner-act-page-head'>
                         <div>
