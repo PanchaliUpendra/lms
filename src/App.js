@@ -30,6 +30,7 @@ import Createquotation from './Components/Managequotation/Createquotation/Create
 import Viewquotation from './Components/Managequotation/Viewquotation/Viewquotation';
 import Financeverify from './Components/Manageexpense/Financeverify/Financeverify';
 import Search from './Components/Searchbar/Search';
+import Profile from './Components/Profile/Profile';
 
 
 function App() {
@@ -72,6 +73,8 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
         {/* search bar nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/search' element={<Search/>} />}
+        {/* profile nav link */}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
         <Route path='/*' element={<Error/>}/>
 
       </Routes>

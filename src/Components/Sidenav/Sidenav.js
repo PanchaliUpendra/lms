@@ -304,12 +304,14 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </div>
                     {/* snav each div  */}
+                    <NavLink to='/profile'>
                     <div className='snav-inner-each-diff'>
                         <div className='snav-mle-names'>
                             <SwitchAccountIcon/>
                             <h2>Profile</h2>
                         </div>
                     </div>
+                    </NavLink>
                     {/* snav each div  */}
                     <button className='snav-inner-logout' onClick={()=>handlesignout()}>
                         LOGOUT

@@ -296,9 +296,9 @@ function Createquotation(){
                                         <option value='EXP'>EXP</option>
                                     </select>
                                 </div>
-                                {/* capacity */}
+                                {/* capacity here it is also known as chutes*/}
                                 <div>
-                                    <label>capacity</label>
+                                    <label>No.of Chutes</label>
                                     <select value={quotinfo.quotcap} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotcap:e.target.value
@@ -311,6 +311,9 @@ function Createquotation(){
                                         <option value='5'>5</option>
                                         <option value='6'>6</option>
                                         <option value='7'>7</option>
+                                        <option value='7'>8</option>
+                                        <option value='7'>9</option>
+                                        <option value='7'>10</option>
                                     </select>
                                 </div>
                                 {/* price */}

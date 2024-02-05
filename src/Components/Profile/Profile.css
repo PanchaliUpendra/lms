@@ -1,0 +1,30 @@
+.profile-starts-con{
+    min-height: 300px;
+    background-color: white;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+    /* setting the background */
+    background:linear-gradient(195deg, rgba(73, 163, 241,0.1) 0%, rgba(26, 115, 232 ,0.1) 100%),url('../../Assets/profileview.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.profile-info-div-outer{
+    position: relative;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.profile-info-div{
+    min-height: 200px;
+    background-color: white;
+    
+    border-radius: 10px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14);
+    position: absolute;
+    top: -50px;
+    width: 100%;
+}
+

@@ -37,7 +37,7 @@ function Viewquotation(){
                     <div className='create-lead-con'>
                         <div className="create-header-starts-here">
                             <div className="new-ticket-header">
-                                <h1>View Expense</h1>
+                                <h1>View Quotation</h1>
                             </div>
                         </div>
                         {/* list starts from here */}
