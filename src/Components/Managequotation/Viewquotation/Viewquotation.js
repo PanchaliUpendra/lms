@@ -9,6 +9,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 
+//share icon
+import ShareIcon from '@mui/icons-material/Share';
+//download icon
+import DownloadIcon from '@mui/icons-material/Download';
+
 function Viewquotation(){
     const sharedvalue = useContext(MyContext);
     //use navigator is important for now
@@ -72,13 +77,16 @@ function Viewquotation(){
                                                     <th>company name</th>
                                                     <th>add.info</th>
                                                     <th>status</th>
+                                                    <th>admin comment</th>
                                                     <th>action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {
                                                     sharedvalue.quoteskeys.length>0 && 
-                                                    sharedvalue.quoteskeys.filter((item)=>JSON.stringify(item).includes(searchworker)||sharedvalue.quotesdata[item].quotcustname.includes(searchworker)).map((quote,idx)=>(
+                                                    sharedvalue.quoteskeys
+                                                    .filter((item)=>(sharedvalue.quotesdata[item].quotcreatedby===sharedvalue.uid || sharedvalue.role==='admin'))
+                                                    .filter((item)=>JSON.stringify(item).includes(searchworker)||sharedvalue.quotesdata[item].quotcustname.includes(searchworker)).map((quote,idx)=>(
                                                         <tr key={idx}>
                                                             {/* 1. quote id */}
                                                             <td>
@@ -159,11 +167,19 @@ function Viewquotation(){
                                                                     {sharedvalue.quotesdata[quote].quotstatus}
                                                                 </p>
                                                             </td>
+                                                            {/* 14. admin comment */}
+                                                            <td>
+                                                                <p className={`view-manager-list-name`}>
+                                                                    {sharedvalue.quotesdata[quote].quotadmincommt}
+                                                                </p>
+                                                            </td>
                                                             {/* 15.  action*/}
                                                             <td>
                                                                 <p className='view-manager-list-acttion-icon'>
-                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
-                                                                    {sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small"/>}
+                                                                    { (sharedvalue.quotesdata[quote].quotstatus==='open' || sharedvalue.quotesdata[quote].quotstatus==='rework') && sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
+                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <ShareIcon sx={{color:'grey',cursor:'pointer'}}  fontSize="small"/>}
+                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small"/>}
+                                                                    {sharedvalue.quotesdata[quote].quotstatus!=='closed' && sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small" onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}/>}
                                                                 </p>
                                                             </td>
 

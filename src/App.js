@@ -32,6 +32,7 @@ import Financeverify from './Components/Manageexpense/Financeverify/Financeverif
 import Search from './Components/Searchbar/Search';
 import Profile from './Components/Profile/Profile';
 import Updatequotation from './Components/Managequotation/Updatequotation/Updatequotation';
+import Verifyquotation from './Components/Managequotation/Verifyquotation/Verifyquotation';
 
 
 function App() {
@@ -70,11 +71,12 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='finance' && <Route path='/manageexpense/financeverify/:expid' element={<Financeverify/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
         {/* manage quotation nav links*/}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/verifyquotation/:quoteid' element={<Verifyquotation/>}/>}
         {/* search bar nav link */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/search' element={<Search/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
         {/* profile nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
         <Route path='/*' element={<Error/>}/>

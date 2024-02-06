@@ -140,7 +140,8 @@ function Createquotation(){
                         quotaddinfo:quotinfo.quotaddinfo,
                         quotpayterm:editorData,
                         quotstatus:quotinfo.quotstatus,
-                        quotcreatedby:sharedvalue.uid
+                        quotcreatedby:sharedvalue.uid,
+                        quotadmincommt:''
                     }
                 })
                 await batch.update(createquoteid,{
