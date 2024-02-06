@@ -164,8 +164,8 @@ function Viewticket(){
                                                     </td>
                                                      {/* status */}
                                                      <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-role">
-                                                            {sharedvalue.ticketsdata[ticket].status===true?'Active':'Close'}
+                                                        <p className={`${(sharedvalue.ticketsdata[ticket].status===true || sharedvalue.ticketsdata[ticket].status==="true")?'active-ticket-view-condition':'inactive-ticket-view-condition'}`}>
+                                                            {(sharedvalue.ticketsdata[ticket].status===true || sharedvalue.ticketsdata[ticket].status==="true")?'Active':'Close'}
                                                         </p>
                                                     </td>
                                                      {/* working status */}

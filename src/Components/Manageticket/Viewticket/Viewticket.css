@@ -1,0 +1,18 @@
+.active-ticket-view-condition , .inactive-ticket-view-condition{
+    padding: 5px 7px;
+    border-radius: 4px;
+    color: white;
+    
+    width: fit-content;
+    margin: auto;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.active-ticket-view-condition{
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+}
+
+.inactive-ticket-view-condition{
+    background-image: linear-gradient(195deg, #f34f25 0%, #df1f06 100%);
+}

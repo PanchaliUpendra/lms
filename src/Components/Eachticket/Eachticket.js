@@ -43,7 +43,7 @@ function Eachticket(){
                             </div>
                             <div className='top-eachlead-buttons'>
                                 <div>
-                                    <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {sharedvalue.ticketsdata[tktid].status===true?'Active':'Closed'}</p>
+                                    <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {(sharedvalue.ticketsdata[tktid].status===true || sharedvalue.ticketsdata[tktid].status==="true")?'Active':'Closed'}</p>
                                 </div>
                                 <div className='top-eachlead-buttons-inner'>
                                     <button onClick={()=>navigate(`/manageticket/updateticket/${tktid}`)}>edit</button>

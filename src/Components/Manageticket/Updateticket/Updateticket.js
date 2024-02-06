@@ -47,7 +47,7 @@ function Updateticket(){
         ctktasslc:'',
         ctktemployee:'',
         ctktmanager:'',
-        status:true
+        status:''
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
