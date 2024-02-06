@@ -18,6 +18,9 @@ import { signOut } from "firebase/auth";
 import { auth } from '../../Firebase';
 import MyContext from '../../MyContext';
 
+//importing the gif
+import comaasicon from '../../Assets/comaas.gif'
+
 function Sidenav({menutoggle,handlemenutoggle}){
 
     const sharedvalue = useContext(MyContext);
@@ -55,7 +58,13 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         <CloseIcon onClick={()=>handlemenutoggle()}/>
                     </div>
                     <div className='snav-inner-head'>
-                        <h1>COMAAS Dashboard</h1>
+                        {/* <h1>COMAAS Dashboard</h1> */}
+                        <img src={comaasicon} alt='icon' className='snav-inner-head-icon'/>
+                        {/* <h1>Dashboard</h1> */}
+                        {/* <div>
+                            <img src={comaasicon} alt='icon' className='snav-inner-head-icon'/>
+                            <h1>Dashboard</h1>
+                        </div> */}
                     </div>
                     <NavLink to='/'>
                         <div className='snav-inner-each-diff'>

@@ -125,8 +125,8 @@ function Search(){
                                         <p>Assigned Employee: <span>-</span></p>
                                     </div>
                                     <div className="searchbar-each-div-inner-second">
-                                        <EditIcon fontSize="small" sx={{color:'#344767',cursor:'pointer'}}/>
-                                        <p>Edit</p>
+                                        <EditIcon fontSize="small" sx={{color:'#344767',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}/>
+                                        <p onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}>Edit</p>
                                     </div>
                                 </div>
                             ))

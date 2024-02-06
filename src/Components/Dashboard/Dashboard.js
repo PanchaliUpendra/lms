@@ -90,14 +90,30 @@ function Dashboard(){
                         </div>
                     </div>
                     {/* dashboard workers display ends here */}
-                    {/* last 6 months graph */}
-                    <div className="dashboard-display-employees">
-                        
-                        <div>
 
+                    {/* last 6 months graph */}
+                    <div className="dashboard-display-leads">
+                        <div className="dashboard-display-leads-header">
+                            <h1>Recent Leads</h1>
+                            <div>
+                                <input type='checkbox'/>
+                                <label>Show All Leads</label>
+                            </div>
                         </div>
                     </div>
+                    {/* last 6 months graph  ends here*/}
 
+                    {/* recent tickets starts here */}
+                    <div className="dashboard-display-leads">
+                        <div className="dashboard-display-leads-header">
+                            <h1>Recent Tickets</h1>
+                            <div>
+                                <input type='checkbox'/>
+                                <label>Show All Leads</label>
+                            </div>
+                        </div>
+                    </div>
+                    {/* recent tickets ends here */}
                 </div>
             </div>
             

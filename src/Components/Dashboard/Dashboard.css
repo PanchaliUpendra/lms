@@ -48,7 +48,7 @@
     text-align: right;
 }
 /* dashboard display alll empolyees */
-.dashboard-display-employees{
+.dashboard-display-leads{
     min-height: 200px;
     background-color: white;
     margin-left: 30px;
@@ -56,6 +56,37 @@
     margin-top: 30px;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14);
     border-radius: 10px;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.dashboard-display-leads-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+.dashboard-display-leads-header>h1{
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #344767;
+}
+.dashboard-display-leads-header>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.dashboard-display-leads-header>div input{
+    outline: none;
+    border: 1px solid gray;
+    width: 15px;
+    height: 15px;
+}
+.dashboard-display-leads-header>div label{
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 @media all and (max-width:1540.111px){
     .dashboard-show-all-workers{
