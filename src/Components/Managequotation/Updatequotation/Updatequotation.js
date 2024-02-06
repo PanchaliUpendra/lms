@@ -1,13 +1,13 @@
-import React, {useContext, useState } from "react";
-import './Createquotation.css';
+import React, {useContext, useEffect, useState } from "react";
+import './Updatequotation.css';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
-import { createquoteid, createquotes } from "../../../Data/Docs";
-import { onSnapshot ,writeBatch} from "firebase/firestore";
+import {  createquotes } from "../../../Data/Docs";
+import {writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 //importing the notifications
 //toastify importing
@@ -22,18 +22,23 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 //debounce metyhod
 import debounce from "debounce";
+import { useNavigate, useParams } from "react-router-dom";
+import Error from "../../../Error/Error";
+
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 
-function Createquotation(){
+function Updatequotation(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
+    const navigate = useNavigate();
+    const {quoteid} = useParams();
      //backdrop loading toggle
      const[showloading,setshowloading] = useState(false);
      // adding notifications 
-     const loginsuccess = () =>toast.success('Successfully Created the Quotation');
-     const loginerror = () =>toast.error('Getting Error while Creating Quotation');
+     const loginsuccess = () =>toast.success('Successfully updated the Quotation');
+     const loginerror = () =>toast.error('Getting Error while updating Quotation');
      const loginformerror = () => toast.info('please fill the form correctly');
-     const invalidmail = () => toast.warn('unique id was not generating!!!');
     //create quotation all required fields comes here
     const [quotinfo,setquotinfo] = useState({
         quotcountry:'',
@@ -76,20 +81,9 @@ function Createquotation(){
         setallstates(temparr);
 
     }
-    //function handle to submit the data
-    const fetchquotationid = async() =>{
-        try{
-            return new Promise((resolve,reject)=>{
-                onSnapshot(createquoteid,(doc)=>{
-                    const temptexpid = doc.data();
-                    resolve(temptexpid.quoteID+1);
-                })
-            })
-        }catch(e){
-            console.log('you got an error while fetching the expense id:',e);
-            invalidmail();//error message notification
-        }
-    }
+
+   
+    
 
     //ck editor is completed, lest get data from it , thats it!!!
     const [editorData,setEditorData] = useState(''); //ck editor data
@@ -116,10 +110,10 @@ function Createquotation(){
                 quotinfo.quotpayment!=='' &&
                 quotinfo.quotwarranty!==''
             ){
-            const result = await fetchquotationid();
-            if(result!==0){
+            if(quoteid!==0){
                 await batch.update(createquotes,{
-                    [result]:{
+                    [quoteid]:{
+                        ...sharedvalue.quotesdata[quoteid],
                         quotcountry:quotinfo.quotcountry,
                         quotstate:quotinfo.quotstate,
                         quotcustname:quotinfo.quotcustname,
@@ -140,37 +134,11 @@ function Createquotation(){
                         quotaddinfo:quotinfo.quotaddinfo,
                         quotpayterm:editorData,
                         quotstatus:quotinfo.quotstatus,
-                        quotcreatedby:sharedvalue.uid
                     }
-                })
-                await batch.update(createquoteid,{
-                    "quoteID":result
                 })
                 await batch.commit();//commit all baches
                 window.scrollTo({top:0,behavior:'smooth'});
                 loginsuccess();//success notification
-                setquotinfo(prev=>({
-                    ...prev,
-                    quotcountry:'',
-                    quotstate:'',
-                    quotcustname:'',
-                    quotlead:'',
-                    quottype:'',
-                    quotcompanyname:'',
-                    quotmachinetype:'',
-                    quotprodtype:'',
-                    quotcap:'',
-                    quotprice:'',
-                    quotdim:'',
-                    quotcon:'',
-                    quotunits:'',
-                    quotpayment:'',
-                    quotclearing:'',
-                    quotdestination:'',
-                    quotwarranty:'',
-                    quotaddinfo:'',
-                }));
-                setEditorData('');
             }
         }else{
             loginformerror();
@@ -182,8 +150,50 @@ function Createquotation(){
         setshowloading(false);
     }
 
+    useEffect(()=>{
+        if(sharedvalue.quoteskeys.length>0 && sharedvalue.quoteskeys.includes(quoteid) ){
+            setquotinfo(prev => ({
+                ...prev,
+                quotcountry:sharedvalue.quotesdata[quoteid].quotcountry,
+                quotstate:sharedvalue.quotesdata[quoteid].quotstate,
+                quotcustname:sharedvalue.quotesdata[quoteid].quotcustname,
+                quotlead:sharedvalue.quotesdata[quoteid].quotlead,
+                quottype:sharedvalue.quotesdata[quoteid].quottype,
+                quotcompanyname:sharedvalue.quotesdata[quoteid].quotcompanyname,
+                quotmachinetype:sharedvalue.quotesdata[quoteid].quotmachinetype,
+                quotprodtype:sharedvalue.quotesdata[quoteid].quotprodtype,
+                quotcap:sharedvalue.quotesdata[quoteid].quotcap,
+                quotprice:sharedvalue.quotesdata[quoteid].quotprice,
+                quotdim:sharedvalue.quotesdata[quoteid].quotdim,
+                quotcon:sharedvalue.quotesdata[quoteid].quotcon,
+                quotunits:sharedvalue.quotesdata[quoteid].quotunits,
+                quotpayment:sharedvalue.quotesdata[quoteid].quotpayment,
+                quotclearing:sharedvalue.quotesdata[quoteid].quotclearing,
+                quotdestination:sharedvalue.quotesdata[quoteid].quotdestination,
+                quotwarranty:sharedvalue.quotesdata[quoteid].quotwarranty,
+                quotaddinfo:sharedvalue.quotesdata[quoteid].quotaddinfo,
+                quotstatus:sharedvalue.quotesdata[quoteid].quotstatus
+            }));
+            
+            
+             //useffect states function call
+            function handleuseeffectstatesbycountries(country){
+                setquotinfo(prev=>({
+                    ...prev,
+                    quotcountry:country
+                }));
+                var temparr = sharedvalue.leadskeys.filter(item=>sharedvalue.leadsdata[item].ofdcountry===country).map((item)=>sharedvalue.leadsdata[item].ofdst).filter((value, index, self) => {
+                    return self.indexOf(value) === index;
+                });
+                setallstates(temparr);
+            }
+            handleuseeffectstatesbycountries(sharedvalue.quotesdata[quoteid].quotcountry)
+        }
+    },[sharedvalue.quoteskeys , sharedvalue.quotesdata,quoteid ,sharedvalue.leadsdata ,sharedvalue.leadskeys ]);
+
     return(
         <>
+        {(sharedvalue.quoteskeys.length>0 && sharedvalue.quoteskeys.includes(quoteid)===true && sharedvalue.quotesdata[quoteid].quotcreatedby===sharedvalue.uid) ===true? 
            <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -201,8 +211,15 @@ function Createquotation(){
                     </div>
                     {/* your createmanager starts from here */}
                     <div className='create-lead-con'>
+                        
                         <div className='create-lead-head'>
-                            <h1>Create Quotation</h1>
+                            <h1>Update Quotation</h1>
+                        </div>
+                        <div className='create-lead-head-button-comes-here updatequote-backwards'>
+                            <button onClick={()=>navigate(-1)}>
+                                <ChevronLeftIcon/>
+                                Go Back
+                            </button>
                         </div>
                         {/* form starts here */}
                         <div className="create-quotation-form-starts-here">
@@ -417,10 +434,10 @@ function Createquotation(){
                                 <label>Payment Term</label>
                                 <CKEditor
                                     editor={ClassicEditor}
-                                    data={editorData}
+                                    data={editorData===''?sharedvalue.quotesdata[quoteid].quotpayterm:editorData}
                                     // onReady={(editor) => {
                                     //     // You can store the "editor" and use it when needed.
-                                    //     console.log('Editor is ready to use!', editor);
+                                    //     setEditorData(sharedvalue.quotesdata[quoteid].quotpayterm)
                                     // }}
                                     onChange={handleEditorChange}
                                 />
@@ -456,13 +473,13 @@ function Createquotation(){
                             </div>
                             
                             <button className="creatquotation-final-button" onClick={()=>handlesubmitdata()}>
-                                create quote
+                                Update quote
                             </button>
                         </div>
                         {/* form ends here */}
                     </div>
                 </div>
-            </div>
+            </div>:<Error/>}
             <ToastContainer
                     position="top-center"
                     autoClose={2000}
@@ -486,4 +503,4 @@ function Createquotation(){
     );
 }
 
-export default Createquotation;
+export default Updatequotation;

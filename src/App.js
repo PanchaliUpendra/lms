@@ -31,6 +31,7 @@ import Viewquotation from './Components/Managequotation/Viewquotation/Viewquotat
 import Financeverify from './Components/Manageexpense/Financeverify/Financeverify';
 import Search from './Components/Searchbar/Search';
 import Profile from './Components/Profile/Profile';
+import Updatequotation from './Components/Managequotation/Updatequotation/Updatequotation';
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
         {/* manage quotation nav links*/}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
         {/* search bar nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/search' element={<Search/>} />}
         {/* profile nav link */}

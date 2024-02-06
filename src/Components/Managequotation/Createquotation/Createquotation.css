@@ -29,6 +29,21 @@
     gap: 7px;
 }
 
+.create-quotation-payment-term-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.create-quotation-payment-term-div label{
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    font-weight:400 ;
+    color: #7b809a;
+}
+
 @media all and (max-width:600px){
     .creatquotation-forms{
         row-gap: 15px;

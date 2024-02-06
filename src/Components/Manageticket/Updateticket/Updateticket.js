@@ -98,7 +98,6 @@ function Updateticket(){
                 // const fileurl= await downloadfileurl();
                 //adding the data here
                 if(tktid!==0 ){
-                    console.log('ticketinfo:',ticketinfo);
                     await batch.update(createtickets,{
                         [tktid]:{
                             ...sharedvalue.ticketsdata[tktid],

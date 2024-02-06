@@ -5,9 +5,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useNavigate } from "react-router-dom";
 
 function Viewquotation(){
     const sharedvalue = useContext(MyContext);
+    //use navigator is important for now
+    const navigate = useNavigate();
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //code only for toggle the menu bar
@@ -63,7 +68,6 @@ function Viewquotation(){
                                                     <th>type</th>
                                                     <th>price</th>
                                                     <th>payment</th>
-                                                    <th>pay.term</th>
                                                     <th>warranty</th>
                                                     <th>company name</th>
                                                     <th>add.info</th>
@@ -130,12 +134,6 @@ function Viewquotation(){
                                                                     {sharedvalue.quotesdata[quote].quotpayment}
                                                                 </p>
                                                             </td>
-                                                            {/* 10. payment term */}
-                                                            <td>
-                                                                <p className="view-manager-list-name">
-                                                                    -
-                                                                </p>
-                                                            </td>
                                                             {/* 11. warranty */}
                                                             <td>
                                                                 <p className="view-manager-list-name">
@@ -156,14 +154,16 @@ function Viewquotation(){
                                                             </td>
                                                             {/* 14. status */}
                                                             <td>
-                                                                <p className="view-manager-list-name">
-                                                                    -
+                                                                <p className={`view-manager-list-name 
+                                                                ${sharedvalue.quotesdata[quote].quotstatus==='open'?'vmln-opended':sharedvalue.quotesdata[quote].quotstatus==='rework'?'vmln-reworked':sharedvalue.quotesdata[quote].quotstatus==='approved'?'vmln-approved':'vmln-closed'}`}>
+                                                                    {sharedvalue.quotesdata[quote].quotstatus}
                                                                 </p>
                                                             </td>
                                                             {/* 15.  action*/}
                                                             <td>
-                                                                <p className="view-manager-list-name">
-                                                                    -
+                                                                <p className='view-manager-list-acttion-icon'>
+                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
+                                                                    {sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small"/>}
                                                                 </p>
                                                             </td>
 
