@@ -59,6 +59,7 @@
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 15px;
 }
 .dashboard-display-leads-header{
     display: flex;
@@ -86,7 +87,36 @@
 }
 .dashboard-display-leads-header>div label{
     font-size: 0.9rem;
+    font-weight: 600;
+    color: #6495ed;
+    cursor: pointer;
+}
+/* dashboard-last-div */
+.dashboard-last-div{
+    margin-bottom: 20px;
+}
+/* display-count-leads-tickets */
+.display-count-leads-tickets{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.display-count-leads-tickets>input{
+    width: 40px;
+    height: 30px;
+    padding-left: 5px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    outline: none;
+}
+.display-count-leads-tickets>p{
+    font-size: 0.9rem;
     font-weight: 500;
+    color: #7b809a;
 }
 @media all and (max-width:1540.111px){
     .dashboard-show-all-workers{

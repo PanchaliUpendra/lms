@@ -3,6 +3,9 @@
     margin-right: 30px;
     padding-top: 60px;
 }
+.view-manager-list-con-dashboard{
+    margin-top: 20px;
+}
 .view-list-of-all-search>div{
     display: flex;
     flex-direction: row;
