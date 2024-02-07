@@ -31,7 +31,7 @@ function Eachticket(){
                                 <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                             </div>
                             <div className='search-icon-top-nav'>
-                                <SearchIcon />
+                                <SearchIcon onClick={()=>navigate('/search')} />
                             </div>
                             <PersonIcon/>
                             <p>{sharedvalue.userdtl.email}</p>

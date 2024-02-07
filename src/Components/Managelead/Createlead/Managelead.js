@@ -15,10 +15,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 
 function Managelead(){
     const sharedvalue = useContext(MyContext);
-    
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const batch = writeBatch(db);// Get a new write batch
 
@@ -295,7 +296,7 @@ function Managelead(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

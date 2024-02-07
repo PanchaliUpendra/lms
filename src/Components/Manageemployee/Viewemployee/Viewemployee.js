@@ -16,9 +16,11 @@ import "react-toastify/dist/ReactToastify.css";
 //show processing
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from "react-router-dom";
 
-function Viewemployee(){
+function Viewemployee(){ 
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     const batch = writeBatch(db);//get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     // search bar input 
@@ -76,7 +78,7 @@ function Viewemployee(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

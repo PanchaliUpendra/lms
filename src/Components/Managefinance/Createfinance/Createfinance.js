@@ -17,10 +17,11 @@ import { db } from "../../../Firebase";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function Createfinance(){
     const sharedvalue = useContext(MyContext);
-
+    const navigate = useNavigate();
     const batch = writeBatch(db);// Get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     const [formdetails,setformdetails]=useState({//form details will take here
@@ -114,7 +115,7 @@ function Createfinance(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

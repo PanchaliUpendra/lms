@@ -13,9 +13,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from "react-router-dom";
 
 function Createexpense(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
@@ -179,7 +181,7 @@ function Createexpense(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

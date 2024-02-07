@@ -22,11 +22,13 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 //debounce metyhod
 import debounce from "debounce";
+import { useNavigate } from "react-router-dom";
 
 
 function Createquotation(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
+    const navigate = useNavigate();
      //backdrop loading toggle
      const[showloading,setshowloading] = useState(false);
      // adding notifications 
@@ -195,7 +197,7 @@ function Createquotation(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

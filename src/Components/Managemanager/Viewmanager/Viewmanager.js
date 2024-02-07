@@ -7,10 +7,12 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useNavigate } from "react-router-dom";
 
 
 function Viewmanager(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //deleting user input
@@ -43,7 +45,7 @@ function Viewmanager(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

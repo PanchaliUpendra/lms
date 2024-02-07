@@ -18,9 +18,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 //loading gif
 import loading from '../../../Assets/loading.gif';
+import { useNavigate } from "react-router-dom";
 
 function Createticket(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the Ticket');
     const loginerror = () =>toast.error('Getting Error while Creating ticket');
@@ -163,7 +165,7 @@ function Createticket(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

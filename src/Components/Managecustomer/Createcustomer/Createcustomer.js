@@ -15,8 +15,10 @@ import { db } from "../../../Firebase";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 function Createcustomer(){
     const sharedvalue = useContext(MyContext);
+    const navigate = useNavigate();
 
 
     const batch = writeBatch(db);// Get a new write batch
@@ -112,7 +114,7 @@ function Createcustomer(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon />
+                            <SearchIcon onClick={()=>navigate('/search')}/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>
