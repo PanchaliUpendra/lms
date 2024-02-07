@@ -96,9 +96,7 @@ function Createticket(){
                 ticketinfo.ctktdist!=='' &&
                 ticketinfo.ctktcustname!=='' &&
                 ticketinfo.ctktcalltype!=='' &&
-                ticketinfo.ctktpriority!=='' &&
-                ticketinfo.ctktasslc!=='' &&
-                ctktfile!==''
+                ticketinfo.ctktpriority!=='' 
             ){
                 const result = await fetchtktid();
                 const storageref = ref(storage,ctktfile.name);
