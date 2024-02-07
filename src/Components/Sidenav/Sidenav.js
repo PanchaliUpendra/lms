@@ -38,12 +38,13 @@ function Sidenav({menutoggle,handlemenutoggle}){
     //function for signout
     async function handlesignout(){
         try{
-            signOut(auth).then(() => {
+            await signOut(auth).then(() => {
                 alert('successfully signed out');
               }).catch((error) => {
                 console.error(error);
               });
-              navigate('/')
+              navigate('/');
+              window.location.reload();
         }
         catch(e){
             console.log('you got an error when sign out',e);
@@ -76,7 +77,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </NavLink>
 
                     {/* snav each div --> MANAGE LEAD */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>
                         <div
                         className={`snav-mle-inner-div ${location.pathname==='/managelead/leadcreate'||location.pathname==='/managelead/viewlead'?'snav-mle-inner-div-active':''}`}
@@ -92,10 +93,11 @@ function Sidenav({menutoggle,handlemenutoggle}){
                             
                         </div>
                         <div className={`snav-each-dropdown ${rotationStates['uniqueDiv1'] ? 'extendmenu':''}`}>
-                            <div onClick={()=>navigate('/managelead/leadcreate')}>
+                            
+                            {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <div onClick={()=>navigate('/managelead/leadcreate')}>
                                 <AddIcon/>
                                 <h2>Create Lead</h2>
-                            </div>
+                            </div>}
                             <div onClick={()=>navigate('/managelead/viewlead')}>
                                 <FilterListIcon/>
                                 <h2>View All Leads</h2>
@@ -269,7 +271,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>
                         <div 
                         className={`snav-mle-inner-div ${location.pathname==='/manageticket/createticket'||location.pathname==='/manageticket/viewticket'?'snav-mle-inner-div-active':''}`}
