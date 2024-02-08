@@ -2,7 +2,7 @@ import React from "react";
 import './Leadsgraph.css';
 import { BarChart } from '@mui/x-charts/BarChart';
 
-export default function Leadsgraph() {
+export default function Ticketsgraph() {
   return (
     <>
         <div className="leadsgraph-indicators-con">
@@ -25,7 +25,7 @@ export default function Leadsgraph() {
         //   sx={{backgroundColor:'white',borderRadius:5}}
         className="leadsgraph-barchart"
         />
-        <p className="leads-graph-below-text">total No.of leads opened and closed per month</p>
+        <p className="leads-graph-below-text">total No.of Tickets opened and closed per month</p>
     </>
   );
 }

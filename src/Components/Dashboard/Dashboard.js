@@ -12,6 +12,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 
 import Leadsgraph from "./Leadsgraph/Leadsgraph";
+import Ticketsgraph from "./Leadsgraph/Ticketsgraph";
 
 function Dashboard(){
     const sharedvalue = useContext(MyContext);
@@ -103,15 +104,15 @@ function Dashboard(){
                             </div>
                         </div>
                     </div>
-                    {/* dashboard workers display ends here */}
-                    {/* graphs starts here */}
-                    <Leadsgraph/>
-                    {/* <div className="dashboard-showing-graphs">
-                        
-                        <div className="dashboard-graph-tickets">
-                            <Leadsgraph/>
+                    
+                    <div className="leads-graph-con-outer">
+                        <div className="leads-graph-con">
+                            leads graph
                         </div>
-                    </div> */}
+                        <Leadsgraph/>
+                    </div>
+                    
+                    
                         
                     {/* recent tickets starts here */}
                     <div className="dashboard-display-leads">
@@ -274,7 +275,12 @@ function Dashboard(){
                     </div>
                     {/* recent tickets ends here */}
                     {/* graphs starts here */}
-                    <Leadsgraph/>
+                    <div className="leads-graph-con-outer">
+                        <div className="leads-graph-con">
+                            tickets graph
+                        </div>
+                        <Ticketsgraph/>
+                    </div>
                     
 
                     {/* last 6 months graph */}
