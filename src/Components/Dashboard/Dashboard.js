@@ -11,6 +11,8 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 
+import Leadsgraph from "./Leadsgraph/Leadsgraph";
+
 function Dashboard(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -45,6 +47,7 @@ function Dashboard(){
 
                     <div className="dashboard-show-all-workers">
                         {/* div one */}
+                        {sharedvalue.role==='admin' &&
                         <div>
                             <div className="dashboard-each-profile-div">
                                 <PersonIcon sx={{color:'white'}}/>
@@ -54,7 +57,9 @@ function Dashboard(){
                                 <p>{sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='manager').length}</p>
                             </div>
                         </div>
+                        }
                         {/* div two */}
+                        {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ) &&
                         <div>
                             <div className="dashboard-each-profile-div">
                                 <PersonIcon sx={{color:'white'}}/>
@@ -64,7 +69,9 @@ function Dashboard(){
                                 <p>{sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='employee').length}</p>
                             </div>
                         </div>
+                        }
                         {/* div three  */}
+                        {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ) &&
                         <div>
                             <div className="dashboard-each-profile-div">
                                 <PersonIcon sx={{color:'white'}}/>
@@ -74,6 +81,7 @@ function Dashboard(){
                                 <p>{sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='customer').length}</p>
                             </div>
                         </div>
+                        }
                         {/* div four */}
                         <div>
                             <div className="dashboard-each-profile-div">
@@ -96,6 +104,15 @@ function Dashboard(){
                         </div>
                     </div>
                     {/* dashboard workers display ends here */}
+                    {/* graphs starts here */}
+                    <Leadsgraph/>
+                    {/* <div className="dashboard-showing-graphs">
+                        
+                        <div className="dashboard-graph-tickets">
+                            <Leadsgraph/>
+                        </div>
+                    </div> */}
+                        
                     {/* recent tickets starts here */}
                     <div className="dashboard-display-leads">
                         <div className="dashboard-display-leads-header">
@@ -256,6 +273,9 @@ function Dashboard(){
                         </div>
                     </div>
                     {/* recent tickets ends here */}
+                    {/* graphs starts here */}
+                    <Leadsgraph/>
+                    
 
                     {/* last 6 months graph */}
                     <div className="dashboard-display-leads">

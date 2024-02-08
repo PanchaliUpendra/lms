@@ -323,7 +323,7 @@ function Editexpense(){
                         </div>
                         {/* create lead button starts here */}
                         <div className='create-expense-submit-btns'>
-                            <button onClick={()=>handlesubmitdata()}>create lead</button>
+                            <button onClick={()=>handlesubmitdata()}>Update Expense</button>
                         </div>
                         {/* create lead button ends here */}
                     </div>
