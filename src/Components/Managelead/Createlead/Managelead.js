@@ -32,12 +32,12 @@ function Managelead(){
 
     //customer inquiry
     const [custinquiry,setcustinquiry] = useState({
-        custtype:'',//customer type
-        custstatus:'',//customer status
+        custtype:'New',//customer type
+        custstatus:'Active',//customer status
         custstartdate:'',//customer start date
         custenddate:'',//customer end date
         custnextdate:'',//customer next date
-        custsourceofenquiry:'',//cuatomer source of enquiry
+        custsourceofenquiry:'Direct',//cuatomer source of enquiry
         custcompanyname:''//customer company name
     });
     //contact personal details
@@ -81,10 +81,10 @@ function Managelead(){
         businesstype:'',
         millcap:'',
         capreq:'',
-        machinereq:'',
-        make:'',
-        machinetype:'',
-        std:'',
+        machinereq:'Sorter',
+        make:'commas',
+        machinetype:'ULTRA',
+        std:'STD',
         payment:'',
         chutes:'',
         reqdes:''
@@ -375,9 +375,9 @@ function Managelead(){
                                             ...prev,
                                             custsourceofenquiry:e.target.value
                                         }))}>
-                                        <option value='Just Dial' selected>Just Dial</option>
+                                        <option value='Just Dial' >Just Dial</option>
                                         <option value='Exhibition'>Exhibition</option>
-                                        <option value='Direct'>Direct</option>
+                                        <option value='Direct' selected>Direct</option>
                                         <option value='Referal'>Referal</option>
                                     </select>
 
@@ -774,8 +774,8 @@ function Managelead(){
                                     ...prev,
                                     make:e.target.value
                                 }))}>
-                                        <option value='' selected disabled>Select</option>
-                                        <option value='Commas'>Commas</option>
+                                        <option value=''>Select</option>
+                                        <option value='Commas'>Comaas</option>
                                         <option value='NDPL'>NDPL</option>
                                     </select>
                                 </div>
@@ -784,9 +784,9 @@ function Managelead(){
                                     ...prev,
                                     machinetype:e.target.value
                                 }))} >
-                                        <option value='' selected disabled>Select</option>
+                                        <option value=''>Select</option>
                                         <option value='ULTIMA'>ULTIMA</option>
-                                        <option value='ULTRA'>ULTRA</option>
+                                        <option value='ULTRA'>ULTRA-S</option>
                                         <option value='RGBS'>RGBS</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
@@ -796,7 +796,7 @@ function Managelead(){
                                     ...prev,
                                     std:e.target.value
                                 }))}>
-                                        <option value='' selected disabled>Select</option>
+                                        <option value=''>Select</option>
                                         <option value='STD'>STD</option>
                                         <option value='EXP'>EXP</option>
                                     </select>
@@ -825,6 +825,18 @@ function Managelead(){
                                         <option value='5'>5</option>
                                         <option value='6'>6</option>
                                         <option value='7'>7</option>
+                                        {
+                                            (leadrequirements.machinetype==='ULTRA' || leadrequirements.machinetype==='FALCON') &&
+                                            <>
+                                            <option value='8'>8</option>
+                                            <option value='9'>9</option>
+                                            <option value='10'>10</option>
+                                            <option value='11'>11</option>
+                                            <option value='12'>12</option>
+                                            <option value='13'>13</option>
+                                            <option value='14'>14</option>
+                                            </>
+                                        }
                                     </select>
                                 </div>
                                 <div>

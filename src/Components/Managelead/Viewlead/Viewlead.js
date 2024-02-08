@@ -77,7 +77,7 @@ function Viewlead(){
                                             <th>country</th>
                                             <th>state</th>
                                             <th>district</th>
-                                            <th>machine model</th>
+                                            <th>machine Type</th>
                                             <th>number of chutes</th>
                                             <th>created by</th>
                                             <th>next meeting date</th>
@@ -128,10 +128,10 @@ function Viewlead(){
                                                             {sharedvalue.leadsdata[lead].ofddst}
                                                         </p>
                                                     </td>
-                                                    {/* machine model */}
+                                                    {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-email">
-                                                            {sharedvalue.leadsdata[lead].machinereq}
+                                                            {sharedvalue.leadsdata[lead].machinetype}
                                                         </p>
                                                     </td>
                                                     {/* no.of chutes */}

@@ -179,9 +179,6 @@ function Updatelead(){
                         reqdes:leadrequirements.reqdes,//lead requirement description,
                         employeeid:selectmanager.employeeid,
                         managerid:selectmanager.managerid,
-                        latesttitle:['started now'],
-                        latestsubtitle:['No subtitle'],
-                        latestcomment:['No Comment'],
                         modifiedby:[...sharedvalue.leadsdata[leadid].modifiedby,{
                             uid:sharedvalue.uid,
                             date:formatDateString(temppresentDate),
