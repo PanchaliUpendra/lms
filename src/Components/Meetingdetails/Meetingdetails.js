@@ -100,7 +100,8 @@ function Meetingdetails(){
     return(
         <>
         {
-            (sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid)===true) === true?
+            ((sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid)===true) &&
+            (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.leadsdata[leadid].employeeid===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.leadsdata[leadid].managerid===sharedvalue.uid)||sharedvalue.uid===sharedvalue.leadsdata[leadid].createdbyid) )=== true?
             <div className={`manlead-con ${createpopup===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>

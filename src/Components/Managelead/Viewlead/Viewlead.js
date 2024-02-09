@@ -93,7 +93,7 @@ function Viewlead(){
                                         {
                                             sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.leadskeys
-                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid)))
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker))).map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* REGID */}

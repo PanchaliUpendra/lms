@@ -94,7 +94,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                         <div className={`snav-each-dropdown ${rotationStates['uniqueDiv1'] ? 'extendmenu':''}`}>
                             
-                            {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <div onClick={()=>navigate('/managelead/leadcreate')}>
+                            {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <div onClick={()=>navigate('/managelead/leadcreate')}>
                                 <AddIcon/>
                                 <h2>Create Lead</h2>
                             </div>}

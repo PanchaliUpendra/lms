@@ -42,7 +42,7 @@ function App() {
       <Routes>
         <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed)?<Dashboard/>:<Login/>}/>
         {/* manage lead nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}

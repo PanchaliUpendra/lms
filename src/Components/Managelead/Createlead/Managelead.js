@@ -44,7 +44,7 @@ function Managelead(){
     const [contpersondtl,setcontpersondtl] = useState({
         contperson:'',//contact person detail
         contdesignation:'',//contact designation
-        contcountrycode:'',//contact country code
+        contcountrycode:'+91',//contact country code
         contmobilenum:'',//const mobile number
         contpersonemail:''//const person email
     })
@@ -58,7 +58,7 @@ function Managelead(){
     const [altercontact,setaltercont]=useState('No')//here is an alternate contact
     const [leadofficedtls,setleadooficedtls]=useState({//office details comes here
         ofd:'',//office details
-        ofdcountry:'',//office details country
+        ofdcountry:'India',//office details country
         ofdst:'',//oofice details state
         ofddst:'',//ofice details district
         ofdcty:'',//office city
@@ -82,7 +82,7 @@ function Managelead(){
         millcap:'',
         capreq:'',
         machinereq:'Sorter',
-        make:'commas',
+        make:'Commas',
         machinetype:'ULTRA',
         std:'STD',
         payment:'',
@@ -198,16 +198,16 @@ function Managelead(){
                 //after completeing the form registration give the default values
                 setcustinquiry(prev=>({ //filling the inquiry to its previous state
                     ...prev,
-                    custtype:'',//customer type
-                    custstatus:'',//customer status
-                    custsourceofenquiry:'',//cuatomer source of enquiry
+                    custtype:'New',//customer type
+                    custstatus:'Active',//customer status
+                    custsourceofenquiry:'Direct',//cuatomer source of enquiry
                     custcompanyname:''//customer company name
                 }));
                 setcontpersondtl(prev=>({ //setting previous state to the contact person
                     ...prev,
                     contperson:'',//contact person detail
                     contdesignation:'',//contact designation
-                    contcountrycode:'',//contact country code
+                    contcountrycode:'+91',//contact country code
                     contmobilenum:'',//const mobile number
                     contpersonemail:''//const person email
                 }));
@@ -222,7 +222,7 @@ function Managelead(){
                 setleadooficedtls(prev=>({ //lead office details
                     ...prev,
                     ofd:'',//office details
-                    ofdcountry:'',//office details country
+                    ofdcountry:'India',//office details country
                     ofdst:'',//oofice details state
                     ofddst:'',//ofice details district
                     ofdcty:'',//office city
@@ -243,10 +243,10 @@ function Managelead(){
                     businesstype:'',
                     millcap:'',
                     capreq:'',
-                    machinereq:'',
-                    make:'',
-                    machinetype:'',
-                    std:'',
+                    machinereq:'Sorter',
+                    make:'Commas',
+                    machinetype:'ULTRA',
+                    std:'STD',
                     payment:'',
                     chutes:'',
                     reqdes:''
