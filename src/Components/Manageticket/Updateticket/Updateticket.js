@@ -89,8 +89,7 @@ function Updateticket(){
                 ticketinfo.ctktdist!=='' &&
                 ticketinfo.ctktcustname!=='' &&
                 ticketinfo.ctktcalltype!=='' &&
-                ticketinfo.ctktpriority!=='' &&
-                ticketinfo.ctktasslc!=='' 
+                ticketinfo.ctktpriority!=='' 
             ){
                 
                 // const storageref = ref(storage,ctktfile.name);
@@ -152,7 +151,8 @@ function Updateticket(){
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
     return(
         <>
-        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) && (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)))===true?
+        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&
+         (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -299,7 +299,7 @@ function Updateticket(){
                             {/* description starts here */}
                                     <div>
                                         <label>Description*</label>
-                                        <textarea placeholder="Description" onChange={(e)=>setticketinfo(prev=>({
+                                        <textarea placeholder="Description" value={ticketinfo.ctktdes} onChange={(e)=>setticketinfo(prev=>({
                                             ...prev,
                                             ctktdes:e.target.value
                                         }))}/>

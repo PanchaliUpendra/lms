@@ -91,7 +91,7 @@ function Viewticket(){
                                         {
                                             sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.ticketskeys
-                                            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)))
+                                            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* Tkt ID */}

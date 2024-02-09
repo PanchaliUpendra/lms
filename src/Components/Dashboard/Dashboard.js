@@ -164,7 +164,7 @@ function Dashboard(){
                                         {
                                             sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.leadskeys.slice(0,countleads)
-                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid)))
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* REGID */}
@@ -331,7 +331,7 @@ function Dashboard(){
                                         {
                                             sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.ticketskeys.slice(0,counttickets)
-                                            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)))
+                                            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
                                             .map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* Tkt ID */}

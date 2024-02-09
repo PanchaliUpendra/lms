@@ -120,7 +120,8 @@ function Createticket(){
                             status:true,
                             workingstatus:'',
                             fileurl:fileurl,
-                            id:result
+                            id:result,
+                            createdbyid:sharedvalue.uid
                         }
                     });
                     await batch.update(createticketid,{

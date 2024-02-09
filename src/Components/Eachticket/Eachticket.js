@@ -21,7 +21,7 @@ function Eachticket(){
     return(
         <>
             {
-                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)))===true?
+                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
                 <div className='manlead-con'>
                     <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                     <div className='manage-con-inner'>
@@ -90,11 +90,11 @@ function Eachticket(){
                                 {/* employee and manager starts here */}
                                 <div>
                                     <label>manager</label>
-                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktmanager!=='-'?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktmanager].name:'-'} readOnly/>
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktmanager!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktmanager].name:'-'} readOnly/>
                                 </div>
                                 <div>
                                     <label>employee</label>
-                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktemployee!=='-'?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktemployee].name:'-'} readOnly/>
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktemployee].name:'-'} readOnly/>
                                 </div>
                                 {/* employee and manager ends here */}
                                 <div>
