@@ -9,4 +9,6 @@ export const createexpense = doc(db,"expenses","zitABqYQwdvVCAqUR7HP");
 export const createmeetings = doc(db,"meetings","JqCkRuz9W6HVkhuERsrV");
 export const createquoteid = doc(db,"createquoteID","AGQPw48poYCctNB6TaRH");
 export const createquotes = doc(db,"quotes","HntCeIfNJlZJBU6gzIj5");
-export const createworkers = doc(db,"workers","yWXH2DQO8DlAbkmQEQU4")
+export const createworkers = doc(db,"workers","yWXH2DQO8DlAbkmQEQU4");
+export const leadsgraphdoc = doc(db,"leadsgraph","1HXMGFXVYcIjbuMzMZo4");
+export const ticketsgraphdoc = doc(db,"ticketsgraph","Wrbujr45rUXPWaurALzs");

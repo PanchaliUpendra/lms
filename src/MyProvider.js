@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, createquotes} from "./Data/Docs";
+import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc} from "./Data/Docs";
 
 function MyProvider({children}){
 
@@ -24,6 +24,12 @@ function MyProvider({children}){
     const [expenseskeys,setexpenseskeys] = useState([]);//expenses keys
     const [quoteskeys,setquoteskeys] = useState([]);//quote keys
     const [quotesdata,setquotesdata] = useState({});//quotes data
+    const [leadsgraphkeys,setleadsgraphkeys]=useState([]);//leads graph keys
+    const [leadsgraphdata,setleadsgraphdata] = useState({});//leads graph data
+    const [leadsgraphlasttwelve,setleadsgraphlasttwelve] =  useState([]);//array of last twelve months
+    const [ticketsgraphkeys,setticketsgraphkeys]= useState([]);//tickets graph keys
+    const [ticketsgraphdata,setticketsgraphdata] = useState({});// tickets graph data
+    const [ticketsgraphlasttwelve,setticketsgraphlasttwelve]=useState([]);//array of last twelve months
    
     
     const sharedvalue ={
@@ -40,6 +46,12 @@ function MyProvider({children}){
         expenseskeys:expenseskeys,
         quotesdata:quotesdata,
         quoteskeys:quoteskeys,
+        leadsgraphkeys:leadsgraphkeys,
+        leadsgraphdata:leadsgraphdata,
+        leadsgraphlasttwelve:leadsgraphlasttwelve,
+        ticketsgraphkeys:ticketsgraphkeys,
+        ticketsgraphdata:ticketsgraphdata,
+        ticketsgraphlasttwelve:ticketsgraphlasttwelve,
         role:user.role
     }
 
@@ -55,6 +67,58 @@ function MyProvider({children}){
                 uid:uid,
                 userdtl:userd
               }))
+              //fetching the tickets graph data
+              const fetchticketsgraphdata = async() =>{
+                try{
+                  await onSnapshot(ticketsgraphdoc,(doc)=>{
+                    const tempticketsgraphdata = doc.data();
+                    setticketsgraphdata(tempticketsgraphdata);
+                    const tempticketsgraphkeys = Object.keys(tempticketsgraphdata);
+                    const sorttempticketgraphkeys = [...tempticketsgraphkeys].sort((a,b)=>a-b);
+                    setticketsgraphkeys(sorttempticketgraphkeys);
+                    const templasttwelvetkt = sorttempticketgraphkeys.slice(-12);
+                    const finaltkttwelve=[];
+                    for(let i=0;i<templasttwelvetkt.length;i++){
+                      finaltkttwelve.push({
+                        ...tempticketsgraphdata[templasttwelvetkt[i]]
+                      })
+                    }
+                    setticketsgraphlasttwelve(finaltkttwelve);
+                  })
+                }catch(e){
+                  console.log('you got an error while fetching the tickets graph data',e);
+                }
+              }
+              fetchticketsgraphdata();//fetching the tickets graph
+              //fetching the leads graph data 
+              const fetchleadsgraphdata = async()  =>{
+                try{
+                  await onSnapshot(leadsgraphdoc,(doc)=>{
+                    const templeadsgraphdata = doc.data();
+                    setleadsgraphdata(templeadsgraphdata);
+                    const templeadsgraphkeys = Object.keys(templeadsgraphdata);
+                    const sortleadsgraphkeys = [...templeadsgraphkeys].sort((a,b)=>a-b);
+                    setleadsgraphkeys(sortleadsgraphkeys);
+                    // if(sortleadsgraphkeys.length>0){
+                      const templasttwelve = sortleadsgraphkeys.slice(-12);
+                      const finallasttwelvedata=[];
+                    
+                      for(let i=0;i<templasttwelve.length;i++){
+                        finallasttwelvedata.push({
+                          ...templeadsgraphdata[templasttwelve[i]]
+                        })
+                      }
+                      
+                      setleadsgraphlasttwelve(finallasttwelvedata);
+                    // }
+                    
+                  })
+                }catch(e){
+                  console.log('you got an error while fetching the leads gvraph data',e);
+                }
+              }
+              fetchleadsgraphdata();//calling the leads graph data
+              
               //fetching the quotes
               const fetchquotationsdata = async() =>{
                 try{

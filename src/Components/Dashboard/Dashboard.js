@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Leadsgraph from "./Leadsgraph/Leadsgraph";
 import Ticketsgraph from "./Leadsgraph/Ticketsgraph";
 
+
 function Dashboard(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -109,7 +110,7 @@ function Dashboard(){
                         <div className="leads-graph-con">
                             leads graph
                         </div>
-                        <Leadsgraph/>
+                        <Leadsgraph leadsgraphlasttwelve={sharedvalue.leadsgraphlasttwelve}/>
                     </div>
                     
                     
@@ -163,8 +164,9 @@ function Dashboard(){
                                     <tbody>
                                         {
                                             sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
-                                            sharedvalue.leadskeys.slice(0,countleads)
+                                            sharedvalue.leadskeys
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
+                                            .slice(0,countleads)
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* REGID */}
@@ -279,7 +281,7 @@ function Dashboard(){
                         <div className="leads-graph-con">
                             tickets graph
                         </div>
-                        <Ticketsgraph/>
+                        <Ticketsgraph ticketsgraphlasttwelve={sharedvalue.ticketsgraphlasttwelve}/>
                     </div>
                     
 
@@ -330,8 +332,9 @@ function Dashboard(){
                                     <tbody>
                                         {
                                             sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
-                                            sharedvalue.ticketskeys.slice(0,counttickets)
+                                            sharedvalue.ticketskeys
                                             .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+                                            .slice(0,counttickets)
                                             .map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* Tkt ID */}

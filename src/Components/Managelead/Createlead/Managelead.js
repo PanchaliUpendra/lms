@@ -9,13 +9,15 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { onSnapshot, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createleadiddoc, leaddoc , createmeetings } from '../../../Data/Docs';
+import { createleadiddoc, leaddoc , createmeetings ,leadsgraphdoc } from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
+//importing the months 
+import { months } from '../../../Data/Months';
 
 function Managelead(){
     const sharedvalue = useContext(MyContext);
@@ -188,6 +190,31 @@ function Managelead(){
                         }
                     ]
                 })
+
+                //updating the leads graph data
+                let currentDate = new Date();
+                let year = currentDate.getFullYear();
+                let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                let yearMonth = year + month;
+                let yearMonthNumber = Number(yearMonth);
+                console.log('yearmonth:',yearMonthNumber);
+                if(sharedvalue.leadsgraphkeys.includes(yearMonthNumber)){
+                    await batch.update(leadsgraphdoc,{
+                        [yearMonthNumber]:{
+                            ...sharedvalue.leadsgraphdata[yearMonthNumber],
+                            lo:Number(sharedvalue.leadsgraphdata[yearMonthNumber].lo)+1,
+                        }
+                    })
+                }else{
+                    await batch.update(leadsgraphdoc,{
+                        [yearMonthNumber]:{
+                            lo:1,
+                            lc:0,
+                            month:months[month]
+                        }
+                    })
+                }
+                //updating the leads graph ends here
 
                 //this is for updating the lead uuid
                 await batch.update(createleadiddoc,{
