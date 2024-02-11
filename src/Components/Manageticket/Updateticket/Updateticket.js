@@ -248,7 +248,7 @@ function Updateticket(){
                                 }
                             </div>
                             <div>
-                                <label>Customer Name*</label>
+                                <label>Company Name*</label>
                                 <input type='text' value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktcustname:e.target.value

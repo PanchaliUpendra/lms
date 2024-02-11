@@ -198,7 +198,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         >
                             <div className='snav-mle-names'>
                                 <PersonIcon/>
-                                <h2>Manage Customer</h2>
+                                <h2>Company Profiles</h2>
                             </div>
                             <div  className={`iconrotatecon ${rotationStates['uniqueDiv5'] ? 'rotated': ''}`}>
                                 <KeyboardArrowDownIcon/>
@@ -207,11 +207,11 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         <div className={`snav-each-dropdown ${rotationStates['uniqueDiv5'] ? 'extendmenu':''}`}>
                             <div onClick={()=>navigate('/managecustomer/createcustomer')}>
                                 <AddIcon/>
-                                <h2>Create Customer</h2>
+                                <h2>Create Profile</h2>
                             </div>
                             <div onClick={()=>navigate('/managecustomer/viewcustomer')}>
                                 <FilterListIcon/>
-                                <h2>View Customer</h2>
+                                <h2>View Profile</h2>
                             </div>
                         </div>
                     </div>

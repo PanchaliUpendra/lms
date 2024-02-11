@@ -18,10 +18,12 @@ import Error from '../../../Error/Error';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 function Editexpense(){
+    
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
     const {expid} = useParams();//each id will display here
     const navigate = useNavigate();//navigate will comes here
+    console.log(typeof expid)
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
     // adding notifications 

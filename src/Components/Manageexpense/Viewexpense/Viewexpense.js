@@ -9,9 +9,34 @@ import MyContext from "../../../MyContext";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
+import { writeBatch} from "firebase/firestore";
+import { updateDoc, deleteField } from "firebase/firestore";
+import { db } from "../../../Firebase";
+import { createexpense } from "../../../Data/Docs";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 function Viewexpense(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const batch = writeBatch(db);//get a new write batch
+    //backdrop loading toggle
+    const[showloading,setshowloading] = useState(false);
+    
+    async function handleDeleteClosedExp(expid){
+        setshowloading(true)
+        try{
+            await updateDoc(createexpense, {
+                [expid]: deleteField()
+            });
+            await batch.commit();
+        }catch(e){
+            console.log('you got an error while updating ',e);
+        }
+        setshowloading(false);
+    }
+    
     
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -22,6 +47,8 @@ function Viewexpense(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+    
+    
     return(
         <>
             
@@ -225,8 +252,10 @@ function Viewexpense(){
                                                         <div className='view-manager-list-acttion-icon'>
                                                              {sharedvalue.expensesdata[expense].expcreatedbyid===sharedvalue.uid && (sharedvalue.expensesdata[expense].expstatus==='open'||sharedvalue.expensesdata[expense].expstatus==='rejected') && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/editexpense/${expense}`)}/>}
                                                             {sharedvalue.role==='admin' && sharedvalue.expensesdata[expense].expstatus!=='closed' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageexpense/verifyexpense/${expense}`)}/>}
-                                                            {/* <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"/> */}
+                                                            {/* */}
                                                             {sharedvalue.role==='finance' && sharedvalue.expensesdata[expense].expfinanceid===sharedvalue.uid && sharedvalue.expensesdata[expense].expstatus==='approved' && <p className="view-expense-finance-close" onClick={()=>navigate(`/manageexpense/financeverify/${expense}`)}>close</p>}
+                                                            {sharedvalue.role==='admin' && sharedvalue.expensesdata[expense].expstatus==='closed' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handleDeleteClosedExp(expense)}/> }
+                                                            
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -242,6 +271,12 @@ function Viewexpense(){
                 </div>
                 {/* mange con inner ends here */}
             </div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showloading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     );
 }

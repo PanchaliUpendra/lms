@@ -9,7 +9,7 @@ import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { onSnapshot ,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createticketid, createtickets } from "../../../Data/Docs";
+import { createticketid, createtickets, ticketsgraphdoc } from "../../../Data/Docs";
 //import storage 
 import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 import { storage } from "../../../Firebase";
@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 //loading gif
 import loading from '../../../Assets/loading.gif';
 import { useNavigate } from "react-router-dom";
+import { months } from "../../../Data/Months";
 
 function Createticket(){
     const sharedvalue = useContext(MyContext);
@@ -124,9 +125,36 @@ function Createticket(){
                             createdbyid:sharedvalue.uid
                         }
                     });
+                    //updating the tickets graph data
+                    let currentDate = new Date();
+                    let year = currentDate.getFullYear();
+                    let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                    let yearMonth = year + month;
+                    let yearMonthNumber = Number(yearMonth);
+                    console.log('year monthg number: ', yearMonthNumber);
+                    if(sharedvalue.ticketsgraphkeys.includes(yearMonth)){
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                ...sharedvalue.ticketsgraphdata[yearMonthNumber],
+                                to:Number(sharedvalue.ticketsgraphdata[yearMonthNumber].to)+1
+                            }
+                        })
+                    }else{
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                to:1,
+                                tc:0,
+                                month:months[month]
+                            }
+                        })
+                    }
+
                     await batch.update(createticketid,{
                         "tktid":result
                     });
+
                     await batch.commit();
                     loginsuccess();//successfully added the data
                     setticketinfo({
@@ -242,13 +270,29 @@ function Createticket(){
                                 }
                             </div>
                             <div>
-                                <label>Customer Name*</label>
+                                <label>Company Name*</label>
                                 <input type='text' value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktcustname:e.target.value
                                 }
                                 ))}/>
                             </div>
+                            <div>
+                                    <label>Associated Lead Code</label>
+                                    <select value={ticketinfo.ctktasslc} onChange={(e)=>setticketinfo(prev=>({
+                                        ...prev,
+                                        ctktasslc:e.target.value
+                                    }))}>
+                                        <option value='' selected>Select Lead</option>
+                                        {
+                                            sharedvalue.leadskeys
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid)))
+                                            .map((leads,idx)=>(
+                                                <option value={leads} key={idx}>{leads}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
                             {/* call type starts here */}
                             <div>
                                 <label>Call type*</label>
@@ -313,22 +357,7 @@ function Createticket(){
                                         </select>
                                     </div>
                             {/* priority ends here */}
-                                <div>
-                                    <label>Associated Lead Code</label>
-                                    <select value={ticketinfo.ctktasslc} onChange={(e)=>setticketinfo(prev=>({
-                                        ...prev,
-                                        ctktasslc:e.target.value
-                                    }))}>
-                                        <option value='' selected>Select Lead</option>
-                                        {
-                                            sharedvalue.leadskeys
-                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid)))
-                                            .map((leads,idx)=>(
-                                                <option value={leads} key={idx}>{leads}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
+                               
                             {/* associated lead code ends here */}
                             <div>
                                 <label>File</label>

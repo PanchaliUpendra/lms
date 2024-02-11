@@ -24,6 +24,7 @@ function Createcustomer(){
     const batch = writeBatch(db);// Get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     const [formdetails,setformdetails]=useState({//form details will take here
+        cname:'',
         name:'',
         email:'',
         password:'',
@@ -59,6 +60,7 @@ function Createcustomer(){
                     const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
                     batch.update(sfRef, {[user.uid]:{
                         "uid":user.uid,
+                        "cname":formdetails.cname,
                         "name":formdetails.name,
                         "email":formdetails.email,
                         "role":formdetails.role,
@@ -71,6 +73,7 @@ function Createcustomer(){
                 await signOut(secondauth)
                 loginsuccess();
                 setformdetails({
+                    cname:'',
                     name:'',
                     email:'',
                     password:'',
@@ -127,14 +130,21 @@ function Createcustomer(){
                                 <p>enter email and password to create profile</p>
                             </div>
                             <div>
-                                <label>customer name<span>*</span></label>
+                                <label>company name<span>*</span></label>
+                                <input type='text' value={formdetails.cname} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cname:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>contact name<span>*</span></label>
                                 <input type='text' value={formdetails.name} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     name:e.target.value
                                 }))}/>
                             </div>
                             <div>
-                                <label>customer email<span>*</span></label>
+                                <label>contact email<span>*</span></label>
                                 <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     email:e.target.value

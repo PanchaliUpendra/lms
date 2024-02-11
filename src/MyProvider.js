@@ -76,6 +76,7 @@ function MyProvider({children}){
                     const tempticketsgraphkeys = Object.keys(tempticketsgraphdata);
                     const sorttempticketgraphkeys = [...tempticketsgraphkeys].sort((a,b)=>a-b);
                     setticketsgraphkeys(sorttempticketgraphkeys);
+                    
                     const templasttwelvetkt = sorttempticketgraphkeys.slice(-12);
                     const finaltkttwelve=[];
                     for(let i=0;i<templasttwelvetkt.length;i++){
@@ -99,6 +100,7 @@ function MyProvider({children}){
                     const templeadsgraphkeys = Object.keys(templeadsgraphdata);
                     const sortleadsgraphkeys = [...templeadsgraphkeys].sort((a,b)=>a-b);
                     setleadsgraphkeys(sortleadsgraphkeys);
+               
                     // if(sortleadsgraphkeys.length>0){
                       const templasttwelve = sortleadsgraphkeys.slice(-12);
                       const finallasttwelvedata=[];
@@ -188,11 +190,14 @@ function MyProvider({children}){
                 try{
                   await onSnapshot(unsubsec,(doc)=>{
                     const workerdata = doc.data();
+                    
                     setworkersdata(workerdata);
                     setuser(prev=>({
                       ...prev,
                       role:workerdata[uid].role
+                     
                     }))
+                    
                     const keysarray = Object.keys(workerdata);
                     const sortkeysarray = [...keysarray].sort((a,b)=>b-a);
                     setworkerskeys(sortkeysarray);

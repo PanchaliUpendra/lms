@@ -75,7 +75,7 @@ function Viewticket(){
                                             <th>country</th>
                                             <th>state</th>
                                             <th>district</th>
-                                            <th>customer</th>
+                                            <th>Company Name</th>
                                             <th>call type</th>
                                             <th>category</th>
                                             <th>priority</th>
