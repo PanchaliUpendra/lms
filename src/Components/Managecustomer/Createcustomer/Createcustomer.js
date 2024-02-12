@@ -38,7 +38,7 @@ function Createcustomer(){
     }
     // toggle menu bar code ends here
     // adding notifications 
-    const loginsuccess = () =>toast.success('Successfully Created The Customer');
+    const loginsuccess = () =>toast.success('Successfully Created The Company');
     const loginerror = () =>toast.error('please check your credientials');
     const loginformerror = () => toast.warn('please fill the form correctly');
     const invalidmail = () => toast.error('Invalid Mail');
@@ -126,7 +126,7 @@ function Createcustomer(){
                     <div className="createmanager-innner-form-con">
                         <div className="createmanager-innner-form">
                             <div className="create-manager-form-header">
-                                <h1>create Customer profile</h1>
+                                <h1>create Company profile</h1>
                                 <p>enter email and password to create profile</p>
                             </div>
                             <div>
@@ -164,7 +164,7 @@ function Createcustomer(){
                                     cnfpassword:e.target.value
                                 }))}/>
                             </div>
-                            <button onClick={()=>handleregistration()}>Create Customer profile</button>
+                            <button onClick={()=>handleregistration()}>Create Company profile</button>
 
                         </div>
                         {/* form completed here */}

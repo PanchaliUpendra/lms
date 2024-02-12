@@ -164,8 +164,8 @@ function Viewticket(){
                                                     </td>
                                                      {/* status */}
                                                      <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className={`${(sharedvalue.ticketsdata[ticket].status===true || sharedvalue.ticketsdata[ticket].status==="true")?'active-ticket-view-condition':'inactive-ticket-view-condition'}`}>
-                                                            {(sharedvalue.ticketsdata[ticket].status===true || sharedvalue.ticketsdata[ticket].status==="true")?'Active':'Close'}
+                                                        <p className={`${(sharedvalue.ticketsdata[ticket].status==='open')?'active-ticket-view-condition':sharedvalue.ticketsdata[ticket].status==='close'?'inactive-ticket-view-condition':'resolve-ticket-view-condition'}`}>
+                                                            {(sharedvalue.ticketsdata[ticket].status==='open')?'Active':sharedvalue.ticketsdata[ticket].status==='close'?'Close':'Resolved'}
                                                         </p>
                                                     </td>
                                                      {/* working status */}
@@ -177,7 +177,7 @@ function Viewticket(){
                                                      {/* action */}
                                                      <td>
                                                         <div className='view-manager-list-acttion-icon'>
-                                                            <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>
+                                                        {sharedvalue.ticketsdata[ticket].status==='open' && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>}
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>
                                                             <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"
                                                             onClick={()=>setworkerdelete(prev=>({

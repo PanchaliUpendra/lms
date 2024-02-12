@@ -53,7 +53,7 @@ function Viewcustomer(){
                     <div className='create-lead-con'>
                         <div className="create-header-starts-here">
                             <div className="new-ticket-header">
-                                <h1>Customer</h1>
+                                <h1>Company</h1>
                             </div>
                         </div>
                         {/* list starts from here */}
@@ -71,6 +71,7 @@ function Viewcustomer(){
                                         <tr className="table-head-row">
                                             <th>si.no</th>
                                             <th>name</th>
+                                            <th>company</th>
                                             <th>email</th>
                                             <th>status</th>
                                             <th>action</th>
@@ -88,6 +89,9 @@ function Viewcustomer(){
                                                     </td>
                                                     <td>
                                                         <p className="view-manager-list-name">{sharedvalue.workersdata[worker].name}</p>
+                                                    </td>
+                                                    <td>
+                                                    <p className="view-manager-list-name">{sharedvalue.workersdata[worker].cname}</p>
                                                     </td>
                                                     <td>
                                                         <p className="view-manager-list-email">

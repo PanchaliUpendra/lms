@@ -118,7 +118,7 @@ function Createticket(){
                             ctktasslc:ticketinfo.ctktasslc,
                             ctktmanager:sharedvalue.role==='manager'?sharedvalue.uid:sharedvalue.role==='employee'?sharedvalue.workersdata[sharedvalue.uid].managerid:'',
                             ctktemployee:sharedvalue.role==='employee'?sharedvalue.uid:'',
-                            status:true,
+                            status:'open',
                             workingstatus:'',
                             fileurl:fileurl,
                             id:result,

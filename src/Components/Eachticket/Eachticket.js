@@ -43,10 +43,10 @@ function Eachticket(){
                             </div>
                             <div className='top-eachlead-buttons'>
                                 <div>
-                                    <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {(sharedvalue.ticketsdata[tktid].status===true || sharedvalue.ticketsdata[tktid].status==="true")?'Active':'Closed'}</p>
+                                    <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {(sharedvalue.ticketsdata[tktid].status==='open')?'Active':sharedvalue.ticketsdata[tktid].status==='close'?'Closed':'Resolved'}</p>
                                 </div>
                                 <div className='top-eachlead-buttons-inner'>
-                                    <button onClick={()=>navigate(`/manageticket/updateticket/${tktid}`)}>edit</button>
+                                    {sharedvalue.ticketsdata[tktid].status==='open' && <button onClick={()=>navigate(`/manageticket/updateticket/${tktid}`)}>edit</button>}
                                     <button>
                                         <a href={sharedvalue.ticketsdata[tktid].fileurl} rel="noreferrer" target="_blank">Open File</a>
                                     </button>

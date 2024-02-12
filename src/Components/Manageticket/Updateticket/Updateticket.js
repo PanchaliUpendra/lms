@@ -118,7 +118,8 @@ function Updateticket(){
                     });
                     await batch.commit();
                     loginsuccess();//successfully added the data
-                    window.scrollTo({top:0,behavior:'smooth'})
+                    window.scrollTo({top:0,behavior:'smooth'});
+                    navigate(-1);
                 }
             }
             else{
@@ -151,7 +152,7 @@ function Updateticket(){
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
     return(
         <>
-        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&
+        {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) && sharedvalue.ticketsdata[tktid].status==='open' &&
          (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
@@ -320,16 +321,18 @@ function Updateticket(){
                                     </div>
                             {/* priority ends here */}
                             {/* employee and manager starts here */}
+                            {(sharedvalue.role==='manager'||sharedvalue.role==='employee'||sharedvalue.role==='customer') &&
                             <div>
                                 <label>status</label>
                                 <select value={ticketinfo.status} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     status:e.target.value
                                 }))}>
-                                    <option value={true} >True</option>
-                                    <option value={false}>False</option>
+                                    <option value='open'>Open</option>
+                                    <option value='resolved'>Resolved</option>
+                                    {sharedvalue.role==='customer' && <option value='close'>Close</option>}
                                 </select>
-                            </div>
+                            </div>}
                             {/* manager div */}
                             {sharedvalue.role==='admin' && 
                             <div>
