@@ -37,6 +37,7 @@ function Createticket(){
         ctktstate:'',
         ctktdist:'',
         ctktcustname:'',
+        ctktothercustname:'',
         ctktcalltype:'',
         ctktcate:'-',
         ctktdes:'',
@@ -95,7 +96,8 @@ function Createticket(){
                 ticketinfo.ctktcountry!=='' &&
                 ticketinfo.ctktstate!=='' &&
                 ticketinfo.ctktdist!=='' &&
-                ticketinfo.ctktcustname!=='' &&
+                // ticketinfo.ctktcustname!=='' &&
+                (sharedvalue.role==='customer'||ticketinfo.ctktcustname!=='') &&
                 ticketinfo.ctktcalltype!=='' &&
                 ticketinfo.ctktpriority!=='' 
             ){
@@ -110,7 +112,8 @@ function Createticket(){
                             ctktcountry:ticketinfo.ctktcountry,
                             ctktstate:ticketinfo.ctktstate,
                             ctktdist:ticketinfo.ctktdist,
-                            ctktcustname:ticketinfo.ctktcustname,
+                            ctktcustname:sharedvalue.role==='customer'?sharedvalue.uid:ticketinfo.ctktcustname,
+                            ctktothercustname:ticketinfo.ctktothercustname,
                             ctktcalltype:ticketinfo.ctktcalltype,
                             ctktcate:ticketinfo.ctktcate,
                             ctktdes:ticketinfo.ctktdes,
@@ -167,6 +170,7 @@ function Createticket(){
                         ctktdes:'',
                         ctktpriority:'',
                         ctktasslc:'',
+                        ctktothercustname:'',
                     });
                     setctktfile('');
                 }
@@ -239,7 +243,7 @@ function Createticket(){
                                 {/* if the selected country is not india */}
                                 {
                                     ticketinfo.ctktcountry!=='India' &&
-                                    <input type='text' onChange={(e)=>setticketinfo(prev=>({
+                                    <input type='text' value={ticketinfo.ctktstate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktstate:e.target.value
                                     }))}/>
@@ -263,20 +267,49 @@ function Createticket(){
                                 {/* if selected country is not india */}
                                 {
                                     ticketinfo.ctktcountry!=='India' &&
-                                    <input type='text' onChange={(e)=>setticketinfo(prev=>({
+                                    <input type='text' value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktdist:e.target.value
                                     }))}/>
                                 }
                             </div>
-                            <div>
-                                <label>Company Name*</label>
-                                <input type='text' value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
+                            
+                            {sharedvalue.role==='customer'?
+                                <div>
+                                    <label>Company Name*</label>
+                                    <input type='text' value={sharedvalue.workersdata[sharedvalue.uid].cname} readOnly />
+                                </div>
+                                :
+                                <div>
+                                    <label>Company Name*</label>
+                                    <select value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
-                                    ctktcustname:e.target.value
+                                    ctktcustname:e.target.value,
+                                    ctktothercustname:''
+                                    }
+                                    ))}>
+                                        <option value=''>Select Company</option>
+                                        {
+                                            sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='customer')
+                                            .map((worker,idx)=>(
+                                                <option key={idx} value={sharedvalue.workersdata[worker].uid}>{sharedvalue.workersdata[worker].cname}</option>
+                                            ))
+                                        }
+                                        <option value='other'>other</option>
+
+                                    </select>
+                                </div>
+                            }
+                            {ticketinfo.ctktcustname==='other' &&
+                            <div>
+                                <label>Other Company Name*</label>
+                                <input type='text' value={ticketinfo.ctktothercustname} onChange={(e)=>setticketinfo(prev=>({
+                                    ...prev,
+                                    ctktothercustname:e.target.value
                                 }
                                 ))}/>
                             </div>
+                             }
                             <div>
                                     <label>Associated Lead Code</label>
                                     <select value={ticketinfo.ctktasslc} onChange={(e)=>setticketinfo(prev=>({

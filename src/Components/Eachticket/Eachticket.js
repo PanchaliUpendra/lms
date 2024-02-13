@@ -21,7 +21,9 @@ function Eachticket(){
     return(
         <>
             {
-                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
+                (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||
+                (sharedvalue.ticketsdata[tktid].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktcustname].uid)||
+                (sharedvalue.ticketsdata[tktid].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
                 <div className='manlead-con'>
                     <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                     <div className='manage-con-inner'>
@@ -68,8 +70,11 @@ function Eachticket(){
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktdist} readOnly/>
                                 </div>
                                 <div>
-                                    <label>Customer Name</label>
-                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktcustname} readOnly/>
+                                    <label>Company Name</label>
+                                    {sharedvalue.ticketsdata[tktid].ctktcustname==='other'?
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktothercustname} readOnly/>
+                                    :<input type='text' value={sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktcustname].cname} readOnly/>}
+                                    
                                 </div>
                                 <div>
                                     <label>Call Type</label>

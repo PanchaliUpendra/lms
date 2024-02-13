@@ -40,6 +40,7 @@ function Updateticket(){
         ctktstate:'',
         ctktdist:'',
         ctktcustname:'',
+        ctktothercustname:'',
         ctktcalltype:'',
         ctktcate:'-',
         ctktdes:'',
@@ -87,7 +88,7 @@ function Updateticket(){
                 ticketinfo.ctktcountry!=='' &&
                 ticketinfo.ctktstate!=='' &&
                 ticketinfo.ctktdist!=='' &&
-                ticketinfo.ctktcustname!=='' &&
+                (sharedvalue.role==='customer'||ticketinfo.ctktcustname!=='') &&
                 ticketinfo.ctktcalltype!=='' &&
                 ticketinfo.ctktpriority!=='' 
             ){
@@ -103,7 +104,7 @@ function Updateticket(){
                             ctktcountry:ticketinfo.ctktcountry,
                             ctktstate:ticketinfo.ctktstate,
                             ctktdist:ticketinfo.ctktdist,
-                            ctktcustname:ticketinfo.ctktcustname,
+                            ctktcustname:sharedvalue.role==='customer'?sharedvalue.uid:ticketinfo.ctktcustname,
                             ctktcalltype:ticketinfo.ctktcalltype,
                             ctktcate:ticketinfo.ctktcate,
                             ctktdes:ticketinfo.ctktdes,
@@ -113,6 +114,7 @@ function Updateticket(){
                             ctktemployee:ticketinfo.ctktemployee,
                             status:ticketinfo.status,
                             workingstatus:'-',
+                            ctktothercustname:ticketinfo.ctktothercustname,
                             
                         }
                     });
@@ -147,13 +149,16 @@ function Updateticket(){
                 ctktmanager:sharedvalue.ticketsdata[tktid].ctktmanager,
                 ctktemployee:sharedvalue.ticketsdata[tktid].ctktemployee,
                 status:sharedvalue.ticketsdata[tktid].status,
+                ctktothercustname:sharedvalue.ticketsdata[tktid].ctktothercustname,
             }));
         }
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
     return(
         <>
         {(sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) && sharedvalue.ticketsdata[tktid].status==='open' &&
-         (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||(sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
+         (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||
+         (sharedvalue.ticketsdata[tktid].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktcustname].uid)||
+         (sharedvalue.ticketsdata[tktid].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[tktid].createdbyid)))===true?
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -218,7 +223,7 @@ function Updateticket(){
                                 {/* if the selected country is not india */}
                                 {
                                     ticketinfo.ctktcountry!=='India' &&
-                                    <input type='text' onChange={(e)=>setticketinfo(prev=>({
+                                    <input type='text' value={ticketinfo.ctktstate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktstate:e.target.value
                                     }))}/>
@@ -242,20 +247,48 @@ function Updateticket(){
                                 {/* if selected country is not india */}
                                 {
                                     ticketinfo.ctktcountry!=='India' &&
-                                    <input type='text' onChange={(e)=>setticketinfo(prev=>({
+                                    <input type='text' value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktdist:e.target.value
                                     }))}/>
                                 }
                             </div>
-                            <div>
-                                <label>Company Name*</label>
-                                <input type='text' value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
+                            {sharedvalue.role==='customer'?
+                                <div>
+                                    <label>Company Name*</label>
+                                    <input type='text' value={sharedvalue.workersdata[sharedvalue.uid].cname} readOnly />
+                                </div>
+                                :
+                                <div>
+                                    <label>Company Name*</label>
+                                    <select value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
-                                    ctktcustname:e.target.value
+                                    ctktcustname:e.target.value,
+                                    ctktothercustname:''
+                                    }
+                                    ))}>
+                                        <option value=''>Select Company</option>
+                                        {
+                                            sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='customer')
+                                            .map((worker,idx)=>(
+                                                <option key={idx} value={sharedvalue.workersdata[worker].uid}>{sharedvalue.workersdata[worker].cname}</option>
+                                            ))
+                                        }
+                                        <option value='other'>other</option>
+
+                                    </select>
+                                </div>
+                            }
+                            {ticketinfo.ctktcustname==='other' &&
+                            <div>
+                                <label>Other Company Name*</label>
+                                <input type='text' value={ticketinfo.ctktothercustname} onChange={(e)=>setticketinfo(prev=>({
+                                    ...prev,
+                                    ctktothercustname:e.target.value
                                 }
                                 ))}/>
                             </div>
+                             }
                             {/* call type starts here */}
                             <div>
                                 <label>Call type*</label>
@@ -321,7 +354,7 @@ function Updateticket(){
                                     </div>
                             {/* priority ends here */}
                             {/* employee and manager starts here */}
-                            {(sharedvalue.role==='manager'||sharedvalue.role==='employee'||sharedvalue.role==='customer') &&
+                            {(sharedvalue.role==='manager'||sharedvalue.role==='employee') &&
                             <div>
                                 <label>status</label>
                                 <select value={ticketinfo.status} onChange={(e)=>setticketinfo(prev=>({
@@ -330,7 +363,6 @@ function Updateticket(){
                                 }))}>
                                     <option value='open'>Open</option>
                                     <option value='resolved'>Resolved</option>
-                                    {sharedvalue.role==='customer' && <option value='close'>Close</option>}
                                 </select>
                             </div>}
                             {/* manager div */}
