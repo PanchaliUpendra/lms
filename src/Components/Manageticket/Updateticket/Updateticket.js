@@ -113,7 +113,7 @@ function Updateticket(){
                             ctktmanager:ticketinfo.ctktmanager,
                             ctktemployee:ticketinfo.ctktemployee,
                             status:ticketinfo.status,
-                            workingstatus:'-',
+                            workingstatus:'',
                             ctktothercustname:ticketinfo.ctktothercustname,
                             
                         }

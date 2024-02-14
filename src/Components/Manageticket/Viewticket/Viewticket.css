@@ -27,3 +27,75 @@
     color: red;
     cursor: pointer;
 }
+
+.view-ticket-list-popup-feedback {
+    width: 600px;
+    min-height: 150px;
+    background-color: white;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.45s ease;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14);
+}
+
+.active-delete-popup-feedback{
+    visibility: visible;
+    opacity: 1;
+    top: 45%;
+    width: 600px;
+    min-height: 150px;
+    background-color: white;
+    position: fixed;
+    border-radius: 5px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14);
+} 
+
+.viewticket-closeicon-comes-here{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 15px;
+}
+
+.viewticket-feedback-form-here{
+    margin: 20px;
+    margin-bottom: 9px;
+}
+.viewticket-feedback-form-here p{
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.viewticket-feedback-form-here>textarea{
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    margin-top: 5px;
+    outline: none;
+    border: 1.5px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+}
+.viewticket-submit-button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.viewticket-submit-button>button{
+    width: fit-content;
+    padding: 6px 20px;
+    border: none;
+    background-color: #43A047;
+    color: white;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+}

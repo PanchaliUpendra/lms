@@ -14,12 +14,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import Leadsgraph from "./Leadsgraph/Leadsgraph";
 import Ticketsgraph from "./Leadsgraph/Ticketsgraph";
 
+import {  ref, deleteObject } from "firebase/storage";
+import { storage } from "../../Firebase";
 
+import { updateDoc, deleteField } from "firebase/firestore";
+import { writeBatch } from "firebase/firestore";
+import { db } from "../../Firebase";
+import { months } from "../../Data/Months";
+import { createtickets , ticketsgraphdoc } from "../../Data/Docs";
+
+import CloseIcon from '@mui/icons-material/Close';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 function Dashboard(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const batch = writeBatch(db);//get a new write batch
     const [countleads,setcountleads] = useState(5);
     const [counttickets,setcounttickets] = useState(5);
+    //backdrop loading toggle
+    const[showloading,setshowloading] = useState(false);
     //code only for toggle the menu bar
     // const [searchworker,setsearchworker]=useState('');
     const [menutoggle,setmenutoggle] = useState(false);
@@ -27,10 +41,91 @@ function Dashboard(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+    //tickets flow in dashboard
+     //feedback state handling
+     const[feedbackform,setfeedbackform] = useState({
+        active:false,
+        content:'',
+        tktid:'',
+    })
+     //handling the submit data and closing the ticket
+     async function handlingsubmitclose(){
+        try{
+            if(feedbackform.content!=='' && feedbackform.tktid!==''){
+                if(feedbackform.tktid!==''){
+                    await batch.update(createtickets,{
+                        [feedbackform.tktid]:{
+                            ...sharedvalue.ticketsdata[feedbackform.tktid],
+                            status:'close',
+                            workingstatus:feedbackform.content
+                        }
+                    });
+                    //updating the tickets graph data
+                    let currentDate = new Date();
+                    let year = currentDate.getFullYear();
+                    let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                    let yearMonth = year + month;
+                    let yearMonthNumber = Number(yearMonth);
+                    
+                    if(sharedvalue.ticketsgraphkeys.includes(yearMonth)){
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                ...sharedvalue.ticketsgraphdata[yearMonthNumber],
+                                tc:Number(sharedvalue.ticketsgraphdata[yearMonthNumber].tc)+1
+                            }
+                        })
+                    }else{
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                to:0,
+                                tc:1,
+                                month:months[month]
+                            }
+                        })
+                    }
+                    //updating the the tickets ends here
+                    await batch.commit();
+                }
+                setfeedbackform(prev=>({
+                    ...prev,
+                    content:'',
+                    active:false,
+                    tktid:''
+                }))
+            }else{
+                alert('pleaser provide the content..')
+            }
+        }catch(e){
+           console.log('you got an error while submitting the data',e);
+        }
+    }
+    async function handledeleteticket(tktid){
+        setshowloading(true)
+        try{
+            const desertRef = ref(storage,sharedvalue.ticketsdata[tktid].fileurl);
+            deleteObject(desertRef).then(() => {
+                console.log('deleted the imae storage url');
+              }).catch((error) => {
+                console.log("you got an error while deleting the storage",error);
+              });
+            await updateDoc(createtickets,{
+                [tktid]:deleteField()
+            });
+            await batch.commit();
+
+        }catch(e){
+            console.log('you getting an error while deleting the ticket ',e);
+        }
+        setshowloading(false);
+    }
+    //tickets flow eendds here
     
     return(
         <>
-            <div className='manlead-con'>
+            <div className={`manlead-con ${feedbackform.active===true?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
 
@@ -325,7 +420,7 @@ function Dashboard(){
                                             <th>manager</th>
                                             <th>employee</th>
                                             <th>status</th>
-                                            <th>working status</th>
+                                            <th>Comment</th>
                                             <th>action</th>
                                         </tr>
                                     </thead>
@@ -428,8 +523,15 @@ function Dashboard(){
                                                         <div className='view-manager-list-acttion-icon'>
                                                         {sharedvalue.ticketsdata[ticket].status==='open' && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>}
                                                         {sharedvalue.ticketsdata[ticket].status==='open' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='close' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small"/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='resolved' && ((sharedvalue.ticketsdata[ticket].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].uid )||(sharedvalue.ticketsdata[ticket].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[ticket].createdbyid)) && <p className="feedback-button">feedback</p>}
+                                                        {sharedvalue.ticketsdata[ticket].status==='close' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeleteticket(ticket)}/>}
+                                                        {sharedvalue.ticketsdata[ticket].status==='resolved' &&
+                                                         ((sharedvalue.ticketsdata[ticket].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].uid )||
+                                                         (sharedvalue.ticketsdata[ticket].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[ticket].createdbyid)) && 
+                                                         <p onClick={()=>setfeedbackform(prev=>({
+                                                            ...prev,
+                                                            active:true,
+                                                            tktid:ticket
+                                                          }))} className="feedback-button"  >feedback</p>}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -451,6 +553,35 @@ function Dashboard(){
                     
                 </div>
             </div>
+
+            {/* feed back popup */}
+
+            <div  className={`view-ticket-list-popup-feedback ${feedbackform.active===true?'active-delete-popup-feedback':''}`} >
+                <div className="viewticket-closeicon-comes-here">
+                    <CloseIcon fontSize="small" onClick={()=>setfeedbackform(prev=>({
+                        ...prev,
+                        active:false
+                    }))} sx={{cursor:'pointer'}}/>
+                </div>
+                <div className="viewticket-feedback-form-here">
+                    <p>Feedback</p>
+                    <textarea value={feedbackform.content} onChange={(e)=>setfeedbackform(prev=>({
+                        ...prev,
+                        content:e.target.value
+                    }))} placeholder="write your feedback here...."/>
+                    
+                </div>
+                <div className="viewticket-submit-button">
+                    <button onClick={()=>handlingsubmitclose()}>Submit</button>
+                </div>
+                
+            </div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showloading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             
         </>
     );

@@ -134,7 +134,7 @@ function Createticket(){
                     let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
                     let yearMonth = year + month;
                     let yearMonthNumber = Number(yearMonth);
-                    console.log('year monthg number: ', yearMonthNumber);
+                    
                     if(sharedvalue.ticketsgraphkeys.includes(yearMonth)){
                         
                         await batch.update(ticketsgraphdoc,{
