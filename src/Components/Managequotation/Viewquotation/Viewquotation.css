@@ -24,3 +24,9 @@
 .vmln-closed{
     background-image: linear-gradient(195deg, #f34f25 0%, #df1f06 100%);
 }
+.close-quotation-btn{
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: red;
+    cursor: pointer;
+}

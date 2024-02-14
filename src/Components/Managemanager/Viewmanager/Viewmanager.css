@@ -115,7 +115,7 @@ table>tbody tr td{
     width: 600px;
     min-height: 150px;
     background-color: white;
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -172,7 +172,7 @@ table>tbody tr td{
     width: 600px;
     min-height: 150px;
     background-color: white;
-    position: absolute;
+    position: fixed;
     border-radius: 5px;
     left: 50%;
     transform: translate(-50%,-50%);
