@@ -75,7 +75,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/verifyquotation/:quoteid' element={<Verifyquotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/pdfview' element={<Comaasrgb/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/pdfview/:quoteid' element={<Comaasrgb/>}/>}
         {/* search bar nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
         {/* profile nav link */}
