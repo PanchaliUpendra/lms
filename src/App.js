@@ -35,6 +35,9 @@ import Updatequotation from './Components/Managequotation/Updatequotation/Update
 import Verifyquotation from './Components/Managequotation/Verifyquotation/Verifyquotation';
 import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
+//please remove after completed the design
+import Spinner from './Components/Spinner/Spinner';
+ 
 function App() {
   const sharedvalue = useContext(MyContext);
   return (
@@ -80,6 +83,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
         {/* profile nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
+        <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
 
       </Routes>

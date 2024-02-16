@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext,  useState } from 'react';
 import './Eachticket.css';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,6 +7,7 @@ import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import Error from '../../Error/Error';
+
 function Eachticket(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -17,8 +18,11 @@ function Eachticket(){
      function handlemenutoggle(){
          setmenutoggle(prev=>!prev);
      }
-     // toggle menu bar code ends here
+     
+     
+    
     return(
+        
         <>
             {
                 (sharedvalue.ticketskeys.length>0 && sharedvalue.ticketskeys.includes(tktid) &&(sharedvalue.role==='admin'||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[tktid].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[tktid].ctktmanager===sharedvalue.uid)||
