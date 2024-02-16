@@ -68,6 +68,7 @@
 .viewticket-feedback-form-here{
     margin: 20px;
     margin-bottom: 9px;
+    margin-top: 10px;
 }
 .viewticket-feedback-form-here p{
     font-size: 0.9rem;
@@ -98,4 +99,29 @@
     font-weight: 500;
     border-radius: 2px;
     cursor: pointer;
+}
+
+.viewticket-feedback-select{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+.viewticket-feedback-select>p{
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.viewticket-feedback-select>select{
+    width: 100%;
+    height: 35px;
+    border: 1px solid gray;
+    outline: none;
+    border-radius: 5px;
+    margin-top: 4px;
+    padding: 5px;
+}
+
+@media all and (max-width:605px){
+    .view-ticket-list-popup-feedback, .active-delete-popup-feedback{
+        width:98%;
+    }
 }

@@ -360,7 +360,7 @@ function Createticket(){
                                         <option value='Mode Setting'>Mode Setting</option>
                                         <option value='Ejector Issue'>Ejector Issue</option>
                                         <option value='Wiper Issue'>Wiper Issue</option>
-                                        <option value='Capacitor Issue'>Capacitor Issue</option>
+                                        <option value='Capacity Issue'>Capacity Issue</option>
                                         <option value='Glass Changing'>Glass Changing</option>
                                         <option value='Other'>Other</option>
                                     </select>

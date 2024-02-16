@@ -157,19 +157,306 @@ const Comaasrgb = () => {
                     </Page>
 
                     {/* second page desinging */}
-                    <Page style={styles.page}>
-                    <View style={styles.section}>
-                        <Text>Hello, World!</Text>
-                        <Text>This is a dynamically generated PDF page.</Text>
-                    </View>
+                    <Page size='A4' style={styles.page}>
+                      <View style={styles.section}>
+
+                        <Text style={styles.logo}>COMAAS</Text>
+
+                        <Text style={styles.quoteid}>PI No.{quoteid}</Text>
+
+                        <View style={styles.issuedDate}>
+                          <Text>Issued By J.E</Text>
+                        </View>
+                        
+                        <Text style={styles.tableeachheading}>2. sales condition</Text>
+
+                        <View style={styles.priceterm}>
+                          <Text style={styles.pricetermhead}>price term</Text>
+                          <View style={styles.pricetermlist}>
+                            <View style={styles.pricetermeachlist}>
+                              <Text style={styles.pricetermlistdot}>•</Text>
+                              <Text style={styles.pricetermlisttext}>CIF Chennai, India</Text>
+                            </View>
+                            <View style={styles.pricetermeachlist}>
+                              <Text style={styles.pricetermlistdot}>•</Text>
+                              <Text style={styles.pricetermlisttext}>GST 18% EXTRA</Text>
+                            </View>
+                            <View style={styles.pricetermeachlist}>
+                              <Text style={styles.pricetermlistdot}>•</Text>
+                              <Text style={styles.pricetermlisttext}>Transportation from Chennai extra</Text>
+                            </View>
+                            <View style={styles.pricetermeachlist}>
+                              <Text style={styles.pricetermlistdot}>•</Text>
+                              <Text style={styles.pricetermlisttext}>Clearing expenses and any other expenses in buyer's account only</Text>
+                            </View>
+                          </View>
+                        </View>
+
+                        <View style={styles.priceterm}>
+                          <Text style={styles.pricetermhead}>payment term</Text>
+                          <View style={styles.pricetermlist}>
+                            <Text style={{fontFamily:'OpenSans',fontSize:10,fontWeight:400,textTransform:'capitalize'}}>
+                              100% payment by TT along with Order. Note: In case of FLC USD 1500 extra per year usance
+                            </Text>
+                          </View>
+                        </View>
+
+                        <Text style={styles.orderconfirmtext}>
+                          Order confirmation Advance amount Rs.300000/- to be paid to <Text style={{fontFamily:'OpenSans',textDecoration:'underline',fontWeight:600,fontSize:10}}>Bank Details:</Text> 
+                          <Text style={{fontFamily:'OpenSans',fontWeight:600,fontSize:10}}> sruthi technologies,</Text> HDFC Bank , Account.No.50200030537582,
+                          Ifsc-HDFC0001639, Vivekananda Nagar, Kukatpally. Which will be after sending TT.
+                        </Text>
+                        
+                        <Text style={styles.saleconditioninnerhead}>bank account</Text>
+                        <Text style={styles.bankaccounttext1}>Advising bank: <Text style={{fontWeight:700}}>KEB HANA BANK, DAEGU </Text>419-13 611, GUKCHAEBOSANG-RO, JUNG-GU, DAEGU,SOUTH KOREA</Text>
+                        <Text style={styles.bankaccounttext}><Text style={{fontWeight:700}}>Swift Code: </Text>KOEXKRSE OR KOEXKRSEXXX</Text>
+                        <Text style={styles.bankaccounttext}><Text style={{fontWeight:700}}>Account No: </Text>10391001338538</Text>
+                        <Text></Text>
+                        <Text style={styles.saleconditioninnerhead}>delivery time</Text>
+                        <Text style={styles.saleconditioninnertext}>
+                          30 days after receipt of your formal order and down payment by customer
+                        </Text>
+                        <Text style={styles.saleconditioninnerhead}>validity</Text>
+                        <Text style={styles.saleconditioninnertext}>
+                          90 days from the issuing date of this PI.
+                        </Text>
+                        <Text style={styles.saleconditioninnerhead}>capacity</Text>
+                        <Text style={styles.saleconditioninnertext}>
+                          Capacity will depends on type of contamination; percentage of contamination and type of Umaterial. The capacity mentioned
+                          in this quotation based on Steam Channa Dall upto 5-10% contamination with only India Channa Dall, with nill broken Channa
+                           Dall without  stones/foreign material. Contamination will be Counted based on <Text style={{textTransform:'uppercase',fontWeight:600}}>Count</Text> not on weight method. 
+                        </Text>
+                        <Text style={styles.saleconditioninnerhead}>warranty</Text>
+                        <Text style={styles.saleconditioninnertext}>
+                        Warranty is effective for Year from the date of commissioning by our technician in customer's Factory. In delay of commissioning
+                         schedule or without commissioning, the warranty may be effective for 13 month from shipment date.
+                        </Text>
+                        <Text style={styles.saleconditioninnertext1}>Warranty includes the replacement of the faulty parts.</Text>
+                        <Text style={styles.saleconditioninnertext}>Warranty shall not include wear and tear parts and except basic spare parts supplied freely. as well as damages caused by buyer
+                           because unexpected or careless operation and maintenance of the machine and any similar reasons.</Text>
+                        <View style={styles.bottomaddress}>
+                          <Text style={{fontSize:10,fontFamily:'OpenSans',textTransform:'capitalize',fontWeight:600}}>For <Text style={{color:'#09A6D1'}}> COMAAS Co, LTD</Text></Text>
+                          <Text style={styles.logo}>COMAAS</Text>
+                          <Text style={{fontSize:10,fontFamily:'OpenSans',fontWeight:600}}>President/Kyung un Jang</Text>
+                          <Text style={styles.comaascoltd}>COMAAS Co.LTD</Text>
+                          <Text style={styles.comaascoltdadds}>34, seongseo 5cha cheomdan-ro dalseo-gu, daegu, r.o.korea</Text>
+                        </View>
+                      </View>
                     </Page>
 
                     {/* third page desinginig  */}
-                    <Page style={styles.page}>
-                    <View style={styles.section}>
-                        <Text>Hello, World!</Text>
-                        <Text>This is a dynamically generated PDF page.</Text>
-                    </View>
+                    <Page size='A4' style={styles.page}>
+                      <View style={styles.section}>
+                        <Text style={styles.logo}>COMAAS</Text>
+
+                        <Text style={styles.quoteid}>PI No.{quoteid}</Text>
+
+                        <View style={styles.issuedDate}>
+                          <Text>Issued By J.E</Text>
+                        </View>
+
+                        <Text style={styles.tableeachheading}>3. description:<Text style={{fontWeight:600,color:'#6004DA'}}> super</Text><Text style={{fontWeight:600,color:'#017BE6'}}> high</Text><Text style={{fontWeight:600,color:'green'}}> precision </Text>- <Text style={{fontWeight:600,color:'#D35400'}}>channa dall </Text>
+                        <Text style={{fontWeight:600,color:'red'}}>color </Text><Text style={{fontWeight:600,color:'green'}}>sorter</Text></Text>
+
+                        <View style={styles.descriptiontable}>
+                          <View style={styles.destablecon}>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>SI No</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Description</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Nominal capacity</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>3-4(T/H)*</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>N Channels/Ejectors</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>192</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Dimension (mm) WXLXH</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>2285 x 1415 x 1702</Text>
+                              </View>
+                            </View>
+                            
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Power (kw)</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>4</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Compressor (HP) </Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Aprox.25</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Language</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Multi Language</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>CCD sensors</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>DALSA-Canada/Kodak japan</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>N of Pixels / Camera</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>2048/4096</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Accurate</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>0.14/0.07mm</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Cameras: Each chute / Total</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>5/10nos</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Lenses</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>NIKON Japan</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Ejectors</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>SMC- Japan</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Shelf life</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}> {`>`} Billions shoots</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Shooting speed</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>{`>`}1200/sec</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Lamps</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>LED</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Filter</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>SMC- Japan</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Image acquisition</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Yes</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Lamps and ejectors monitoring</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Yes</Text>
+                              </View>
+                            </View>
+
+                            <View style={styles.destablerow}>
+                              <View style={styles.destablecol1}>
+                                <Text style={styles.destablecoltxt1}>Ethernet connection</Text>
+                              </View>
+                              <View style={styles.destablecol2}>
+                                <Text style={styles.destablecoltxt2}>Yes</Text>
+                              </View>
+                            </View>
+
+                          </View>
+                          <View style={{width:250}}>
+                            <View style={styles.rgbImageView}>
+                              <Image src={Rgb} style={styles.rgbimage} />
+                            </View>
+                          </View>
+                            
+
+                        </View>
+
+                        <View style={styles.bottomaddress}>
+                          <Text style={styles.comaascoltd}>COMAAS Co.LTD</Text>
+                          <Text style={styles.comaascoltdadds}>34, seongseo 5cha cheomdan-ro dalseo_gu, daegu, r.o.korea</Text>
+                        </View>
+
+                      </View>
                     </Page>
                 </Document>
       </PDFViewer>
@@ -177,6 +464,143 @@ const Comaasrgb = () => {
 };
 
 const styles = StyleSheet.create({
+    //destablecoltxt2
+    destablecoltxt2:{
+      fontSize:10,
+      fontWeight:600,
+      fontFamily:'OpenSans',
+
+      textAlign:'center'
+    },
+    //destablecoltxt1
+    destablecoltxt1:{
+      fontSize:10,
+      fontWeight:600,
+      fontFamily:'OpenSans',
+  
+    },
+    //destablecol2
+    destablecol2:{
+      border:'0.2px solid gray',
+      width:'100%',
+      padding:7,
+      paddingTop:7,
+      paddingBottom:7
+    },
+    //destablecol1
+    destablecol1:{
+      border:'0.2px solid gray',
+      padding:7,
+      width:'100%',
+      paddingTop:7,
+      paddingBottom:7
+    },
+    //destablerow
+    destablerow:{
+      display:'flex',
+      flexDirection:'row'
+    },
+    //destablecon
+    destablecon:{
+      border:'0.5px solid gray',
+      width:'100%',
+      marginRight:20,
+    },
+    //descriptiontable
+    descriptiontable:{
+      // backgroundColor:'red',
+      paddingLeft:20,
+      display:'flex',
+      flexDirection:'row',
+      alignItems:'center',
+      marginTop:20,
+      width:'100%'
+    },
+    //bankaccounttext1
+    bankaccounttext1:{
+      marginTop:4,
+      marginBottom:4,
+      fontFamily:'OpenSans',
+      fontSize:10,
+      fontWeight:600
+    },
+    //bankaccounttext
+    bankaccounttext:{
+      
+      marginBottom:4,
+      fontFamily:'OpenSans',
+      fontSize:10,
+      fontWeight:600
+    },
+    //saleconditioninnertext1
+    saleconditioninnertext1:{
+      fontFamily:'OpenSans',
+      fontSize:10,
+      fontWeight:400,
+      textTransform:'capitalize'
+    },
+    //saleconditioninnertext
+    saleconditioninnertext:{
+      fontFamily:'OpenSans',
+      fontSize:10,
+      fontWeight:400,
+      marginBottom:5,
+      textTransform:'capitalize'
+    },
+    //saleconditioninnerhead
+    saleconditioninnerhead:{
+      fontSize:10,
+      fontWeight:600,
+      fontFamily:'OpenSans',
+      textDecoration:'underline',
+      textTransform:'capitalize',
+      marginBottom:4
+    },
+    //orderconfirmtext
+    orderconfirmtext:{
+      fontFamily:'OpenSans',
+      fontSize:10,
+      fontWeight:400,
+      textTransform:'capitalize',
+      marginTop:5,
+      marginBottom:5
+    },
+    //pricetermlistdot
+    pricetermlistdot:{
+      fontSize:10
+    },
+    //pricetermlisttext
+    pricetermlisttext:{
+      flex:1,
+      fontSize:10,
+      fontFamily:'OpenSans',
+      fontWeight:400,
+    },
+    //pricetermeachlist
+    pricetermeachlist:{
+      display:'flex',
+      flexDirection:'row',
+      alignItems:'center',
+      gap:5,
+      marginBottom:2
+    },
+    //pricetermlist
+    pricetermlist:{
+      paddingLeft:15,
+    },
+    //pricetermhead
+    pricetermhead:{
+      fontSize:10,
+      fontFamily:'OpenSans',
+      fontWeight:400,
+      textDecoration:"underline",
+      textTransform:'capitalize',
+      marginBottom:4
+    },
+    //price term
+    priceterm:{
+      marginTop:5
+    },
     //bottomaddress
     bottomaddress:{
       position:'absolute',
@@ -376,7 +800,7 @@ const styles = StyleSheet.create({
   rgbImageView:{
     height:100,
     width:150,
-    marginTop:12
+    marginTop:12,
   },
   //rgbimage
   rgbimage:{

@@ -32,6 +32,8 @@ function Viewticket(){
             active:false,
             content:'',
             tktid:'',
+            techspt:'Excellent',
+            res:'Excellent'
         })
         
      // search bar input 
@@ -46,13 +48,13 @@ function Viewticket(){
     //handling the submit data and closing the ticket
     async function handlingsubmitclose(){
         try{
-            if(feedbackform.content!=='' && feedbackform.tktid!==''){
+            if( feedbackform.tktid!==''){
                 if(feedbackform.tktid!==''){
                     await batch.update(createtickets,{
                         [feedbackform.tktid]:{
                             ...sharedvalue.ticketsdata[feedbackform.tktid],
                             status:'close',
-                            workingstatus:feedbackform.content
+                            workingstatus:`Tech-${feedbackform.techspt} , Res-${feedbackform.res} , ${feedbackform.content}`
                         }
                     });
                     //updating the tickets graph data
@@ -311,6 +313,30 @@ function Viewticket(){
                         ...prev,
                         active:false
                     }))} sx={{cursor:'pointer'}}/>
+                </div>
+                <div className="viewticket-feedback-select">
+                    <p>Technical Support</p>
+                    <select value={feedbackform.techspt} onChange={(e)=>setfeedbackform(prev=>({
+                        ...prev,
+                        techspt:e.target.value
+                    }))}>
+                        <option value='Excellent'>Excellent</option>
+                        <option value='Good'>Good</option>
+                        <option value='Satisfied'>Satisfied</option>
+                        <option value='Poor'>Poor</option>
+                    </select>
+                </div>
+                <div className="viewticket-feedback-select">
+                    <p>Response</p>
+                    <select value={feedbackform.res} onChange={(e)=>setfeedbackform(prev=>({
+                        ...prev,
+                        res:e.target.value
+                    }))}>
+                        <option value='Excellent'>Excellent</option>
+                        <option value='Good'>Good</option>
+                        <option value='Satisfied'>Satisfied</option>
+                        <option value='Poor'>Poor</option>
+                    </select>
                 </div>
                 <div className="viewticket-feedback-form-here">
                     <p>Feedback</p>
