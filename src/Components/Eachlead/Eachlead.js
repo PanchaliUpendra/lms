@@ -59,7 +59,7 @@ function Eachlead(){
                                 <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {sharedvalue.leadsdata[leadid].custstatus}</p>
                             </div>
                             <div className='top-eachlead-buttons-inner'>
-                                <button onClick={()=>navigate(`/managelead/updatelead/${leadid}`)}>edit</button>
+                                {(sharedvalue.leadsdata[leadid].custstatus==='Closed' || sharedvalue.leadsdata[leadid].custstatus==='Lost')===false && <button onClick={()=>navigate(`/managelead/updatelead/${leadid}`)}>edit</button>}
                                 <button onClick={()=>navigate(`/managelead/viewlead/${leadid}/meetingdetails`)}>Next Meeting</button>
                             </div>
                         </div>

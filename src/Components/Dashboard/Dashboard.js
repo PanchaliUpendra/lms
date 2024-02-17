@@ -353,11 +353,9 @@ function Dashboard(){
                                                     {/* action */}
                                                     <td >
                                                         <div className='view-manager-list-acttion-icon'>
-                                                            <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>
+                                                            {(sharedvalue.leadsdata[lead].custstatus==='Closed' || sharedvalue.leadsdata[lead].custstatus==='Lost')===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
-                                                            <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
-                                                            fontSize="small"
-                                                            />
+
                                                         </div>
                                                     </td>
                                                 </tr>

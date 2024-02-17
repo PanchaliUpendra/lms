@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Document, Page, Text, View, StyleSheet ,Image} from '@react-pdf/renderer';
 import { Font } from "@react-pdf/renderer";
-import { PDFViewer } from '@react-pdf/renderer';
-import { useParams } from 'react-router-dom';
+// import { PDFViewer } from '@react-pdf/renderer';
+// import { useParams } from 'react-router-dom';
 import OpenSansBold from "../../Assets/open-sans/OpenSans-ExtraBold.ttf";
 import OpenSansRegular from "../../Assets/open-sans/OpenSans-Regular.ttf";
 import OpenSansSemibold from "../../Assets/open-sans/OpenSans-Semibold.ttf";
 import Rgb from '../../Assets/rgb.png';
 import { first } from './Comaascss';
 import numWords from 'num-words';
-const Comaasrgb = () => {
+const Comaasrgb = (props) => {
   //changing number to text
   const number = 1450;
   const text = numWords(number);
   
-  const {quoteid} = useParams();
+  const quoteid = props.quoteid
   const [todaydate , settodaydate] = useState('');//storing the today here
   Font.register({
     family: "OpenSans",
@@ -47,7 +47,7 @@ const Comaasrgb = () => {
   settodaydate(formattedDate);
   },[]);
     return(
-        <PDFViewer style={styles.container}>
+        // <PDFViewer style={styles.container}>
                 <Document>
                   {/* first page desinging */}
                     <Page size='A4' style={styles.page}>
@@ -459,7 +459,7 @@ const Comaasrgb = () => {
                       </View>
                     </Page>
                 </Document>
-      </PDFViewer>
+      // </PDFViewer>
     )
 };
 

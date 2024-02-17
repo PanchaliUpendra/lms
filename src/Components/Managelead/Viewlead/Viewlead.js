@@ -6,7 +6,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //imported material ui 
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
@@ -16,17 +15,7 @@ function Viewlead(){
     const navigate = useNavigate();
     // console.log('leads all data: ',sharedvalue.leadsdata);
      //deleting lead
-     const [workerdelete,setworkerdelete] = useState({
-        active:false,
-        uid:''
-    });
-    const deleteUserByUID = async (uidToDelete) => {
-        
-        setworkerdelete({
-            active:false,
-            uid:''
-        })
-      };
+     
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //code only for toggle the menu bar
@@ -37,7 +26,7 @@ function Viewlead(){
     // toggle menu bar code ends here
     return(
         <>
-            <div className={`manlead-con ${workerdelete.active===true?'manlead-con-inactive':''}`}>
+            <div className={`manlead-con`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
 
@@ -185,16 +174,8 @@ function Viewlead(){
                                                     {/* action */}
                                                     <td >
                                                         <div className='view-manager-list-acttion-icon'>
-                                                            <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>
+                                                            {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
-                                                            <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
-                                                            onClick={()=>setworkerdelete(prev=>({
-                                                                ...prev,
-                                                                active:true,
-                                                                uid:lead
-                                                            }))} 
-                                                            fontSize="small"
-                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -210,18 +191,7 @@ function Viewlead(){
                     {/* your view lead ends here */}
                 </div>
             </div>
-            {/* popup to delete an item */}
-            <div className={`view-manager-list-popup-delete ${workerdelete.active===true?'active-delete-popup':''}`}>
-                <p>Are You Sure You want to delete the user <span>{workerdelete.uid?workerdelete.uid:''}</span></p>
-                <div>
-                    <button onClick={()=>deleteUserByUID(workerdelete.uid)}>Yes</button>
-                    <button onClick={()=>setworkerdelete(prev=>({
-                        ...prev,
-                        active:false,
-                        uid:''
-                    }))}>No</button>
-                </div>
-            </div>
+            
         </>
     );
 }

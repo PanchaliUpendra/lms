@@ -19,6 +19,9 @@ import { useParams, useNavigate} from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
 
+import { leadsgraphdoc } from '../../../Data/Docs';
+import { months } from '../../../Data/Months';
+
 function Updatelead(){
     const sharedvalue = useContext(MyContext);
 
@@ -186,9 +189,39 @@ function Updatelead(){
                         }]
                     }});
 
+                    if(custinquiry.custstatus==='Closed'){
+                        //updating the leads graph data
+                        let currentDate = new Date();
+                        let year = currentDate.getFullYear();
+                        let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                        let yearMonth = year + month;
+                        let yearMonthNumber = Number(yearMonth);
+                    
+                        if(sharedvalue.leadsgraphkeys.includes(yearMonth)){
+                        
+                            await batch.update(leadsgraphdoc,{
+                                [yearMonthNumber]:{
+                                    ...sharedvalue.leadsgraphdata[yearMonthNumber],
+                                    lc:Number(sharedvalue.leadsgraphdata[yearMonthNumber].lc)+1,
+                                }
+                            })
+                        }else{
+                            
+                            await batch.update(leadsgraphdoc,{
+                                [yearMonthNumber]:{
+                                    lo:0,
+                                    lc:1,
+                                    month:months[month]
+                                }
+                            })
+                        }
+                        //updating the leads graph ends here
+                    }
+
                 
                 await batch.commit();
                 loginsuccess();
+                navigate(-1);
                
                 window.scrollTo({top:0,behavior:'smooth'})
             }else{
@@ -300,8 +333,11 @@ function Updatelead(){
     },[leadid,sharedvalue.leadsdata,sharedvalue.leadskeys]);
     return(
         <>
-        {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true && 
-        (sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.leadsdata[leadid].employeeid===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.leadsdata[leadid].managerid===sharedvalue.uid)||sharedvalue.uid===sharedvalue.leadsdata[leadid].createdbyid)===true?
+        {(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid))===true && (sharedvalue.leadsdata[leadid].custstatus==='Closed' || sharedvalue.leadsdata[leadid].custstatus==='Lost')===false &&
+        (sharedvalue.role==='admin' ||
+        (sharedvalue.role==='employee' && sharedvalue.leadsdata[leadid].employeeid===sharedvalue.uid)||
+        (sharedvalue.role==='manager' && sharedvalue.leadsdata[leadid].managerid===sharedvalue.uid)||
+        sharedvalue.uid===sharedvalue.leadsdata[leadid].createdbyid)===true?
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -401,6 +437,8 @@ function Updatelead(){
                                             <option value='Old'>Old</option>
                                         </select>
                                     </div>
+
+                                    {(sharedvalue.role==='manager' || sharedvalue.role==='employee' || sharedvalue.role==='admin') === true && 
                                     <div className='cust-inq-customer-status'>
                                         <label>customer status</label>
                                         <select value={custinquiry.custstatus} onChange={(e)=>setcustinquiry(prev=>({
@@ -415,6 +453,9 @@ function Updatelead(){
                                             <option value='Lost'>Lost</option>
                                         </select>
                                     </div>
+                                    }
+                                    
+
                                 </div>
                                 
                                 {/* second  row*/}
