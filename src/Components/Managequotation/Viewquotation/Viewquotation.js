@@ -26,6 +26,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { createquotes } from "../../../Data/Docs";
 import { updateDoc, deleteField } from "firebase/firestore";
 
+import { EmailShareButton } from "react-share";
+
 import Sruthitech from "../Sruthitech";
 
 function Viewquotation(){
@@ -244,7 +246,12 @@ function Viewquotation(){
                                                             <td>
                                                                 <p className='view-manager-list-acttion-icon'>
                                                                     { (sharedvalue.quotesdata[quote].quotstatus==='open' || sharedvalue.quotesdata[quote].quotstatus==='rework') && sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
-                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <ShareIcon sx={{color:'grey',cursor:'pointer'}}  fontSize="small"/>}
+                                                                    
+                                                                    {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <EmailShareButton
+                                                                                url={sharedvalue.leadsdata[sharedvalue.quotesdata[quote].quotlead].contpersonemail}
+                                                                                subject="add your subject "
+                                                                                body="here is the content of the body"
+                                                                            > <ShareIcon sx={{color:'grey',cursor:'pointer'}}  fontSize="small"/></EmailShareButton> }
                                                                     {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && <PDFDownloadLink document={<Comaasrgb quoteid={quote} sharedvalue={sharedvalue}/>} fileName="dynamic.pdf">
                                                                         <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" />
                                                                     </PDFDownloadLink> }
