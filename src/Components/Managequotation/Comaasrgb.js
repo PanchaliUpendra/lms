@@ -9,13 +9,15 @@ import OpenSansSemibold from "../../Assets/open-sans/OpenSans-Semibold.ttf";
 import Rgb from '../../Assets/rgb.png';
 import { first } from './Comaascss';
 import numWords from 'num-words';
+
 const Comaasrgb = (props) => {
+  const sharedvalue = props.sharedvalue;
   //changing number to text
-  const number = 1450;
-  const text = numWords(number);
+  const [text,settext] = useState('')
   
-  const quoteid = props.quoteid
+  const quoteid = props.quoteid;
   const [todaydate , settodaydate] = useState('');//storing the today here
+  const [curyear, setcuryear] = useState('');
   Font.register({
     family: "OpenSans",
     fonts: [
@@ -44,17 +46,25 @@ const Comaasrgb = (props) => {
 
   // Concatenate to form DD/MM/YYYY format
   const formattedDate = `${day}/${month}/${year}`;
+  setcuryear(year);
   settodaydate(formattedDate);
-  },[]);
+
+  let number= Number(sharedvalue.quotesdata[quoteid].quotprice);
+  let tempnum = numWords(number);
+  settext(tempnum);
+  },[sharedvalue.quotesdata, quoteid]);
     return(
         // <PDFViewer style={styles.container}>
+        <>
+       
+            {sharedvalue.quoteskeys.length>0 && sharedvalue.leadskeys.length>0 && 
                 <Document>
                   {/* first page desinging */}
                     <Page size='A4' style={styles.page}>
                       <View style={styles.section}>
                           <Text style={styles.logo}>COMAAS</Text>
                           
-                          <Text style={styles.quoteid}>PI No.{quoteid}</Text>
+                          <Text style={styles.quoteid}>PI No.S360-{curyear}-{quoteid}</Text>
                           <View style={styles.issuedDate}>
                             <Text>Issued By J.E</Text>
                             <Text style={{fontSize:9,fontWeight:400}}>Date: {todaydate}</Text>
@@ -70,8 +80,9 @@ const Comaasrgb = (props) => {
                               <View style={first.p1sec121}>
                                 <Text style={styles.customerInfo}>Customer:</Text></View>
                               <View style={first.p1sec122}>
-                                <Text style={styles.customerInfo121}>Saanvika Software Solutions, Madinaguda</Text>
-                                <Text style={styles.customerInfoContPer}>Kind Attn: Pavan Kumar</Text>
+                                <Text style={styles.customerInfo121}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].custcompanyname},</Text>
+                                <Text style={styles.customerInfo121}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofdcty}</Text>
+                                <Text style={styles.customerInfoContPer}>Kind Attn: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
                               </View>
                             </View>
                             <View style={first.section1}>
@@ -79,7 +90,8 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.customerInfo}>Project:</Text>
                               </View>
                               <View style={first.p1sec122}>
-                                <Text style={{fontSize:11,fontWeight:400,fontFamily:'OpenSans'}}>192 <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}>channels</Text> <Text style={{color:'red',fontWeight:600}}>R</Text><Text style={{color:'green',fontWeight:600}}>G</Text><Text style={{color:'blue',fontWeight:600}}>B</Text> FULL <Text style={{color:'#5905B3',fontWeight:600,textTransform:'capitalize'}}>c</Text><Text style={{color:'green',fontWeight:600}}>o</Text><Text style={{color:'#5905B3',fontWeight:600}}>l</Text><Text style={{color:'blue',fontWeight:600}}>o</Text><Text style={{color:'#AB8B00',fontWeight:600}}>r</Text>
+                                <Text style={{fontSize:11,fontWeight:400,fontFamily:'OpenSans'}}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*84} <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}>channels</Text> 
+                                <Text style={{color:'red',fontWeight:600}}>R</Text><Text style={{color:'green',fontWeight:600}}>G</Text><Text style={{color:'blue',fontWeight:600}}>B</Text> FULL <Text style={{color:'#5905B3',fontWeight:600,textTransform:'capitalize'}}>c</Text><Text style={{color:'green',fontWeight:600}}>o</Text><Text style={{color:'#5905B3',fontWeight:600}}>l</Text><Text style={{color:'blue',fontWeight:600}}>o</Text><Text style={{color:'#AB8B00',fontWeight:600}}>r</Text>
                                  <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}> s</Text><Text style={{color:'green',fontWeight:600}}>o</Text><Text style={{color:'red',fontWeight:600}}>r</Text><Text style={{color:'red',fontWeight:600}}>t</Text><Text style={{color:'blue',fontWeight:600}}>e</Text><Text style={{color:'blue',fontWeight:600}}>r</Text> with Tri-Chroomatic <Text style={{color:'#5905B3',fontFamily:'OpenSans',fontWeight:700}}>CCD</Text> <Text style={{color:'red'}}>Camera</Text>,
                                 <Text style={{color:'#028DE9',fontFamily:'OpenSans',fontWeight:600}}> LED</Text> lamps and 
                                 <Text style={{color:'red' ,fontWeight:600 , textTransform:'capitalize'}}> real automatic calibration technology</Text></Text>
@@ -118,15 +130,15 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.tableheadertext}>1</Text>
                               </View>
                               <View style={styles.pricetableeachhead2}>
-                                <Text style={styles.tableheadertext1}>COLOR Sorter for channa dall with spares kit model: RGB-3</Text>
-                                <Text style={styles.tableheadertext1}>Capacity:3-4 Ton/Hr</Text>
+                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{Number(sharedvalue.quotesdata[quoteid].quotcap)}</Text>
+                                <Text style={styles.tableheadertext1}>Capacity: {Number(sharedvalue.quotesdata[quoteid].quotcap)}-{Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Ton/Hr</Text>
                                 <Text style={styles.tableheadertext12}>includes: spare parts kit</Text>
                               </View>
                               <View style={styles.pricetableeachhead1}>
                                 <Text style={styles.tableheadertext}>1Set</Text>
                               </View>
                               <View style={styles.pricetableeachhead3}>
-                                <Text style={styles.tableheadertext}>1450/-</Text>
+                                <Text style={styles.tableheadertext}>{Number(sharedvalue.quotesdata[quoteid].quotprice)}/-</Text>
                               </View>
                             </View>
 
@@ -142,7 +154,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.tableheadertext}></Text>
                               </View>
                               <View style={styles.pricetableeachhead3}>
-                                <Text style={styles.tableheadertext}>1450/-</Text>
+                                <Text style={styles.tableheadertext}>{Number(sharedvalue.quotesdata[quoteid].quotprice)}/-</Text>
                               </View>
                             </View>
 
@@ -229,7 +241,7 @@ const Comaasrgb = (props) => {
                         <Text style={styles.saleconditioninnerhead}>warranty</Text>
                         <Text style={styles.saleconditioninnertext}>
                         Warranty is effective for Year from the date of commissioning by our technician in customer's Factory. In delay of commissioning
-                         schedule or without commissioning, the warranty may be effective for 13 month from shipment date.
+                         schedule or without commissioning, the warranty may be effective for {Number(sharedvalue.quotesdata[quoteid].quotwarranty)} Years from shipment date.
                         </Text>
                         <Text style={styles.saleconditioninnertext1}>Warranty includes the replacement of the faulty parts.</Text>
                         <Text style={styles.saleconditioninnertext}>Warranty shall not include wear and tear parts and except basic spare parts supplied freely. as well as damages caused by buyer
@@ -275,7 +287,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>Nominal capacity</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>3-4(T/H)*</Text>
+                                <Text style={styles.destablecoltxt2}>{Number(sharedvalue.quotesdata[quoteid].quotcap)}-{Number(sharedvalue.quotesdata[quoteid].quotcap)+1}(T/H)*</Text>
                               </View>
                             </View>
 
@@ -284,7 +296,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>N Channels/Ejectors</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>192</Text>
+                                <Text style={styles.destablecoltxt2}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*84}</Text>
                               </View>
                             </View>
 
@@ -356,7 +368,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>Cameras: Each chute / Total</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>5/10nos</Text>
+                                <Text style={styles.destablecoltxt2}>2/{Number(sharedvalue.quotesdata[quoteid].quotcap)*2}nos</Text>
                               </View>
                             </View>
 
@@ -458,8 +470,9 @@ const Comaasrgb = (props) => {
 
                       </View>
                     </Page>
-                </Document>
-      // </PDFViewer>
+                </Document>}
+                </>
+      //  </PDFViewer>
     )
 };
 
