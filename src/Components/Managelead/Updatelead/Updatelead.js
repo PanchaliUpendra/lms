@@ -899,7 +899,7 @@ function Updatelead(){
                                 }))} >
                                         
                                         <option value='ULTIMA'>ULTIMA</option>
-                                        <option value='ULTRA'>ULTRA</option>
+                                        <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGBS'>RGBS</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>

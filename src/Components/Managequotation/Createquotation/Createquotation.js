@@ -304,7 +304,7 @@ function Createquotation(){
                                     }))}>
                                         <option value='' selected>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
-                                        <option value='ULTRA'>ULTRA</option>
+                                        <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGB'>RGB</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
@@ -336,13 +336,13 @@ function Createquotation(){
                                         <option value='5'>5</option>
                                         <option value='6'>6</option>
                                         <option value='7'>7</option>
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='8'>8</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='9'>9</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='10'>10</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='11'>11</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='12'>12</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='13'>13</option>}
-                                        {(quotinfo.quotmachinetype==='ULTRA'||quotinfo.quotmachinetype==='FALCON') && <option value='14'>14</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='8'>8</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='9'>9</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='10'>10</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='11'>11</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='12'>12</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='13'>13</option>}
+                                        {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='14'>14</option>}
                                     </select>
                                 </div>
                                 {/* price */}

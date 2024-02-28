@@ -61,21 +61,32 @@ function Viewlead(){
                                 <table>
                                     <thead>
                                         <tr className="table-head-row">
-                                            <th>REG.ID</th>
-                                            <th>customer</th>
-                                            <th>country</th>
-                                            <th>state</th>
-                                            <th>district</th>
-                                            <th>machine Type</th>
-                                            <th>number of chutes</th>
-                                            <th>created by</th>
+                                            <th>action</th>
+                                            {/* <th>customer</th> */}
+                                            <th>Contact Person</th>
+                                            <th>
+                                                <p>country |</p>
+                                                <p>State | district</p>
+                                            </th>
+                                            {/* <th>state</th>
+                                            <th>district</th> */}
+                                            <th>
+                                                <p>machine Type |</p>
+                                                <p>number of chutes</p>
+                                            </th>
+                                            {/* <th>number of chutes</th> */}
+                                            
                                             <th>next meeting date</th>
-                                            <th>latest title</th>
-                                            <th>latest sub-title</th>
+                                            <th>
+                                                <p>latest title |</p>
+                                                <p>latest sub-title</p>
+                                            </th>
+                                            {/* <th>latest sub-title</th> */}
                                             <th>latest comment</th>
                                             <th>manager</th>
                                             <th>employee</th>
-                                            <th>action</th>
+                                            <th>created by</th>
+                                            <th>REG.ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -85,56 +96,57 @@ function Viewlead(){
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker))).map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
-                                                    {/* REGID */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {lead}
-                                                        </p>
+                                                    {/* action */}
+                                                    <td >
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                            {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
+                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
+                                                        </div>
                                                     </td>
-                                                    {/* customer */}
+                                                    {/* contact person */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].contperson}
                                                         </p>
                                                     </td>
+                                                    
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].ofdcountry}</p>
-                                                    </td>
-                                                    {/* state */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        {/* <p className="view-manager-list-email">
-                                                            {sharedvalue.workersdata[worker].email}
-                                                        </p> */}
-                                                        
+                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].ofdcountry} |</p>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].ofdst}
+                                                            {sharedvalue.leadsdata[lead].ofdst} |
                                                         </p>
-                                                    </td>
-                                                    {/* district */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].ofddst}
                                                         </p>
                                                     </td>
+                                                    {/* state */}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        
+                                                        
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].ofdst}
+                                                        </p>
+                                                    </td> */}
+                                                    {/* district */}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].ofddst}
+                                                        </p>
+                                                    </td> */}
                                                     {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-email">
-                                                            {sharedvalue.leadsdata[lead].machinetype}
+                                                            {sharedvalue.leadsdata[lead].machinetype} - {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
                                                     </td>
                                                     {/* no.of chutes */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
-                                                    </td>
-                                                    {/* created by*/}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-'}
-                                                        </p>
-                                                    </td>
+                                                    </td> */}
+                                                    
                                                     {/* next meeting date*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
@@ -144,15 +156,18 @@ function Viewlead(){
                                                     {/* latest title*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].latesttitle[0]}
+                                                            {sharedvalue.leadsdata[lead].latesttitle[0]} |
                                                         </p>
-                                                    </td>
-                                                    {/* latest sub-title*/}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].latestsubtitle[0]}
                                                         </p>
                                                     </td>
+                                                    {/* latest sub-title*/}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].latestsubtitle[0]}
+                                                        </p>
+                                                    </td> */}
                                                     {/* latest comment*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
@@ -171,12 +186,17 @@ function Viewlead(){
                                                         {sharedvalue.leadsdata[lead].employeeid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].employeeid].name:'-'}
                                                         </p>
                                                     </td>
-                                                    {/* action */}
-                                                    <td >
-                                                        <div className='view-manager-list-acttion-icon'>
-                                                            {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
-                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
-                                                        </div>
+                                                    {/* created by*/}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-'}
+                                                        </p>
+                                                    </td>
+                                                    {/* REGID */}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {lead}
+                                                        </p>
                                                     </td>
                                                 </tr>
                                             ))

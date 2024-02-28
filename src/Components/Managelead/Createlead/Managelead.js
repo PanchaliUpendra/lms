@@ -815,7 +815,7 @@ function Managelead(){
                                 }))} >
                                         <option value=''>Select</option>
                                         <option value='ULTIMA'>ULTIMA</option>
-                                        <option value='ULTRA'>ULTRA-S</option>
+                                        <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGBS'>RGBS</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
