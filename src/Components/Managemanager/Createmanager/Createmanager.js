@@ -28,6 +28,7 @@ function Createmanager(){
     const [formdetails,setformdetails]=useState({//form details will take here
         name:'',
         email:'',
+        phnnumber:'',
         password:'',
         cnfpassword:'',
         role:'manager'
@@ -65,6 +66,7 @@ function Createmanager(){
                         "uid":user.uid,
                         "name":formdetails.name,
                         "email":formdetails.email,
+                        "phnnumber":formdetails.phnnumber,
                         "role":formdetails.role,
                         "password":formdetails.password,
                         "disable":false,
@@ -77,6 +79,7 @@ function Createmanager(){
                 setformdetails({
                     name:'',
                     email:'',
+                    phnnumber:'',
                     password:'',
                     cnfpassword:'',
                     role:'manager'
@@ -142,6 +145,13 @@ function Createmanager(){
                                 <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     email:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>Phone Number:<span>*</span></label>
+                                <input type='number' value={formdetails.phnnumber} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    phnnumber:e.target.value
                                 }))}/>
                             </div>
                             <div>

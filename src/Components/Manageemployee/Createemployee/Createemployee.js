@@ -27,6 +27,8 @@ function Createemployee(){
     const [formdetails,setformdetails]=useState({//form details will take here
         name:'',
         email:'',
+        phnnumber:'',
+        ecat:'both',
         password:'',
         cnfpassword:'',
         role:'employee',
@@ -63,6 +65,8 @@ function Createemployee(){
                         "uid":user.uid,
                         "name":formdetails.name,
                         "email":formdetails.email,
+                        "ecat":formdetails.ecat,
+                        "phnnumber":formdetails.phnnumber,
                         "role":formdetails.role,
                         "password":formdetails.password,
                         "disable":false,
@@ -75,6 +79,8 @@ function Createemployee(){
                 setformdetails({
                     name:'',
                     email:'',
+                    ecat:'both',
+                    phnnumber:'',
                     password:'',
                     cnfpassword:'',
                     role:'employee'
@@ -141,6 +147,24 @@ function Createemployee(){
                                     ...prev,
                                     email:e.target.value
                                 }))}/>
+                            </div>
+                            <div>
+                                <label>employee Phone Number<span>*</span></label>
+                                <input type='number' value={formdetails.phnnumber} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    phnnumber:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>Employee Category<span>*</span></label>
+                                <select value={formdetails.ecat} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    ecat:e.target.value
+                                }))}>
+                                    <option value='sales'>Sales</option>
+                                    <option value='service'>Service</option>
+                                    <option value='both'>Both</option>
+                                </select>
                             </div>
                             <div>
                                 <label>password<span>*</span></label>

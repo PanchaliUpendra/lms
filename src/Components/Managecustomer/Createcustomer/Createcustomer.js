@@ -129,6 +129,8 @@ function Createcustomer(){
                                 <h1>create Company profile</h1>
                                 <p>enter email and password to create profile</p>
                             </div>
+
+                            {/* all fields starts from here */}
                             <div>
                                 <label>company name<span>*</span></label>
                                 <input type='text' value={formdetails.cname} onChange={(e)=>setformdetails(prev=>({
@@ -165,7 +167,7 @@ function Createcustomer(){
                                 }))}/>
                             </div>
                             <button onClick={()=>handleregistration()}>Create Company profile</button>
-
+                            {/* all fields ends here */}
                         </div>
                         {/* form completed here */}
                     </div>

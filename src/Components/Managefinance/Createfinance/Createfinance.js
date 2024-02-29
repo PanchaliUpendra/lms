@@ -27,6 +27,7 @@ function Createfinance(){
     const [formdetails,setformdetails]=useState({//form details will take here
         name:'',
         email:'',
+        phnnumber:'',
         password:'',
         cnfpassword:'',
         role:'finance'
@@ -63,6 +64,7 @@ function Createfinance(){
                         "uid":user.uid,
                         "name":formdetails.name,
                         "email":formdetails.email,
+                        "phnnumber":formdetails.phnnumber,
                         "role":formdetails.role,
                         "password":formdetails.password,
                         "disable":false,
@@ -75,6 +77,7 @@ function Createfinance(){
                 setformdetails({
                     name:'',
                     email:'',
+                    phnnumber:'',
                     password:'',
                     cnfpassword:'',
                     role:'finance'
@@ -128,17 +131,24 @@ function Createfinance(){
                                 <p>enter email and password to create profile</p>
                             </div>
                             <div>
-                                <label>employee name<span>*</span></label>
+                                <label>manager name<span>*</span></label>
                                 <input type='text' value={formdetails.name} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     name:e.target.value
                                 }))}/>
                             </div>
                             <div>
-                                <label>employee email<span>*</span></label>
+                                <label>manager email<span>*</span></label>
                                 <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     email:e.target.value
+                                }))}/>
+                            </div>
+                            <div>
+                                <label>manager phone number<span>*</span></label>
+                                <input type='number' value={formdetails.phnnumber} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    phnnumber:e.target.value
                                 }))}/>
                             </div>
                             <div>

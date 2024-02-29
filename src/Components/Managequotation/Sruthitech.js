@@ -9,9 +9,14 @@ import OpenSansSemibold from "../../Assets/open-sans/OpenSans-Semibold.ttf";
 import numWords from 'num-words';
 import Comaaslogo from '../../Assets/comaaslogo.png';
 
+import sruthilogo from '../../Assets/sruthilogo.png';
+import stamp from '../../Assets/stamp.jpeg';
+
 
 const Sruthitech = (props) => {
     const sharedvalue = props.sharedvalue;
+    // const sharedvalue = useContext(MyContext);
+    // const {quoteid} = useParams();
     // const [quoteid,setquoteid] = useState(props.quoteid);
     //changing number to text
     const quoteid = props.quoteid
@@ -76,13 +81,22 @@ const Sruthitech = (props) => {
                 {/* first page desinging */}
                 <Page size='A4' style={styles.page}>
                     <View style={styles.section}>
-                        <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
-                        <Text style={styles.sruthitechhead}>Sruthi technologies</Text>
-                        <Text style={{fontSize:10, marginTop:4, fontWeight:400, fontFamily:'OpenSans',textAlign:'right'}}>GST No:37AAGFL0910L1ZC</Text>
-                        <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                        <View style={{display:'flex',flexDirection:'row', alignItems:'center',justifyContent:'space-between',
+                            paddingBottom:10, borderBottom:0.5,borderBottomColor:'gray'}}>
+                            <Image src={sruthilogo} style={{width:250,height:'auto'}}/>
+                            {/* <Text style={styles.sruthitechhead}>Sruthi technologies</Text> */}
+                            <View style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:7}}>
+                                <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
+                                <Text style={{fontSize:10, marginTop:4, fontWeight:400, fontFamily:'OpenSans',textAlign:'right'}}>GST No:37AAGFL0910L1ZC</Text>
+                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                            </View>
+                        </View>
+
+                        
                         <Text style={styles.quotationhead}>Quotation</Text>
-                        <Text style={{fontWeight:600,fontFamily:'OpenSans', fontSize:10,textAlign:'right'}}>Q NO. <Text style={{fontWeight:400}}>S360-{curryear}-{quoteid}</Text></Text>
                         <Text style={{fontWeight:400,fontFamily:'OpenSans', fontSize:10,textAlign:'right',marginTop:2}}>Date: {todaydate}</Text>
+                        <Text style={{fontWeight:600,fontFamily:'OpenSans', fontSize:10,textAlign:'right'}}>Q.NO. <Text style={{fontWeight:400}}>S360-{curryear}-{quoteid}</Text></Text>
+                        
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, marginTop:3}}>
                             <Text>To</Text>
@@ -93,7 +107,7 @@ const Sruthitech = (props) => {
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
                             <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
-                            <Text>Mobile no.: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text>
+                            {/* <Text>Mobile no.: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text> */}
                         </View>
 
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400,marginTop:3}}>Sir,</Text>
@@ -182,8 +196,8 @@ const Sruthitech = (props) => {
                         </View>
 
                         <View style={styles.sruthibottomcon}>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'red',marginTop:4}}>Email: sun.sortex@gmail.com</Text>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'#D904C7',marginTop:4}}>Email: <Text style={{color:'blue' ,textDecoration:'underline'}}>sun.sortex@gmail.com</Text> , <Text style={{color:'blue' ,textDecoration:'underline'}}>https://ultrasorters.com</Text> , www.sruthitechnologies.com</Text>
                         </View>
                         
                     </View>
@@ -192,9 +206,16 @@ const Sruthitech = (props) => {
                 {/* second page designing */}
                 <Page size='A4' style={styles.page}>
                     <View style={styles.section}>
-                        <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
-                        <Text style={styles.sruthitechhead}>Sruthi technologies</Text>
-                        <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right'}}>Mobile:9440031617/8332999919</Text>
+                        <View style={{display:'flex',flexDirection:'row', alignItems:'center',justifyContent:'space-between',
+                            paddingBottom:10, borderBottom:0.5,borderBottomColor:'gray'}}>
+                            <Image src={sruthilogo} style={{width:250,height:'auto'}}/>
+                            {/* <Text style={styles.sruthitechhead}>Sruthi technologies</Text> */}
+                            <View style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:7}}>
+                                <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
+                                {/* <Text style={{fontSize:10, marginTop:4, fontWeight:400, fontFamily:'OpenSans',textAlign:'right'}}>GST No:37AAGFL0910L1ZC</Text> */}
+                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                            </View>
+                        </View>
 
                         <Text style={{fontFamily:'OpenSans', fontSize:11, fontWeight:600, textDecoration:'underline', marginTop:30}}>Payment</Text>
 
@@ -206,10 +227,7 @@ const Sruthitech = (props) => {
 
                         <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:7}}>*** Note: USD vs Rupee conversion changes, Price also will change</Text>
                         
-                        <View style={styles.sruthibottomcon}>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'red',marginTop:4}}>Email: sun.sortex@gmail.com</Text>
-                        </View>
+                        
 
                         <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:11, textDecoration:'underline'}}>1. Bank Details: </Text>
                         <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:10, marginTop:4}}>Sruthi Technologies, HDFC Bank, Account.No.50200030537582, Ifsc-HDFC0001639, Vivekananda Nagar, Kukatpally.</Text>
@@ -234,8 +252,13 @@ const Sruthitech = (props) => {
                             90 days from date of advance amount.
                         </Text>
 
-                        <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:11,marginTop:10}}>For Sruthi Technologies.</Text>
-                        <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
+                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11,marginTop:10}}>For Sruthi Technologies.</Text>
+                        <Image src={stamp} style={{width:100,height:'auto' , marginTop:10, marginLeft:10}}/>
+
+                        <View style={styles.sruthibottomcon}>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'#D904C7',marginTop:4}}>Email: <Text style={{color:'blue' ,textDecoration:'underline'}}>sun.sortex@gmail.com</Text> , <Text style={{color:'blue' ,textDecoration:'underline'}}>https://ultrasorters.com</Text> , www.sruthitechnologies.com</Text>
+                        </View>
                     </View>
                 </Page>
             </Document>
@@ -392,7 +415,7 @@ const styles = StyleSheet.create({
         margin: 20,
         padding: 10,
         flexGrow: 1,
-        border:1,
+        border:0,
         borderColor:'black',
         position:'relative'
       },
