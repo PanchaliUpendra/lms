@@ -53,9 +53,9 @@ function Eachticket(){
                                 </div>
                                 <div className='top-eachlead-buttons-inner'>
                                     {sharedvalue.ticketsdata[tktid].status==='open' && <button onClick={()=>navigate(`/manageticket/updateticket/${tktid}`)}>edit</button>}
-                                    <button>
+                                    {sharedvalue.ticketsdata[tktid].fileurl!=='' && <button>
                                         <a href={sharedvalue.ticketsdata[tktid].fileurl} rel="noreferrer" target="_blank">Open File</a>
-                                    </button>
+                                    </button>}
                                 </div>
                             </div>
                             {/* leader will completes here */}

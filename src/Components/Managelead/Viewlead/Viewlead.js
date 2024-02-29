@@ -62,7 +62,7 @@ function Viewlead(){
                                     <thead>
                                         <tr className="table-head-row">
                                             <th>action</th>
-                                            {/* <th>customer</th> */}
+                                            <th>company name</th>
                                             <th>Contact Person</th>
                                             <th>
                                                 <p>country |</p>
@@ -102,6 +102,12 @@ function Viewlead(){
                                                             {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
                                                         </div>
+                                                    </td>
+                                                    {/* company name */}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].custcompanyname}
+                                                        </p>
                                                     </td>
                                                     {/* contact person */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>

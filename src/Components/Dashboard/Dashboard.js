@@ -238,22 +238,33 @@ function Dashboard(){
                             <div className="view-list-table-con">
                                 <table>
                                     <thead>
-                                        <tr className="table-head-row">
-                                            <th>REG.ID</th>
-                                            <th>customer</th>
-                                            <th>country</th>
-                                            <th>state</th>
-                                            <th>district</th>
-                                            <th>machine type</th>
-                                            <th>number of chutes</th>
-                                            <th>created by</th>
+                                    <tr className="table-head-row">
+                                            <th>action</th>
+                                            <th>company name</th>
+                                            <th>Contact Person</th>
+                                            <th>
+                                                <p>country |</p>
+                                                <p>State | district</p>
+                                            </th>
+                                            {/* <th>state</th>
+                                            <th>district</th> */}
+                                            <th>
+                                                <p>machine Type |</p>
+                                                <p>number of chutes</p>
+                                            </th>
+                                            {/* <th>number of chutes</th> */}
+                                            
                                             <th>next meeting date</th>
-                                            <th>latest title</th>
-                                            <th>latest sub-title</th>
+                                            <th>
+                                                <p>latest title |</p>
+                                                <p>latest sub-title</p>
+                                            </th>
+                                            {/* <th>latest sub-title</th> */}
                                             <th>latest comment</th>
                                             <th>manager</th>
                                             <th>employee</th>
-                                            <th>action</th>
+                                            <th>created by</th>
+                                            <th>REG.ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -264,56 +275,63 @@ function Dashboard(){
                                             .slice(0,countleads)
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
-                                                    {/* REGID */}
+                                                    {/* action */}
+                                                    <td >
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                            {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
+                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
+                                                        </div>
+                                                    </td>
+                                                    {/* company name */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {lead}
+                                                            {sharedvalue.leadsdata[lead].custcompanyname}
                                                         </p>
                                                     </td>
-                                                    {/* customer */}
+                                                    {/* contact person */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].contperson}
                                                         </p>
                                                     </td>
+                                                    
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].ofdcountry}</p>
-                                                    </td>
-                                                    {/* state */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        {/* <p className="view-manager-list-email">
-                                                            {sharedvalue.workersdata[worker].email}
-                                                        </p> */}
-                                                        
+                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].ofdcountry} |</p>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].ofdst}
+                                                            {sharedvalue.leadsdata[lead].ofdst} |
                                                         </p>
-                                                    </td>
-                                                    {/* district */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].ofddst}
                                                         </p>
                                                     </td>
+                                                    {/* state */}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        
+                                                        
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].ofdst}
+                                                        </p>
+                                                    </td> */}
+                                                    {/* district */}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].ofddst}
+                                                        </p>
+                                                    </td> */}
                                                     {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-email">
-                                                            {sharedvalue.leadsdata[lead].machinetype}
+                                                            {sharedvalue.leadsdata[lead].machinetype} - {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
                                                     </td>
                                                     {/* no.of chutes */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
-                                                    </td>
-                                                    {/* created by*/}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-'}
-                                                        </p>
-                                                    </td>
+                                                    </td> */}
+                                                    
                                                     {/* next meeting date*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
@@ -323,15 +341,18 @@ function Dashboard(){
                                                     {/* latest title*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].latesttitle[0]}
+                                                            {sharedvalue.leadsdata[lead].latesttitle[0]} |
                                                         </p>
-                                                    </td>
-                                                    {/* latest sub-title*/}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].latestsubtitle[0]}
                                                         </p>
                                                     </td>
+                                                    {/* latest sub-title*/}
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].latestsubtitle[0]}
+                                                        </p>
+                                                    </td> */}
                                                     {/* latest comment*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
@@ -350,13 +371,17 @@ function Dashboard(){
                                                         {sharedvalue.leadsdata[lead].employeeid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].employeeid].name:'-'}
                                                         </p>
                                                     </td>
-                                                    {/* action */}
-                                                    <td >
-                                                        <div className='view-manager-list-acttion-icon'>
-                                                            {(sharedvalue.leadsdata[lead].custstatus==='Closed' || sharedvalue.leadsdata[lead].custstatus==='Lost')===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
-                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
-
-                                                        </div>
+                                                    {/* created by*/}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-'}
+                                                        </p>
+                                                    </td>
+                                                    {/* REGID */}
+                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {lead}
+                                                        </p>
                                                     </td>
                                                 </tr>
                                             ))
@@ -406,20 +431,22 @@ function Dashboard(){
                                 <table>
                                     <thead>
                                         <tr className="table-head-row">
-                                            <th>Tkt.ID</th>
-                                            <th>country</th>
-                                            <th>state</th>
-                                            <th>district</th>
-                                            <th>customer</th>
+                                            <th>status</th>
+                                            <th>action</th>
+                                            <th>Company Name</th>
+                                            <th>
+                                                <p>country |</p>
+                                                <p>state | district</p>
+                                            </th>
+                                            
                                             <th>call type</th>
                                             <th>category</th>
                                             <th>priority</th>
-                                            <th>file</th>
                                             <th>manager</th>
                                             <th>employee</th>
-                                            <th>status</th>
+                                            <th>file</th>
                                             <th>Comment</th>
-                                            <th>action</th>
+                                            <th>Tkt.ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -432,29 +459,27 @@ function Dashboard(){
                                             .slice(0,counttickets)
                                             .map((ticket,idx)=>(
                                                 <tr key={idx}>
-                                                    {/* Tkt ID */}
+                                                    {/* status */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {ticket}
+                                                        <p className={`${(sharedvalue.ticketsdata[ticket].status==='open')?'active-ticket-view-condition':sharedvalue.ticketsdata[ticket].status==='close'?'inactive-ticket-view-condition':'resolve-ticket-view-condition'}`}>
+                                                            {(sharedvalue.ticketsdata[ticket].status==='open')?'Active':sharedvalue.ticketsdata[ticket].status==='close'?'Closed':'Resolved'}
                                                         </p>
                                                     </td>
-                                                    {/* country */}
-                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.ticketsdata[ticket].ctktcountry}
-                                                        </p>
-                                                    </td>
-                                                    {/* state */}
-                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.ticketsdata[ticket].ctktstate}
-                                                        </p>
-                                                    </td>
-                                                    {/* district */}
-                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.ticketsdata[ticket].ctktdist}
-                                                        </p>
+                                                    {/* action */}
+                                                    <td>
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                        {sharedvalue.ticketsdata[ticket].status==='open' && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>}
+                                                        {sharedvalue.ticketsdata[ticket].status==='open' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>}
+                                                        {sharedvalue.ticketsdata[ticket].status==='close' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeleteticket(ticket)}/>}
+                                                            {sharedvalue.ticketsdata[ticket].status==='resolved' && ((sharedvalue.ticketsdata[ticket].ctktcustname!=='other' &&
+                                                             sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].uid )||
+                                                             (sharedvalue.ticketsdata[ticket].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[ticket].createdbyid)) &&
+                                                              <p className="feedback-button" onClick={()=>setfeedbackform(prev=>({
+                                                                ...prev,
+                                                                active:true,
+                                                                tktid:ticket
+                                                              }))}>feedback</p>}
+                                                        </div>
                                                     </td>
                                                     {/* customer */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
@@ -462,10 +487,36 @@ function Dashboard(){
                                                             {sharedvalue.ticketsdata[ticket].ctktcustname==='other'?
                                                             sharedvalue.ticketsdata[ticket].ctktothercustname
                                                             :
-                                                            sharedvalue.ticketsdata[ticket].ctktcustname!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].cname:''
+                                                            sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].cname
                                                             }
                                                         </p>
                                                     </td>
+                                                    {/* country */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.ticketsdata[ticket].ctktcountry} |
+                                                        </p>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.ticketsdata[ticket].ctktstate} |
+                                                        </p>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.ticketsdata[ticket].ctktdist}
+                                                        </p>
+                                                    </td>
+                                                    
+                                                    {/* state */}
+                                                    {/* <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.ticketsdata[ticket].ctktstate}
+                                                        </p>
+                                                    </td> */}
+                                                    {/* district */}
+                                                    {/* <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.ticketsdata[ticket].ctktdist}
+                                                        </p>
+                                                    </td> */}
+                                                    
                                                     {/* call type */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
@@ -484,14 +535,7 @@ function Dashboard(){
                                                             {sharedvalue.ticketsdata[ticket].ctktpriority}
                                                         </p>
                                                     </td>
-                                                    {/* view file */}
-                                                    <td>
-                                                        <div className='view-manager-list-acttion-icon'>
-                                                            <a href={sharedvalue.ticketsdata[ticket].fileurl} rel="noreferrer" target="_blank">
-                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
-                                                            </a>
-                                                        </div>
-                                                    </td>
+                                                    
                                                     {/* manager */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
@@ -504,11 +548,13 @@ function Dashboard(){
                                                         {sharedvalue.ticketsdata[ticket].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktemployee].name:'-'}
                                                         </p>
                                                     </td>
-                                                     {/* status */}
-                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className={`${(sharedvalue.ticketsdata[ticket].status==='open')?'active-ticket-view-condition':sharedvalue.ticketsdata[ticket].status==='close'?'inactive-ticket-view-condition':'resolve-ticket-view-condition'}`}>
-                                                            {(sharedvalue.ticketsdata[ticket].status==='open')?'Active':sharedvalue.ticketsdata[ticket].status==='close'?'Closed':'Resolved'}
-                                                        </p>
+                                                     {/* view file */}
+                                                    <td>
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                            <a href={sharedvalue.ticketsdata[ticket].fileurl} rel="noreferrer" target="_blank">
+                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
+                                                            </a>
+                                                        </div>
                                                     </td>
                                                      {/* working status */}
                                                      <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
@@ -516,21 +562,12 @@ function Dashboard(){
                                                             {sharedvalue.ticketsdata[ticket].workingstatus}
                                                         </p>
                                                     </td>
-                                                     {/* action */}
-                                                     <td>
-                                                        <div className='view-manager-list-acttion-icon'>
-                                                        {sharedvalue.ticketsdata[ticket].status==='open' && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='open' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='close' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeleteticket(ticket)}/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='resolved' &&
-                                                         ((sharedvalue.ticketsdata[ticket].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].uid )||
-                                                         (sharedvalue.ticketsdata[ticket].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[ticket].createdbyid)) && 
-                                                         <p onClick={()=>setfeedbackform(prev=>({
-                                                            ...prev,
-                                                            active:true,
-                                                            tktid:ticket
-                                                          }))} className="feedback-button"  >feedback</p>}
-                                                        </div>
+                                                     
+                                                    {/* Tkt ID */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                            {ticket}
+                                                        </p>
                                                     </td>
                                                 </tr>
                                             ))

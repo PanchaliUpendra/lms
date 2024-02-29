@@ -33,7 +33,7 @@ function Createticket(){
     const [pleasewait,setpleasewait] = useState(false);
     // selected ticket information
     const [ticketinfo,setticketinfo] = useState({
-        ctktcountry:'',
+        ctktcountry:'India',
         ctktstate:'',
         ctktdist:'',
         ctktcustname:'',
@@ -102,9 +102,13 @@ function Createticket(){
                 ticketinfo.ctktpriority!=='' 
             ){
                 const result = await fetchtktid();
-                const storageref = ref(storage,ctktfile.name);
-                await uploadBytes(storageref,ctktfile);
-                const fileurl= await downloadfileurl();
+                var fileurl ='';
+                if(ctktfile!==''){
+                    const storageref = ref(storage,ctktfile.name);
+                    await uploadBytes(storageref,ctktfile);
+                    fileurl= await downloadfileurl();
+                }
+                
                 //adding the data here
                 if(result>=1109699 && fileurl!==null){
                     await batch.update(createtickets,{
@@ -161,7 +165,7 @@ function Createticket(){
                     await batch.commit();
                     loginsuccess();//successfully added the data
                     setticketinfo({
-                        ctktcountry:'',
+                        ctktcountry:'India',
                         ctktstate:'',
                         ctktdist:'',
                         ctktcustname:'',
@@ -211,10 +215,12 @@ function Createticket(){
                         {/* form starts from here */}
                         <div className="create-ticket-form-starts">
                             <div>
-                                <label>country</label>
+                                <label>country<span style={{color:'red'}}>*</span></label>
                                 {/* choosen country */}
                                 <select value={ticketinfo.ctktcountry} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
+                                    ctktstate:'',
+                                    ctktdist:'',
                                     ctktcountry:e.target.value
                                 }))}>
                                     <option value='' selected>Select country</option>
@@ -226,7 +232,7 @@ function Createticket(){
                                 </select>
                             </div>
                             <div>
-                                <label>state</label>
+                                <label>state<span style={{color:'red'}}>*</span></label>
                                 {/* if selected country is india  */}
                                 {
                                     ticketinfo.ctktcountry==='India' &&
@@ -250,7 +256,9 @@ function Createticket(){
                                 }
                             </div>
                             <div>
-                                <label>district</label>
+
+                                {ticketinfo.ctktcountry==='India' && ticketinfo.ctktstate!=='' && <label>district<span style={{color:'red'}}>*</span></label> }
+                                {ticketinfo.ctktcountry!=='India' && <label>district<span style={{color:'red'}}>*</span></label> }
                                 {/* if selected country is india */}
                                 {
                                     ticketinfo.ctktcountry==='India' && ticketinfo.ctktstate!=='' &&
@@ -276,12 +284,12 @@ function Createticket(){
                             
                             {sharedvalue.role==='customer'?
                                 <div>
-                                    <label>Company Name*</label>
+                                    <label>Company Name<span style={{color:'red'}}>*</span></label>
                                     <input type='text' value={sharedvalue.workersdata[sharedvalue.uid].cname} readOnly />
                                 </div>
                                 :
                                 <div>
-                                    <label>Company Name*</label>
+                                    <label>Company Name<span style={{color:'red'}}>*</span></label>
                                     <select value={ticketinfo.ctktcustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktcustname:e.target.value,
@@ -302,7 +310,7 @@ function Createticket(){
                             }
                             {ticketinfo.ctktcustname==='other' &&
                             <div>
-                                <label>Other Company Name*</label>
+                                <label>Other Company Name<span style={{color:'red'}}>*</span></label>
                                 <input type='text' value={ticketinfo.ctktothercustname} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktothercustname:e.target.value
@@ -328,7 +336,7 @@ function Createticket(){
                                 </div>
                             {/* call type starts here */}
                             <div>
-                                <label>Call type*</label>
+                                <label>Call type<span style={{color:'red'}}>*</span></label>
                                 <select value={ticketinfo.ctktcalltype} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktcalltype:e.target.value
@@ -345,7 +353,7 @@ function Createticket(){
                             {
                                 (ticketinfo.ctktcalltype==='Charge' || ticketinfo.ctktcalltype==='Free') &&
                                 <div>
-                                    <label>Category*</label>
+                                    <label>Category<span style={{color:'red'}}>*</span></label>
                                     <select value={ticketinfo.ctktcate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktcate:e.target.value
@@ -369,7 +377,7 @@ function Createticket(){
                             {/* category completed */}
                             {/* description starts here */}
                                     <div>
-                                        <label>Description*</label>
+                                        <label>Description</label>
                                         <textarea placeholder="Description" onChange={(e)=>setticketinfo(prev=>({
                                             ...prev,
                                             ctktdes:e.target.value
@@ -377,7 +385,7 @@ function Createticket(){
                                     </div>
                             {/* description ends here */}
                                     <div>
-                                        <label>Priority*</label>
+                                        <label>Priority<span style={{color:'red'}}>*</span></label>
                                         <select value={ticketinfo.ctktpriority} onChange={(e)=>setticketinfo(prev=>({
                                             ...prev,
                                             ctktpriority:e.target.value
