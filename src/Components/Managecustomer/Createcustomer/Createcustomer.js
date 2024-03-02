@@ -26,7 +26,12 @@ function Createcustomer(){
     const [formdetails,setformdetails]=useState({//form details will take here
         cname:'',
         name:'',
+        cNum:'',
         email:'',
+        cMdate:'',
+        cmachinetype:'',        
+        cSnum:'',   
+        cIdate:'', 
         password:'',
         cnfpassword:'',
         role:'customer'
@@ -67,7 +72,7 @@ function Createcustomer(){
                         "password":formdetails.password,
                         "disable":false,
                         "managerid":''
-                    }});
+                    }}); // need to update backend with new fields
                     await batch.commit();
                 }
                 await signOut(secondauth)
@@ -145,6 +150,13 @@ function Createcustomer(){
                                     name:e.target.value
                                 }))}/>
                             </div>
+                            {/* <div>
+                                <label>contact Number<span>*</span></label>
+                                <input type='numnber' value={formdetails.cNum} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cNum:e.target.value
+                                }))}/>
+                            </div> */}
                             <div>
                                 <label>contact email<span>*</span></label>
                                 <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
@@ -152,6 +164,40 @@ function Createcustomer(){
                                     email:e.target.value
                                 }))}/>
                             </div>
+                            {/* <div>
+                                    <label>Machine Type</label>
+                                    <select value={formdetails.cmachinetype} onChange={(e)=>setformdetails(prev=>({
+                                        ...prev,
+                                        cmachinetype:e.target.value
+                                    }))}>
+                                        <option value='' selected>Select Machine Type</option>
+                                        <option value='ULTIMA'>ULTIMA</option>
+                                        <option value='ULTRA-S'>ULTRA-S</option>
+                                        <option value='RGB'>RGB</option>
+                                        <option value='FALCON'>FALCON</option>
+                                    </select>
+                            </div> */}
+                            {/* <div>
+                                <label>Manufacture date</label>
+                                <input type='date' value={formdetails.cMdate} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cMdate:e.target.value
+                                }))}/>
+                            </div> */}
+                            {/* <div>
+                                <label>Serial Number</label>
+                                <input type='number' value={formdetails.cSnum} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cSnum:e.target.value
+                                }))}/>
+                            </div> */}
+                            {/* <div>
+                                <label>Installation Date</label>
+                                <input type='date' value={formdetails.cIdate} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    cIdate:e.target.value
+                                }))}/>
+                            </div> */}
                             <div>
                                 <label>password<span>*</span></label>
                                 <input type='password' value={formdetails.password} onChange={(e)=>setformdetails(prev=>({

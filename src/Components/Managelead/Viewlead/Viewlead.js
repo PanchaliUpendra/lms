@@ -62,8 +62,8 @@ function Viewlead(){
                                     <thead>
                                         <tr className="table-head-row">
                                             <th>action</th>
-                                            <th>company name</th>
-                                            <th>Contact Person</th>
+                                            <th><p>Company | Contact Person| Mobile</p></th>
+                                            {/* <th>Contact Person</th> */}
                                             <th>
                                                 <p>country |</p>
                                                 <p>State | district</p>
@@ -105,16 +105,24 @@ function Viewlead(){
                                                     </td>
                                                     {/* company name */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                        {/* <p className="view-manager-list-name"> */}
+                                                            {/* {sharedvalue.leadsdata[lead].custcompanyname} */}
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].custcompanyname}
+                                                            {sharedvalue.leadsdata[lead].custcompanyname} |
                                                         </p>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].contperson}|
+                                                        </p>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].contpersonemail} |
+                                                        </p> 
                                                     </td>
                                                     {/* contact person */}
-                                                    <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
+                                                    {/* <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].contperson}
                                                         </p>
-                                                    </td>
+                                                    </td> */}
                                                     
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>

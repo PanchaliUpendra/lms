@@ -138,13 +138,14 @@ function Viewquotation(){
                                                     <th>quotation customer</th>
                                                     <th>
                                                          <p>machine model |</p>
-                                                         <p>chute</p>
+                                                         <p>chute|</p>
+                                                         <p>type</p>
                                                     </th>
-                                                    <th>quotation type</th>
+                                                    <th>price</th>
                                                     {/* <th>usertype</th> */}
                                                     {/* <th>chute</th> */}
-                                                    <th>type</th>
-                                                    <th>price</th>
+                                                    {/* <th>type</th> */}
+                                                    <th>quotation type</th>
                                                     <th>payment</th>
                                                     <th>warranty</th>
                                                     <th>company name</th>
@@ -179,10 +180,10 @@ function Viewquotation(){
                                                                                 subject="add your subject "
                                                                                 body="here is the content of the body"
                                                                             > <ShareIcon sx={{color:'grey',cursor:'pointer'}}  fontSize="small"/></EmailShareButton> }
-                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && <PDFDownloadLink document={<Comaasrgb quoteid={quote} sharedvalue={sharedvalue}/>} fileName="dynamic.pdf">
+                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && <PDFDownloadLink document={<Comaasrgb quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
                                                                         <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" />
                                                                     </PDFDownloadLink> }
-                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && <PDFDownloadLink document={<Sruthitech quoteid={quote} sharedvalue={sharedvalue}/>} fileName="dynamic.pdf">
+                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && <PDFDownloadLink document={<Sruthitech quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
                                                                         <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" />
                                                                     </PDFDownloadLink> }
                                                                     {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <p className="close-quotation-btn" onClick={()=>setworkerdelete(prev=>({
@@ -203,37 +204,38 @@ function Viewquotation(){
                                                             {/* 3. machine model */}
                                                             <td>
                                                                 <p className="view-manager-list-name">
-                                                                    {sharedvalue.quotesdata[quote].quotmachinetype} - {sharedvalue.quotesdata[quote].quotcap}
+                                                                    {sharedvalue.quotesdata[quote].quotmachinetype}{sharedvalue.quotesdata[quote].quotcap} |{sharedvalue.quotesdata[quote].quotprodtype}
                                                                 </p>
                                                             </td>
-                                                            {/* 4.quotation type*/}
+                                                            {/* 4. price*/}
                                                             <td>
                                                                 <p className="view-manager-list-name">
-                                                                    {sharedvalue.quotesdata[quote].quottype}
+                                                                    {sharedvalue.quotesdata[quote].quotprice}
                                                                 </p>
                                                             </td>
                                                             {/* 5. usertype */}
                                                             {/* <td>
                                                                 <p className="view-manager-list-name">
-                                                                    -
+                                                                -
                                                                 </p>
                                                             </td> */}
                                                             {/* 6.chute */}
                                                             {/* <td>
                                                                 <p className="view-manager-list-name">
-                                                                    {sharedvalue.quotesdata[quote].quotcap}
+                                                                {sharedvalue.quotesdata[quote].quotcap}
                                                                 </p>
                                                             </td> */}
                                                             {/* 8.product type */}
-                                                            <td>
+                                                            {/* <td>
                                                                 <p className="view-manager-list-name">
                                                                     {sharedvalue.quotesdata[quote].quotprodtype}
                                                                 </p>
-                                                            </td>
-                                                            {/* 7. price */}
+                                                            </td> */}
+                                                            {/* 7. Quotation type */}
+                                                            {/* 7. Quotation type */}
                                                             <td>
                                                                 <p className="view-manager-list-name">
-                                                                    {sharedvalue.quotesdata[quote].quotprice}
+                                                                    {sharedvalue.quotesdata[quote].quottype}
                                                                 </p>
                                                             </td>
                                                             

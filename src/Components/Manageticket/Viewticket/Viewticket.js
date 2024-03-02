@@ -162,6 +162,7 @@ function Viewticket(){
                                         <tr className="table-head-row">
                                             <th>status</th>
                                             <th>action</th>
+                                            <th>employee</th>
                                             <th>Company Name</th>
                                             <th>
                                                 <p>country |</p>
@@ -172,7 +173,6 @@ function Viewticket(){
                                             <th>category</th>
                                             <th>priority</th>
                                             <th>manager</th>
-                                            <th>employee</th>
                                             <th>file</th>
                                             <th>Comment</th>
                                             <th>Tkt.ID</th>
@@ -208,6 +208,12 @@ function Viewticket(){
                                                                 tktid:ticket
                                                               }))}>feedback</p>}
                                                         </div>
+                                                    </td>
+                                                    {/* ctktemployee */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                        {sharedvalue.ticketsdata[ticket].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktemployee].name:'-'}
+                                                        </p>
                                                     </td>
                                                     {/* customer */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
@@ -270,12 +276,7 @@ function Viewticket(){
                                                             {sharedvalue.ticketsdata[ticket].ctktmanager!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktmanager].name:'-'}
                                                         </p>
                                                     </td>
-                                                    {/* ctktemployee */}
-                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
-                                                        <p className="view-manager-list-name">
-                                                        {sharedvalue.ticketsdata[ticket].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktemployee].name:'-'}
-                                                        </p>
-                                                    </td>
+                                                    
                                                      {/* view file */}
                                                     <td>
                                                         <div className='view-manager-list-acttion-icon'>

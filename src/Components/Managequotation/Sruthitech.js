@@ -88,7 +88,7 @@ const Sruthitech = (props) => {
                             <View style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:7}}>
                                 <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
                                 <Text style={{fontSize:10, marginTop:4, fontWeight:400, fontFamily:'OpenSans',textAlign:'right'}}>GST No:37AAGFL0910L1ZC</Text>
-                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile:+91- 9440031617 </Text>
                             </View>
                         </View>
 
@@ -106,8 +106,9 @@ const Sruthitech = (props) => {
                         </View>
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
-                            <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
-                            {/* <Text>Mobile no.: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text> */}
+                            <Text>Kind Attn:  {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
+                            {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
+                            <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text>
                         </View>
 
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400,marginTop:3}}>Sir,</Text>
@@ -115,7 +116,7 @@ const Sruthitech = (props) => {
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400, textAlign:'center', marginTop:7, marginBottom:7}}>Sub: Quotation for COMAS Sorter:-Reg</Text>
 
                         <Text style={styles.thankyoumsg}>
-                            Thank you very much for your interest in our products. We are here by offeringour best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} mill.
+                            Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} mill.
                              The details as follows.
                         </Text>
 
