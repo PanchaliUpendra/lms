@@ -106,7 +106,7 @@ const Sruthitech = (props) => {
                         </View>
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
-                            <Text>Kind Attn:  {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
+                            <Text>Kind Attn: (Mr/Ms/Miss) {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
                             {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
                             <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text>
                         </View>
@@ -191,7 +191,8 @@ const Sruthitech = (props) => {
                         <Text style={{fontFamily:'OpenSans',fontWeight:600, textDecoration:'underline', fontSize:12}}>Terms and conditions:</Text>
 
                         <View style={styles.termscondstxt}>
-                            <Text>1. Price Rs. {totalcntigst}/- Hinganghat to be paid to Sruthi Technologies.</Text>
+                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>
+                            {/* <Text>1. FOR Price Rs. {totalcntigst}/- Hinganghat to be paid to Sruthi Technologies.</Text> */}
                             <Text>2. Sale through Gst sales.</Text>
                             <Text>3. Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
                         </View>
@@ -226,7 +227,7 @@ const Sruthitech = (props) => {
                             <Text>3. 25% After installation</Text>
                         </View>
 
-                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:7}}>*** Note: USD vs Rupee conversion changes, Price also will change</Text>
+                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:7}}>*** ADDITIONAL NOTE: USD vs Rupee conversion changes, Price also will change</Text>
                         
                         
 
