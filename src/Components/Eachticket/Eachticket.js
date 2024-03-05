@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../Error/Error';
 
 function Eachticket(){
@@ -47,6 +48,12 @@ function Eachticket(){
                             <div className='each-lead-head-comes-here'>
                                 <h1>{tktid}</h1>
                             </div>
+                            <div className='create-lead-head-button-comes-here'>
+                                <button onClick={()=>navigate(-1)}>
+                                <ChevronLeftIcon/>
+                                Go Back
+                            </button>
+                        </div>
                             <div className='top-eachlead-buttons'>
                                 <div>
                                     <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {(sharedvalue.ticketsdata[tktid].status==='open')?'Active':sharedvalue.ticketsdata[tktid].status==='close'?'Closed':'Resolved'}</p>

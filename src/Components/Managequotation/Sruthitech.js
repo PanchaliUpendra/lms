@@ -107,8 +107,8 @@ const Sruthitech = (props) => {
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
                             <Text>Kind Attn: (Mr) {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
-                            {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
                             <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text>
+                            {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
                         </View>
 
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400,marginTop:3}}>Sir,</Text>
