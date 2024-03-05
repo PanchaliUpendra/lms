@@ -48,8 +48,8 @@ function Eachticket(){
                             <div className='each-lead-head-comes-here'>
                                 <h1>{tktid}</h1>
                             </div>
-                            <div className='create-lead-head-button-comes-here'>
-                                <button onClick={()=>navigate(-1)}>
+                        <div className='create-lead-head-button-comes-here'>
+                             <button onClick={()=>navigate(-1)}>
                                 <ChevronLeftIcon/>
                                 Go Back
                             </button>
