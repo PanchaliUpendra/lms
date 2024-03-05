@@ -7,6 +7,7 @@ import Sidenav from '../Sidenav/Sidenav';
 import MyContext from '../../MyContext';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../Error/Error';
 
 function Eachlead(){
@@ -54,6 +55,12 @@ function Eachlead(){
                             <h1>{sharedvalue.leadsdata[leadid].contperson} - [{leadid}]</h1>
                         </div>
                         {/* header end */}
+                        <div className='create-lead-head-button-comes-here'>
+                             <button onClick={()=>navigate(-1)}>
+                                <ChevronLeftIcon/>
+                                Go Back
+                            </button>
+                        </div>
                         <div className='top-eachlead-buttons'>
                             <div>
                                 <p><span className='each-lead-head-comes-here-span-1'>Status :</span>  {sharedvalue.leadsdata[leadid].custstatus}</p>

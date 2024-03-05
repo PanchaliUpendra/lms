@@ -114,7 +114,7 @@ function Viewlead(){
                                                             {sharedvalue.leadsdata[lead].contperson}|
                                                         </p>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].contpersonemail} |
+                                                            {sharedvalue.leadsdata[lead].contcountrycode+"-"+ sharedvalue.leadsdata[lead].contmobilenum} 
                                                         </p> 
                                                     </td>
                                                     {/* contact person */}

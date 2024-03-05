@@ -240,7 +240,7 @@ function Dashboard(){
                                     <thead>
                                     <tr className="table-head-row">
                                             <th>action</th>
-                                            <th><p>company name | Contact Person</p></th>
+                                            <th><p>Company | Contact Person| Mobile</p></th>
                                             {/* <th>Contact Person</th> */}
                                             <th>
                                                 <p>country |</p>
@@ -291,6 +291,9 @@ function Dashboard(){
                                                             {sharedvalue.leadsdata[lead].contperson}|
                                                            
                                                         </p>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].contcountrycode+"-"+ sharedvalue.leadsdata[lead].contmobilenum} 
+                                                        </p> 
                                                         
                                                     </td>
                                                     {/* contact person */}
