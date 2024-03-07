@@ -71,7 +71,12 @@ function Createcustomer(){
                         "role":formdetails.role,
                         "password":formdetails.password,
                         "disable":false,
-                        "managerid":''
+                        "managerid":'',
+                        "cNum":formdetails.cNum,
+                        "cMdate":formdetails.cMdate,
+                        "cmachinetype":formdetails.cmachinetype,
+                        "cSnum":formdetails.cSnum,
+                        "cIdate":formdetails.cIdate
                     }}); // need to update backend with new fields
                     await batch.commit();
                 }
@@ -80,7 +85,12 @@ function Createcustomer(){
                 setformdetails({
                     cname:'',
                     name:'',
+                    cNum:'',
                     email:'',
+                    cMdate:'',
+                    cmachinetype:'',        
+                    cSnum:'',   
+                    cIdate:'', 
                     password:'',
                     cnfpassword:'',
                     role:'customer'
@@ -129,7 +139,7 @@ function Createcustomer(){
                     </div>
                     {/* your createcustomer starts from here */}
                     <div className="createmanager-innner-form-con">
-                        <div className="createmanager-innner-form">
+                        <div className="createmanager-innner-form createcustomer-inner-spl-div">
                             <div className="create-manager-form-header">
                                 <h1>create Company profile</h1>
                                 <p>enter email and password to create profile</p>
@@ -150,13 +160,13 @@ function Createcustomer(){
                                     name:e.target.value
                                 }))}/>
                             </div>
-                            {/* <div>
+                            <div>
                                 <label>contact Number<span>*</span></label>
                                 <input type='numnber' value={formdetails.cNum} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     cNum:e.target.value
                                 }))}/>
-                            </div> */}
+                            </div>
                             <div>
                                 <label>contact email<span>*</span></label>
                                 <input type='email' value={formdetails.email} onChange={(e)=>setformdetails(prev=>({
@@ -164,7 +174,7 @@ function Createcustomer(){
                                     email:e.target.value
                                 }))}/>
                             </div>
-                            {/* <div>
+                            <div>
                                     <label>Machine Type</label>
                                     <select value={formdetails.cmachinetype} onChange={(e)=>setformdetails(prev=>({
                                         ...prev,
@@ -176,28 +186,28 @@ function Createcustomer(){
                                         <option value='RGB'>RGB</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
-                            </div> */}
-                            {/* <div>
+                            </div>
+                            <div>
                                 <label>Manufacture date</label>
                                 <input type='date' value={formdetails.cMdate} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     cMdate:e.target.value
                                 }))}/>
-                            </div> */}
-                            {/* <div>
+                            </div>
+                            <div>
                                 <label>Serial Number</label>
                                 <input type='number' value={formdetails.cSnum} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     cSnum:e.target.value
                                 }))}/>
-                            </div> */}
-                            {/* <div>
+                            </div>
+                            <div>
                                 <label>Installation Date</label>
                                 <input type='date' value={formdetails.cIdate} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
                                     cIdate:e.target.value
                                 }))}/>
-                            </div> */}
+                            </div>
                             <div>
                                 <label>password<span>*</span></label>
                                 <input type='password' value={formdetails.password} onChange={(e)=>setformdetails(prev=>({
