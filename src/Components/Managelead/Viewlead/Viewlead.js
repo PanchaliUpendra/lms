@@ -94,7 +94,13 @@ function Viewlead(){
                                             sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                             sharedvalue.leadskeys
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
-                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker))).map((lead,idx)=>(
+                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
+                                            .sort((a, b) => {
+                                                const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
+                                                const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
+                                                return dateA - dateB;
+                                            })
+                                            .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* action */}
                                                     <td >

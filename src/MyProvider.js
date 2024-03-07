@@ -168,6 +168,8 @@ function MyProvider({children}){
               }
              
               fetchticketsdata();//calling the function to fetch the tickets data
+
+              
               //fetching leads data
               const fetchleadsdata = async() =>{
                 try{

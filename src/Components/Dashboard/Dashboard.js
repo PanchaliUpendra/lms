@@ -200,18 +200,9 @@ function Dashboard(){
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="leads-graph-con-outer">
-                        <div className="leads-graph-con">
-                            leads graph
-                        </div>
-                        <Leadsgraph leadsgraphlasttwelve={sharedvalue.leadsgraphlasttwelve}/>
-                    </div>
-                    
-                    
-                        
-                    {/* recent tickets starts here */}
-                    <div className="dashboard-display-leads">
+
+                                        {/* recent tickets starts here */}
+                                        <div className="dashboard-display-leads">
                         <div className="dashboard-display-leads-header">
                             <h1>Recent Leads</h1>
                             <div>
@@ -273,6 +264,11 @@ function Dashboard(){
                                             sharedvalue.leadskeys
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .slice(0,countleads)
+                                            .sort((a, b) => {
+                                                const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
+                                                const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
+                                                return dateA - dateB;
+                                            })
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     {/* action */}
@@ -402,13 +398,20 @@ function Dashboard(){
                         </div>
                     </div>
                     {/* recent tickets ends here */}
-                    {/* graphs starts here */}
+
+                    
                     <div className="leads-graph-con-outer">
                         <div className="leads-graph-con">
-                            tickets graph
+                            leads graph
                         </div>
-                        <Ticketsgraph ticketsgraphlasttwelve={sharedvalue.ticketsgraphlasttwelve}/>
+                        <Leadsgraph leadsgraphlasttwelve={sharedvalue.leadsgraphlasttwelve}/>
                     </div>
+                    
+                    
+                        
+
+
+                    
                     
 
                     {/* last 6 months graph */}
@@ -586,6 +589,14 @@ function Dashboard(){
                             {/* table ends here */}
                         </div>
                         {/* list ends here */}
+                    </div>
+
+                    {/* graphs starts here */}
+                    <div className="leads-graph-con-outer">
+                        <div className="leads-graph-con">
+                            tickets graph
+                        </div>
+                        <Ticketsgraph ticketsgraphlasttwelve={sharedvalue.ticketsgraphlasttwelve}/>
                     </div>
                     {/* last 6 months graph  ends here*/}
 

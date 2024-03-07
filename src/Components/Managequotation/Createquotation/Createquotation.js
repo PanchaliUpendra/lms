@@ -347,7 +347,7 @@ function Createquotation(){
                                 </div>
                                 {/* price */}
                                 <div>
-                                    <label>price</label>
+                                    <label>Price in USD</label>
                                     <input type='number' value={quotinfo.quotprice} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotprice:e.target.value

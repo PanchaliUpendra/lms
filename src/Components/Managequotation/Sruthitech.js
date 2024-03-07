@@ -11,6 +11,7 @@ import Comaaslogo from '../../Assets/comaaslogo.png';
 
 import sruthilogo from '../../Assets/sruthilogo.png';
 import stamp from '../../Assets/stamp.jpeg';
+// import MyContext from '../../MyContext';
 
 
 const Sruthitech = (props) => {
@@ -21,7 +22,12 @@ const Sruthitech = (props) => {
     //changing number to text
     const quoteid = props.quoteid
     const [text,settext] = useState('');
-    const [totalcntigst,settotalcntigst] = useState(0);
+    const [totalcntigst,settotalcntigst] = useState(0); //total with gst
+    const [basicamount,setbasicamount] = useState(0);//basic total in first row
+    const [onlygst,setonlygst]  = useState(0);//only gst display here
+    const [clearingexp,setclearingexp] = useState(0);//clearing expenses in second row total
+    const [totalwogst, settotalwogst] = useState(0); //total without gst
+    const [ccked,setccked] = useState('heelo')
 
 
     const [todaydate , settodaydate] = useState('');//storing the today here
@@ -59,14 +65,50 @@ const Sruthitech = (props) => {
   const formattedDate = `${day}/${month}/${year}`;
   settodaydate(formattedDate);
 
+  //number to string commas
+  function numberwithcommas(x){
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+}
+const parser = new DOMParser();
+ 
+
   //calculating the data
   if(sharedvalue.quoteskeys.length>0 && sharedvalue.quoteskeys.includes(quoteid)===true){
-    var dv = 0.18*((Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+Number(sharedvalue.quotesdata[quoteid].quotclearing))+
-    (Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+Number(sharedvalue.quotesdata[quoteid].quotclearing);
+
+    const doc = parser.parseFromString(sharedvalue.quotesdata[quoteid].quotpayterm, "text/html");
+
+    // Extract the text content from the first child element (assuming it's the paragraph)
+    const textContent = doc.body.firstChild ? doc.body.firstChild.textContent : '';
+    setccked(textContent)
+    //basic amount
+    var ba = (Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon));
+    var ba1 = numberwithcommas(ba)
+    setbasicamount(ba1);
+
+    //clearing expenses * no. of unikts
+    var ce = (Number(sharedvalue.quotesdata[quoteid].quotclearing)*Number(sharedvalue.quotesdata[quoteid].quotunits));
+    var ce1 = numberwithcommas(ce)
+    setclearingexp(ce1);
 
 
-    const tempdata = Math.round(dv);
-    settotalcntigst(tempdata);
+    //total without gst
+    var twg = (Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+(Number(sharedvalue.quotesdata[quoteid].quotclearing)*Number(sharedvalue.quotesdata[quoteid].quotunits));
+    var twg1 = numberwithcommas(twg);
+    settotalwogst(twg1)
+
+    //only gst
+    var gst = 0.18*((Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+(Number(sharedvalue.quotesdata[quoteid].quotclearing)*Number(sharedvalue.quotesdata[quoteid].quotunits)));
+    var gst1 = numberwithcommas(gst);
+    setonlygst(gst1);
+
+    //total with gst
+    var dv = 0.18*((Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+(Number(sharedvalue.quotesdata[quoteid].quotclearing)*Number(sharedvalue.quotesdata[quoteid].quotunits)))+
+    (Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+(Number(sharedvalue.quotesdata[quoteid].quotclearing)*Number(sharedvalue.quotesdata[quoteid].quotunits));
+
+
+    var tempdata = Math.round(dv);
+    var tempdata1 = numberwithcommas(tempdata);
+    settotalcntigst(tempdata1);
     const textvalue = numWords(tempdata);
     settext(textvalue);
 
@@ -107,7 +149,7 @@ const Sruthitech = (props) => {
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
                             <Text>Kind Attn: (Mr) {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
-                            <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum}</Text>
+                            <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
                             {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
                         </View>
 
@@ -133,14 +175,14 @@ const Sruthitech = (props) => {
                                 <View style={styles.srthtblcol21}>
                                     <Text>COMAS Color Sorter</Text>
                                     <Text>for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit.</Text>
-                                    <Text>Model: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].machinetype==='ULTRA'?'ULTRA-S':sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].machinetype}-{sharedvalue.quotesdata[quoteid].quotcap}</Text>
+                                    <Text>Model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotcap}</Text>
                                 </View>
                                 <Text style={styles.srthtblcol31}>{Number(sharedvalue.quotesdata[quoteid].quotcap)===14?14:Number(sharedvalue.quotesdata[quoteid].quotcap)} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':'-'} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Tons/Hr</Text>
                                 <View style={styles.srthtblcol31}>
                                     <Text>{Number(sharedvalue.quotesdata[quoteid].quotunits)} Unit USD</Text>
                                     <Text>{Number(sharedvalue.quotesdata[quoteid].quotprice)}@{Number(sharedvalue.quotesdata[quoteid].quotcon)}</Text>
                                 </View>
-                                <Text style={styles.srthtblcol31}>{Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon)}/-</Text>
+                                <Text style={styles.srthtblcol31}>{basicamount}/-</Text>
                             </View>
 
                             <View style={styles.srthtblrow}>
@@ -150,34 +192,35 @@ const Sruthitech = (props) => {
                                     <Text>ports & transportation</Text>
                                 </View>
                                 <Text style={styles.srthtblcol31}></Text>
-                                <View style={styles.srthtblcol31}>
-                                </View>
-                                <Text style={styles.srthtblcol31}>{Number(sharedvalue.quotesdata[quoteid].quotclearing)}/-</Text>
+                                {/* <View style={styles.srthtblcol31}>
+                                </View> */}
+                                <Text style={{...styles.srthtblcol3,fontWeight:400}}>{Number(sharedvalue.quotesdata[quoteid].quotunits)}*{Number(sharedvalue.quotesdata[quoteid].quotclearing)}</Text>
+                                <Text style={styles.srthtblcol31}>{clearingexp}/-</Text>
                             </View>
 
                             <View style={styles.srthtblrow}>
-                                <Text style={styles.srthtblcol11}></Text>
-                                <View style={styles.srthtblcol21}>
+                                <Text style={{...styles.srthtblcol11,borderBottom:0,borderRight:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderBottom:0}}>
                                 </View>
-                                <Text style={styles.srthtblcol31}></Text>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderBottom:0}}></Text>
                                 <Text style={{...styles.srthtblcol3,fontWeight:400}}>Total</Text>
-                                <Text style={styles.srthtblcol31}>{(Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+Number(sharedvalue.quotesdata[quoteid].quotclearing)}/-</Text>
+                                <Text style={styles.srthtblcol31}>{totalwogst}/-</Text>
                             </View>
 
                             <View style={styles.srthtblrow}>
-                                <Text style={styles.srthtblcol11}></Text>
-                                <View style={styles.srthtblcol21}>
+                                <Text style={{...styles.srthtblcol11,borderBottom:0,borderRight:0,borderTop:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderBottom:0,borderTop:0}}>
                                 </View>
-                                <Text style={styles.srthtblcol31}></Text>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderBottom:0,borderTop:0}}></Text>
                                 <Text style={{...styles.srthtblcol3,fontWeight:400}}>Gst@18%</Text>
-                                <Text style={styles.srthtblcol31}>{0.18*((Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon))+Number(sharedvalue.quotesdata[quoteid].quotclearing))}/-</Text>
+                                <Text style={styles.srthtblcol31}>{onlygst}/-</Text>
                             </View>
 
                             <View style={styles.srthtblrow}>
-                                <Text style={styles.srthtblcol11}></Text>
-                                <View style={styles.srthtblcol21}>
+                                <Text style={{...styles.srthtblcol11,borderRight:0,borderTop:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderTop:0}}>
                                 </View>
-                                <Text style={styles.srthtblcol31}></Text>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderTop:0}}></Text>
                                 <Text style={{...styles.srthtblcol3,fontWeight:400}}>Grand total</Text>
                                 <Text style={styles.srthtblcol31}>{
                                     totalcntigst
@@ -191,8 +234,9 @@ const Sruthitech = (props) => {
                         <Text style={{fontFamily:'OpenSans',fontWeight:600, textDecoration:'underline', fontSize:12}}>Terms and conditions:</Text>
 
                         <View style={styles.termscondstxt}>
+                        
+                            {/* <Text>1.  price of Rs. {totalcntigst}/- is to be paid to Sruthi Technologies.</Text> */}
                             <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>
-                            {/* <Text>1. FOR Price Rs. {totalcntigst}/- Hinganghat to be paid to Sruthi Technologies.</Text> */}
                             <Text>2. Sale through Gst sales.</Text>
                             <Text>3. Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
                         </View>
@@ -215,24 +259,26 @@ const Sruthitech = (props) => {
                             <View style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:7}}>
                                 <Image src={Comaaslogo} style={{width:70,height:'auto'}}/>
                                 {/* <Text style={{fontSize:10, marginTop:4, fontWeight:400, fontFamily:'OpenSans',textAlign:'right'}}>GST No:37AAGFL0910L1ZC</Text> */}
-                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                                {/* <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text> */}
+                                <Text style={{fontSize:9,marginTop:2,  fontWeight:600, fontFamily:'OpenSans',textAlign:'right' ,color:'#D904C7'}}>Mobile:+91- 9440031617 </Text>
                             </View>
                         </View>
 
                         <Text style={{fontFamily:'OpenSans', fontSize:11, fontWeight:600, textDecoration:'underline', marginTop:30}}>Payment</Text>
 
                         <View style={{fontFamily:'OpenSans',fontWeight:400, fontSize:11, marginTop:10, paddingLeft:20}}>
-                            <Text>1. 25% Advance</Text>
+                            {/* <Text>1. 25% Advance</Text>
                             <Text>2. 50% Before delivery</Text>
-                            <Text>3. 25% After installation</Text>
+                            <Text>3. 25% After installation</Text> */}
+                            <Text>{ccked}</Text>
                         </View>
 
-                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:7}}>*** ADDITIONAL NOTE: USD vs Rupee conversion changes, Price also will change</Text>
-                        
+                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:0}}>*** ADDITIONAL NOTE: USD vs Rupee conversion changes, Price also will change.</Text>
+                        <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:0, marginBottom:7}}>*** NOTE: If customer delayed for taking delivery , clearing expanses will increases.</Text>
                         
 
                         <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:11, textDecoration:'underline'}}>1. Bank Details: </Text>
-                        <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:10, marginTop:4}}>Sruthi Technologies, HDFC Bank, Account.No.50200030537582, Ifsc-HDFC0001639, Vivekananda Nagar, Kukatpally.</Text>
+                        <Text style={{fontFamily:'OpenSans', fontWeight:600, fontSize:10, marginTop:4}}>Sruthi Technologies, HDFC Bank, Account.No.50200030537582, Ifsc-HDFC0001639, Tulasi Nagar, Kukatpally.</Text>
 
                         <Text style={styles.steheader}>Delivery:</Text>
                         <Text style={styles.stetext}>60 days from date of receipt of payment</Text>
@@ -266,7 +312,7 @@ const Sruthitech = (props) => {
             </Document>
              }
             </>
-        // </PDFViewer>
+        //  </PDFViewer>
   );
 };
 const styles = StyleSheet.create({
