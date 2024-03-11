@@ -40,7 +40,20 @@ function Profile(){
                     </div>
                     <div className="profile-info-div-outer">
                         <div className="profile-info-div">
-                            <h1>Heelo world</h1>
+                            <div className="profile-info-div-img">
+                                <p>{sharedvalue.workersdata[sharedvalue.uid].name[0]}</p>
+                            </div>
+                            <div className="profile-info-div-details">
+                                <div className="profile-info-div-details-name">
+                                    <h1>{sharedvalue.workersdata[sharedvalue.uid].name}</h1>
+                                    <p>{sharedvalue.workersdata[sharedvalue.uid].role}</p>
+                                </div>
+                                
+                                <div className="profile-info-div-details-email">
+                                    <p>Email: <span>{sharedvalue.workersdata[sharedvalue.uid].email}</span></p>
+                                    <p>Phone: <span>9390000xxx</span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
