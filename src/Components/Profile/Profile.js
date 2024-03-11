@@ -19,6 +19,7 @@ function Profile(){
     // toggle menu bar code ends here
     return(
         <>
+        {sharedvalue.workerskeys.length>0 && sharedvalue.uid!=='' && 
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -60,6 +61,7 @@ function Profile(){
                     {/* profile ends here */}
                 </div>
             </div>
+            }
         </>
     );
 }
