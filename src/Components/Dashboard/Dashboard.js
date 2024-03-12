@@ -399,13 +399,16 @@ function Dashboard(){
                     </div>
                     {/* recent tickets ends here */}
 
-                    
-                    <div className="leads-graph-con-outer">
-                        <div className="leads-graph-con">
-                            leads graph
+                    {
+                        sharedvalue.role==='admin' && 
+                        <div className="leads-graph-con-outer">
+                            <div className="leads-graph-con">
+                                leads graph
+                            </div>
+                            <Leadsgraph leadsgraphlasttwelve={sharedvalue.leadsgraphlasttwelve}/>
                         </div>
-                        <Leadsgraph leadsgraphlasttwelve={sharedvalue.leadsgraphlasttwelve}/>
-                    </div>
+                    }
+                    
                     
                     
                         
@@ -592,12 +595,16 @@ function Dashboard(){
                     </div>
 
                     {/* graphs starts here */}
-                    <div className="leads-graph-con-outer">
-                        <div className="leads-graph-con">
-                            tickets graph
+                    {
+                        sharedvalue.role==='admin' && 
+                        <div className="leads-graph-con-outer">
+                            <div className="leads-graph-con">
+                                tickets graph
+                            </div>
+                            <Ticketsgraph ticketsgraphlasttwelve={sharedvalue.ticketsgraphlasttwelve}/>
                         </div>
-                        <Ticketsgraph ticketsgraphlasttwelve={sharedvalue.ticketsgraphlasttwelve}/>
-                    </div>
+                    }
+                    
                     {/* last 6 months graph  ends here*/}
 
                     {/* last div part */}

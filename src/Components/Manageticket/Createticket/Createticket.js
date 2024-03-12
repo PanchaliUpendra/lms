@@ -21,8 +21,33 @@ import loading from '../../../Assets/loading.gif';
 import { useNavigate } from "react-router-dom";
 import { months } from "../../../Data/Months";
 
+import { createworkers } from "../../../Data/Docs";
+
+
 function Createticket(){
     const sharedvalue = useContext(MyContext);
+    // State to keep track of the checkbox value
+    const [isChecked, setIsChecked] = useState(false);
+
+    //four fields data
+    const [importfourfld,setimportfourfld] = useState({
+        cmachinetype:'',
+        cMdate:'',
+        cSnum:'',
+        cIdate:''
+    });
+
+    const tempimportfourfld = {
+        cmachinetype:'',
+        cMdate:'',
+        cSnum:'',
+        cIdate:''
+    }
+
+    // Function to handle checkbox change
+    const handleCheckboxChange = () => {
+        setIsChecked(!isChecked); // Toggle the checkbox value
+    };
     const navigate = useNavigate();
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the Ticket');
@@ -188,6 +213,46 @@ function Createticket(){
         }
         setpleasewait(false);
     }
+
+    async function handleupddateform(){
+        setpleasewait(true);
+        try{
+            if(ticketinfo.ctktcustname!==''){
+                batch.update(createworkers,{[ticketinfo.ctktcustname]:{
+                    ...sharedvalue.workersdata[ticketinfo.ctktcustname],
+                    cmachinetype:importfourfld.cmachinetype!==''?importfourfld.cmachinetype
+                    :Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype")?
+                    sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype:'',
+                    
+                    cMdate:importfourfld.cMdate!==''?importfourfld.cMdate
+                    :Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cMdate")?
+                    sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate:'',
+                    
+                    cSnum:importfourfld.cSnum!==''?importfourfld.cSnum
+                    :Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cSnum")?
+                    sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum:'',
+
+                    cIdate:importfourfld.cIdate!==''?importfourfld.cIdate
+                    :Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cIdate")?
+                    sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate:''
+                }});
+                await batch.commit();
+                setimportfourfld(prev=>({
+                    ...prev,
+                    cmachinetype:'',
+                    cMdate:'',
+                    cSnum:'',
+                    cIdate:''
+                }));
+            }else{
+                alert('sorry you got an error...');
+            }
+            
+        }catch(e){
+            console.log('you got an error while updatting the form!!',e);
+        }
+        setpleasewait(false);
+    }
     return(
         <>
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
@@ -308,6 +373,69 @@ function Createticket(){
                                     </select>
                                 </div>
                             }
+                            {
+                                ticketinfo.ctktcustname!=='other' && ticketinfo.ctktcustname!=='' &&
+                                <section className="importing-customer-data">
+                                    <input type='checkbox' checked={isChecked} onChange={handleCheckboxChange}/>
+                                    <label>import customer details</label>
+                                </section>
+                            }
+
+                            {
+                                isChecked===true && ticketinfo.ctktcustname!=='other' &&
+                                <section className="create-ticket-imported-data">
+                                    <div>
+                                        <label>Machine Type</label>
+                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype") && sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype!=='')?
+                                        <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype} readOnly/>
+                                        :
+                                        <input type='text' value={importfourfld.cmachinetype} onChange={(e)=>setimportfourfld(prev=>({
+                                            ...prev,
+                                            cmachinetype:e.target.value
+                                        }))} />
+                                        }
+                                    </div>
+                                    <div>
+                                        <label>Manufacture Date</label>
+                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cMdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate!=='')?
+                                        <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate} readOnly/> :
+                                        <input type='date' value={importfourfld.cMdate} onChange={(e)=>setimportfourfld(prev=>({
+                                            ...prev,
+                                            cMdate:e.target.value
+                                        }))}/>
+                                        }
+                                    </div>
+                                    <div>
+                                        <label>Serial Number</label>
+                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cSnum") && sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum!=='')?
+                                        <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum} readOnly/>
+                                        :
+                                        <input type='text' value={importfourfld.cSnum} onChange={(e)=>setimportfourfld(prev=>({
+                                            ...prev,
+                                            cSnum:e.target.value
+                                        }))}/>
+                                        }
+                                    </div>
+                                    <div>
+                                        <label>Installation Date</label>
+                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cIdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate!=='')?
+                                            <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate} readOnly/>
+                                            :
+                                            <input type='text' value={importfourfld.cIdate} onChange={(e)=>setimportfourfld(prev=>({
+                                                ...prev,
+                                                cIdate:e.target.value
+                                            }))}/>
+                                        }
+                                    </div>
+                                </section>
+                            }
+
+                            {JSON.stringify(tempimportfourfld)!==JSON.stringify(importfourfld) &&
+                            <div className="import-four-update-btn">
+                                <button onClick={()=>handleupddateform()}>update</button>
+                            </div>
+                            }
+
                             {ticketinfo.ctktcustname==='other' &&
                             <div>
                                 <label>Other Company Name<span style={{color:'red'}}>*</span></label>
@@ -433,7 +561,7 @@ function Createticket(){
             <div className={`please-wait-ti-will-take-few-seconds ${pleasewait===true?'active-please-wait':''}`}>
                 <img src={loading} alt='loading'/>
                 <p>please wait</p>
-                <p>it will few seconds</p>
+                <p>it will take few seconds</p>
             </div>
         </>
     );
