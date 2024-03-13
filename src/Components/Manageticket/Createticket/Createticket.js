@@ -386,7 +386,7 @@ function Createticket(){
                                 <section className="create-ticket-imported-data">
                                     <div>
                                         <label>Machine Type</label>
-                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype") && sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype!=='')?
+                                        {(ticketinfo.ctktcustname!=='' && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype") && sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype!=='')?
                                         <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype} readOnly/>
                                         :
                                         <input type='text' value={importfourfld.cmachinetype} onChange={(e)=>setimportfourfld(prev=>({
@@ -397,7 +397,7 @@ function Createticket(){
                                     </div>
                                     <div>
                                         <label>Manufacture Date</label>
-                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cMdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate!=='')?
+                                        {(ticketinfo.ctktcustname!=='' && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cMdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate!=='')?
                                         <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cMdate} readOnly/> :
                                         <input type='date' value={importfourfld.cMdate} onChange={(e)=>setimportfourfld(prev=>({
                                             ...prev,
@@ -407,7 +407,7 @@ function Createticket(){
                                     </div>
                                     <div>
                                         <label>Serial Number</label>
-                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cSnum") && sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum!=='')?
+                                        {(ticketinfo.ctktcustname!=='' && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cSnum") && sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum!=='')?
                                         <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cSnum} readOnly/>
                                         :
                                         <input type='text' value={importfourfld.cSnum} onChange={(e)=>setimportfourfld(prev=>({
@@ -418,7 +418,7 @@ function Createticket(){
                                     </div>
                                     <div>
                                         <label>Installation Date</label>
-                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cIdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate!=='')?
+                                        {(ticketinfo.ctktcustname!=='' && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cIdate") && sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate!=='')?
                                             <input type='text' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate} readOnly/>
                                             :
                                             <input type='text' value={importfourfld.cIdate} onChange={(e)=>setimportfourfld(prev=>({

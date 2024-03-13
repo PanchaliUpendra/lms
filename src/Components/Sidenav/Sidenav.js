@@ -107,6 +107,89 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     }
                     {/* MANAGE LEAD END */}
 
+                    
+                    {/* snav each div  */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
+                    <div className='snav-inner-each'>
+                        <div 
+                        className={`snav-mle-inner-div ${location.pathname==='/managequotation/createquotation'||location.pathname==='/managequotation/viewquotation'?'snav-mle-inner-div-active':''}`}
+                        onClick={() => handleImageClick('uniqueDiv6')}
+                        >
+                            <div className='snav-mle-names'>
+                                <FormatQuoteIcon/>
+                                <h2>Manage Quotation</h2>
+                            </div>
+                            <div className={`iconrotatecon ${rotationStates['uniqueDiv6'] ? 'rotated': ''}`}>
+                            <KeyboardArrowDownIcon />
+                            </div>
+                        </div>
+                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv6'] ? 'extendmenu':''}`}>
+                            <div onClick={()=>navigate('/managequotation/createquotation')}>
+                                <AddIcon/>
+                                <h2>Create Quotation</h2>
+                            </div>
+                            <div onClick={()=>navigate('/managequotation/viewquotation')}>
+                                <FilterListIcon/>
+                                <h2>View Quotation</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    {/* snav each div  */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
+                    <div className='snav-inner-each'>
+                        <div 
+                        className={`snav-mle-inner-div ${location.pathname==='/manageticket/createticket'||location.pathname==='/manageticket/viewticket'?'snav-mle-inner-div-active':''}`}
+                        onClick={() => handleImageClick('uniqueDiv8')}
+                        >
+                            <div className='snav-mle-names'>
+                                <ReceiptIcon/>
+                                <h2>Manage Ticket</h2>
+                            </div>
+                            <div className={`iconrotatecon ${rotationStates['uniqueDiv8'] ? 'rotated': ''}`}>
+                                <KeyboardArrowDownIcon/>
+                            </div>
+                        </div>
+                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv8'] ? 'extendmenu':''}`}>
+                            <div onClick={()=>navigate('/manageticket/createticket')}>
+                                <AddIcon/>
+                                <h2>Create Ticket</h2>
+                            </div>
+                            <div onClick={()=>navigate('/manageticket/viewticket')}>
+                                <FilterListIcon/>
+                                <h2>View Ticket</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    {/* snav each div  */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') &&
+                    <div className='snav-inner-each'>
+                        <div
+                        className={`snav-mle-inner-div ${location.pathname==='/manageexpense/createexpense'||location.pathname==='/manageexpense/viewexpense'?'snav-mle-inner-div-active':''}`}
+                        onClick={() => handleImageClick('uniqueDiv7')}
+                        >
+                            <div className='snav-mle-names' >
+                                <ReceiptLongIcon/>
+                                <h2>Manage Expense</h2>
+                            </div>
+                            <div className={`iconrotatecon ${rotationStates['uniqueDiv7'] ? 'rotated': ''}`}>
+                                <KeyboardArrowDownIcon/>
+                            </div>
+                        </div>
+                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv7'] ? 'extendmenu':''}`}>
+                            <div onClick={()=>navigate('/manageexpense/createexpense')}>
+                                <AddIcon/>
+                                <h2>Create Expense</h2>
+                            </div>
+                            <div onClick={()=>navigate('/manageexpense/viewexpense')}>
+                                <FilterListIcon/>
+                                <h2>View Expense</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
+
                     {/* snav each div  */}
                     {sharedvalue.role==='admin' && 
                     <div className='snav-inner-each'>
@@ -216,87 +299,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </div>
                     }
-                    {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
-                    <div className='snav-inner-each'>
-                        <div 
-                        className={`snav-mle-inner-div ${location.pathname==='/managequotation/createquotation'||location.pathname==='/managequotation/viewquotation'?'snav-mle-inner-div-active':''}`}
-                        onClick={() => handleImageClick('uniqueDiv6')}
-                        >
-                            <div className='snav-mle-names'>
-                                <FormatQuoteIcon/>
-                                <h2>Manage Quotation</h2>
-                            </div>
-                            <div className={`iconrotatecon ${rotationStates['uniqueDiv6'] ? 'rotated': ''}`}>
-                            <KeyboardArrowDownIcon />
-                            </div>
-                        </div>
-                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv6'] ? 'extendmenu':''}`}>
-                            <div onClick={()=>navigate('/managequotation/createquotation')}>
-                                <AddIcon/>
-                                <h2>Create Quotation</h2>
-                            </div>
-                            <div onClick={()=>navigate('/managequotation/viewquotation')}>
-                                <FilterListIcon/>
-                                <h2>View Quotation</h2>
-                            </div>
-                        </div>
-                    </div>
-                    }
-                    {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') &&
-                    <div className='snav-inner-each'>
-                        <div
-                        className={`snav-mle-inner-div ${location.pathname==='/manageexpense/createexpense'||location.pathname==='/manageexpense/viewexpense'?'snav-mle-inner-div-active':''}`}
-                        onClick={() => handleImageClick('uniqueDiv7')}
-                        >
-                            <div className='snav-mle-names' >
-                                <ReceiptLongIcon/>
-                                <h2>Manage Expense</h2>
-                            </div>
-                            <div className={`iconrotatecon ${rotationStates['uniqueDiv7'] ? 'rotated': ''}`}>
-                                <KeyboardArrowDownIcon/>
-                            </div>
-                        </div>
-                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv7'] ? 'extendmenu':''}`}>
-                            <div onClick={()=>navigate('/manageexpense/createexpense')}>
-                                <AddIcon/>
-                                <h2>Create Expense</h2>
-                            </div>
-                            <div onClick={()=>navigate('/manageexpense/viewexpense')}>
-                                <FilterListIcon/>
-                                <h2>View Expense</h2>
-                            </div>
-                        </div>
-                    </div>
-                    }
-                    {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
-                    <div className='snav-inner-each'>
-                        <div 
-                        className={`snav-mle-inner-div ${location.pathname==='/manageticket/createticket'||location.pathname==='/manageticket/viewticket'?'snav-mle-inner-div-active':''}`}
-                        onClick={() => handleImageClick('uniqueDiv8')}
-                        >
-                            <div className='snav-mle-names'>
-                                <ReceiptIcon/>
-                                <h2>Manage Ticket</h2>
-                            </div>
-                            <div className={`iconrotatecon ${rotationStates['uniqueDiv8'] ? 'rotated': ''}`}>
-                                <KeyboardArrowDownIcon/>
-                            </div>
-                        </div>
-                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv8'] ? 'extendmenu':''}`}>
-                            <div onClick={()=>navigate('/manageticket/createticket')}>
-                                <AddIcon/>
-                                <h2>Create Ticket</h2>
-                            </div>
-                            <div onClick={()=>navigate('/manageticket/viewticket')}>
-                                <FilterListIcon/>
-                                <h2>View Ticket</h2>
-                            </div>
-                        </div>
-                    </div>
-                    }
+                    
                     {/* snav each div  */}
                     {sharedvalue.role==='admin' &&
                     <NavLink to='/search'>
