@@ -33,6 +33,7 @@ import Search from './Components/Searchbar/Search';
 import Profile from './Components/Profile/Profile';
 import Updatequotation from './Components/Managequotation/Updatequotation/Updatequotation';
 import Verifyquotation from './Components/Managequotation/Verifyquotation/Verifyquotation';
+import Passwords from './Components/Passwords/Passwords';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -83,6 +84,7 @@ function App() {
         {/* {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/sruthipdf/:quoteid' element={<Sruthitech/>}/>} */}
         {/* search bar nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}
         {/* profile nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
         <Route path='/spinner' element={<Spinner/>}/>

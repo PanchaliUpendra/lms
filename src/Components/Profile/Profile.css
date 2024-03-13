@@ -80,6 +80,19 @@
     font-weight: 500;
 }
 
+/* profile-show-passwords-btn */
+.profile-show-passwords-btn{
+    margin-top: 8px;
+    margin-bottom: 5px;
+    
+}
+.profile-show-passwords-btn p{
+    color: rgb(0, 132, 255);
+    text-transform: capitalize;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
 @media screen and (max-width:754.1234px){
 
     .profile-info-div-img{

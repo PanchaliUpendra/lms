@@ -5,7 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
 function Profile(){
@@ -54,6 +54,12 @@ function Profile(){
                                     <p>Email: <span>{sharedvalue.workersdata[sharedvalue.uid].email}</span></p>
                                     <p>Phone: <span>9390000xxx</span></p>
                                 </div>
+
+                                {sharedvalue.role==='admin' && 
+                                <div className="profile-show-passwords-btn">
+                                    <NavLink to='/passwords'><p>Show Passwords{`>`}</p></NavLink>
+                                </div>
+                                }
                             </div>
                         </div>
                     </div>
