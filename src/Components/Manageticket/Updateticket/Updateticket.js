@@ -92,7 +92,9 @@ function Updateticket(){
                 ticketinfo.ctktcalltype!=='' &&
                 ticketinfo.ctktpriority!=='' 
             ){
-                
+                const formatDateString = (date) => date.toISOString().split('T')[0];
+                const currentDate = new Date();
+                const stringtodaydate = formatDateString(currentDate);
                 // const storageref = ref(storage,ctktfile.name);
                 // await uploadBytes(storageref,ctktfile);
                 // const fileurl= await downloadfileurl();
@@ -113,6 +115,7 @@ function Updateticket(){
                             ctktmanager:ticketinfo.ctktmanager,
                             ctktemployee:ticketinfo.ctktemployee,
                             status:ticketinfo.status,
+                            ctktclose:(ticketinfo.status==='resolved'||ticketinfo.status==='close')?stringtodaydate:'',
                             workingstatus:'',
                             ctktothercustname:ticketinfo.ctktothercustname,
                             

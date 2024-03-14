@@ -57,7 +57,7 @@ function Profile(){
 
                                 {sharedvalue.role==='admin' && 
                                 <div className="profile-show-passwords-btn">
-                                    <NavLink to='/passwords'><p>Show Passwords{`>`}</p></NavLink>
+                                    <NavLink to='/passwords'><p>View Credentials {`>`}</p></NavLink>
                                 </div>
                                 }
                             </div>

@@ -133,6 +133,10 @@ function Createticket(){
                     await uploadBytes(storageref,ctktfile);
                     fileurl= await downloadfileurl();
                 }
+
+                const formatDateString = (date) => date.toISOString().split('T')[0];
+                const currentDate = new Date();
+                const stringtodaydate = formatDateString(currentDate);
                 
                 //adding the data here
                 if(result>=1109699 && fileurl!==null){
@@ -154,7 +158,9 @@ function Createticket(){
                             workingstatus:'',
                             fileurl:fileurl,
                             id:result,
-                            createdbyid:sharedvalue.uid
+                            createdbyid:sharedvalue.uid,
+                            ctktopen:stringtodaydate,
+                            ctktclose:''
                         }
                     });
                     //updating the tickets graph data

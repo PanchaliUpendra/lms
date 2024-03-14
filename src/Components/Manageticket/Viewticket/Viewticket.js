@@ -26,6 +26,9 @@ function Viewticket(){
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
+
+    const[statusfilter,setstatusfilter] = useState('');//state to take the status input
+
     const navigate = useNavigate();
         //feedback state handling
         const[feedbackform,setfeedbackform] = useState({
@@ -149,11 +152,21 @@ function Viewticket(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search">
+                            <div className="view-list-of-all-search view-list-of-all-status-viewticket">
+                                <div>
+                                    <label>Status:</label>
+                                    <select value={statusfilter} onChange={(e)=>setstatusfilter(e.target.value)}>
+                                        <option value=''>All</option>
+                                        <option value='open'>Open</option>
+                                        <option value='resolved'>Resolved</option>
+                                        <option value='close'>Closed</option>
+                                    </select>
+                                </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Customer/TktID" onChange={(e)=>setsearchworker(e.target.value)}/>
                                 </div>
+                                
                             </div>
                             {/* table starts from here */}
                             <div className="view-list-table-con">
@@ -164,6 +177,8 @@ function Viewticket(){
                                             <th>action</th>
                                             <th>employee</th>
                                             <th>Company Name</th>
+                                            <th>open date</th>
+                                            <th>closed date</th>
                                             <th>
                                                 <p>country |</p>
                                                 <p>state | district</p>
@@ -185,6 +200,7 @@ function Viewticket(){
                                             .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
                                             (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
                                             (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+                                            .filter(item=>sharedvalue.ticketsdata[item].status.includes(statusfilter))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* status */}
@@ -225,6 +241,22 @@ function Viewticket(){
                                                             }
                                                         </p>
                                                     </td>
+
+                                                    {/* open date */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktopen") && sharedvalue.ticketsdata[ticket].ctktopen!=='')?sharedvalue.ticketsdata[ticket].ctktopen:'-'}
+                                                        </p>
+                                                    </td>
+
+                                                    {/* closed date */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktclose") && sharedvalue.ticketsdata[ticket].ctktclose!=='' )?sharedvalue.ticketsdata[ticket].ctktclose:'-'}
+                                                        </p>
+                                                    </td>
+
+
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">

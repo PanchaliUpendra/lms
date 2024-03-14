@@ -40,7 +40,7 @@ function Passwords(){
                     <div className='create-lead-con'>
                     <div className="create-header-starts-here">
                             <div className="new-ticket-header">
-                                <h1>All Passwords</h1>
+                                <h1>Users Credentials</h1>
                             </div>
                         </div>
                         {/* list starts from here */}

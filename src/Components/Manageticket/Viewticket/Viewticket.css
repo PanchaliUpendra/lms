@@ -120,6 +120,24 @@
     padding: 5px;
 }
 
+.view-list-of-all-status-viewticket{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-list-of-all-search>div select{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    min-width: fit-content;
+    font-size: 0.9rem;
+}
+
 @media all and (max-width:605px){
     .view-ticket-list-popup-feedback, .active-delete-popup-feedback{
         width:98%;
