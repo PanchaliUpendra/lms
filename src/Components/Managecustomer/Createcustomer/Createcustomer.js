@@ -13,9 +13,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { writeBatch, doc } from "firebase/firestore"; 
 import { db } from "../../../Firebase";
 //toastify importing
+import { counrtycode } from "../../../Data/countrycode";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { states } from "../../../Data/states";
 function Createcustomer(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -34,6 +36,9 @@ function Createcustomer(){
         cIdate:'', 
         password:'',
         cnfpassword:'',
+        ccountry:'India',
+        cstate:'',
+        cdist:'',
         role:'customer'
     })
     //code only for toggle the menu bar
@@ -76,7 +81,10 @@ function Createcustomer(){
                         "cMdate":formdetails.cMdate,
                         "cmachinetype":formdetails.cmachinetype,
                         "cSnum":formdetails.cSnum,
-                        "cIdate":formdetails.cIdate
+                        "cIdate":formdetails.cIdate,
+                        "ccountry":formdetails.ccountry,
+                        "cstate":formdetails.cstate,
+                        "cdist":formdetails.cdist
                     }}); // need to update backend with new fields
                     await batch.commit();
                 }
@@ -93,6 +101,9 @@ function Createcustomer(){
                     cIdate:'', 
                     password:'',
                     cnfpassword:'',
+                    ccountry:'India',
+                    cstate:'',
+                    cdist:'',
                     role:'customer'
                 });
             }else{
@@ -138,12 +149,14 @@ function Createcustomer(){
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
                     {/* your createcustomer starts from here */}
-                    <div className="createmanager-innner-form-con">
-                        <div className="createmanager-innner-form createcustomer-inner-spl-div">
-                            <div className="create-manager-form-header">
+                    <div className="createcustomer-page-con">
+                    <div className="createcompanyprofile-innner-form-con">
+                            <div className="createcompany-profile-header">
                                 <h1>create Company profile</h1>
                                 <p>enter email and password to create profile</p>
                             </div>
+                        <div className="create-company-profile-form">
+                            
 
                             {/* all fields starts from here */}
                             <div>
@@ -180,7 +193,7 @@ function Createcustomer(){
                                         ...prev,
                                         cmachinetype:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Machine Type</option>
+                                        <option value=''>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGB'>RGB</option>
@@ -208,6 +221,76 @@ function Createcustomer(){
                                     cIdate:e.target.value
                                 }))}/>
                             </div>
+
+                            <div>
+                                    <label>Country</label>
+                                    <select value={formdetails.ccountry} onChange={(e)=>setformdetails(prev=>({
+                                        ...prev,
+                                        cstate:'',
+                                        cdist:'',
+                                        ccountry:e.target.value
+                                    }))}>
+                                        <option value=''>Select country</option>
+                                        {
+                                            counrtycode.map((item,idx)=>(
+                                                <option key={idx} value={item.name}>{item.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+
+                                {formdetails.ccountry==='India' && 
+                                <div>
+                                    <label>State</label>
+                                    <select value={formdetails.cstate} onChange={(e)=>setformdetails(prev=>({
+                                        ...prev,
+                                        cdist:'',
+                                        cstate:e.target.value
+                                    }))}>
+                                    <option value=''>Select State</option>
+                                        {states.map((item,idx)=>(
+                                            <option key={idx} value={item.state}>{item.state}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                }
+                                {formdetails.ccountry!=='India' && 
+                                <div>
+                                    <label>State</label>
+                                    <input value={formdetails.cstate} type="text" onChange={(e)=>setformdetails(prev=>({
+                                        ...prev,
+                                        cstate:e.target.value
+                                    }))}/>
+                                </div>
+                                }
+
+                                {formdetails.ccountry==='India' && formdetails.cstate!=='' &&
+                                    <div>
+                                        <label>district</label>
+                                        <select value={formdetails.cdist} onChange={(e)=>setformdetails(prev=>({
+                                            ...prev,
+                                            cdist:e.target.value
+                                        }))}>
+                                        <option value='' >Select District</option>
+                                                {states.filter(item=>item.state===formdetails.cstate)[0].districts.map((prod,idx)=>(
+                                                    <option key={idx} value={prod}>{prod}</option>
+                                                ))}
+                                        </select>
+                                    </div>
+                                }
+
+                                {formdetails.ccountry!=='India' && formdetails.cstate!=='' &&
+                                    <div>
+                                        <label>district</label>
+                                        <input type='text' value={formdetails.cdist} onChange={(e)=>setformdetails(prev=>({
+                                            ...prev,
+                                            cdist:e.target.value
+                                        }))}/>
+                                        
+                                    </div>
+                                }
+                            
+
                             <div>
                                 <label>password<span>*</span></label>
                                 <input type='password' value={formdetails.password} onChange={(e)=>setformdetails(prev=>({
@@ -222,10 +305,12 @@ function Createcustomer(){
                                     cnfpassword:e.target.value
                                 }))}/>
                             </div>
-                            <button onClick={()=>handleregistration()}>Create Company profile</button>
+                            
                             {/* all fields ends here */}
                         </div>
+                        <button onClick={()=>handleregistration()}>Create Company profile</button>
                         {/* form completed here */}
+                    </div>
                     </div>
                 </div>
             </div>

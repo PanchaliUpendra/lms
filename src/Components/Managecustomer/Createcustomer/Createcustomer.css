@@ -8,3 +8,131 @@
     /* margin-top: 20px; */
     margin-bottom: 20px;
 }
+
+/* createcompany-profile-header */
+.createcompany-profile-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.createcompany-profile-header>h1{
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    color: #344767;
+    font-weight: 600;
+    text-align: center;
+}
+.createcompany-profile-header>p{
+    text-transform: capitalize;
+    font-size: 0.95rem;
+    color: #7b809a;
+    font-weight: 300;
+    text-align: center;
+}
+/* createcustomer-page-con */
+.createcustomer-page-con{
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* create-profile-country-state */
+.createcompanyprofile-innner-form-con{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 600px;
+    width: fit-content;
+    margin: auto;
+    padding: 30px;
+}
+.create-company-profile-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    padding: 30px;
+    padding-left: 0;
+    padding-right: 0;
+    column-gap: 20px;
+    row-gap: 10px;
+    width: 100%;
+}
+
+.create-company-profile-form>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.create-company-profile-form>div label{
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #7b809a;
+    letter-spacing: 0.6px;
+}
+
+.create-company-profile-form>div label span{
+    color: red;
+}
+
+.create-company-profile-form>div input{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border: 1px solid #d2d6da;
+    border-top: hidden;
+    border-left: hidden;
+    border-right: hidden;
+}
+
+.create-company-profile-form>div select{
+    width: 100%;
+    height:40px;
+    padding-left:10px;
+    padding-right:10px;
+    outline:none;
+    font-size:0.9rem;
+    font-weight:400;
+    border: 1px solid #d2d6da;
+    border-top: hidden;
+    border-left: hidden;
+    border-right: hidden;
+}
+
+/* bbuttons styles */
+.createcompanyprofile-innner-form-con>button{
+    text-align: center;
+    width: 100%;
+    min-height: 43px;
+    text-transform: uppercase;
+    border: none;
+    color: white;
+    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight:500 ;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+
+@media all and (max-width:782px){
+    .createcompanyprofile-innner-form-con{
+        min-width: 280px;
+        width: 90%;
+    }
+    .create-company-profile-form{
+        grid-template-columns: 1fr;
+    }
+}
