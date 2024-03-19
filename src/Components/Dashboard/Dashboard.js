@@ -26,6 +26,8 @@ import { createtickets , ticketsgraphdoc } from "../../Data/Docs";
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import {differenceInHours} from 'date-fns';
+
 function Dashboard(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -41,6 +43,18 @@ function Dashboard(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+    //handle time difference
+    function handletimedifference(ticket){
+        if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktdatetime")){
+            const lastDate = new Date(sharedvalue.ticketsdata[ticket].ctktdatetime);
+            const presenttime = new Date();
+            const currenttime = presenttime.toISOString();
+            const hoursDifference = differenceInHours(new Date(currenttime),lastDate);
+            return hoursDifference;
+        }
+        return '-';
+    }
 
     //tickets flow in dashboard
      //feedback state handling
@@ -452,6 +466,9 @@ function Dashboard(){
                                             <th>status</th>
                                             <th>action</th>
                                             <th>Company Name</th>
+                                            <th>time</th>
+                                            <th>open date</th>
+                                            <th>closed date</th>
                                             <th>
                                                 <p>country |</p>
                                                 <p>state | district</p>
@@ -509,6 +526,26 @@ function Dashboard(){
                                                             }
                                                         </p>
                                                     </td>
+                                                    {/* time difference */}
+                                                    {
+                                                        <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                            <p className="view-manager-list-name">{sharedvalue.ticketsdata[ticket].status==='open'?handletimedifference(ticket):'-'} {sharedvalue.ticketsdata[ticket].status==='open' && handletimedifference(ticket)!=='-'?'h':''}</p>
+                                                        </td>
+                                                    }
+                                                    {/* open date */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktopen") && sharedvalue.ticketsdata[ticket].ctktopen!=='')?sharedvalue.ticketsdata[ticket].ctktopen:'-'}
+                                                        </p>
+                                                    </td>
+
+                                                    {/* closed date */}
+                                                    <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                        <p className="view-manager-list-name">
+                                                        {(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktclose") && sharedvalue.ticketsdata[ticket].ctktclose!=='' )?sharedvalue.ticketsdata[ticket].ctktclose:'-'}
+                                                        </p>
+                                                    </td>
+
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className="view-manager-list-name">
