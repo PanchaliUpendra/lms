@@ -6,17 +6,43 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
 import { NavLink, useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import { createworkers } from "../../Data/Docs";
+import {  writeBatch } from "firebase/firestore";
+import { db } from "../../Firebase";
 
 
 function Profile(){
     const sharedvalue = useContext(MyContext);
+
+    const batch = writeBatch(db);
     const navigate = useNavigate();
+    const [editmobile,seteditmobile] = useState('');
+    const[editmobbtn, seteditmobbtn] = useState(false);
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+    async function modifymobile(){
+        try{
+            if(editmobile!=='' && editmobile.length>=5){
+                batch.update(createworkers,{
+                    [sharedvalue.uid]:{
+                        ...sharedvalue.workersdata[sharedvalue.uid],
+                        "cNum":editmobile
+                    }            
+                });
+                await batch.commit();
+            }else{
+                alert('check your mobile number...');
+            }
+        }catch(e){
+            console.log('you got an error while updating the number...',e);
+        }
+    }
     return(
         <>
         {sharedvalue.workerskeys.length>0 && sharedvalue.uid!=='' && 
@@ -52,9 +78,26 @@ function Profile(){
                                 
                                 <div className="profile-info-div-details-email">
                                     <p>Email: <span>{sharedvalue.workersdata[sharedvalue.uid].email}</span></p>
-                                    <p>Phone: <span>9390000xxx</span></p>
+                                    <p>Phone: 
+                                    <span>{Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "cNum") && sharedvalue.workersdata[sharedvalue.uid].cNum!==''?sharedvalue.workersdata[sharedvalue.uid].cNum:'123xxxx'}</span>
+                                    {editmobbtn===false && <EditIcon size='large' sx={{color:'#0084ff',cursor:'pointer'}} onClick={()=>seteditmobbtn(true)}/>}
+                                    </p>
+                                    
                                 </div>
+                                {editmobbtn===true && 
+                                    <div className="edit-mobile-number-div-buttons">
+                                        <input placeholder="enter the mobile number" type='number' value={editmobile} onChange={(e)=>seteditmobile(e.target.value)}/>
+                                        <div>
+                                            <button onClick={()=>seteditmobbtn(false)}>cancel</button>
+                                            <button onClick={()=>{
+                                                modifymobile();
+                                                seteditmobbtn(false);
+                                            }}>update</button>
+                                        </div>
+                                    </div>
 
+                                }
+                                
                                 {sharedvalue.role==='admin' && 
                                 <div className="profile-show-passwords-btn">
                                     <NavLink to='/passwords'><p>View Credentials {`>`}</p></NavLink>

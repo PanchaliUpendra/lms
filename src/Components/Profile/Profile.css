@@ -53,6 +53,9 @@
 .profile-info-div-details{
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
 }
 
 
@@ -63,6 +66,10 @@
     gap: 50px;
     margin-top: 10px;
 }
+
+/* .profile-info-div-details-name{
+    margin-top: 20px;
+} */
 
 .profile-info-div-details-name>h1{
     font-size: 1.3rem;
@@ -75,6 +82,12 @@
     text-transform: capitalize;
     font-weight: 500;
 }
+.profile-info-div-details-email>p{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
 .profile-info-div-details-email>p span{
     font-size: 1.05rem;
     font-weight: 500;
@@ -84,13 +97,54 @@
 .profile-show-passwords-btn{
     margin-top: 8px;
     margin-bottom: 5px;
+    width: fit-content;
     
 }
 .profile-show-passwords-btn p{
-    color: rgb(0, 132, 255);
+    color: #0084ff;
     text-transform: capitalize;
     font-weight: 500;
     text-decoration: underline;
+    width: fit-content;
+}
+/* edit-mobile-number-div-buttons */
+.edit-mobile-number-div-buttons{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.edit-mobile-number-div-buttons>input{
+    outline: none;
+    height: 35px;
+    border: 1px solid rgb(189, 189, 189);
+    margin-top: 3px;
+    padding-left: 5px;
+    border-radius: 4px;
+}
+.edit-mobile-number-div-buttons>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+
+}
+.edit-mobile-number-div-buttons>div button{
+    border: none;
+    height: 35px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding:7px 14px;
+    border-radius: 4px;
+}
+.edit-mobile-number-div-buttons>div button:nth-child(1){
+    background-color: rgba(253, 146, 146, 0.493);
+    color: red;
+}
+.edit-mobile-number-div-buttons>div button:nth-child(2){
+    background-color: rgb(27, 133, 0);
+    color: white;
 }
 
 @media screen and (max-width:754.1234px){
