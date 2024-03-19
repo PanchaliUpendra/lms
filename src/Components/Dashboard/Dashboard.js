@@ -230,6 +230,7 @@ function Dashboard(){
                                 <table>
                                     <thead>
                                     <tr className="table-head-row">
+                                            <th>status</th>
                                             <th>action</th>
                                             <th><p>Company | Contact Person| Mobile</p></th>
                                             {/* <th>Contact Person</th> */}
@@ -271,6 +272,9 @@ function Dashboard(){
                                             })
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
+                                                    <td>
+                                                        <p style={{fontWeight:'bold',color:`${sharedvalue.leadsdata[lead].custstatus==='Closed'?'red':'green'}`}}>{sharedvalue.leadsdata[lead].custstatus}</p>
+                                                    </td>
                                                     {/* action */}
                                                     <td >
                                                         <div className='view-manager-list-acttion-icon'>
