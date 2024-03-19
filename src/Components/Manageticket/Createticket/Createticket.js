@@ -136,6 +136,7 @@ function Createticket(){
 
                 const formatDateString = (date) => date.toISOString().split('T')[0];
                 const currentDate = new Date();
+                const currentdatetime = currentDate.toISOString();
                 const stringtodaydate = formatDateString(currentDate);
                 
                 //adding the data here
@@ -160,7 +161,8 @@ function Createticket(){
                             id:result,
                             createdbyid:sharedvalue.uid,
                             ctktopen:stringtodaydate,
-                            ctktclose:''
+                            ctktclose:'',
+                            ctktdatetime:currentdatetime
                         }
                     });
                     //updating the tickets graph data

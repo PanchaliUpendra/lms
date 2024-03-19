@@ -21,11 +21,15 @@ import {  ref, deleteObject } from "firebase/storage";
 import { storage } from "../../../Firebase";
 import { updateDoc, deleteField } from "firebase/firestore";
 
+import {differenceInHours} from 'date-fns';
+
 function Viewticket(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
+    //time difference
+    // const[tkttimediff,settkttimediff] = useState('-')
 
     const[statusfilter,setstatusfilter] = useState('');//state to take the status input
 
@@ -48,6 +52,17 @@ function Viewticket(){
     }
     // toggle menu bar code ends here
 
+    //handle time difference
+    function handletimedifference(ticket){
+        if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktdatetime")){
+            const lastDate = new Date(sharedvalue.ticketsdata[ticket].ctktdatetime);
+            const presenttime = new Date();
+            const currenttime = presenttime.toISOString();
+            const hoursDifference = differenceInHours(new Date(currenttime),lastDate);
+            return hoursDifference;
+        }
+        return '-';
+    }
     //handling the submit data and closing the ticket
     async function handlingsubmitclose(){
         try{
@@ -177,6 +192,7 @@ function Viewticket(){
                                             <th>action</th>
                                             <th>employee</th>
                                             <th>Company Name</th>
+                                            <th>time</th>
                                             <th>open date</th>
                                             <th>closed date</th>
                                             <th>
@@ -241,6 +257,12 @@ function Viewticket(){
                                                             }
                                                         </p>
                                                     </td>
+                                                    {/* time difference */}
+                                                    {
+                                                        <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
+                                                            <p className="view-manager-list-name">{sharedvalue.ticketsdata[ticket].status==='open'?handletimedifference(ticket):'-'} {sharedvalue.ticketsdata[ticket].status==='open' && handletimedifference(ticket)!=='-'?'h':''}</p>
+                                                        </td>
+                                                    }
 
                                                     {/* open date */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
