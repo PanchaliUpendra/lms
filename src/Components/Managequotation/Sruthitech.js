@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Document , Page, Text, View, StyleSheet, Image} from '@react-pdf/renderer';
 import { Font } from "@react-pdf/renderer";
 // import { PDFViewer } from '@react-pdf/renderer';
@@ -22,6 +22,7 @@ const Sruthitech = (props) => {
     //changing number to text
     const quoteid = props.quoteid
     const [text,settext] = useState('');
+    const [wogsttext,setwogsttext] = useState('');
     const [totalcntigst,settotalcntigst] = useState(0); //total with gst
     const [basicamount,setbasicamount] = useState(0);//basic total in first row
     const [onlygst,setonlygst]  = useState(0);//only gst display here
@@ -112,6 +113,9 @@ const parser = new DOMParser();
     const textvalue = numWords(tempdata);
     settext(textvalue);
 
+    var wogsttemptext = numWords(twg);
+    setwogsttext(wogsttemptext);
+
   }
   },[sharedvalue.quotesdata,sharedvalue.quoteskeys,quoteid]);
   return(
@@ -135,7 +139,7 @@ const parser = new DOMParser();
                         </View>
 
                         
-                        <Text style={styles.quotationhead}>Quotation</Text>
+                        <Text style={styles.quotationhead}>{Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'}</Text>
                         <Text style={{fontWeight:400,fontFamily:'OpenSans', fontSize:10,textAlign:'right',marginTop:2}}>Date: {todaydate}</Text>
                         <Text style={{fontWeight:600,fontFamily:'OpenSans', fontSize:10,textAlign:'right'}}>Q.NO. <Text style={{fontWeight:400}}>S360-{curryear}-{quoteid}</Text></Text>
                         
@@ -207,6 +211,15 @@ const parser = new DOMParser();
                                 <Text style={styles.srthtblcol31}>{totalwogst}/-</Text>
                             </View>
 
+                            {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST' &&
+                            <View style={styles.srthtblrow}>
+                                <Text style={{...styles.srthtblcol11,borderBottom:0,borderRight:0,borderTop:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderBottom:0,borderTop:0}}>
+                                </View>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderBottom:0,borderTop:0}}></Text>
+                                <Text style={{...styles.srthtblcol3,fontWeight:400}}>Gst@18%</Text>
+                                <Text style={styles.srthtblcol31}>{onlygst}/-</Text>
+                            </View>):
                             <View style={styles.srthtblrow}>
                                 <Text style={{...styles.srthtblcol11,borderBottom:0,borderRight:0,borderTop:0}}></Text>
                                 <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderBottom:0,borderTop:0}}>
@@ -215,7 +228,9 @@ const parser = new DOMParser();
                                 <Text style={{...styles.srthtblcol3,fontWeight:400}}>Gst@18%</Text>
                                 <Text style={styles.srthtblcol31}>{onlygst}/-</Text>
                             </View>
-
+                            }
+                            
+                            {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
                             <View style={styles.srthtblrow}>
                                 <Text style={{...styles.srthtblcol11,borderRight:0,borderTop:0}}></Text>
                                 <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderTop:0}}>
@@ -225,18 +240,46 @@ const parser = new DOMParser();
                                 <Text style={styles.srthtblcol31}>{
                                     totalcntigst
                                     }/-</Text>
-                            </View>
+                            </View>:
+                            <View style={styles.srthtblrow}>
+                                <Text style={{...styles.srthtblcol11,borderRight:0,borderTop:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderTop:0}}>
+                                </View>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderTop:0}}></Text>
+                                <Text style={{...styles.srthtblcol3,fontWeight:400}}>Grand total</Text>
+                                <Text style={styles.srthtblcol31}>{
+                                    totalwogst
+                                    }/-</Text>
+                            </View>)
+                            :
+                            <View style={styles.srthtblrow}>
+                                <Text style={{...styles.srthtblcol11,borderRight:0,borderTop:0}}></Text>
+                                <View style={{...styles.srthtblcol21,borderLeft:0,borderRight:0,borderTop:0}}>
+                                </View>
+                                <Text style={{...styles.srthtblcol31,borderLeft:0,borderTop:0}}></Text>
+                                <Text style={{...styles.srthtblcol3,fontWeight:400}}>Grand total</Text>
+                                <Text style={styles.srthtblcol31}>{
+                                    totalcntigst
+                                    }/-</Text>
+                            </View>}
+
 
                         </View>
+                        {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
+                        <Text style={styles.numbertorupees}>({text} rupees only)</Text>:<Text style={styles.numbertorupees}>({wogsttext} rupees only)</Text>):
+                        <Text style={styles.numbertorupees}>({text} rupees only)</Text>}
 
-                        <Text style={styles.numbertorupees}>({text} rupees only)</Text>
+                        {/* <Text style={styles.numbertorupees}>({text} rupees only)</Text> */}
 
                         <Text style={{fontFamily:'OpenSans',fontWeight:600, textDecoration:'underline', fontSize:12}}>Terms and conditions:</Text>
 
                         <View style={styles.termscondstxt}>
                         
                             {/* <Text>1.  price of Rs. {totalcntigst}/- is to be paid to Sruthi Technologies.</Text> */}
-                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>
+                            {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
+                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>:<Text>1. FOR Price Rs. {totalwogst}/- to be paid to Sruthi Technologies.</Text>):
+                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>}
+                            {/* <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text> */}
                             <Text>2. Sale through Gst sales.</Text>
                             <Text>3. Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
                         </View>
@@ -312,7 +355,7 @@ const parser = new DOMParser();
             </Document>
              }
             </>
-        //  </PDFViewer>
+          //</PDFViewer>
   );
 };
 const styles = StyleSheet.create({

@@ -38,7 +38,7 @@ import Passwords from './Components/Passwords/Passwords';
 
 //please remove after completed the design
 import Spinner from './Components/Spinner/Spinner';
-// import Sruthitech from './Components/Managequotation/Sruthitech';
+import Sruthitech from './Components/Managequotation/Sruthitech';
  
 function App() {
   const sharedvalue = useContext(MyContext);
@@ -81,7 +81,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/verifyquotation/:quoteid' element={<Verifyquotation/>}/>}
         {/* {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/pdfview/:quoteid' element={<Comaasrgb/>}/>} */}
-        {/* {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/sruthipdf/:quoteid' element={<Sruthitech/>}/>} */}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/sruthipdf/:quoteid' element={<Sruthitech/>}/>}
         {/* search bar nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}

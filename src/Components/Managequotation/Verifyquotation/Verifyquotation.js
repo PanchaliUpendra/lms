@@ -62,7 +62,9 @@ function Verifyquotation(){
         quotdestination:'',
         quotwarranty:'',
         quotaddinfo:'',
-        quotstatus:'open'
+        quotstatus:'open',
+        quotperfomaiorquot:'',
+        withgstornot:''
     })
     //create all states
     
@@ -144,6 +146,8 @@ function Verifyquotation(){
                 quotdestination:sharedvalue.quotesdata[quoteid].quotdestination,
                 quotwarranty:sharedvalue.quotesdata[quoteid].quotwarranty,
                 quotaddinfo:sharedvalue.quotesdata[quoteid].quotaddinfo,
+                quotperfomaiorquot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")?sharedvalue.quotesdata[quoteid].quotperfomaiorquot:'',
+                withgstornot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot")?sharedvalue.quotesdata[quoteid].withgstornot:'',
             }));
             settempquot(prev=>({
                 ...prev,
@@ -200,6 +204,14 @@ function Verifyquotation(){
                         {/* form starts here */}
                         <div className="create-quotation-form-starts-here">
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
+                                <div>
+                                    <label>Quotation Type</label>
+                                    <input value={quotinfo.quotperfomaiorquot} readOnly/>
+                                </div>
+                                <div>
+                                    <label>GST or Not</label>
+                                    <input value={quotinfo.withgstornot} readOnly/>
+                                </div>
                                 {/* country */}
                                 <div>
                                     <label>country</label>

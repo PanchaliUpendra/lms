@@ -56,7 +56,9 @@ function Createquotation(){
         quotdestination:'',
         quotwarranty:'',
         quotaddinfo:'',
-        quotstatus:'open'
+        quotstatus:'open',
+        quotperfomaiorquot:'',
+        withgstornot:''
     })
     //create all states
     const [allstates,setallstates] = useState([]);
@@ -116,7 +118,9 @@ function Createquotation(){
                 quotinfo.quotcap!=='' &&
                 quotinfo.quotprice!=='' &&
                 quotinfo.quotpayment!=='' &&
-                quotinfo.quotwarranty!==''
+                quotinfo.quotwarranty!=='' &&
+                quotinfo.quotperfomaiorquot!=='' &&
+                quotinfo.withgstornot!==''
             ){
             const result = await fetchquotationid();
             if(result!==0){
@@ -143,6 +147,8 @@ function Createquotation(){
                         quotpayterm:editorData,
                         quotstatus:quotinfo.quotstatus,
                         quotcreatedby:sharedvalue.uid,
+                        quotperfomaiorquot:quotinfo.quotperfomaiorquot,
+                        withgstornot:quotinfo.withgstornot,
                         quotadmincommt:''
                     }
                 })
@@ -172,6 +178,8 @@ function Createquotation(){
                     quotdestination:'',
                     quotwarranty:'',
                     quotaddinfo:'',
+                    quotperfomaiorquot:'',
+                    withgstornot:''
                 }));
                 setEditorData('');
             }
@@ -210,6 +218,36 @@ function Createquotation(){
                         {/* form starts here */}
                         <div className="create-quotation-form-starts-here">
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
+                                {/* quotation type */}
+                                <div>
+                                    <label>Quotation type</label>
+                                    <select value={quotinfo.quotperfomaiorquot} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        withgstornot:e.target.value==='Performa Invoice'?'GST':e.target.value==='Quotation'?'Without GST':'',
+                                        quotperfomaiorquot:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select Quotation Type</option>
+                                        <option value='Performa Invoice'>Performa Invoice</option>
+                                        <option value='Quotation'>Quotation</option>
+                                    </select>
+                                </div>
+                                {/* With Gst Or Without GST */}
+                                <div>
+                                    <label>GST or Not</label>
+                                    {quotinfo.quotperfomaiorquot==='Quotation'?
+                                    <select value={quotinfo.withgstornot} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        withgstornot:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select with GST or Not</option>
+                                        <option value='GST'>GST</option>
+                                        <option value='Without GST'>Without GST</option>
+                                    </select>
+                                    :
+                                    <input type='text' value={quotinfo.withgstornot} readOnly/>
+                                    }
+                                </div>
+                                
                                 {/* country */}
                                 <div>
                                     <label>country</label>
@@ -244,7 +282,7 @@ function Createquotation(){
                                         ...prev,
                                         quotcustname:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Customer</option>
+                                        <option value='' >Select Customer</option>
                                         {sharedvalue.leadskeys.filter(item=>sharedvalue.leadsdata[item].ofdcountry===quotinfo.quotcountry && sharedvalue.leadsdata[item].ofdst===quotinfo.quotstate).map((lead,idx)=>(
                                             <option key={idx} value={sharedvalue.leadsdata[lead].custcompanyname}>{sharedvalue.leadsdata[lead].custcompanyname}</option>
                                         ))}
@@ -259,7 +297,7 @@ function Createquotation(){
                                             ...prev,
                                             quotlead:e.target.value
                                         }))}>
-                                            <option value='' selected>Select LeadID</option>
+                                            <option value='' >Select LeadID</option>
                                             {sharedvalue.leadskeys.filter(item=>sharedvalue.leadsdata[item].ofdcountry===quotinfo.quotcountry && sharedvalue.leadsdata[item].ofdst===quotinfo.quotstate && sharedvalue.leadsdata[item].custcompanyname===quotinfo.quotcustname).map((lead,idx)=>(
                                                 <option key={idx} value={lead}>{lead}</option>
                                             ))}
@@ -273,7 +311,7 @@ function Createquotation(){
                                         ...prev,
                                         quottype:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Quotation Type</option>
+                                        <option value='' >Select Quotation Type</option>
                                         <option value='USD'>USD</option>
                                         <option value='HSS'>HSS</option>
                                         <option value='GST'>GST</option>
@@ -287,7 +325,7 @@ function Createquotation(){
                                         ...prev,
                                         quotcompanyname:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Company Name</option>
+                                        <option value='' >Select Company Name</option>
                                         <option value='Sruthi Technologies'>Sruthi Technologies-ST</option>
                                         <option value='Srinivas Mill Stores'>Srinivas Mill Stores-SMS</option>
                                         <option value='Swathi Enterprises'>Swathi Enterprises-SE</option>
@@ -302,7 +340,7 @@ function Createquotation(){
                                         ...prev,
                                         quotmachinetype:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Machine Type</option>
+                                        <option value='' >Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGB'>RGB</option>
@@ -316,7 +354,7 @@ function Createquotation(){
                                         ...prev,
                                         quotprodtype:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Product Type</option>
+                                        <option value='' >Select Product Type</option>
                                         <option value='STD'>STD</option>
                                         <option value='EXP'>EXP</option>
                                     </select>
@@ -328,7 +366,7 @@ function Createquotation(){
                                         ...prev,
                                         quotcap:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Capacity</option>
+                                        <option value='' >Select Capacity</option>
                                         <option value='1'>1</option>
                                         <option value='2'>2</option>
                                         <option value='3'>3</option>
@@ -390,7 +428,7 @@ function Createquotation(){
                                         ...prev,
                                         quotpayment:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Payment</option>
+                                        <option value='' >Select Payment</option>
                                         <option value='LC'>LC</option>
                                         <option value='TT'>TT</option>
                                         <option value='EMI'>EMI</option>
@@ -443,7 +481,7 @@ function Createquotation(){
                                         ...prev,
                                         quotwarranty:e.target.value
                                     }))}>
-                                        <option value='' selected>Select Warranty</option>
+                                        <option value='' >Select Warranty</option>
                                         <option value='1'>1 YEAR</option>
                                         <option value='2'>2 YEARS</option>
                                         <option value='3'>3 YEARS</option>

@@ -59,7 +59,9 @@ function Updatequotation(){
         quotdestination:'',
         quotwarranty:'',
         quotaddinfo:'',
-        quotstatus:'open'
+        quotstatus:'open',
+        quotperfomaiorquot:'',
+        withgstornot:''
     })
     //create all states
     const [allstates,setallstates] = useState([]);
@@ -108,7 +110,9 @@ function Updatequotation(){
                 quotinfo.quotcap!=='' &&
                 quotinfo.quotprice!=='' &&
                 quotinfo.quotpayment!=='' &&
-                quotinfo.quotwarranty!==''
+                quotinfo.quotwarranty!=='' &&
+                quotinfo.quotperfomaiorquot!=='' &&
+                quotinfo.withgstornot!==''
             ){
             if(quoteid!==0){
                 await batch.update(createquotes,{
@@ -134,6 +138,8 @@ function Updatequotation(){
                         quotaddinfo:quotinfo.quotaddinfo,
                         quotpayterm:editorData,
                         quotstatus:'open',
+                        quotperfomaiorquot:quotinfo.quotperfomaiorquot,
+                        withgstornot:quotinfo.withgstornot,
                     }
                 })
                 await batch.commit();//commit all baches
@@ -172,7 +178,9 @@ function Updatequotation(){
                 quotdestination:sharedvalue.quotesdata[quoteid].quotdestination,
                 quotwarranty:sharedvalue.quotesdata[quoteid].quotwarranty,
                 quotaddinfo:sharedvalue.quotesdata[quoteid].quotaddinfo,
-                quotstatus:sharedvalue.quotesdata[quoteid].quotstatus
+                quotstatus:sharedvalue.quotesdata[quoteid].quotstatus,
+                quotperfomaiorquot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")?sharedvalue.quotesdata[quoteid].quotperfomaiorquot:'',
+                withgstornot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot")?sharedvalue.quotesdata[quoteid].withgstornot:'',
             }));
             
             
@@ -224,6 +232,35 @@ function Updatequotation(){
                         {/* form starts here */}
                         <div className="create-quotation-form-starts-here">
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
+                                    {/* quotation type */}
+                                    <div>
+                                    <label>Quotation type</label>
+                                    <select value={quotinfo.quotperfomaiorquot} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        withgstornot:e.target.value==='Performa Invoice'?'GST':e.target.value==='Quotation'?'Without GST':'',
+                                        quotperfomaiorquot:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select Quotation Type</option>
+                                        <option value='Performa Invoice'>Performa Invoice</option>
+                                        <option value='Quotation'>Quotation</option>
+                                    </select>
+                                </div>
+                                {/* With Gst Or Without GST */}
+                                <div>
+                                    <label>GST or Not</label>
+                                    {quotinfo.quotperfomaiorquot==='Quotation'?
+                                    <select value={quotinfo.withgstornot} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        withgstornot:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select with GST or Not</option>
+                                        <option value='GST'>GST</option>
+                                        <option value='Without GST'>Without GST</option>
+                                    </select>
+                                    :
+                                    <input type='text' value={quotinfo.withgstornot} readOnly/>
+                                    }
+                                </div>
                                 {/* country */}
                                 <div>
                                     <label>country</label>
