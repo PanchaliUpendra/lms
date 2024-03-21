@@ -30,3 +30,8 @@
     color: red;
     cursor: pointer;
 }
+
+.active-delete-popup>p{
+    text-align: center;
+    padding: 10px;
+}

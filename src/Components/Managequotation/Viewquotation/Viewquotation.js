@@ -40,6 +40,40 @@ function Viewquotation(){
         active:false,
         quoteid:''
     });
+
+    async function handledwnquote(quote){
+        setshowloading(true);
+        try{
+            setdwnquote(prev=>({
+                ...prev,
+                quoteid:quote
+            }))
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:true,
+                }))
+                setshowloading(false);
+            }, 1800);
+        }catch(e){
+            alert('you got error wwhile dwonloading...',e);
+        }
+        // setshowloading(false);
+    }
+
+    async function handledwnquoteafterclose(){
+        try{
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:false,
+                    quoteid:''
+                }))
+            },500);
+        }catch(e){
+            alert('you got an erro while closing...',e);
+        }
+    }
     //use navigator is important for now
     const navigate = useNavigate();
     // search bar input 
@@ -51,10 +85,10 @@ function Viewquotation(){
     }
     // toggle menu bar code ends here
 
-    //testing the pdf is downloading or not starts here
-   
-
-    //test the pdf ends here
+    const [dwnquote,setdwnquote] = useState({
+        active:false,
+        quoteid:''
+    });
 
     //function closing the quotation starts here
     async function handleclosequatation(){
@@ -97,7 +131,7 @@ function Viewquotation(){
     //function to delete the quotation ends here
     return(
         <>
-            <div className={`manlead-con ${workerdelete.active===true?'manlead-con-inactive':''}`} >
+            <div className={`manlead-con ${(workerdelete.active===true || dwnquote.active===true)===true?'manlead-con-inactive':''}`} >
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
 
@@ -173,24 +207,46 @@ function Viewquotation(){
                                                             {/* 15.  action*/}
                                                             <td>
                                                                 <p className='view-manager-list-acttion-icon'>
-                                                                    { (sharedvalue.quotesdata[quote].quotstatus==='open' || sharedvalue.quotesdata[quote].quotstatus==='rework') && sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
+                                                                     { (sharedvalue.quotesdata[quote].quotstatus==='open' || sharedvalue.quotesdata[quote].quotstatus==='rework') && sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
                                                                     
                                                                     {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && sharedvalue.quotesdata[quote].quotstatus==='approved' && <EmailShareButton
-                                                                                url={sharedvalue.leadsdata[sharedvalue.quotesdata[quote].quotlead].contpersonemail}
-                                                                                subject="add your subject "
-                                                                                body="here is the content of the body"
-                                                                            > <ShareIcon sx={{color:'grey',cursor:'pointer'}}  fontSize="small"/></EmailShareButton> }
-                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && <PDFDownloadLink document={<Comaasrgb quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
-                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" />
+                                                                        url={sharedvalue.leadsdata[sharedvalue.quotesdata[quote].quotlead].contpersonemail}
+                                                                        subject="add your subject"
+                                                                        body="here is the content of the body"
+                                                                    >
+                                                                        <ShareIcon sx={{ color: 'grey', cursor: 'pointer' }} fontSize="small" />
+                                                                    </EmailShareButton> }
+                                                                    {/* {
+                                                                        dwnquote!==`${quote}` && ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && 
+                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>setdwnquote(quote)} />
+                                                                    
+                                                                    }
+                                                                    { dwnquote===`${quote}` && ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && <PDFDownloadLink document={<Comaasrgb quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
+                                                                        <DownloadIcon sx={{color:'red',cursor:'pointer'}}  fontSize="small" />
                                                                     </PDFDownloadLink> }
-                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && <PDFDownloadLink document={<Sruthitech quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
-                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" />
-                                                                    </PDFDownloadLink> }
+                                                                    {
+                                                                        dwnquote!==`${quote}` && ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && 
+                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>setdwnquote(quote)}/>
+                                                                    }
+                                                                     { dwnquote===`${quote}` && ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && <PDFDownloadLink document={<Sruthitech quoteid={quote} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[quote].quotcustname}_${sharedvalue.quotesdata[quote].quotmachinetype}.pdf`}>
+                                                                        <DownloadIcon sx={{color:'red',cursor:'pointer'}}  fontSize="small" />
+                                                                    </PDFDownloadLink> } */}
+
+                                                                    {
+                                                                        ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && 
+                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>handledwnquote(quote)} />
+                                                                    }
+
+                                                                    {
+                                                                        ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='GST' && 
+                                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>handledwnquote(quote)} />
+                                                                    }
+                                                                   
                                                                     {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <span className="close-quotation-btn" onClick={()=>setworkerdelete(prev=>({
                                                                 ...prev,
                                                                 active:true,
                                                                 quoteid:quote
-                                                            }))} >close</span>}
+                                                            }))} >close</span>} 
                                                                     {sharedvalue.quotesdata[quote].quotstatus!=='closed' && sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small" onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}/>}
                                                                     {sharedvalue.quotesdata[quote].quotstatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(quote)}/>}
                                                                 </p>
@@ -290,6 +346,28 @@ function Viewquotation(){
                         {/* list ends here */}
                         
                     </div>
+                </div>
+            </div>
+            {/* popup to download the pdf */}
+            <div className={`view-manager-list-popup-delete ${dwnquote.active===true?'active-delete-popup':''}`}>
+                <p>Are you sure you want to download the pdf <span>{ dwnquote.quoteid!==''?`${sharedvalue.quotesdata[dwnquote.quoteid].quotcustname}_${sharedvalue.quotesdata[dwnquote.quoteid].quotmachinetype}.pdf`:''}</span></p>
+                <div>
+                    { dwnquote.quoteid!=='' && sharedvalue.quotesdata[dwnquote.quoteid].quottype==='USD'  && <PDFDownloadLink document={<Comaasrgb quoteid={dwnquote.quoteid} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[dwnquote.quoteid].quotcustname}_${sharedvalue.quotesdata[dwnquote.quoteid].quotmachinetype}.pdf`}>
+                        <button onClick={()=>handledwnquoteafterclose()}>yes</button>
+                    </PDFDownloadLink> }
+
+                    {dwnquote.quoteid!=='' && sharedvalue.quotesdata[dwnquote.quoteid].quottype==='GST'  && 
+                    <PDFDownloadLink document={<Sruthitech quoteid={dwnquote.quoteid} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.quotesdata[dwnquote.quoteid].quotcustname}_${sharedvalue.quotesdata[dwnquote.quoteid].quotmachinetype}.pdf`}>
+                        <button onClick={()=>handledwnquoteafterclose()}>yes</button>
+                    </PDFDownloadLink> 
+                    }
+                    
+                    {/* <button>Yes</button> */}
+                    <button onClick={()=>setdwnquote(prev=>({
+                        ...prev,
+                        active:false,
+                        quoteid:''
+                    }))}>No</button>
                 </div>
             </div>
             {/* popup to delete an item */}

@@ -175,6 +175,14 @@ function MyProvider({children}){
                 try{
                   await onSnapshot(leaddoc,(doc)=>{
                     const leadsdata = doc.data();
+
+                    // just checking the data size
+                    const jsonString = JSON.stringify(leadsdata);
+                    // Calculate the size of the JSON string in bytes
+                    const sizeInBytes = new Blob([jsonString]).size;
+                    console.log('Document size in bytes:', sizeInBytes);
+
+
                     setleadsdata(leadsdata);
                     const leadskeyarray = Object.keys(leadsdata);
                     const sortleadskeyarray = [...leadskeyarray].sort((a,b)=>b-a);
