@@ -221,7 +221,45 @@ function Createcustomer(){
                                     cIdate:e.target.value
                                 }))}/>
                             </div>
+                            <div>
+                                <label>Warranty Or AMC</label>
+                                <select >
+                                    <option value=''>Select Type</option>
+                                    <option value='AMC'>AMC</option>
+                                    <option value='warrantry'>Warranty</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Duration</label>
+                                <select>
+                                    <option>6 months</option>
+                                    <option>12 months</option>
+                                </select>
+                            </div>
 
+                            <div>
+                                <label>Duration</label>
+                                <select>
+                                    <option>1 YEAR</option>
+                                    <option>2 YEAR</option>
+                                    <option>3 YEAR</option>
+                                    <option>4 YEAR</option>
+                                    <option>5 YEAR</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label>Visits</label>
+                                <select>
+                                    <option>12 visits</option>
+                                    <option>6 visits</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label>End Date</label>
+                                <input type='text' placeholder="end date"/>
+                            </div>
                             <div>
                                     <label>Country</label>
                                     <select value={formdetails.ccountry} onChange={(e)=>setformdetails(prev=>({

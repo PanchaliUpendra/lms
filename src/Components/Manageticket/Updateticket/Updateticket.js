@@ -302,8 +302,9 @@ function Updateticket(){
                                     <option value=''>Select Call Type</option>
                                     <option value='Pre-Installation'>Pre-Installation</option>
                                     <option value='Installation'>Installation</option>
-                                    <option value='Charge'>Charge</option>
-                                    <option value='Free'>Free</option>
+                                    <option value='Charge'>Chargable</option>
+                                    <option value='Warranty'>Warranty</option>
+                                    <option value='AMC'>AMC</option>
                                 </select>
                             </div>
                             {/* if call type is free or charge */}

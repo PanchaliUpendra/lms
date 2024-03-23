@@ -89,7 +89,7 @@ function Eachticket(){
                                 </div>
                                 <div>
                                     <label>Call Type</label>
-                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktcalltype} readOnly/>
+                                    <input type='text' value={sharedvalue.ticketsdata[tktid].ctktcalltype==='Charge'?'Chargable':sharedvalue.ticketsdata[tktid].ctktcalltype} readOnly/>
                                 </div>
                                 <div>
                                     <label>Category</label>

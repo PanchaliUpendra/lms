@@ -372,6 +372,8 @@ function Createticket(){
                                         <option value=''>Select Company</option>
                                         {
                                             sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='customer')
+                                            .filter(item=>(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[item],"ccountry")?sharedvalue.workersdata[item].ccountry.includes(ticketinfo.ctktcountry):true))
+                                            .filter(item=>(Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[item],"cstate")?sharedvalue.workersdata[item].cstate.includes(ticketinfo.ctktstate):true))
                                             .map((worker,idx)=>(
                                                 <option key={idx} value={sharedvalue.workersdata[worker].uid}>{sharedvalue.workersdata[worker].cname}</option>
                                             ))
@@ -480,8 +482,10 @@ function Createticket(){
                                     <option value='' selected>Select Call Type</option>
                                     <option value='Pre-Installation'>Pre-Installation</option>
                                     <option value='Installation'>Installation</option>
-                                    <option value='Charge'>Charge</option>
-                                    <option value='Free'>Free</option>
+                                    <option value='Charge'>Chargable</option>
+                                    <option value='Warranty'>Warranty</option>
+                                    <option value='AMC'>AMC</option>
+                                    {/* <option value='Free'>Free</option> */}
                                 </select>
                             </div>
                             {/* if call type is free or charge */}

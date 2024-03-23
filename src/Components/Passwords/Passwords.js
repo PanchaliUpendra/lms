@@ -6,7 +6,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
 import { useNavigate } from "react-router-dom";
+import {signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../Firebase';
+//toastify importing
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 function Passwords(){
+    const [open, setOpen] = React.useState(false);
     
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
@@ -16,6 +24,45 @@ function Passwords(){
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
+    }
+
+    // adding notifications 
+    const loginsuccess = () =>toast.success('Successfully Logged In');
+    const loginerror = () =>toast.error('please check your credientials');
+    // const loginformerror = () => toast.info('please fill the form correctly');
+    const invalidmail = () => toast.warn('Invalid Mail');
+
+    async  function handleloginform(email,password){
+        setOpen(true);
+        try{
+           
+                await signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    if(user){
+                        loginsuccess();
+                    }
+                    navigate('/');
+                    // ...
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    if(errorCode==='auth/invalid-credential'){
+                        loginerror();
+                    }
+                    else if(errorCode === 'auth/invalid-email') {
+                        invalidmail();
+                    }
+                    else{
+                        alert('You Got An Error While Sign In');
+                    }
+                });
+            
+            
+        }catch(e){
+            alert('you got an error')
+        }
+        setOpen(false);
     }
     return(
         <>
@@ -60,6 +107,7 @@ function Passwords(){
                                             <th>email</th>
                                             <th>Password</th>
                                             <th>status</th>
+                                            <th>Login</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -90,6 +138,11 @@ function Passwords(){
                                                             {sharedvalue.workersdata[worker].role}
                                                         </p>
                                                     </td>
+                                                    <td>
+                                                        <p className="view-manager-list-role-login" onClick={()=>handleloginform(sharedvalue.workersdata[worker].email,sharedvalue.workersdata[worker].password)}>
+                                                            Login
+                                                        </p>
+                                                    </td>
                                                     {/* <td >
                                                         <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
                                                          onClick={()=>setworkerdelete(prev=>({
@@ -109,6 +162,26 @@ function Passwords(){
                 </div>
             </div>
             }
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {/* adding the notifications */}
+            <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    limit={1}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover
+                    theme="light"
+                    />
         </>
     );
 }
