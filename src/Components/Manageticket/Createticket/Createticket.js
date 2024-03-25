@@ -68,6 +68,16 @@ function Createticket(){
         ctktdes:'',
         ctktpriority:'',
         ctktasslc:'',
+        // extra fields for warranty
+        ctktwtysrtdate:'',
+        ctktwtydur:'',
+        ctktwtyenddate:'',
+        //extra fields for AMC
+        ctktamcsrtdate:'',
+        ctktamcdur:'',
+        ctktamcvisits:'',
+        ctktamcenddate:''
+
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -162,7 +172,16 @@ function Createticket(){
                             createdbyid:sharedvalue.uid,
                             ctktopen:stringtodaydate,
                             ctktclose:'',
-                            ctktdatetime:currentdatetime
+                            ctktdatetime:currentdatetime,
+                            // extra fields for warranty
+                            ctktwtysrtdate:ticketinfo.ctktwtysrtdate,
+                            ctktwtydur:ticketinfo.ctktwtydur,
+                            ctktwtyenddate:ticketinfo.ctktwtyenddate,
+                            //extra fields for AMC
+                            ctktamcsrtdate:ticketinfo.ctktamcsrtdate,
+                            ctktamcdur:ticketinfo.ctktamcdur,
+                            ctktamcvisits:ticketinfo.ctktamcvisits,
+                            ctktamcenddate:ticketinfo.ctktamcenddate
                         }
                     });
                     //updating the tickets graph data
@@ -208,6 +227,15 @@ function Createticket(){
                         ctktpriority:'',
                         ctktasslc:'',
                         ctktothercustname:'',
+                        // extra fields for warranty
+                        ctktwtysrtdate:'',
+                        ctktwtydur:'',
+                        ctktwtyenddate:'',
+                        //extra fields for AMC
+                        ctktamcsrtdate:'',
+                        ctktamcdur:'',
+                        ctktamcvisits:'',
+                        ctktamcenddate:''
                     });
                     setctktfile('');
                 }
@@ -261,6 +289,43 @@ function Createticket(){
         }
         setpleasewait(false);
     }
+
+    //function to handle the Warranty end date
+    async function handlewty(e){
+        try{
+            const currentDate = ticketinfo.ctktwtysrtdate!==''?new Date(ticketinfo.ctktwtysrtdate):new Date();
+            const futureEndDate = new Date(currentDate);
+            // console.log(typeof Number(e.target.value));
+            const curvalue = e.target.value;
+            futureEndDate.setFullYear(currentDate.getFullYear()+Number(curvalue));
+            const formatDateString = (date) => date.toISOString().split('T')[0];
+            setticketinfo(prev=>({
+                ...prev,
+                ctktwtyenddate:formatDateString(futureEndDate)
+            }));
+            // return formatDateString(futureEndDate);
+        }catch(e){
+            console.log('you got an error while fetching the date',e);
+        }
+    }
+
+    //function to handle the amc end date
+    async function handleamcenddate(e){
+        try{
+            const currentDate = ticketinfo.ctktamcsrtdate!==''? new Date(ticketinfo.ctktamcsrtdate):new Date();
+            const futureEndDate = new Date(currentDate);
+            const curvalue = e.target.value;
+            futureEndDate.setMonth(currentDate.getMonth()+Number(curvalue));
+            const formatDateString = (date) => date.toISOString().split('T')[0];
+            setticketinfo(prev=>({
+                ...prev,
+                ctktamcenddate:formatDateString(futureEndDate)
+            }))
+        }catch(e){
+            console.log('you got an error while fetching the date',e);
+        }
+    }
+
     return(
         <>
             <div className={`manlead-con ${pleasewait===true?'manlead-con-inactive':''}`}>
@@ -520,21 +585,32 @@ function Createticket(){
                                 <section className="create-ticket-imported-data">
                                     <div>
                                         <label>warranty start date</label>
-                                        <input type='date'/>
+                                        <input type='date' value={ticketinfo.ctktwtysrtdate} onChange={(e)=>setticketinfo(prev=>({
+                                            ...prev,
+                                            ctktwtysrtdate:e.target.value,
+                                            ctktwtydur:''
+                                        }))}/>
                                     </div>
                                     <div>
                                         <label>warranty duration</label>
-                                        <select>
-                                            <option>1 YEAR</option>
-                                            <option>2 YEARs</option>
-                                            <option>3 YEARs</option>
-                                            <option>4 YEARs</option>
-                                            <option>5 YEARs</option>
+                                        <select value={ticketinfo.ctktwtydur} onChange={(e)=>{
+                                            setticketinfo(prev=>({
+                                                ...prev,
+                                                ctktwtydur:e.target.value
+                                            }));
+                                            handlewty(e);
+                                        }}>
+                                            <option value=''>Choose duration</option>
+                                            <option value={1}>1 YEAR</option>
+                                            <option value={2}>2 YEARs</option>
+                                            <option value={3}>3 YEARs</option>
+                                            <option value={4}>4 YEARs</option>
+                                            <option value={5}>5 YEARs</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label>warranty end date</label>
-                                        <input type='date'/>
+                                        <input type='date' value={ticketinfo.ctktwtyenddate} readOnly/>
                                     </div>
 
                                 </section>
@@ -544,25 +620,40 @@ function Createticket(){
                                 <section className="create-ticket-imported-data">
                                     <div>
                                         <label>AMC start date</label>
-                                        <input type='date'/>
+                                        <input type='date' value={ticketinfo.ctktamcsrtdate} onChange={(e)=>setticketinfo(prev=>({
+                                            ...prev,
+                                            ctktamcsrtdate:e.target.value,
+                                            ctktamcdur:''
+                                        }))}/>
                                     </div>
                                     <div>
                                         <label>AMC duration</label>
-                                        <select>
-                                            <option>6 months</option>
-                                            <option>12 months</option>
+                                        <select value={ticketinfo.ctktamcdur} onChange={(e)=>{
+                                            setticketinfo(prev=>({
+                                                ...prev,
+                                                ctktamcdur:e.target.value
+                                            }));
+                                            handleamcenddate(e);
+                                        }}>
+                                            <option value=''>choose months</option>
+                                            <option value={6}>6 months</option>
+                                            <option value={12}>12 months</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label>AMC visits</label>
-                                        <select>
-                                            <option>6 visits</option>
-                                            <option>12 visits</option>
+                                        <select value={ticketinfo.ctktamcvisits} onChange={(e)=>setticketinfo(prev=>({
+                                            ...prev,
+                                            ctktamcvisits:e.target.value
+                                        }))}>
+                                            <option value=''>choose months</option>
+                                            <option value={6}>6 visits</option>
+                                            <option value={12}>12 visits</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label>AMC end date</label>
-                                        <input type='date'/>
+                                        <input type='date' value={ticketinfo.ctktamcenddate} readOnly/>
                                     </div>
 
                                 </section>
