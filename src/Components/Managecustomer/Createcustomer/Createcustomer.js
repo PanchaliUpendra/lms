@@ -16,7 +16,7 @@ import { db } from "../../../Firebase";
 import { counrtycode } from "../../../Data/countrycode";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { states } from "../../../Data/states";
 function Createcustomer(){
     const sharedvalue = useContext(MyContext);
@@ -39,7 +39,18 @@ function Createcustomer(){
         ccountry:'India',
         cstate:'',
         cdist:'',
-        role:'customer'
+        role:'customer',
+        // amc inputs starts from here
+        woramc:'',
+        amcsrtdate:'',
+        amcdur:0,
+        amcvisits:0,
+        wtydur:0,
+        amcenddate:'',
+        wtyenddate:''
+
+
+
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -84,7 +95,15 @@ function Createcustomer(){
                         "cIdate":formdetails.cIdate,
                         "ccountry":formdetails.ccountry,
                         "cstate":formdetails.cstate,
-                        "cdist":formdetails.cdist
+                        "cdist":formdetails.cdist,
+                        // amc inputs starts from here
+                        "woramc":formdetails.woramc,
+                        "amcsrtdate":formdetails.amcsrtdate,
+                        "amcdur":formdetails.amcdur,
+                        "amcvisits":formdetails.amcvisits,
+                        "wtydur":formdetails.wtydur,
+                        "amcenddate":formdetails.amcenddate,
+                        "wtyenddate":formdetails.wtyenddate
                     }}); // need to update backend with new fields
                     await batch.commit();
                 }
@@ -104,7 +123,15 @@ function Createcustomer(){
                     ccountry:'India',
                     cstate:'',
                     cdist:'',
-                    role:'customer'
+                    role:'customer',
+                     // amc inputs starts from here
+                    woramc:'',
+                    amcsrtdate:'',
+                    amcdur:0,
+                    amcvisits:0,
+                    wtydur:0,
+                    amcenddate:'',
+                    wtyenddate:''
                 });
             }else{
                 loginformerror();
@@ -130,6 +157,42 @@ function Createcustomer(){
         setshowprogress(false);
     }
     //form registyration completed here
+
+    //function to handle the warranty end date
+    async function handlewty(e){
+        try{
+            const currentDate = new Date(formdetails.cIdate);
+            const futureEndDate = new Date(currentDate);
+            // console.log(typeof Number(e.target.value));
+            const curvalue = e.target.value;
+            futureEndDate.setFullYear(currentDate.getFullYear()+Number(curvalue));
+            const formatDateString = (date) => date.toISOString().split('T')[0];
+            setformdetails(prev=>({
+                ...prev,
+                wtyenddate:formatDateString(futureEndDate)
+            }));
+            // return formatDateString(futureEndDate);
+        }catch(e){
+            console.log('you got an error while fetching the date',e);
+        }
+    }
+
+    //function to handle the amc end date
+    async function handleamcenddate(e){
+        try{
+            const currentDate = new Date(formdetails.amcsrtdate);
+            const futureEndDate = new Date(currentDate);
+            const curvalue = e.target.value;
+            futureEndDate.setMonth(currentDate.getMonth()+Number(curvalue));
+            const formatDateString = (date) => date.toISOString().split('T')[0];
+            setformdetails(prev=>({
+                ...prev,
+                amcenddate:formatDateString(futureEndDate)
+            }))
+        }catch(e){
+            console.log('you got an error while fetching the date',e);
+        }
+    }
     
     return(
         <>
@@ -218,48 +281,102 @@ function Createcustomer(){
                                 <label>Installation Date</label>
                                 <input type='date' value={formdetails.cIdate} onChange={(e)=>setformdetails(prev=>({
                                     ...prev,
-                                    cIdate:e.target.value
+                                    cIdate:e.target.value,
+                                    wtydur:0
                                 }))}/>
                             </div>
                             <div>
                                 <label>Warranty Or AMC</label>
-                                <select >
+                                <select value={formdetails.woramc} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    woramc:e.target.value
+                                }))}>
                                     <option value=''>Select Type</option>
                                     <option value='AMC'>AMC</option>
-                                    <option value='warrantry'>Warranty</option>
+                                    <option value='warranty'>Warranty</option>
                                 </select>
                             </div>
+                            {
+                                formdetails.woramc==='AMC' &&
+                                <div>
+                                <label>AMC start date</label>
+                                <input type='date' value={formdetails.amcsrtdate} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    amcsrtdate:e.target.value
+                                }))}/>
+                            </div>
+                            }
+                            
+                            {
+                                formdetails.woramc==='AMC' && formdetails.amcsrtdate!=='' && 
+                                <div>
+                                    <label>AMC Duration</label>
+                                    <select value={formdetails.amcdur} onChange={(e)=>{
+                                        setformdetails(prev=>({
+                                            ...prev,
+                                            amcdur:e.target.value
+                                        }));
+                                        handleamcenddate(e);
+                                    }}>
+                                        <option value={0}>choose the duration</option>
+                                        <option value={6}>6 months</option>
+                                        <option value={12}>12 months</option>
+                                    </select>
+                                </div>
+                            }
+                            
+                            {formdetails.woramc==='warranty' &&  formdetails.cIdate!=='' && 
                             <div>
-                                <label>Duration</label>
-                                <select>
-                                    <option>6 months</option>
-                                    <option>12 months</option>
+                                <label>Warranty Duration</label>
+                                <select value={formdetails.wtydur} onChange={(e)=>{
+                                    setformdetails(prev=>({
+                                    ...prev,
+                                    wtydur:e.target.value
+                                    }));
+                                    handlewty(e);
+                                }}>
+                                    <option value={0}>Choose warranty</option>
+                                    <option value={1}>1 YEAR</option>
+                                    <option value={2}>2 YEARS</option>
+                                    <option value={3}>3 YEARS</option>
+                                    <option value={4}>4 YEARS</option>
+                                    <option value={5}>5 YEARS</option>
                                 </select>
                             </div>
+                            }
+                            
+                            {
+                                formdetails.woramc==='AMC' && formdetails.amcsrtdate!=='' && formdetails.amcdur!==0 &&
+                                <div>
+                                    <label>Visits</label>
+                                    <select value={formdetails.amcvisits} onChange={(e)=>setformdetails(prev=>({
+                                        ...prev,
+                                        amcvisits:e.target.value
+                                    }))}>
+                                        <option value={0}>choose visits</option>
+                                        <option value={12}>12 visits</option>
+                                        <option value={6}>6 visits</option>
+                                    </select>
+                                </div>
+                            }
+                            
+                            {
+                                formdetails.woramc==='AMC' && formdetails.amcsrtdate!=='' && formdetails.amcdur!==0 &&
+                                <div>
+                                    <label>AMC End Date</label>
+                                    <input type='date' value={formdetails.amcenddate} readOnly/>
+                                </div>
+                            }
+                            
 
-                            <div>
-                                <label>Duration</label>
-                                <select>
-                                    <option>1 YEAR</option>
-                                    <option>2 YEAR</option>
-                                    <option>3 YEAR</option>
-                                    <option>4 YEAR</option>
-                                    <option>5 YEAR</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label>Visits</label>
-                                <select>
-                                    <option>12 visits</option>
-                                    <option>6 visits</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label>End Date</label>
-                                <input type='text' placeholder="end date"/>
-                            </div>
+                            {
+                                formdetails.woramc==='warranty' && formdetails.wtydur!==0 && formdetails.cIdate!=='' &&
+                                <div>
+                                    <label>Warranty End Date</label>
+                                    <input type='date' value={formdetails.wtyenddate} readOnly/>
+                                </div>
+                            }
+                            
                             <div>
                                     <label>Country</label>
                                     <select value={formdetails.ccountry} onChange={(e)=>setformdetails(prev=>({
