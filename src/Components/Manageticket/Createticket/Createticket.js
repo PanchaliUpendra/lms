@@ -515,6 +515,58 @@ function Createticket(){
                                 </div>
                             }
                             {/* category completed */}
+                            {
+                                ticketinfo.ctktcustname==='other' && ticketinfo.ctktcalltype==='Warranty' &&
+                                <section className="create-ticket-imported-data">
+                                    <div>
+                                        <label>warranty start date</label>
+                                        <input type='date'/>
+                                    </div>
+                                    <div>
+                                        <label>warranty duration</label>
+                                        <select>
+                                            <option>1 YEAR</option>
+                                            <option>2 YEARs</option>
+                                            <option>3 YEARs</option>
+                                            <option>4 YEARs</option>
+                                            <option>5 YEARs</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>warranty end date</label>
+                                        <input type='date'/>
+                                    </div>
+
+                                </section>
+                            }
+                            {
+                                ticketinfo.ctktcustname==='other' && ticketinfo.ctktcalltype==='AMC' &&
+                                <section className="create-ticket-imported-data">
+                                    <div>
+                                        <label>AMC start date</label>
+                                        <input type='date'/>
+                                    </div>
+                                    <div>
+                                        <label>AMC duration</label>
+                                        <select>
+                                            <option>6 months</option>
+                                            <option>12 months</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>AMC visits</label>
+                                        <select>
+                                            <option>6 visits</option>
+                                            <option>12 visits</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>AMC end date</label>
+                                        <input type='date'/>
+                                    </div>
+
+                                </section>
+                            }
                             {/* description starts here */}
                                     <div>
                                         <label>Description</label>

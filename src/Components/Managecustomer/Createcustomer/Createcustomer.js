@@ -158,7 +158,7 @@ function Createcustomer(){
     }
     //form registyration completed here
 
-    //function to handle the warranty end date
+    //function to handle the Warranty end date
     async function handlewty(e){
         try{
             const currentDate = new Date(formdetails.cIdate);
@@ -293,7 +293,7 @@ function Createcustomer(){
                                 }))}>
                                     <option value=''>Select Type</option>
                                     <option value='AMC'>AMC</option>
-                                    <option value='warranty'>Warranty</option>
+                                    <option value='Warranty'>Warranty</option>
                                 </select>
                             </div>
                             {
@@ -325,7 +325,7 @@ function Createcustomer(){
                                 </div>
                             }
                             
-                            {formdetails.woramc==='warranty' &&  formdetails.cIdate!=='' && 
+                            {formdetails.woramc==='Warranty' &&  formdetails.cIdate!=='' && 
                             <div>
                                 <label>Warranty Duration</label>
                                 <select value={formdetails.wtydur} onChange={(e)=>{
@@ -335,7 +335,7 @@ function Createcustomer(){
                                     }));
                                     handlewty(e);
                                 }}>
-                                    <option value={0}>Choose warranty</option>
+                                    <option value={0}>Choose Warranty</option>
                                     <option value={1}>1 YEAR</option>
                                     <option value={2}>2 YEARS</option>
                                     <option value={3}>3 YEARS</option>
@@ -370,7 +370,7 @@ function Createcustomer(){
                             
 
                             {
-                                formdetails.woramc==='warranty' && formdetails.wtydur!==0 && formdetails.cIdate!=='' &&
+                                formdetails.woramc==='Warranty' && formdetails.wtydur!==0 && formdetails.cIdate!=='' &&
                                 <div>
                                     <label>Warranty End Date</label>
                                     <input type='date' value={formdetails.wtyenddate} readOnly/>
