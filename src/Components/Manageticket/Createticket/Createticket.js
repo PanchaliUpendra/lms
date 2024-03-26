@@ -656,7 +656,7 @@ function Createticket(){
 
                                 </section>
                                  :
-                                 <p>Sorry you won't have any awc or warranty!!!</p>)
+                                 <p>Sorry you won't have any AMC or warranty!!!</p>)
                             }
                             {
                                 ticketinfo.ctktcustname==='other' && ticketinfo.ctktcalltype==='Warranty' &&
