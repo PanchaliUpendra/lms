@@ -337,7 +337,7 @@ const parser = new DOMParser();
 
                         <Text style={styles.steheader}>Capacity</Text>
                         <Text style={styles.stetext}>
-                            Capacity will depends on type of contamination, percantage of contamination and type of material. The capacity mentioned in this quotation based on 5% contamination with
+                            Capacity will depends on type of contamination, percantage of contamination and type of material. The capacity mentioned in this {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} based on 5% contamination with
                             Indian Dal/Spices without stones/foreign material.
                         </Text>
 
