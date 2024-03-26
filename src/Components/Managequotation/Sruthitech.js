@@ -159,7 +159,7 @@ const parser = new DOMParser();
 
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400,marginTop:3}}>Sir,</Text>
 
-                        <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400, textAlign:'center', marginTop:7, marginBottom:7}}>Sub: Quotation for COMAS Sorter:-Reg</Text>
+                        <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400, textAlign:'center', marginTop:7, marginBottom:7}}>Sub: {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} for COMAS Sorter:-Reg</Text>
 
                         <Text style={styles.thankyoumsg}>
                             Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} mill.
@@ -277,11 +277,14 @@ const parser = new DOMParser();
                         
                             {/* <Text>1.  price of Rs. {totalcntigst}/- is to be paid to Sruthi Technologies.</Text> */}
                             {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
-                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>:<Text>1. FOR Price Rs. {totalwogst}/- to be paid to Sruthi Technologies.</Text>):
-                            <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>}
-                            {/* <Text>1. FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text> */}
-                            <Text>2. Sale through Gst sales.</Text>
-                            <Text>3. Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
+                            <Text>* FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>:<Text>* FOR Price Rs. {totalwogst}/- to be paid to Sruthi Technologies.</Text>):
+                            <Text>* FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>}
+                            {/* <Text>* FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text> */}
+                            {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
+                            <Text>* Sale through Gst sales.</Text>:<></>):
+                            <Text>* Sale through Gst sales.</Text>}
+                            {/* <Text>* Sale through Gst sales.</Text> */}
+                            <Text>* Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
                         </View>
 
                         <View style={styles.sruthibottomcon}>
