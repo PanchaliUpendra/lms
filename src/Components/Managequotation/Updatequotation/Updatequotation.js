@@ -17,11 +17,11 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // just checking the ckeditor is working or not
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 //debounce metyhod
-import debounce from "debounce";
+// import debounce from "debounce";
 import { useNavigate, useParams } from "react-router-dom";
 import Error from "../../../Error/Error";
 
@@ -90,12 +90,16 @@ function Updatequotation(){
     //ck editor is completed, lest get data from it , thats it!!!
     const [editorData,setEditorData] = useState(''); //ck editor data
 
-    const handleEditorChange = debounce((event, editor) => {
-        const data = editor.getData();
-        setEditorData(data);
+    // const handleEditorChange = debounce((event, editor) => {
+    //     const data = editor.getData();
+    //     setEditorData(data);
         
-      },300);
-
+    //   },300);
+    const handleEditorChange =(e)=>{
+        e.preventDefault();
+        // console.log('data:',e.target.value);
+        setEditorData(e.target.value);
+    }
     // here handling the submitdata
     async function handlesubmitdata(){
         setshowloading(true);
@@ -182,6 +186,8 @@ function Updatequotation(){
                 quotperfomaiorquot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")?sharedvalue.quotesdata[quoteid].quotperfomaiorquot:'',
                 withgstornot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot")?sharedvalue.quotesdata[quoteid].withgstornot:'',
             }));
+
+            setEditorData(sharedvalue.quotesdata[quoteid].quotpayterm);
             
             
              //useffect states function call
@@ -472,7 +478,7 @@ function Updatequotation(){
                             {/* this div is for open and closed leads for last 6 months */}
                             <div className="create-quotation-payment-term-div">
                                 <label>Payment Term</label>
-                                <CKEditor
+                                {/* <CKEditor
                                     editor={ClassicEditor}
                                     data={editorData===''?sharedvalue.quotesdata[quoteid].quotpayterm:editorData}
                                     // onReady={(editor) => {
@@ -480,7 +486,8 @@ function Updatequotation(){
                                     //     setEditorData(sharedvalue.quotesdata[quoteid].quotpayterm)
                                     // }}
                                     onChange={handleEditorChange}
-                                />
+                                /> */}
+                                <textarea placeholder="description" value={editorData} onChange={(e)=>handleEditorChange(e)}/>
                             </div>
                             {/* this div is for open and closed tickets for last 6 months */}
 

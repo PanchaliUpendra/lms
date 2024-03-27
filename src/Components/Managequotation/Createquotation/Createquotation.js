@@ -17,11 +17,11 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // just checking the ckeditor is working or not
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 //debounce metyhod
-import debounce from "debounce";
+// import debounce from "debounce";
 import { useNavigate } from "react-router-dom";
 
 
@@ -98,12 +98,18 @@ function Createquotation(){
     //ck editor is completed, lest get data from it , thats it!!!
     const [editorData,setEditorData] = useState(''); //ck editor data
 
-    const handleEditorChange = debounce((event, editor) => {
-        const data = editor.getData();
-        setEditorData(data);
+    // const handleEditorChange = debounce((e) => {
+    //     const data = e.target.value;
+    //     console.log(data);
+    //     setEditorData(data);
         
-      },300);
-
+    //   },300);}
+    const handleEditorChange =(e)=>{
+        e.preventDefault();
+        // console.log('data:',e.target.value);
+        setEditorData(e.target.value);
+    }
+    
     // here handling the submitdata
     async function handlesubmitdata(){
         setshowloading(true);
@@ -460,7 +466,7 @@ function Createquotation(){
                             {/* this div is for open and closed leads for last 6 months */}
                             <div className="create-quotation-payment-term-div">
                                 <label>Payment Term</label>
-                                <CKEditor
+                                {/* <CKEditor
                                     editor={ClassicEditor}
                                     data={editorData}
                                     // onReady={(editor) => {
@@ -468,7 +474,8 @@ function Createquotation(){
                                     //     console.log('Editor is ready to use!', editor);
                                     // }}
                                     onChange={handleEditorChange}
-                                />
+                                /> */}
+                                <textarea placeholder="description" value={editorData} onChange={(e)=>handleEditorChange(e)}/>
                             </div>
                             {/* this div is for open and closed tickets for last 6 months */}
 

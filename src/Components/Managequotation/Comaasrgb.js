@@ -208,7 +208,7 @@ const Comaasrgb = (props) => {
                           <Text style={styles.pricetermhead}>payment term</Text>
                           <View style={styles.pricetermlist}>
                             <Text style={{fontFamily:'OpenSans',fontSize:10,fontWeight:400,textTransform:'capitalize'}}>
-                              100% payment by TT along with Order. Note: In case of FLC USD 1500 extra per year usance
+                              {sharedvalue.quotesdata[quoteid].quotpayterm}
                             </Text>
                           </View>
                         </View>

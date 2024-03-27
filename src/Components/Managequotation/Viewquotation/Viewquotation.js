@@ -243,10 +243,11 @@ function Viewquotation(){
                                                                     }
                                                                    
                                                                     {sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && sharedvalue.quotesdata[quote].quotstatus==='approved' && <span className="close-quotation-btn" onClick={()=>setworkerdelete(prev=>({
-                                                                ...prev,
-                                                                active:true,
-                                                                quoteid:quote
-                                                            }))} >close</span>} 
+                                                                        ...prev,
+                                                                        active:true,
+                                                                        quoteid:quote
+                                                                    }))} >close</span>} 
+                                                           
                                                                     {sharedvalue.quotesdata[quote].quotstatus!=='closed' && sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small" onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}/>}
                                                                     {sharedvalue.quotesdata[quote].quotstatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(quote)}/>}
                                                                 </p>

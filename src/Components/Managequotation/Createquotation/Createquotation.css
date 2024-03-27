@@ -44,6 +44,15 @@
     color: #7b809a;
 }
 
+.create-quotation-payment-term-div>textarea{
+    min-height: 80px;
+    border: 1px solid #d2d6da;
+    resize: vertical;
+    padding:10px;
+    outline: none;
+    border-radius: 5px;
+}
+
 @media all and (max-width:600px){
     .creatquotation-forms{
         row-gap: 15px;
