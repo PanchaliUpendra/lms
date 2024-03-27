@@ -17,8 +17,8 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // just checking the ckeditor is working or not
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 import { useNavigate, useParams } from "react-router-dom";
@@ -319,14 +319,15 @@ function Verifyquotation(){
                             {/* this div is for open and closed leads for last 6 months */}
                             <div className="create-quotation-payment-term-div">
                                 <label>Payment Term</label>
-                                <CKEditor
+                                {/* <CKEditor
                                     editor={ClassicEditor}
                                     data={sharedvalue.quotesdata[quoteid].quotpayterm}
                                     // onReady={(editor) => {
                                     //     // You can store the "editor" and use it when needed.
                                     //     setEditorData(sharedvalue.quotesdata[quoteid].quotpayterm)
                                     // }}
-                                />
+                                /> */}
+                                <textarea value={sharedvalue.quotesdata[quoteid].quotpayterm} readOnly/>
                             </div>
                             {/* this div is for open and closed tickets for last 6 months */}
 

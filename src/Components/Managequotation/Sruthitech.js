@@ -28,7 +28,7 @@ const Sruthitech = (props) => {
     const [onlygst,setonlygst]  = useState(0);//only gst display here
     const [clearingexp,setclearingexp] = useState(0);//clearing expenses in second row total
     const [totalwogst, settotalwogst] = useState(0); //total without gst
-    const [ccked,setccked] = useState('heelo')
+    // const [ccked,setccked] = useState('heelo')
 
 
     const [todaydate , settodaydate] = useState('');//storing the today here
@@ -69,18 +69,18 @@ const Sruthitech = (props) => {
   //number to string commas
   function numberwithcommas(x){
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
-}
-const parser = new DOMParser();
+    }
+    // const parser = new DOMParser();
  
 
   //calculating the data
   if(sharedvalue.quoteskeys.length>0 && sharedvalue.quoteskeys.includes(quoteid)===true){
 
-    const doc = parser.parseFromString(sharedvalue.quotesdata[quoteid].quotpayterm, "text/html");
+    // const doc = parser.parseFromString(sharedvalue.quotesdata[quoteid].quotpayterm, "text/html");
 
     // Extract the text content from the first child element (assuming it's the paragraph)
-    const textContent = doc.body.firstChild ? doc.body.firstChild.textContent : '';
-    setccked(textContent)
+    // const textContent = doc.body.firstChild ? doc.body.firstChild.textContent : '';
+    // setccked(textContent)
     //basic amount
     var ba = (Number(sharedvalue.quotesdata[quoteid].quotunits)*Number(sharedvalue.quotesdata[quoteid].quotprice)*Number(sharedvalue.quotesdata[quoteid].quotcon));
     var ba1 = numberwithcommas(ba)
@@ -316,7 +316,7 @@ const parser = new DOMParser();
                             {/* <Text>1. 25% Advance</Text>
                             <Text>2. 50% Before delivery</Text>
                             <Text>3. 25% After installation</Text> */}
-                            <Text>{ccked}</Text>
+                            <Text>{sharedvalue.quotesdata[quoteid].quotpayterm}</Text>
                         </View>
 
                         <Text style={{fontFamily:'OpenSans', fontWeight:400, fontSize:11, marginTop:7, marginBottom:0}}>*** ADDITIONAL NOTE: USD vs Rupee conversion changes, Price also will change.</Text>

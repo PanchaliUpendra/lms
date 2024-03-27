@@ -354,7 +354,7 @@ function Createcustomer(){
                                         amcvisits:e.target.value
                                     }))}>
                                         <option value={0}>choose visits</option>
-                                        <option value={12}>12 visits</option>
+                                        {formdetails.amcdur==='12' && <option value={12}>12 visits</option>}
                                         <option value={6}>6 visits</option>
                                     </select>
                                 </div>
