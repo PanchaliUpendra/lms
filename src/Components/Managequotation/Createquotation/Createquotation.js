@@ -43,7 +43,7 @@ function Createquotation(){
         quotcustname:'',
         quotlead:'',
         quottype:'',
-        quotcompanyname:'',
+        quotcompanyname:'Sruthi Technologies',
         quotmachinetype:'',
         quotprodtype:'',
         quotcap:'',//also known as chutes
@@ -260,7 +260,8 @@ function Createquotation(){
                                     <select value={quotinfo.quotcountry} onChange={(e)=>handlestatesbycountries(e)}>
                                         <option value=''>Select Country</option>
                                         {counrtycode.map((item,idx)=>(
-                                            <option key={idx} value={item.name}>{item.name}</option>
+                                            ((item.name==='India' || item.name==='Sri Lanka' || item.name==='Indonesia' ||
+                                            item.name==='Pakistan' || item.name==='Nepal' || item.name==='Ghana') &&<option key={idx} value={item.name}>{item.name}</option>)
                                         ))}
                                     </select>
                                 </div>
@@ -331,10 +332,10 @@ function Createquotation(){
                                         ...prev,
                                         quotcompanyname:e.target.value
                                     }))}>
-                                        <option value='' >Select Company Name</option>
+                                        <option value='' disabled>Select Company Name</option>
                                         <option value='Sruthi Technologies'>Sruthi Technologies-ST</option>
-                                        <option value='Srinivas Mill Stores'>Srinivas Mill Stores-SMS</option>
-                                        <option value='Swathi Enterprises'>Swathi Enterprises-SE</option>
+                                        {/* <option value='Srinivas Mill Stores'>Srinivas Mill Stores-SMS</option>
+                                        <option value='Swathi Enterprises'>Swathi Enterprises-SE</option> */}
                                         <option value='Comaas India Pvt Ltd'>Comaas India Pvt Ltd-COMAAS</option>
                                     </select>
                                 </div>
@@ -346,7 +347,7 @@ function Createquotation(){
                                         ...prev,
                                         quotmachinetype:e.target.value
                                     }))}>
-                                        <option value='' >Select Machine Type</option>
+                                        <option value='' disabled>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGB'>RGB</option>

@@ -100,7 +100,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.comaascoltdadds}>34, seongseo 5cha cheomdan-ro dalseo_gu, daegu, r.o.korea</Text>
                                 <Text style={styles.indiaoffice}>india office</Text>
                                 <Text style={styles.sruthitechname}>sruthi Technologies</Text>
-                                <Text style={styles.sruthitechadd}>Plot No.289, Aditya nagar, kukatapally, hyderabad-500072</Text>
+                                <Text style={styles.sruthitechadd}>Plot No. 68, H.No. 2-23-S-68, Aditya Nagar, Kukatpally,Hyderabad - 500 072.</Text>
                                 <Text style={styles.sruthitechphone}>Mobile.no:9440031617</Text>
                               </View>
                             </View>
@@ -159,7 +159,7 @@ const Comaasrgb = (props) => {
                             </View>
 
                           </View>
-                          <Text style={styles.numtowrords}>(<Text>Total CIF Chennai USD </Text>{text} rupees only)</Text>
+                          <Text style={styles.numtowrords}>(<Text>Total CIF Chennai USD </Text>{text} only)</Text>
 
                           <View style={styles.bottomaddress}>
                             <Text style={styles.comaascoltd}>COMAAS Co.LTD</Text>
@@ -216,7 +216,7 @@ const Comaasrgb = (props) => {
                         <Text style={styles.orderconfirmtext}>
                           Order confirmation Advance amount Rs.300000/- to be paid to <Text style={{fontFamily:'OpenSans',textDecoration:'underline',fontWeight:600,fontSize:10}}>Bank Details:</Text> 
                           <Text style={{fontFamily:'OpenSans',fontWeight:600,fontSize:10}}> sruthi technologies,</Text> HDFC Bank , Account.No.50200030537582,
-                          Ifsc-HDFC0001639, Vivekananda Nagar, Kukatpally. Which will be after sending TT.
+                          Ifsc-HDFC0001639, tulasi Nagar, Kukatpally. Which will be after sending TT.
                         </Text>
                         
                         <Text style={styles.saleconditioninnerhead}>bank account</Text>
@@ -235,8 +235,8 @@ const Comaasrgb = (props) => {
                         <Text style={styles.saleconditioninnerhead}>capacity</Text>
                         <Text style={styles.saleconditioninnertext}>
                           Capacity will depends on type of contamination; percentage of contamination and type of Umaterial. The capacity mentioned
-                          in this quotation based on Steam Channa Dall upto 5-10% contamination with only India Channa Dall, with nill broken Channa
-                           Dall without  stones/foreign material. Contamination will be Counted based on <Text style={{textTransform:'uppercase',fontWeight:600}}>Count</Text> not on weight method. 
+                          in this quotation based on Steam {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} upto 5-10% contamination with only India {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}, with nill broken {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}
+                           without  stones/foreign material. Contamination will be Counted based on <Text style={{textTransform:'uppercase',fontWeight:600}}>Count</Text> not on weight method. 
                         </Text>
                         <Text style={styles.saleconditioninnerhead}>warranty</Text>
                         <Text style={styles.saleconditioninnertext}>
@@ -267,7 +267,9 @@ const Comaasrgb = (props) => {
                           <Text>Issued By J.E</Text>
                         </View>
 
-                        <Text style={styles.tableeachheading}>3. description:<Text style={{fontWeight:600,color:'#6004DA'}}> super</Text><Text style={{fontWeight:600,color:'#017BE6'}}> high</Text><Text style={{fontWeight:600,color:'green'}}> precision </Text>- <Text style={{fontWeight:600,color:'#D35400'}}>channa dall </Text>
+                        <Text style={styles.tableeachheading}>3. description:<Text style={{fontWeight:600,color:'#6004DA'}}> super</Text>
+                        <Text style={{fontWeight:600,color:'#017BE6'}}> high</Text><Text style={{fontWeight:600,color:'green'}}> precision </Text>- 
+                        <Text style={{fontWeight:600,color:'#D35400'}}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} </Text>
                         <Text style={{fontWeight:600,color:'red'}}>color </Text><Text style={{fontWeight:600,color:'green'}}>sorter</Text></Text>
 
                         <View style={styles.descriptiontable}>

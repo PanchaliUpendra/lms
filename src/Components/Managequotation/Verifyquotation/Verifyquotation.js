@@ -100,7 +100,7 @@ function Verifyquotation(){
                 quotinfo.quotprice!=='' &&
                 quotinfo.quotpayment!=='' &&
                 quotinfo.quotwarranty!=='' &&
-                temquot.tempcomment!==''
+                ((temquot.tempstatus==='rework' && temquot.tempcomment!=='')||(temquot.tempstatus!=='rework'))
             ){
             if(quoteid!==0){
                 await batch.update(createquotes,{

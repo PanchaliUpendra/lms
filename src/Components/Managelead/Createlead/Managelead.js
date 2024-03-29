@@ -84,7 +84,7 @@ function Managelead(){
         millcap:'',
         capreq:'',
         machinereq:'Sorter',
-        make:'Commas',
+        make:'Comaas',
         machinetype:'ULTRA',
         std:'STD',
         payment:'',
@@ -332,7 +332,7 @@ function Managelead(){
                     </div>
 
                     {/* create lead starts from here */}
-                    <div className='create-lead-con'>
+                    <form className='create-lead-con'>
                         {/* create lead head */}
                         <div className='create-lead-head'>
                             <h1>Create Lead</h1>
@@ -390,11 +390,11 @@ function Managelead(){
                                         }))}/>
                                     </div>
                                     <div className='cust-inq-next-date'>
-                                        <label>next  date</label>
+                                        <label>next  date<span style={{color:'red'}}>*</span></label>
                                         <input type='date' value={custinquiry.custnextdate} onChange={(e)=>setcustinquiry(prev=>({
                                             ...prev,
                                             custnextdate:e.target.value
-                                        }))}/>
+                                        }))} required/>
                                     </div>
                                 </div>
                                 {/* third row */}
@@ -431,11 +431,11 @@ function Managelead(){
                             {/* personal row 1 */}
                             <div className='con-contact-designation-person'>
                                 <div className='con-contact-person'>
-                                    <label>contact person</label>
+                                    <label>contact person<span style={{color:'red'}}>*</span></label>
                                     <input type='text' value={contpersondtl.contperson} onChange={(e)=>setcontpersondtl(prev=>({
                                         ...prev,
                                         contperson:e.target.value
-                                    }))}/>
+                                    }))} required/>
                                 </div>
                                 <div className='con-designation-person'>
                                     <label>Designation</label>
@@ -561,11 +561,11 @@ function Managelead(){
                                         }))} />
                                     </div>
                                     <div className='cl-office-dtl-country'>
-                                        <label>country</label>
+                                        <label>country<span style={{color:'red'}}>*</span></label>
                                         <select value={leadofficedtls.ofdcountry} onChange={(e)=>setleadooficedtls(prev=>({
                                             ...prev,
                                             ofdcountry:e.target.value
-                                        }))}>
+                                        }))} required>
                                             <option value='' selected>Select Country</option>
                                             {
                                                 counrtycode.map((item,idx)=>(
@@ -580,13 +580,13 @@ function Managelead(){
                                 <div className='office-details-remaining'>
                                    {leadofficedtls.ofdcountry!=='' &&
                                    <div>
-                                        <label>state</label>
+                                        <label>state<span style={{color:'red'}}>*</span></label>
                                         {/* if country is india ,select state*/}
                                         {leadofficedtls.ofdcountry==='India' &&
                                         <select value={leadofficedtls.ofdst} onChange={(e)=>setleadooficedtls(prev=>({
                                             ...prev,
                                             ofdst:e.target.value
-                                        }))}>
+                                        }))} required>
                                             <option value='' selected disabled>Select State</option>
                                             {
                                                 states.map((item,idx)=>(
@@ -749,7 +749,7 @@ function Managelead(){
                                     ...prev,
                                     businesstype:e.target.value
                                 }))}>
-                                    <option value='' selected>Select Mill/Business Type</option>
+                                    <option value='' disabled>Select Mill/Business Type</option>
                                     <option value='dall mill'>Dall Mill</option>
                                     <option value='rice mill'>Rice Mill</option>
                                     <option value='multigrain'>Multigrain</option>
@@ -776,11 +776,11 @@ function Managelead(){
                                 }))}/>
                                 </div>
                                 <div>
-                                    <label>Machine Required</label>
+                                    <label>Machine Required<span style={{color:'red'}}>*</span></label>
                                     <select value={leadrequirements.machinereq} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
                                     machinereq:e.target.value
-                                }))}>
+                                }))} required>
                                         <option value='' selected>Required Machine</option>
                                         <option value='Sorter'>Sorter</option>
                                         <option value='Packing Machine'>Packing Machine</option>
@@ -804,7 +804,7 @@ function Managelead(){
                                     make:e.target.value
                                 }))}>
                                         <option value=''>Select</option>
-                                        <option value='Commas'>Comaas</option>
+                                        <option value='Comaas'>Comaas</option>
                                         <option value='NDPL'>NDPL</option>
                                     </select>
                                 </div>
@@ -845,7 +845,7 @@ function Managelead(){
                                     <select value={leadrequirements.chutes} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
                                     chutes:e.target.value
-                                }))}>
+                                }))} required>
                                         <option value='' selected>choose number of chutes</option>
                                         <option value='1'>1</option>
                                         <option value='2'>2</option>
@@ -884,7 +884,7 @@ function Managelead(){
                             <button onClick={()=>handlecreatelead()}>create lead</button>
                         </div>
                         {/* create lead button ends here */}
-                    </div>
+                    </form>
                 </div>
             </div>
             <Backdrop

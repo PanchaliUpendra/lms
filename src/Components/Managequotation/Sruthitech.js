@@ -162,7 +162,7 @@ const Sruthitech = (props) => {
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400, textAlign:'center', marginTop:7, marginBottom:7}}>Sub: {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} for COMAS Sorter:-Reg</Text>
 
                         <Text style={styles.thankyoumsg}>
-                            Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} mill.
+                            Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}.
                              The details as follows.
                         </Text>
 
@@ -281,14 +281,14 @@ const Sruthitech = (props) => {
                             <Text>* FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text>}
                             {/* <Text>* FOR Price Rs. {totalcntigst}/- to be paid to Sruthi Technologies.</Text> */}
                             {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot") ? (sharedvalue.quotesdata[quoteid].withgstornot!=='Without GST'?
-                            <Text>* Sale through Gst sales.</Text>:<></>):
+                            <Text>* Sale through Gst sales.</Text>:<Text>Additional GST charges as per HSN code</Text>):
                             <Text>* Sale through Gst sales.</Text>}
                             {/* <Text>* Sale through Gst sales.</Text> */}
                             <Text>* Customs duty and clearing expanses and Transportation are above Mentioned.</Text>
                         </View>
 
                         <View style={styles.sruthibottomcon}>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No. 68, H.No. 2-23-S-68, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
                             <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'#D904C7',marginTop:4}}>Email: <Text style={{color:'blue' ,textDecoration:'underline'}}>sun.sortex@gmail.com</Text> , <Text style={{color:'blue' ,textDecoration:'underline'}}>https://ultrasorters.com</Text> , www.sruthitechnologies.com</Text>
                         </View>
                         
@@ -338,7 +338,7 @@ const Sruthitech = (props) => {
                         <Text style={styles.steheader}>Capacity</Text>
                         <Text style={styles.stetext}>
                             Capacity will depends on type of contamination, percantage of contamination and type of material. The capacity mentioned in this {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} based on 5% contamination with
-                            Indian Dal/Spices without stones/foreign material.
+                            Indian {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} without stones/foreign material.
                         </Text>
 
                         <Text style={styles.steheader}>Validty</Text>
@@ -350,7 +350,7 @@ const Sruthitech = (props) => {
                         <Image src={stamp} style={{width:100,height:'auto' , marginTop:10, marginLeft:10}}/>
 
                         <View style={styles.sruthibottomcon}>
-                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No.289, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
+                            <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'gray'}}>Plot No. 68, H.No. 2-23-S-68, Adity Nagar, Kukatpally, Hyderabad-500072 INDIA.</Text>
                             <Text style={{fontWeight:600,textAlign:'center',fontSize:10,fontFamily:'OpenSans',color:'#D904C7',marginTop:4}}>Email: <Text style={{color:'blue' ,textDecoration:'underline'}}>sun.sortex@gmail.com</Text> , <Text style={{color:'blue' ,textDecoration:'underline'}}>https://ultrasorters.com</Text> , www.sruthitechnologies.com</Text>
                         </View>
                     </View>

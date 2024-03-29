@@ -888,7 +888,7 @@ function Updatelead(){
                                     make:e.target.value
                                 }))}>
                                         
-                                        <option value='Commas'>Commas</option>
+                                        <option value='Comaas'>Comaas</option>
                                         <option value='NDPL'>NDPL</option>
                                     </select>
                                 </div>
