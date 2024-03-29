@@ -130,6 +130,24 @@ function Viewticket(){
                 });
             }
             
+            if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[tktid],"ctktmodedata") && sharedvalue.ticketsdata[tktid].ctktmodedata!==''){
+                const desertRef = ref(storage,sharedvalue.ticketsdata[tktid].ctktmodedata);
+                deleteObject(desertRef).then(() => {
+                    console.log('deleted the imae storage url');
+                }).catch((error) => {
+                    console.log("you got an error while deleting the storage",error);
+                });
+            }
+            if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[tktid],"ctktservicereport") && sharedvalue.ticketsdata[tktid].ctktservicereport!==''){
+                const desertRef = ref(storage,sharedvalue.ticketsdata[tktid].ctktservicereport);
+                deleteObject(desertRef).then(() => {
+                    console.log('deleted the imae storage url');
+                }).catch((error) => {
+                    console.log("you got an error while deleting the storage",error);
+                });
+            }
+
+
             await updateDoc(createtickets,{
                 [tktid]:deleteField()
             });
@@ -205,6 +223,8 @@ function Viewticket(){
                                             <th>priority</th>
                                             <th>manager</th>
                                             <th>file</th>
+                                            <th>mode data</th>
+                                            <th>service report</th>
                                             <th>Comment</th>
                                             <th>Tkt.ID</th>
                                         </tr>
@@ -337,6 +357,32 @@ function Viewticket(){
                                                             {sharedvalue.ticketsdata[ticket].fileurl!==''? <a href={sharedvalue.ticketsdata[ticket].fileurl} rel="noreferrer" target="_blank">
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
                                                             </a>:'-'}
+                                                        </div>
+                                                    </td>
+                                                    {/* mode data */}
+                                                    <td>
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                            {
+                                                                Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket],"ctktmodedata")?
+                                                                (sharedvalue.ticketsdata[ticket].ctktmodedata!==''?
+                                                                <a href={sharedvalue.ticketsdata[ticket].ctktmodedata} rel="noreferrer" target="_blank">
+                                                                    <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
+                                                                </a>
+                                                                :'-'):'-'
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                    {/* service report */}
+                                                    <td>
+                                                        <div className='view-manager-list-acttion-icon'>
+                                                            {
+                                                                Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket],"ctktservicereport")?
+                                                                (sharedvalue.ticketsdata[ticket].ctktservicereport!==''?
+                                                                <a href={sharedvalue.ticketsdata[ticket].ctktservicereport} rel="noreferrer" target="_blank">
+                                                                    <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
+                                                                </a>
+                                                                :'-'):'-'
+                                                            }
                                                         </div>
                                                     </td>
                                                      {/* working status */}

@@ -76,7 +76,10 @@ function Createticket(){
         ctktamcsrtdate:'',
         ctktamcdur:'',
         ctktamcvisits:'',
-        ctktamcenddate:''
+        ctktamcenddate:'',
+        //extra fields for resolving work
+        ctktmodedata:'',
+        ctktservicereport:''
 
     })
     //code only for toggle the menu bar
@@ -181,7 +184,10 @@ function Createticket(){
                             ctktamcsrtdate:ticketinfo.ctktamcsrtdate,
                             ctktamcdur:ticketinfo.ctktamcdur,
                             ctktamcvisits:ticketinfo.ctktamcvisits,
-                            ctktamcenddate:ticketinfo.ctktamcenddate
+                            ctktamcenddate:ticketinfo.ctktamcenddate,
+                            //extra fields for resolving work
+                            ctktmodedata:ticketinfo.ctktmodedata,
+                            ctktservicereport:ticketinfo.ctktservicereport
                         }
                     });
                     //updating the tickets graph data
@@ -235,7 +241,10 @@ function Createticket(){
                         ctktamcsrtdate:'',
                         ctktamcdur:'',
                         ctktamcvisits:'',
-                        ctktamcenddate:''
+                        ctktamcenddate:'',
+                        //extra fields for resolving work
+                        ctktmodedata:'',
+                        ctktservicereport:''
                     });
                     setctktfile('');
                 }

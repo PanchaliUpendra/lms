@@ -8,7 +8,7 @@ import MyContext from "../../../MyContext";
 import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { writeBatch} from "firebase/firestore";
-import { db } from "../../../Firebase";
+import { db, storage } from "../../../Firebase";
 import {  createtickets } from "../../../Data/Docs";
 //import storage 
 // import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
@@ -21,6 +21,7 @@ import loading from '../../../Assets/loading.gif';
 import { useNavigate, useParams } from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
+import {getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function Updateticket(){
     const sharedvalue = useContext(MyContext);
@@ -34,6 +35,9 @@ function Updateticket(){
     // const invalidmail = () => toast.warn('unique id was not generating!!!');
     const batch = writeBatch(db);//get a new write batch
     const [pleasewait,setpleasewait] = useState(false);
+    const [tktfileone,settktfileone] = useState('');
+    const [tktfiletwo,settktfiletwo] = useState('');
+
     // selected ticket information
     const [ticketinfo,setticketinfo] = useState({
         ctktcountry:'',
@@ -48,13 +52,30 @@ function Updateticket(){
         ctktasslc:'',
         ctktemployee:'',
         ctktmanager:'',
-        status:''
+        status:'',
+        //extra fields for resolving work
+        ctktmodedata:'',
+        ctktservicereport:''
     })
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
     }
+
+    //first file upload
+    function handlefirstfileupload(e){
+        const selectedfileone = e.target.files[0];
+        settktfileone(selectedfileone);
+    }
+
+    //second file upload
+    function handlesecondfileupload(e){
+        const selectedfiletwo = e.target.files[0];
+        settktfiletwo(selectedfiletwo);
+    }
+
+
     // toggle menu bar code ends here
     //select ticket file 
     // const [ctktfile,setctktfile]=useState('');
@@ -65,20 +86,19 @@ function Updateticket(){
 
    
 
-    //downloading the file url from datastorage
-    // const downloadfileurl = async() =>{
-    //     try{
-    //         return new Promise((resolve,reject)=>{
-    //             const storageref = ref(storage,ctktfile.name);
-    //             const downloadurl = getDownloadURL(storageref);
-    //             resolve(downloadurl);
-    //         })
+    // downloading the file url from datastorage
+    const downloadfileurl = async(filename) =>{
+        try{
+            return new Promise((resolve,reject)=>{
+                const storageref = ref(storage,filename);
+                const downloadurl = getDownloadURL(storageref);
+                resolve(downloadurl);
+            })
                 
-    //     }catch(e){
-    //         console.log('you getting an error while downloading url ',e);
-    //         invalidmail();
-    //     }
-    // }
+        }catch(e){
+            console.log('you getting an error while downloading url..unique id was not generating',e);
+        }
+    }
 
     async function handlesubmitform(){
         setpleasewait(true);
@@ -90,7 +110,11 @@ function Updateticket(){
                 ticketinfo.ctktdist!=='' &&
                 (sharedvalue.role==='customer'||ticketinfo.ctktcustname!=='') &&
                 ticketinfo.ctktcalltype!=='' &&
-                ticketinfo.ctktpriority!=='' 
+                ticketinfo.ctktpriority!=='' &&
+                // ticketinfo.ctktmodedata!=='' &&
+                // ticketinfo.ctktservicereport!==''
+                ((ticketinfo.status==='resolved' && tktfileone!=='')||(ticketinfo.status==='open')) &&
+                ((ticketinfo.status==='resolved' && tktfiletwo!=='')||(ticketinfo.status==='open'))
             ){
                 const formatDateString = (date) => date.toISOString().split('T')[0];
                 const currentDate = new Date();
@@ -99,7 +123,19 @@ function Updateticket(){
                 // await uploadBytes(storageref,ctktfile);
                 // const fileurl= await downloadfileurl();
                 //adding the data here
-                if(tktid!==0 ){
+                var fileurl1 ='';
+                if(tktfileone!==''){
+                    const storageref = ref(storage,tktfileone.name);
+                    await uploadBytes(storageref,tktfileone);
+                    fileurl1=await downloadfileurl(tktfileone.name);
+                }
+                var fileurl2='';
+                if(tktfiletwo!==''){
+                    const storageref = ref(storage,tktfiletwo.name);
+                    await uploadBytes(storageref,tktfiletwo);
+                    fileurl2=await downloadfileurl(tktfiletwo.name);
+                }
+                if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
                     await batch.update(createtickets,{
                         [tktid]:{
                             ...sharedvalue.ticketsdata[tktid],
@@ -118,7 +154,11 @@ function Updateticket(){
                             ctktclose:(ticketinfo.status==='resolved'||ticketinfo.status==='close')?stringtodaydate:'',
                             workingstatus:'',
                             ctktothercustname:ticketinfo.ctktothercustname,
-                            
+                            // ctktmodedata:ticketinfo.ctktmodedata,
+                            // ctktservicereport:ticketinfo.ctktservicereport,
+                            //extra fields for resolving work
+                            ctktmodedata:fileurl1,
+                            ctktservicereport:fileurl2
                         }
                     });
                     await batch.commit();
@@ -153,6 +193,13 @@ function Updateticket(){
                 ctktemployee:sharedvalue.ticketsdata[tktid].ctktemployee,
                 status:sharedvalue.ticketsdata[tktid].status,
                 ctktothercustname:sharedvalue.ticketsdata[tktid].ctktothercustname,
+                //extra fields for resolving work
+                //Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype")?
+                //sharedvalue.workersdata[ticketinfo.ctktcustname].cmachinetype:''
+                // ctktmodedata:sharedvalue.ticketsdata[tktid].ctktmodedata,
+                ctktmodedata:Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[tktid],"ctktmodedata")?sharedvalue.ticketsdata[tktid].ctktmodedata:'',
+                // ctktservicereport:sharedvalue.ticketsdata[tktid].ctktservicereport
+                ctktservicereport:Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[tktid],"ctktservicereport")?sharedvalue.ticketsdata[tktid].ctktservicereport:''
             }));
         }
     },[sharedvalue.ticketsdata,sharedvalue.ticketskeys,tktid]);
@@ -368,6 +415,18 @@ function Updateticket(){
                                     <option value='open'>Open</option>
                                     <option value='resolved'>Resolved</option>
                                 </select>
+                            </div>}
+                            {/* mode data */}
+                            {ticketinfo.status==='resolved' && (sharedvalue.role==='manager'||sharedvalue.role==='employee') &&
+                            <div>
+                                <label>Mode Data</label>
+                                <input type='file' onChange={(e)=>handlefirstfileupload(e)}/>
+                            </div>}
+                            {/* service report */}
+                            {ticketinfo.status==='resolved' && (sharedvalue.role==='manager'||sharedvalue.role==='employee') &&
+                            <div>
+                                <label>service report</label>
+                                <input type='file' onChange={(e)=>handlesecondfileupload(e)}/>
                             </div>}
                             {/* manager div */}
                             {sharedvalue.role==='admin' && 
