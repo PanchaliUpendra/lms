@@ -187,7 +187,7 @@ function Createexpense(){
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
                     {/* your createexpense starts from here */}
-                    <div className='create-lead-con'>
+                    <form className='create-lead-con'>
                         <div className='each-lead-head-comes-here'>
                             <h1>Create Expense</h1>
                         </div>
@@ -201,25 +201,25 @@ function Createexpense(){
                             </div>
                             <div className='create-lead-requirements-all-fields'>
                                     <div>
-                                        <label>Date</label>
+                                        <label>Date<span style={{color:'red'}}>*</span></label>
                                         <input type='date'  value={expenseinfo.fromdate} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             fromdate:e.target.value
-                                        }))}/>
+                                        }))} required/>
                                     </div>
                                     <div>
-                                        <label>Time</label>
+                                        <label>Time<span style={{color:'red'}}>*</span></label>
                                         <input type='time'  value={expenseinfo.fromtime} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             fromtime:e.target.value
-                                        }))}/>
+                                        }))} required/>
                                     </div>
                                     <div>
-                                        <label>Place</label>
+                                        <label>Place<span style={{color:'red'}}>*</span></label>
                                         <input type='text'  value={expenseinfo.fromplace} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             fromplace:e.target.value
-                                        }))} />
+                                        }))} required/>
                                     </div>
                             </div>
                             
@@ -235,25 +235,25 @@ function Createexpense(){
                             </div>
                             <div className='create-lead-requirements-all-fields'>
                                     <div>
-                                        <label>Date</label>
+                                        <label>Date<span style={{color:'red'}}>*</span></label>
                                         <input type='date' value={expenseinfo.todate} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             todate:e.target.value
-                                        }))}  />
+                                        }))} required />
                                     </div>
                                     <div>
-                                        <label>Time</label>
+                                        <label>Time<span style={{color:'red'}}>*</span></label>
                                         <input type='time' value={expenseinfo.totime} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             totime:e.target.value
-                                        }))} />
+                                        }))} required/>
                                     </div>
                                     <div>
-                                        <label>Place</label>
+                                        <label>Place<span style={{color:'red'}}>*</span></label>
                                         <input type='text'  value={expenseinfo.toplace} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             toplace:e.target.value
-                                        }))}/>
+                                        }))} required/>
                                     </div>
                             </div>
                         </div>
@@ -261,11 +261,11 @@ function Createexpense(){
                         <div className='expense-sheet-form-con'>
                                 <div className='create-lead-requirements-all-fields'>
                                     <div>
-                                        <label>Mode</label>
+                                        <label>Mode<span style={{color:'red'}}>*</span></label>
                                         <select value={expenseinfo.expmode} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expmode:e.target.value
-                                        }))}>
+                                        }))} required>
                                             <option value=''>Select Mode</option>
                                             <option value='Auto'>Auto</option>
                                             <option value='Bus'>Bus</option>
@@ -274,47 +274,47 @@ function Createexpense(){
                                         </select>
                                     </div>
                                     <div>
-                                        <label>Transport Cost</label>
+                                        <label>Transport Cost<span style={{color:'red'}}>*</span></label>
                                         <input type='number' value={expenseinfo.exptransportcost} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             exptransportcost:e.target.value
-                                        }))} />
+                                        }))} required/>
                                     </div>
                                     <div>
-                                        <label>Food Cost</label>
+                                        <label>Food Cost<span style={{color:'red'}}>*</span></label>
                                         <input type='number'  value={expenseinfo.expfoodcost} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expfoodcost:e.target.value
-                                        }))} />
+                                        }))} required/>
                                     </div>
                                     <div>
-                                        <label>Purpose</label>
+                                        <label>Purpose<span style={{color:'red'}}>*</span></label>
                                         <select value={expenseinfo.exppurpose} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             exppurpose:e.target.value
-                                        }))}>
+                                        }))} required>
                                             <option value=''>Select Purpose</option>
                                             <option value='Service'>Service</option>
                                             <option value='Sale'>Sale</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label>Amount Paid</label>
+                                        <label>Amount Paid<span style={{color:'red'}}>*</span></label>
                                         <input type='number' value={expenseinfo.expamountpaid} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expamountpaid:e.target.value
-                                        }))} />
+                                        }))} required/>
                                     </div>
                                     <div>
                                         <label>Amount Pending</label>
                                         <input type='number' value={Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid)} readOnly/>
                                     </div>
                                     <div>
-                                        <label>Customer Name</label>
+                                        <label>Customer Name<span style={{color:'red'}}>*</span></label>
                                         <input type='text' value={expenseinfo.expcustomername} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expcustomername:e.target.value
-                                        }))}  />
+                                        }))}  required/>
                                     </div>
                                     
                                 </div>
@@ -332,7 +332,7 @@ function Createexpense(){
                             <button onClick={()=>handlesubmitdata()}>create Expense</button>
                         </div>
                         {/* create lead button ends here */}
-                    </div>
+                    </form>
                     {/* your create expenmse ends here */}
                 </div>
             </div>

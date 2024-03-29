@@ -217,7 +217,7 @@ function Createquotation(){
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
                     {/* your createmanager starts from here */}
-                    <div className='create-lead-con'>
+                    <form className='create-lead-con'>
                         <div className='create-lead-head'>
                             <h1>Create Quotation</h1>
                         </div>
@@ -226,12 +226,12 @@ function Createquotation(){
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
                                 {/* quotation type */}
                                 <div>
-                                    <label>Quotation type</label>
+                                    <label>Quotation type<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotperfomaiorquot} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         withgstornot:e.target.value==='Performa Invoice'?'GST':e.target.value==='Quotation'?'Without GST':'',
                                         quotperfomaiorquot:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' disabled>Select Quotation Type</option>
                                         <option value='Performa Invoice'>Performa Invoice</option>
                                         <option value='Quotation'>Quotation</option>
@@ -239,12 +239,12 @@ function Createquotation(){
                                 </div>
                                 {/* With Gst Or Without GST */}
                                 <div>
-                                    <label>GST or Not</label>
+                                    <label>GST or Not<span style={{color:'red'}}>*</span></label>
                                     {quotinfo.quotperfomaiorquot==='Quotation'?
                                     <select value={quotinfo.withgstornot} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         withgstornot:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' disabled>Select with GST or Not</option>
                                         <option value='GST'>GST</option>
                                         <option value='Without GST'>Without GST</option>
@@ -256,8 +256,8 @@ function Createquotation(){
                                 
                                 {/* country */}
                                 <div>
-                                    <label>country</label>
-                                    <select value={quotinfo.quotcountry} onChange={(e)=>handlestatesbycountries(e)}>
+                                    <label>country<span style={{color:'red'}}>*</span></label>
+                                    <select value={quotinfo.quotcountry} onChange={(e)=>handlestatesbycountries(e)} required>
                                         <option value=''>Select Country</option>
                                         {counrtycode.map((item,idx)=>(
                                             ((item.name==='India' || item.name==='Sri Lanka' || item.name==='Indonesia' ||
@@ -268,11 +268,11 @@ function Createquotation(){
                                 {/* state */}
                                 {quotinfo.quotcountry!=='' && 
                                 <div>
-                                    <label>state</label>
+                                    <label>state<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotstate} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotstate:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option>Select State</option>
                                         {allstates.map((item,idx)=>(
                                             <option key={idx} value={item}>{item}</option>
@@ -284,11 +284,11 @@ function Createquotation(){
                                 {/* customer name */}
                                 {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && 
                                 <div>
-                                    <label>customer name</label>
+                                    <label>customer name<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotcustname} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotcustname:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' >Select Customer</option>
                                         {sharedvalue.leadskeys.filter(item=>sharedvalue.leadsdata[item].ofdcountry===quotinfo.quotcountry && sharedvalue.leadsdata[item].ofdst===quotinfo.quotstate).map((lead,idx)=>(
                                             <option key={idx} value={sharedvalue.leadsdata[lead].custcompanyname}>{sharedvalue.leadsdata[lead].custcompanyname}</option>
@@ -299,11 +299,11 @@ function Createquotation(){
                                 {/* lead id */}
                                 {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
                                     <div>
-                                        <label>lead</label>
+                                        <label>lead<span style={{color:'red'}}>*</span></label>
                                         <select value={quotinfo.quotlead} onChange={(e)=>setquotinfo(prev=>({
                                             ...prev,
                                             quotlead:e.target.value
-                                        }))}>
+                                        }))} required>
                                             <option value='' >Select LeadID</option>
                                             {sharedvalue.leadskeys.filter(item=>sharedvalue.leadsdata[item].ofdcountry===quotinfo.quotcountry && sharedvalue.leadsdata[item].ofdst===quotinfo.quotstate && sharedvalue.leadsdata[item].custcompanyname===quotinfo.quotcustname).map((lead,idx)=>(
                                                 <option key={idx} value={lead}>{lead}</option>
@@ -342,11 +342,11 @@ function Createquotation(){
                                 }
                                 {/* select machine type */}
                                 <div>
-                                    <label>Machine Type</label>
+                                    <label>Machine Type<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotmachinetype} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotmachinetype:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' disabled>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
@@ -356,11 +356,11 @@ function Createquotation(){
                                 </div>
                                 {/* product type */}
                                 <div>
-                                    <label>product type</label>
+                                    <label>product type<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotprodtype} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotprodtype:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' >Select Product Type</option>
                                         <option value='STD'>STD</option>
                                         <option value='EXP'>EXP</option>
@@ -368,11 +368,11 @@ function Createquotation(){
                                 </div>
                                 {/* capacity here it is also known as chutes*/}
                                 <div>
-                                    <label>No.of Chutes</label>
+                                    <label>No.of Chutes<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotcap} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotcap:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' >Select Capacity</option>
                                         <option value='1'>1</option>
                                         <option value='2'>2</option>
@@ -392,11 +392,11 @@ function Createquotation(){
                                 </div>
                                 {/* price */}
                                 <div>
-                                    <label>Price in USD</label>
+                                    <label>Price in USD<span style={{color:'red'}}>*</span></label>
                                     <input type='number' value={quotinfo.quotprice} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotprice:e.target.value
-                                    }))}/>
+                                    }))} required/>
                                 </div>
                                 {/* dimension */}
                                 {quotinfo.quottype==='USD' && 
@@ -430,11 +430,11 @@ function Createquotation(){
                                 }
                                 {/* payment */}
                                 <div>
-                                    <label>Payment</label>
+                                    <label>Payment<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotpayment} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotpayment:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' >Select Payment</option>
                                         <option value='LC'>LC</option>
                                         <option value='TT'>TT</option>
@@ -484,11 +484,11 @@ function Createquotation(){
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
                                 {/* warranty */}
                                 <div>
-                                    <label>warranty</label>
+                                    <label>warranty<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotwarranty} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         quotwarranty:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' >Select Warranty</option>
                                         <option value='1'>1 YEAR</option>
                                         <option value='2'>2 YEARS</option>
@@ -513,7 +513,7 @@ function Createquotation(){
                             </button>
                         </div>
                         {/* form ends here */}
-                    </div>
+                    </form>
                 </div>
             </div>
             <ToastContainer

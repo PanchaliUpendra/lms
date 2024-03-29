@@ -377,7 +377,7 @@ function Createticket(){
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
                     {/* your create tickets leads  starts from here */}
-                    <div className='create-lead-con'>
+                    <form className='create-lead-con'>
                         <div className="create-header-starts-here">
                             <div className="new-ticket-header">
                                 <h1>New Ticket</h1>
@@ -393,7 +393,7 @@ function Createticket(){
                                     ctktstate:'',
                                     ctktdist:'',
                                     ctktcountry:e.target.value
-                                }))}>
+                                }))} required>
                                     <option value='' selected>Select country</option>
                                     {
                                         counrtycode.map((item,idx)=>(
@@ -410,7 +410,7 @@ function Createticket(){
                                     <select value={ticketinfo.ctktstate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktstate:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value=''selected>Select State</option>
                                         {states.map((item,idx)=>(
                                             <option key={idx} value={item.state}>{item.state}</option>
@@ -423,7 +423,7 @@ function Createticket(){
                                     <input type='text' value={ticketinfo.ctktstate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktstate:e.target.value
-                                    }))}/>
+                                    }))} required/>
                                 }
                             </div>
                             <div>
@@ -436,7 +436,7 @@ function Createticket(){
                                     <select value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktdist:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='' selected>Select District</option>
                                         {states.filter(item=>item.state===ticketinfo.ctktstate)[0].districts.map((prod,idx)=>(
                                             <option key={idx} value={prod}>{prod}</option>
@@ -449,7 +449,7 @@ function Createticket(){
                                     <input type='text' value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktdist:e.target.value
-                                    }))}/>
+                                    }))} required/>
                                 }
                             </div>
                             
@@ -466,7 +466,7 @@ function Createticket(){
                                     ctktcustname:e.target.value,
                                     ctktothercustname:''
                                     }
-                                    ))}>
+                                    ))} required>
                                         <option value=''>Select Company</option>
                                         {
                                             sharedvalue.workerskeys.filter(item=>sharedvalue.workersdata[item].role==='customer')
@@ -576,7 +576,7 @@ function Createticket(){
                                 <select value={ticketinfo.ctktcalltype} onChange={(e)=>setticketinfo(prev=>({
                                     ...prev,
                                     ctktcalltype:e.target.value
-                                }))}>
+                                }))} required>
                                     <option value='' selected>Select Call Type</option>
                                     <option value='Pre-Installation'>Pre-Installation</option>
                                     <option value='Installation'>Installation</option>
@@ -595,7 +595,7 @@ function Createticket(){
                                     <select value={ticketinfo.ctktcate} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktcate:e.target.value
-                                    }))}>
+                                    }))} required>
                                         <option value='-' selected>Select Category</option>
                                         <option value='Power Issue'>Power Issue</option>
                                         <option value='Quality Issue'>Quality Issue</option>
@@ -751,7 +751,7 @@ function Createticket(){
                                             ...prev,
                                             ctktpriority:e.target.value
                                         }))}>
-                                            <option value='' selected>Select Priority</option>
+                                            <option value='' disabled>Select Priority</option>
                                             <option value='Urgent'>Urgent</option>
                                             <option value='High'>High</option>
                                             <option value='Medium'>Medium</option>
@@ -774,7 +774,7 @@ function Createticket(){
                         </div>
                         {/* inner div completes here */}
 
-                    </div>
+                    </form>
                     {/* form completes here */}
                 </div>
             </div>
