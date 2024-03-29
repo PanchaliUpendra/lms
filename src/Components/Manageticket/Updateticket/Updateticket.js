@@ -31,7 +31,7 @@ function Updateticket(){
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully updated the Ticket');
     const loginerror = () =>toast.error('Getting Error while updatinging ticket');
-    const loginformerror = () => toast.info('please fill the form correctly');
+    const loginformerror = () => toast.info('Please fill the mandatory fields');
     // const invalidmail = () => toast.warn('unique id was not generating!!!');
     const batch = writeBatch(db);//get a new write batch
     const [pleasewait,setpleasewait] = useState(false);
@@ -225,7 +225,7 @@ function Updateticket(){
                         <p>{sharedvalue.userdtl.email}</p>
                     </div>
                     {/* your create tickets leads  starts from here */}
-                    <div className='create-lead-con'>
+                    <form className='create-lead-con'>
                         {/* header for updating lead */}
                         <div className='create-lead-head'>
                             <h1>Update Ticket</h1>
@@ -419,14 +419,14 @@ function Updateticket(){
                             {/* mode data */}
                             {ticketinfo.status==='resolved' && (sharedvalue.role==='manager'||sharedvalue.role==='employee') &&
                             <div>
-                                <label>Mode Data</label>
-                                <input type='file' onChange={(e)=>handlefirstfileupload(e)}/>
+                                <label>Mode Data<span style={{color:'red'}}>*</span></label>
+                                <input type='file' onChange={(e)=>handlefirstfileupload(e)} required/>
                             </div>}
                             {/* service report */}
                             {ticketinfo.status==='resolved' && (sharedvalue.role==='manager'||sharedvalue.role==='employee') &&
                             <div>
-                                <label>service report</label>
-                                <input type='file' onChange={(e)=>handlesecondfileupload(e)}/>
+                                <label>service report<span style={{color:'red'}}>*</span></label>
+                                <input type='file' onChange={(e)=>handlesecondfileupload(e)} required/>
                             </div>}
                             {/* manager div */}
                             {sharedvalue.role==='admin' && 
@@ -487,7 +487,7 @@ function Updateticket(){
                         </div>
                         {/* inner div completes here */}
 
-                    </div>
+                    </form>
                     {/* form completes here */}
                 </div>
             </div>:<Error/>
