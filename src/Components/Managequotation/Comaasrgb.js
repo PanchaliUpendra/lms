@@ -130,7 +130,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.tableheadertext}>1</Text>
                               </View>
                               <View style={styles.pricetableeachhead2}>
-                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{Number(sharedvalue.quotesdata[quoteid].quotcap)}</Text>
+                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
                                 <Text style={styles.tableheadertext1}>Capacity: {Number(sharedvalue.quotesdata[quoteid].quotcap)}-{Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Ton/Hr</Text>
                                 <Text style={styles.tableheadertext12}>includes: spare parts kit</Text>
                               </View>

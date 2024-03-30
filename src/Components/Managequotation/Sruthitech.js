@@ -179,7 +179,7 @@ const Sruthitech = (props) => {
                                 <View style={styles.srthtblcol21}>
                                     <Text>COMAS Color Sorter</Text>
                                     <Text>for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit.</Text>
-                                    <Text>Model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotcap}</Text>
+                                    <Text>Model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
                                 </View>
                                 <Text style={styles.srthtblcol31}>{Number(sharedvalue.quotesdata[quoteid].quotcap)===14?14:Number(sharedvalue.quotesdata[quoteid].quotcap)} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':'-'} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Tons/Hr</Text>
                                 <View style={styles.srthtblcol31}>
