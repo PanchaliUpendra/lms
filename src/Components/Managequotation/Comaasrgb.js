@@ -90,7 +90,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.customerInfo}>Project:</Text>
                               </View>
                               <View style={first.p1sec122}>
-                                <Text style={{fontSize:11,fontWeight:400,fontFamily:'OpenSans'}}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*84} <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}>channels</Text> 
+                                <Text style={{fontSize:11,fontWeight:400,fontFamily:'OpenSans'}}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*42} <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}>channels</Text> 
                                 <Text style={{color:'red',fontWeight:600}}>R</Text><Text style={{color:'green',fontWeight:600}}>G</Text><Text style={{color:'blue',fontWeight:600}}>B</Text> FULL <Text style={{color:'#5905B3',fontWeight:600,textTransform:'capitalize'}}>c</Text><Text style={{color:'green',fontWeight:600}}>o</Text><Text style={{color:'#5905B3',fontWeight:600}}>l</Text><Text style={{color:'blue',fontWeight:600}}>o</Text><Text style={{color:'#AB8B00',fontWeight:600}}>r</Text>
                                  <Text style={{color:'red' ,fontWeight:600,textTransform:'capitalize'}}> s</Text><Text style={{color:'green',fontWeight:600}}>o</Text><Text style={{color:'red',fontWeight:600}}>r</Text><Text style={{color:'red',fontWeight:600}}>t</Text><Text style={{color:'blue',fontWeight:600}}>e</Text><Text style={{color:'blue',fontWeight:600}}>r</Text> with Tri-Chroomatic <Text style={{color:'#5905B3',fontFamily:'OpenSans',fontWeight:700}}>CCD</Text> <Text style={{color:'red'}}>Camera</Text>,
                                 <Text style={{color:'#028DE9',fontFamily:'OpenSans',fontWeight:600}}> LED</Text> lamps and 
@@ -130,8 +130,10 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.tableheadertext}>1</Text>
                               </View>
                               <View style={styles.pricetableeachhead2}>
-                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
-                                <Text style={styles.tableheadertext1}>Capacity: {Number(sharedvalue.quotesdata[quoteid].quotcap)}-{Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Ton/Hr</Text>
+                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?
+                                (Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
+                                <Text style={styles.tableheadertext1}>Capacity: {sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap)-2:(Number(sharedvalue.quotesdata[quoteid].quotcap)+1)-2):Number(sharedvalue.quotesdata[quoteid].quotcap)}-
+                                {sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Ton/Hr</Text>
                                 <Text style={styles.tableheadertext12}>includes: spare parts kit</Text>
                               </View>
                               <View style={styles.pricetableeachhead1}>
@@ -289,7 +291,8 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>Nominal capacity</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>{Number(sharedvalue.quotesdata[quoteid].quotcap)}-{Number(sharedvalue.quotesdata[quoteid].quotcap)+1}(T/H)*</Text>
+                                <Text style={styles.destablecoltxt2}>{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap)-2:(Number(sharedvalue.quotesdata[quoteid].quotcap)+1)-2):Number(sharedvalue.quotesdata[quoteid].quotcap)}-
+                                {sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):Number(sharedvalue.quotesdata[quoteid].quotcap)+1}(T/H)*</Text>
                               </View>
                             </View>
 
@@ -298,7 +301,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>N Channels/Ejectors</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*84}</Text>
+                                <Text style={styles.destablecoltxt2}>{(sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTIMA'||sharedvalue.quotesdata[quoteid].quotmachinetype==='RGBS')===true?Number(sharedvalue.quotesdata[quoteid].quotcap)*64:Number(sharedvalue.quotesdata[quoteid].quotcap)*42}</Text>
                               </View>
                             </View>
 
@@ -370,7 +373,9 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.destablecoltxt1}>Cameras: Each chute / Total</Text>
                               </View>
                               <View style={styles.destablecol2}>
-                                <Text style={styles.destablecoltxt2}>2/{Number(sharedvalue.quotesdata[quoteid].quotcap)*2}nos</Text>
+                                {/* <Text style={styles.destablecoltxt2}>2/{Number(sharedvalue.quotesdata[quoteid].quotcap)*2}nos</Text> */}
+                                <Text style={styles.destablecoltxt2}>{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?
+                                (Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
                               </View>
                             </View>
 
