@@ -140,11 +140,12 @@ function Viewticket(){
             }
             if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[tktid],"ctktservicereport") && sharedvalue.ticketsdata[tktid].ctktservicereport!==''){
                 const desertRef = ref(storage,sharedvalue.ticketsdata[tktid].ctktservicereport);
-                deleteObject(desertRef).then(() => {
-                    console.log('deleted the imae storage url');
-                }).catch((error) => {
-                    console.log("you got an error while deleting the storage",error);
-                });
+                    deleteObject(desertRef).then(() => {
+                        console.log('deleted the imae storage url');
+                    }).catch((error) => {
+                        console.log("you got an error while deleting the storage",error);
+                    });
+                
             }
 
 

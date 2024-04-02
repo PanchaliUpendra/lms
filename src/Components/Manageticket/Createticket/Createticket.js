@@ -117,6 +117,7 @@ function Createticket(){
             return new Promise((resolve,reject)=>{
                 const storageref = ref(storage,ctktfile.name);
                 const downloadurl = getDownloadURL(storageref);
+                console.log('downloadurl',downloadurl);
                 resolve(downloadurl);
             })
                 
@@ -126,7 +127,8 @@ function Createticket(){
         }
     }
 
-    async function handlesubmitform(){
+    async function handlesubmitform(e){
+        e.preventDefault();
         setpleasewait(true);
         try{
             // console.log(ticketinfo);
@@ -142,9 +144,20 @@ function Createticket(){
                 const result = await fetchtktid();
                 var fileurl ='';
                 if(ctktfile!==''){
-                    const storageref = ref(storage,ctktfile.name);
-                    await uploadBytes(storageref,ctktfile);
-                    fileurl= await downloadfileurl();
+                    try{
+                        const storageref = ref(storage,ctktfile.name);
+                        const response = await uploadBytes(storageref,ctktfile);
+                        if(response){
+                            fileurl= await downloadfileurl();
+                        }else{
+                            console.log('response error');
+                        }
+                    }catch(e){
+                        console.error('you got an error while uploading gthe file, ', e);
+                        alert('you got an  error');
+                    }
+                    
+                    
                 }
 
                 const formatDateString = (date) => date.toISOString().split('T')[0];
@@ -775,7 +788,7 @@ function Createticket(){
                                 <input type='file' onChange={(e)=>handleselectfile(e)}/>
                             </div>
                             {/* file ends here */}
-                            <button onClick={()=>handlesubmitform()}>
+                            <button onClick={(e)=>handlesubmitform(e)}>
                                 create
                             </button>
                                 <div>

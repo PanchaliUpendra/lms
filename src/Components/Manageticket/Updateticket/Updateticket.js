@@ -87,11 +87,12 @@ function Updateticket(){
    
 
     // downloading the file url from datastorage
-    const downloadfileurl = async(filename) =>{
+    const downloadfileurl1 = async() =>{
         try{
             return new Promise((resolve,reject)=>{
-                const storageref = ref(storage,filename);
+                const storageref = ref(storage,tktfileone.name);
                 const downloadurl = getDownloadURL(storageref);
+                console.log('download url1: ',downloadurl);
                 resolve(downloadurl);
             })
                 
@@ -100,7 +101,22 @@ function Updateticket(){
         }
     }
 
-    async function handlesubmitform(){
+    const downloadfileurl2 = async() =>{
+        try{
+            return new Promise((resolve,reject)=>{
+                const storageref = ref(storage,tktfiletwo.name);
+                const downloadurl = getDownloadURL(storageref);
+                console.log('download url2: ',downloadurl);
+                resolve(downloadurl);
+            })
+                
+        }catch(e){
+            console.log('you getting an error while downloading url..unique id was not generating',e);
+        }
+    }
+
+    async function handlesubmitform(event){
+        event.preventDefault();
         setpleasewait(true);
         try{
             // console.log(ticketinfo);
@@ -127,13 +143,15 @@ function Updateticket(){
                 if(tktfileone!==''){
                     const storageref = ref(storage,tktfileone.name);
                     await uploadBytes(storageref,tktfileone);
-                    fileurl1=await downloadfileurl(tktfileone.name);
+                    fileurl1=await downloadfileurl1(tktfileone.name);
+                    console.log('fileurl1:', fileurl1)
                 }
                 var fileurl2='';
                 if(tktfiletwo!==''){
                     const storageref = ref(storage,tktfiletwo.name);
                     await uploadBytes(storageref,tktfiletwo);
-                    fileurl2=await downloadfileurl(tktfiletwo.name);
+                    fileurl2=await downloadfileurl2(tktfiletwo.name);
+                    console.log('fileurl2:',fileurl2);
                 }
                 if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
                     await batch.update(createtickets,{
@@ -479,7 +497,7 @@ function Updateticket(){
                                 <input type='file' onChange={(e)=>handleselectfile(e)}/>
                             </div> */}
                             {/* file ends here */}
-                            <button onClick={()=>handlesubmitform()}>
+                            <button onClick={(e)=>handlesubmitform(e)}>
                                 update ticket
                             </button>
                                 <div>
