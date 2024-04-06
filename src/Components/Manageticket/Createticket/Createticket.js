@@ -9,7 +9,7 @@ import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { onSnapshot ,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createticketid, createtickets, ticketsgraphdoc } from "../../../Data/Docs";
+import { createticketid, createtickets, ticketsgraphdoc , API_ONE_TO_ONE} from "../../../Data/Docs";
 //import storage 
 import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 import { storage } from "../../../Firebase";
@@ -127,6 +127,24 @@ function Createticket(){
         }
     }
 
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
+
     async function handlesubmitform(e){
         e.preventDefault();
         setpleasewait(true);
@@ -164,6 +182,17 @@ function Createticket(){
                 const currentDate = new Date();
                 const currentdatetime = currentDate.toISOString();
                 const stringtodaydate = formatDateString(currentDate);
+
+                //sending msg to the admin when creating ticket
+                if(result>=1109699 && fileurl!==null){
+                    const message = `A new ticket [tkt.id ${result}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
+                    const phone = `9440000815`;//here we have to give the admin number
+                    const data={
+                        message:message,
+                        phone:phone
+                    }
+                    await handleSendMsgToAdmin(data);
+                }
                 
                 //adding the data here
                 if(result>=1109699 && fileurl!==null){

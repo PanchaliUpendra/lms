@@ -9,7 +9,7 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { leaddoc } from '../../../Data/Docs';
+import { leaddoc , API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -19,7 +19,7 @@ import { useParams, useNavigate} from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
 
-import { leadsgraphdoc } from '../../../Data/Docs';
+import { leadsgraphdoc} from '../../../Data/Docs';
 import { months } from '../../../Data/Months';
 
 function Updatelead(){
@@ -109,6 +109,24 @@ function Updatelead(){
     }
     // toggle menu bar code ends here
 
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
+
    
     
     //store whole data in the database
@@ -138,6 +156,17 @@ function Updatelead(){
                       };
                       return dateTime.toLocaleTimeString('en-US', options);
                 };
+                
+                if(sharedvalue.leadsdata[leadid].custstatus!==custinquiry.custstatus){ // sending msg to admin when we changed the status of the lead
+                    
+                    const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of the lead id ${leadid} to ${custinquiry.custstatus}`;
+                    const phone = `9440000815`;//here we have to give the admin number
+                    const data={
+                        message:message,
+                        phone:phone
+                    }
+                    await handleSendMsgToAdmin(data);
+                }
                 await batch.update(leaddoc, {[leadid]:{
                         ...sharedvalue.leadsdata[leadid],
                         custtype:custinquiry.custtype,//customer type

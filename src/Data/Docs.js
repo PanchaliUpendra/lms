@@ -12,3 +12,5 @@ export const createquotes = doc(db,"quotes","HntCeIfNJlZJBU6gzIj5");
 export const createworkers = doc(db,"workers","yWXH2DQO8DlAbkmQEQU4");
 export const leadsgraphdoc = doc(db,"leadsgraph","1HXMGFXVYcIjbuMzMZo4");
 export const ticketsgraphdoc = doc(db,"ticketsgraph","Wrbujr45rUXPWaurALzs");
+
+export const API_ONE_TO_ONE = 'http://65.2.126.7:8000';

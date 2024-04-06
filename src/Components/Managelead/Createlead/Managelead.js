@@ -9,7 +9,7 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { onSnapshot, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createleadiddoc, leaddoc , createmeetings ,leadsgraphdoc } from '../../../Data/Docs';
+import { createleadiddoc, leaddoc , createmeetings ,leadsgraphdoc ,API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -101,18 +101,36 @@ function Managelead(){
     //generating the uuid from the database
     const fetchuuid = async() => {
             try{ 
-                return new Promise((resolve, reject) => {
-                    onSnapshot(createleadiddoc, (doc) => {
-                        const tempuuid = doc.data();
-                        resolve(tempuuid.uuid + 1);
+                    return new Promise((resolve, reject) => {
+                        onSnapshot(createleadiddoc, (doc) => {
+                            const tempuuid = doc.data();
+                            resolve(tempuuid.uuid + 1);
+                        });
                     });
-                });
                 }catch(e){
                     console.log('you got an error while fetching the uuid data',e);
                 }
-            }
+        }
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
     //store whole data in the database
-    async function handlecreatelead(){
+    async function handlecreatelead(e){
+        e.preventDefault();
         setOpen(true);
         try{
             if(
@@ -125,6 +143,15 @@ function Managelead(){
             ){
              //fetching uuid  
              const result = await fetchuuid();
+             if(result!==0){
+                const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result}]`;
+                const phone = `9440000815`;//here we have to give the admin number
+                const data={
+                    message:message,
+                    phone:phone
+                }
+                await handleSendMsgToAdmin(data);
+             }
             if(result!==0){
                 //this batch is for updating the leads document!!!
                 await batch.update(leaddoc, {[result]:{
@@ -881,7 +908,7 @@ function Managelead(){
 
                         {/* create lead button starts here */}
                         <div className='create-lead-submit-btns'>
-                            <button onClick={()=>handlecreatelead()}>create lead</button>
+                            <button onClick={(e)=>handlecreatelead(e)}>create lead</button>
                         </div>
                         {/* create lead button ends here */}
                     </form>

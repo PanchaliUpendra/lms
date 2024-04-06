@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
-import { createquoteid, createquotes } from "../../../Data/Docs";
+import { createquoteid, createquotes ,API_ONE_TO_ONE} from "../../../Data/Docs";
 import { onSnapshot ,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 //importing the notifications
@@ -109,9 +109,28 @@ function Createquotation(){
         // console.log('data:',e.target.value);
         setEditorData(e.target.value);
     }
+
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
     
     // here handling the submitdata
-    async function handlesubmitdata(){
+    async function handlesubmitdata(event){
+        event.preventDefault();
         setshowloading(true);
         try{
             if(
@@ -129,6 +148,15 @@ function Createquotation(){
                 quotinfo.withgstornot!==''
             ){
             const result = await fetchquotationid();
+            if(result!==0){
+                const message = `A New quotation [quot.id:${result}] created by ${sharedvalue.workersdata[sharedvalue.uid].name}`;
+                const phone = `9440000815`;//here we have to give the admin number
+                const data={
+                    message:message,
+                    phone:phone
+                }
+                await handleSendMsgToAdmin(data);
+             }
             if(result!==0){
                 await batch.update(createquotes,{
                     [result]:{
@@ -508,7 +536,7 @@ function Createquotation(){
                                 </div>
                             </div>
                             
-                            <button className="creatquotation-final-button" onClick={()=>handlesubmitdata()}>
+                            <button className="creatquotation-final-button" onClick={(e)=>handlesubmitdata(e)}>
                                 create quote
                             </button>
                         </div>

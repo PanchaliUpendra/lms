@@ -11,7 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
-import { createtickets, ticketsgraphdoc} from "../../../Data/Docs";
+import { createtickets, ticketsgraphdoc,API_ONE_TO_ONE} from "../../../Data/Docs";
 import { writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { months } from "../../../Data/Months";
@@ -63,6 +63,23 @@ function Viewticket(){
         }
         return '-';
     }
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
     //handling the submit data and closing the ticket
     async function handlingsubmitclose(){
         try{
@@ -75,6 +92,13 @@ function Viewticket(){
                             workingstatus:`Tech-${feedbackform.techspt} , Res-${feedbackform.res} , ${feedbackform.content}`
                         }
                     });
+                    const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of ticket [tkt.id ${feedbackform.tktid}] to close state`;
+                    const phone = `9440000815`;//here we have to give the admin number
+                    const data={
+                            message:message,
+                            phone:phone
+                        }
+                    await handleSendMsgToAdmin(data);
                     //updating the tickets graph data
                     let currentDate = new Date();
                     let year = currentDate.getFullYear();

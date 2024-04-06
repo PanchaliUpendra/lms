@@ -9,7 +9,7 @@ import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { writeBatch} from "firebase/firestore";
 import { db, storage } from "../../../Firebase";
-import {  createtickets } from "../../../Data/Docs";
+import {  createtickets , API_ONE_TO_ONE} from "../../../Data/Docs";
 //import storage 
 // import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 // import { storage } from "../../../Firebase";
@@ -115,6 +115,24 @@ function Updateticket(){
         }
     }
 
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
+
     async function handlesubmitform(event){
         event.preventDefault();
         setpleasewait(true);
@@ -154,6 +172,18 @@ function Updateticket(){
                     console.log('fileurl2:',fileurl2);
                 }
                 if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
+                    if(sharedvalue.ticketsdata[tktid].status!==ticketinfo.status){
+                        const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of ticket [tkt.id ${tktid}] to ${ticketinfo.status} state`;
+                        const phone = `9440000815`;//here we have to give the admin number
+                        const data={
+                            message:message,
+                            phone:phone
+                        }
+                        await handleSendMsgToAdmin(data);
+                    }
+                }
+                if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
+                    
                     await batch.update(createtickets,{
                         [tktid]:{
                             ...sharedvalue.ticketsdata[tktid],
@@ -249,7 +279,10 @@ function Updateticket(){
                             <h1>Update Ticket</h1>
                         </div>
                         <div className='create-lead-head-button-comes-here'>
-                            <button onClick={()=>navigate(-1)}>
+                            <button onClick={(e)=>{
+                                e.preventDefault();
+                                navigate(-1);
+                                }}>
                                 <ChevronLeftIcon/>
                                 Go Back
                             </button>

@@ -7,7 +7,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { onSnapshot ,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createexpenseid ,createexpense } from "../../../Data/Docs";
+import { createexpenseid ,createexpense, API_ONE_TO_ONE } from "../../../Data/Docs";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -72,8 +72,27 @@ function Createexpense(){
         }
     }
 
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
+        try{
+            // console.log('response is here...');
+            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            });
+            console.log(await response.json());
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
+
     //function to handle to submit the data
-    async function handlesubmitdata(){
+    async function handlesubmitdata(event){
+        event.preventDefault();
         setshowloading(true);
         try{
             if(
@@ -91,6 +110,15 @@ function Createexpense(){
                 expenseinfo.exptransportcost!==''
                 ){
                     const result = await fetchexpenseid();
+                    if(result!==0){
+                        const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the expense.[exp.id${result}]`;
+                        const phone = `9440000815`;//here we have to give the admin number
+                        const data={
+                            message:message,
+                            phone:phone
+                        }
+                        await handleSendMsgToAdmin(data);
+                    }
                     if(result!==0){
                         await batch.update(createexpense,{
                             [result]:{
@@ -329,7 +357,7 @@ function Createexpense(){
                         </div>
                         {/* create lead button starts here */}
                         <div className='create-expense-submit-btns'>
-                            <button onClick={()=>handlesubmitdata()}>create Expense</button>
+                            <button onClick={(e)=>handlesubmitdata(e)}>create Expense</button>
                         </div>
                         {/* create lead button ends here */}
                     </form>
