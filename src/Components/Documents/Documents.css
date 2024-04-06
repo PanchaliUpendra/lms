@@ -1,0 +1,76 @@
+.documentation-con{
+    background-color: #ffffff;
+    width: 97%;
+    margin: auto;
+    min-height: 300px;
+    border-radius: 15px;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
+    overflow: hidden;
+}
+
+.documentation-nav{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    padding: 20px;
+    padding-bottom: 10px;
+    padding-right: 0;
+}
+.documentation-nav>h1{
+    text-transform: uppercase;
+    color: white;
+}
+
+.documentation-nav-con{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 40px;
+    gap: 20px;
+}
+.documentation-nav-con-each{
+    position: relative;
+}
+.documentation-nav-con-each>p{
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+}
+.documentation-nav-con-each>ul{
+    position: absolute;
+    top: 30px;
+    width: fit-content;
+    background-color: white;
+    display: none;
+    z-index: 10;
+    border: 1px solid rgb(236, 236, 236);
+}
+.doc-nce-active>ul{
+    position: absolute;
+    top: 30px;
+    width: fit-content;
+    background-color: white;
+    display:block;
+    z-index: 10;
+    border: 1px solid rgb(236, 236, 236);
+}
+.documentation-nav-con-each>ul li{
+    padding: 10px 15px;
+    font-size: 1rem;
+    min-width: max-content;
+    width: 100%;
+}
+.documentation-nav-con-each>ul li:hover{
+    background-color: rgb(248, 248, 248);
+    cursor: pointer;
+}
+
+@media all and (max-width:695.1234px){
+    .documentation-nav-con{
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

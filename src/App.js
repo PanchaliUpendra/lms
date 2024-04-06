@@ -34,6 +34,7 @@ import Profile from './Components/Profile/Profile';
 import Updatequotation from './Components/Managequotation/Updatequotation/Updatequotation';
 import Verifyquotation from './Components/Managequotation/Verifyquotation/Verifyquotation';
 import Passwords from './Components/Passwords/Passwords';
+import Documents from './Components/Documents/Documents';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -87,6 +88,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}
         {/* profile nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents' element={<Documents/>}/>}
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
 

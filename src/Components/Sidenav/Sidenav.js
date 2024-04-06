@@ -17,6 +17,7 @@ import { NavLink ,useLocation, useNavigate} from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from '../../Firebase';
 import MyContext from '../../MyContext';
+import ArticleIcon from '@mui/icons-material/Article';
 
 //importing the gif
 import comaasicon from '../../Assets/comaas.gif'
@@ -299,6 +300,15 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </div>
                     }
+
+                    <NavLink to='/documents'>
+                        <div className='snav-inner-each-diff'>
+                            <div className='snav-mle-names'>
+                                <ArticleIcon/>
+                                <h2>Documents</h2>
+                            </div>
+                        </div>
+                    </NavLink>
                     
                     {/* snav each div  */}
                     {sharedvalue.role==='admin' &&
@@ -311,6 +321,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </NavLink>
                     }
+
                     {/* snav each div  */}
                     <div className='snav-inner-act-page-head'>
                         <div>
