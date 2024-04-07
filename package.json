@@ -26,6 +26,7 @@
     "react-scripts": "5.0.1",
     "react-share": "^5.1.0",
     "react-toastify": "^10.0.3",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

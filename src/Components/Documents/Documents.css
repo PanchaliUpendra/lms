@@ -68,6 +68,26 @@
     cursor: pointer;
 }
 
+/* training-material-header */
+.training-material-header{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 20px;
+}
+.training-material-header>h1{
+    font-size: 2.1rem;
+    font-weight:800;
+    color: #1A73E8;
+}
+.training-material-header>p{
+    font-size: 1.1rem;
+    font-weight:400;
+}
+/* documents-table */
+.documents-table{
+    padding: 20px;
+}
 @media all and (max-width:695.1234px){
     .documentation-nav-con{
         display: flex;

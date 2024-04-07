@@ -1,0 +1,13 @@
+.createmanager-innner-form>div textarea{
+    outline: none;
+    min-height: 100px;
+    border: 1px solid #d2d6da;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    resize: vertical;
+}
+
+.add-doc-form>div{
+    gap: 5px;
+}

@@ -6,6 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from "../../MyContext";
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function Documents(){
     const sharedvalue = useContext(MyContext);
@@ -78,6 +79,59 @@ function Documents(){
                                <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}><p>Others</p></div>
                             </div>
                         </div>
+                        
+                        {/* training material will start from here */}
+                        <div className="training-material-header">
+                            <h1>Training Material</h1>
+                            <p>This information provides the details of Training Material</p>
+                        </div>
+
+                        {/* table will shown here */}
+                        {sharedvalue.documentskeys.length>0 &&
+                        
+                        <div className="documents-table">
+                            <div className="view-list-table-con">
+                                <table>
+                                    <thead>
+                                        <tr className="table-head-row">
+                                            <th>si.no</th>
+                                            <th>Documentation Name</th>
+                                            <th>Description</th>
+                                            <th>action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        sharedvalue.documentskeys.map((item,idx)=>(
+                                            <tr key={idx}>
+                                                    <td>
+                                                        <p className="view-manager-list-sino">
+                                                            {Number(idx)+1}
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p className="view-manager-list-name">{sharedvalue.documentsdata[item].adocname}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p className="view-manager-list-email">
+                                                            {sharedvalue.documentsdata[item].adocdes}
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p>
+                                                        {sharedvalue.documentsdata[item].adocfileurl!==''? <a href={sharedvalue.documentsdata[item].adocfileurl} rel="noreferrer" target="_blank">
+                                                            <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small"/>
+                                                            </a>:'-'}
+                                                        </p>
+                                                    </td>
+                                            </tr>
+                                        ))
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        }
                     </div>
                     {/* your documentation container ends here */}
                 </div>

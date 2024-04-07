@@ -98,6 +98,11 @@
     margin-top: 8px;
     margin-bottom: 5px;
     width: fit-content;
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content: space-between;
+    width: 100%;
     
 }
 .profile-show-passwords-btn p{
@@ -159,6 +164,16 @@
         gap: 5px;
     }
     
+}
+
+@media screen and (max-width:510px){
+    .profile-show-passwords-btn{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
 }
 
 @media screen and (max-width:484.1234px){

@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc} from "./Data/Docs";
+import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc , documentsdoc} from "./Data/Docs";
 
 function MyProvider({children}){
 
@@ -30,6 +30,8 @@ function MyProvider({children}){
     const [ticketsgraphkeys,setticketsgraphkeys]= useState([]);//tickets graph keys
     const [ticketsgraphdata,setticketsgraphdata] = useState({});// tickets graph data
     const [ticketsgraphlasttwelve,setticketsgraphlasttwelve]=useState([]);//array of last twelve months
+    const [documentsdata,setdocumentsdata] = useState({});//ADD DOCUMENTS DATA
+    const [documentskeys,setdocumentskeys] = useState([]);// document keys
    
     
     const sharedvalue ={
@@ -52,6 +54,8 @@ function MyProvider({children}){
         ticketsgraphkeys:ticketsgraphkeys,
         ticketsgraphdata:ticketsgraphdata,
         ticketsgraphlasttwelve:ticketsgraphlasttwelve,
+        documentsdata:documentsdata,
+        documentskeys:documentskeys,
         role:user.role
     }
 
@@ -67,6 +71,20 @@ function MyProvider({children}){
                 uid:uid,
                 userdtl:userd
               }))
+              //fetching the documents data
+              const fetchdocumentsdata = async() =>{
+                try{
+                  await onSnapshot(documentsdoc,(doc)=>{
+                    const tempdocdata = doc.data();
+                    setdocumentsdata(tempdocdata);
+                    const tempdockeys = Object.keys(tempdocdata);
+                    setdocumentskeys(tempdockeys);
+                  })
+                }catch(e){
+                  console.log('you got an error while fetching the documents data',e);
+                }
+              }
+              fetchdocumentsdata();//fetching the documents data
               //fetching the tickets graph data
               const fetchticketsgraphdata = async() =>{
                 try{
