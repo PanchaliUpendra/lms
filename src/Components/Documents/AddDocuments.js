@@ -164,7 +164,7 @@ function AddDocuments(){
                             </div>
 
                             {
-                                (adddocdata.adoccate==='Utility Details'||adddocdata.adoccate==='Installation Drawing')===true &&
+                                (adddocdata.adoccate==='Utility Details'||adddocdata.adoccate==='Model Data')===true &&
                                 <div>
                                     <label>Select Sub Category<span>*</span></label>
                                     <select value={adddocdata.adocsubcate} onChange={(e)=>setadddocdata(prev=>({
@@ -175,6 +175,7 @@ function AddDocuments(){
                                         {adddocdata.adoccate==='Utility Details' &&
                                             <>
                                             <option value='compressor details'>compressor details</option>
+                                            <option value='electrical details'>electrical details</option>
                                             <option value='UPS specifications'>UPS specifications</option>
                                             <option value='Blower details'>Blower details</option>
                                             <option value='Air piping details'>Air piping details</option>
@@ -182,10 +183,11 @@ function AddDocuments(){
                                             </>
                                         }
                                         {
-                                            adddocdata.adoccate==='Installation Drawing' &&
+                                            adddocdata.adoccate==='Model Data' &&
                                             <>
                                                 <option value='grains'>grains</option>
-                                                <option value='services'>services</option>
+                                                <option value='machine model'>machine model</option>
+                                                <option value='software version'>Software Version</option>
                                                 <option value='others'>others</option>
                                             </>
                                         }

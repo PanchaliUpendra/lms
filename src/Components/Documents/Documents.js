@@ -55,21 +55,24 @@ function Documents(){
                                         <li>video</li>
                                     </ul>
                                 </div>
-                               <div className={`documentation-nav-con-each ${activenavnum===2?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(2)} >
-                                    <p>Installation Drawing</p>
-                                    <ul onMouseEnter={()=>setactivenavnum(2)} onMouseLeave={()=>setactivenavnum(0)}>
-                                        <li onClick={()=>navigate('/documents/Installation Drawing/grains')}>grains</li>
-                                        <li onClick={()=>navigate('/documents/Installation Drawing/services')}>services</li>
-                                        <li onClick={()=>navigate('/documents/Installation Drawing/others')}>others</li>
-                                    </ul>
+                               <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}  >
+                                    <p onClick={()=>navigate('/documents/Installation Drawing/subcategory')}>Installation Drawing</p>
+                                    
                                 </div>
-                               <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}>
-                                    <p>Mode Data</p>
+                               <div  className={`documentation-nav-con-each ${activenavnum===2?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(2)} >
+                                    <p>Model Data</p>
+                                    <ul onMouseEnter={()=>setactivenavnum(2)} onMouseLeave={()=>setactivenavnum(0)}>
+                                        <li onClick={()=>navigate('/documents/Mode Data/grains')}>Grains</li>
+                                        <li onClick={()=>navigate('/documents/Mode Data/machine model')}>Machine Model</li>
+                                        <li onClick={()=>navigate('/documents/Mode Data/software version')}>Software Version</li>
+                                        <li onClick={()=>navigate('/documents/Mode Data/others')}>Others</li>
+                                    </ul>
                                 </div>
                                <div className={`documentation-nav-con-each ${activenavnum===3?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(3)}>
                                     <p>Utility Details</p>
                                     <ul onMouseEnter={()=>setactivenavnum(3)} onMouseLeave={()=>setactivenavnum(0)}>
                                         <li onClick={()=>navigate('/documents/Installation Drawing/compressor details')}>compressor details</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/electrical details')}>electrical details</li>
                                         <li onClick={()=>navigate('/documents/Installation Drawing/UPS specifications')}>UPS specifications</li>
                                         <li onClick={()=>navigate('/documents/Installation Drawing/Blower details')}>Blower details</li>
                                         <li onClick={()=>navigate('/documents/Installation Drawing/Air piping details')}>Air piping details</li>
@@ -92,7 +95,7 @@ function Documents(){
                         {/* table will shown here */}
                         {sharedvalue.documentskeys
                         .filter(item=>sharedvalue.documentsdata[item].adoccate.includes(`${category}`))
-                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!=='' && sharedvalue.documentsdata[item].adocsubcate.includes(subcategory)))
+                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!==''? sharedvalue.documentsdata[item].adocsubcate.includes(subcategory):true))
                         .length>0 &&
                         
                         <div className="documents-table">
@@ -110,7 +113,7 @@ function Documents(){
                                     {
                                         sharedvalue.documentskeys
                                         .filter(item=>sharedvalue.documentsdata[item].adoccate.includes(`${category}`))
-                                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!=='' && sharedvalue.documentsdata[item].adocsubcate.includes(subcategory)))
+                                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!==''? sharedvalue.documentsdata[item].adocsubcate.includes(subcategory):true))
                                         .map((item,idx)=>(
                                             <tr key={idx}>
                                                     <td>
