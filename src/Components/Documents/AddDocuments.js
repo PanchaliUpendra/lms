@@ -56,7 +56,7 @@ function AddDocuments(){
             return new Promise((resolve,reject)=>{
                 const storageref = ref(storage,adddocdata.adocname);
                 const downloadurl = getDownloadURL(storageref);
-                console.log('downloadurl',downloadurl);
+                // console.log('downloadurl',downloadurl);
                 resolve(downloadurl);
             })
                 

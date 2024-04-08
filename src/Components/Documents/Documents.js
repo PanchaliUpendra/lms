@@ -10,8 +10,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function Documents(){
     const {category,subcategory} = useParams();
-    console.log('categ: ',category);
-    console.log('sub:',subcategory);
+    // console.log('categ: ',category);
+    // console.log('sub:',subcategory);
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
 
