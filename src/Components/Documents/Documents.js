@@ -5,10 +5,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from "../../MyContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useParams} from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function Documents(){
+    const {category,subcategory} = useParams();
+    console.log('categ: ',category);
+    console.log('sub:',subcategory);
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
 
@@ -45,19 +48,19 @@ function Documents(){
                         <div className="documentation-nav">
                             <h1>documentation</h1>
                             <div className="documentation-nav-con" onMouseLeave={()=>setactivenavnum(0)}>
-                               <div className={`documentation-nav-con-each ${activenavnum===1?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(1)} >
+                               <div className={`documentation-nav-con-each ${activenavnum===1?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(1)} onClick={()=>navigate('/documents/Training Material/subcategory')} >
                                     <p>Training Material</p>
                                     <ul onMouseEnter={()=>setactivenavnum(1)} onMouseLeave={()=>setactivenavnum(0)}>
                                         <li>pdf</li>
                                         <li>video</li>
                                     </ul>
                                 </div>
-                               <div className={`documentation-nav-con-each ${activenavnum===2?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(2)}>
+                               <div className={`documentation-nav-con-each ${activenavnum===2?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(2)} >
                                     <p>Installation Drawing</p>
                                     <ul onMouseEnter={()=>setactivenavnum(2)} onMouseLeave={()=>setactivenavnum(0)}>
-                                        <li>select grains</li>
-                                        <li>services</li>
-                                        <li>others</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/grains')}>grains</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/services')}>services</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/others')}>others</li>
                                     </ul>
                                 </div>
                                <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}>
@@ -66,11 +69,11 @@ function Documents(){
                                <div className={`documentation-nav-con-each ${activenavnum===3?'doc-nce-active':''}`}  onMouseEnter={()=>setactivenavnum(3)}>
                                     <p>Utility Details</p>
                                     <ul onMouseEnter={()=>setactivenavnum(3)} onMouseLeave={()=>setactivenavnum(0)}>
-                                        <li>compressor details</li>
-                                        <li>UPS specifications</li>
-                                        <li>Blower details</li>
-                                        <li>Air piping details</li>
-                                        <li>elevator details</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/compressor details')}>compressor details</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/UPS specifications')}>UPS specifications</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/Blower details')}>Blower details</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/Air piping details')}>Air piping details</li>
+                                        <li onClick={()=>navigate('/documents/Installation Drawing/elevator details')}>elevator details</li>
                                     </ul>
                                 </div>
                                <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}>
@@ -87,7 +90,10 @@ function Documents(){
                         </div>
 
                         {/* table will shown here */}
-                        {sharedvalue.documentskeys.length>0 &&
+                        {sharedvalue.documentskeys
+                        .filter(item=>sharedvalue.documentsdata[item].adoccate.includes(`${category}`))
+                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!=='' && sharedvalue.documentsdata[item].adocsubcate.includes(subcategory)))
+                        .length>0 &&
                         
                         <div className="documents-table">
                             <div className="view-list-table-con">
@@ -102,7 +108,10 @@ function Documents(){
                                     </thead>
                                     <tbody>
                                     {
-                                        sharedvalue.documentskeys.map((item,idx)=>(
+                                        sharedvalue.documentskeys
+                                        .filter(item=>sharedvalue.documentsdata[item].adoccate.includes(`${category}`))
+                                        .filter(item=>(sharedvalue.documentsdata[item].adocsubcate!=='' && sharedvalue.documentsdata[item].adocsubcate.includes(subcategory)))
+                                        .map((item,idx)=>(
                                             <tr key={idx}>
                                                     <td>
                                                         <p className="view-manager-list-sino">

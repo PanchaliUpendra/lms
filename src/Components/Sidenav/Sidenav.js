@@ -301,7 +301,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
 
-                    <NavLink to='/documents'>
+                    <NavLink to='/documents/Training Material/subcategory'>
                         <div className='snav-inner-each-diff'>
                             <div className='snav-mle-names'>
                                 <ArticleIcon/>

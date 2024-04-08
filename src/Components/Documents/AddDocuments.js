@@ -26,6 +26,7 @@ function AddDocuments(){
     const[showloading,setshowloading] = useState(false);
     const [adddocdata,setadddocdata] = useState({
         adoccate:'',
+        adocsubcate:'',
         adocname:'',
         adocdes:'',
         adocreports:[],
@@ -91,6 +92,7 @@ function AddDocuments(){
                     await batch.update(documentsdoc,{
                         [aduid]:{
                             adoccate:adddocdata.adoccate,
+                            adocsubcate:adddocdata.adocsubcate,
                             adocname:adddocdata.adocname,
                             adocdes:adddocdata.adocdes,
                             adocreports:[],
@@ -103,6 +105,7 @@ function AddDocuments(){
                     setadddocdata(prev=>({
                         ...prev,
                         adoccate:'',
+                        adocsubcate:'',
                         adocname:'',
                         adocdes:'',
                         adocreports:[],
@@ -159,6 +162,37 @@ function AddDocuments(){
                                     <option value='Others'>Others</option>
                                 </select>
                             </div>
+
+                            {
+                                (adddocdata.adoccate==='Utility Details'||adddocdata.adoccate==='Installation Drawing')===true &&
+                                <div>
+                                    <label>Select Sub Category<span>*</span></label>
+                                    <select value={adddocdata.adocsubcate} onChange={(e)=>setadddocdata(prev=>({
+                                        ...prev,
+                                        adocsubcate:e.target.value
+                                    }))} required>
+                                        <option value='' disabled>Select Sub Category</option>
+                                        {adddocdata.adoccate==='Utility Details' &&
+                                            <>
+                                            <option value='compressor details'>compressor details</option>
+                                            <option value='UPS specifications'>UPS specifications</option>
+                                            <option value='Blower details'>Blower details</option>
+                                            <option value='Air piping details'>Air piping details</option>
+                                            <option value='elevator details'>elevator details</option>
+                                            </>
+                                        }
+                                        {
+                                            adddocdata.adoccate==='Installation Drawing' &&
+                                            <>
+                                                <option value='grains'>grains</option>
+                                                <option value='services'>services</option>
+                                                <option value='others'>others</option>
+                                            </>
+                                        }
+                                    </select>
+                                </div>
+                            }
+
                             <div>
                                 <label>Document Name<span>*</span></label>
                                 <input type='text' value={adddocdata.adocname} onChange={(e)=>setadddocdata(prev=>({

@@ -89,7 +89,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}
         {/* profile nav link */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents' element={<Documents/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents/:category/:subcategory' element={<Documents/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/adddocuments' element={<AddDocuments/>}/>}
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
