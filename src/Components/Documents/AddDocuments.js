@@ -27,7 +27,10 @@ function AddDocuments(){
     const [adddocdata,setadddocdata] = useState({
         adoccate:'',
         adocsubcate:'',
+        adocsubgrains:'',
+        adocsoftver:'',
         adocname:'',
+        adocmachinetype:'',
         adocdes:'',
         adocreports:[],
         adocfileurl:''
@@ -93,8 +96,11 @@ function AddDocuments(){
                         [aduid]:{
                             adoccate:adddocdata.adoccate,
                             adocsubcate:adddocdata.adocsubcate,
+                            adocsubgrains:adddocdata.adocsubgrains,
+                            adocsoftver:adddocdata.adocsoftver,
                             adocname:adddocdata.adocname,
                             adocdes:adddocdata.adocdes,
+                            adocmachinetype:adddocdata.adocmachinetype,
                             adocreports:[],
                             adocfileurl:fileurl
                         }
@@ -106,6 +112,9 @@ function AddDocuments(){
                         ...prev,
                         adoccate:'',
                         adocsubcate:'',
+                        adocsubgrains:'',
+                        adocsoftver:'',
+                        adocmachinetype:'',
                         adocname:'',
                         adocdes:'',
                         adocreports:[],
@@ -191,6 +200,60 @@ function AddDocuments(){
                                                 <option value='others'>others</option>
                                             </>
                                         }
+                                    </select>
+                                </div>
+                            }
+
+                            {
+                                adddocdata.adoccate==='Model Data' && adddocdata.adocsubcate==='grains' &&
+                                <div>
+                                    <label>Choose Dal Type</label>
+                                    <select value={adddocdata.adocsubgrains} onChange={(e)=>setadddocdata(prev=>({
+                                        ...prev,
+                                        adocsubgrains:e.target.value
+                                    }))}>
+                                        <option value=''>--SELECT--DAL--</option>
+                                        <option value='urad dal'>urad dal</option>
+                                        <option value='channa dal'>channa dal</option>
+                                        <option value='toor dal'>toor dal</option>
+                                        <option value='moong dal'>moong dal</option>
+                                        <option value='other'>other</option>
+                                    </select>
+                                </div>
+                            }
+
+                            {
+                                adddocdata.adoccate==='Model Data' && adddocdata.adocsubcate==='software version' &&
+                                <div>
+                                    <label>Select Software Versdion</label>
+                                    <select value={adddocdata.adocsoftver} onChange={(e)=>setadddocdata(prev=>({
+                                        ...prev,
+                                        adocsoftver:e.target.value
+                                    }))}>
+                                        <option value=''>--SELECT--SOFTWARE-VERSION-</option>
+                                        <option value='370'>370</option>
+                                        <option value='380'>380</option>
+                                        <option value='396'>396</option>
+                                        <option value='400'>400</option>
+                                        <option value='NYT'>NYT</option>
+                                        <option value='other'>other</option>
+                                    </select>
+                                </div>
+                            }
+
+                            {
+                                adddocdata.adoccate==='Model Data' && adddocdata.adocsubcate==='machine model' &&
+                                <div>
+                                    <label>Select Machine Model</label>
+                                    <select value={adddocdata.adocmachinetype} onChange={(e)=>setadddocdata(prev=>({
+                                        ...prev,
+                                        adocmachinetype:e.target.value
+                                    }))}>
+                                        <option value=''>-SELECT--MACHINE-MODEL-</option>
+                                        <option value='ULTIMA'>ULTIMA</option>
+                                        <option value='ULTRA-S'>ULTRA-S</option>
+                                        <option value='RGB'>RGB</option>
+                                        <option value='FALCON'>FALCON</option>
                                     </select>
                                 </div>
                             }
