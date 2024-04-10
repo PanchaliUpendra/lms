@@ -114,9 +114,9 @@ function Documents(){
                                     </ul>
                                 </div>
                                <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}>
-                                    <p>Software</p>
+                                    <p onClick={()=>navigate('/documents/Software/subcategory')}>Software</p>
                                 </div>
-                               <div className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}><p>Others</p></div>
+                               <div onClick={()=>navigate('/documents/Others/subcategory')} className="documentation-nav-con-each" onMouseEnter={()=>setactivenavnum(0)}><p>Others</p></div>
                             </div>
                         </div>
 
