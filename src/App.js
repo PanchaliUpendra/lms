@@ -49,16 +49,34 @@ function App() {
       <Routes>
         <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed)?<Dashboard/>:<Login/>}/>
         {/* manage lead nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+        || sharedvalue.role==='customer') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+        || sharedvalue.role==='customer') && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+        || sharedvalue.role==='customer') && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+        || sharedvalue.role==='customer') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+        || sharedvalue.role==='customer') && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
         {/* manage ticket navlinks */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
+         || sharedvalue.role==='customer') && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
+         || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
+         || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
+         || sharedvalue.role==='customer') && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
         {/* manager nav links */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}

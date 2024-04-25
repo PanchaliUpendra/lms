@@ -520,6 +520,8 @@ function Updatelead(){
                                         }))}>
                                         <option value='Just Dial'>Just Dial</option>
                                         <option value='Exhibition'>Exhibition</option>
+                                        <option value='IndiaMart'>IndiaMart</option>
+                                        <option value='TradeIndia'>TradeIndia</option>
                                         <option value='Direct'>Direct</option>
                                         <option value='Referal'>Referal</option>
                                     </select>
@@ -921,6 +923,8 @@ function Updatelead(){
                                         <option value='NDPL'>NDPL</option>
                                     </select>
                                 </div>
+                                {leadrequirements.machinereq==='Sorter' && 
+                                <>
                                 <div>
                                     <select value={leadrequirements.machinetype} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
@@ -968,6 +972,8 @@ function Updatelead(){
                                         <option value='7'>7</option>
                                     </select>
                                 </div>
+                                </>
+                                }
                                 <div>
                                     <textarea value={leadrequirements.reqdes} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,

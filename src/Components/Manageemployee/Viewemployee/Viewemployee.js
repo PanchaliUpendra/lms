@@ -60,8 +60,27 @@ function Viewemployee(){
             });
             await batch.commit();
             loginsuccess();
-        }catch(e){
-            console.log('you got error while changing the manager ',e);
+        }catch(err){
+            console.log('you got error while changing the manager ',err);
+            loginerror();
+        }
+        setshowprogress(false);
+    }
+
+    //lets change the employee type
+    async function handlechangeemployeetype(e,empid){
+        setshowprogress(true);
+        try{
+            batch.update(createworkers,{
+                [empid]:{
+                    ...sharedvalue.workersdata[empid],
+                    "ecat":e.target.value
+                }
+            });
+            await batch.commit();
+            loginsuccess();
+        }catch(error){
+            console.log('you got error while changing the employee type ',error);
             loginerror();
         }
         setshowprogress(false);
@@ -108,6 +127,9 @@ function Viewemployee(){
                                             <th>email</th>
                                             <th>status</th>
                                             {sharedvalue.role==='admin'?<th>Assign Manager</th>:<th>manager</th>}
+                                            {
+                                                (sharedvalue.role==='admin'||sharedvalue.role==='manager')===true && <th>Employee Type</th>
+                                            }
                                             {sharedvalue.role==='admin' && <th>action</th>}
                                         </tr>
                                     </thead>
@@ -146,6 +168,20 @@ function Viewemployee(){
                                                     <td>
                                                         <p className="view-manager-list-name">{sharedvalue.workersdata[sharedvalue.uid].name}</p>
                                                     </td>
+                                                    }
+                                                    {
+                                                        (sharedvalue.role==='admin'||sharedvalue.role==='manager')===true &&
+                                                        <td className="view-select-field-in-viewemployee">
+                                                            <select
+                                                             value={Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[worker], "ecat")?sharedvalue.workersdata[worker].ecat:''}
+                                                             onChange={(e)=>handlechangeemployeetype(e,worker)}
+                                                             >
+                                                                <option value=''>Choose Type</option>
+                                                                <option value='sales'>Sales</option>
+                                                                <option value='service'>Service</option>
+                                                                <option value='both'>Both</option>
+                                                            </select>
+                                                        </td>
                                                     }
                                                     {sharedvalue.role==='admin' && 
                                                     <td >

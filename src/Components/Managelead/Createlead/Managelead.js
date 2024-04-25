@@ -433,6 +433,8 @@ function Managelead(){
                                         }))}>
                                         <option value='Just Dial' >Just Dial</option>
                                         <option value='Exhibition'>Exhibition</option>
+                                        <option value='IndiaMart'>IndiaMart</option>
+                                        <option value='TradeIndia'>TradeIndia</option>
                                         <option value='Direct' selected>Direct</option>
                                         <option value='Referal'>Referal</option>
                                     </select>
@@ -835,6 +837,10 @@ function Managelead(){
                                         <option value='NDPL'>NDPL</option>
                                     </select>
                                 </div>
+                                {leadrequirements.machinereq==='Sorter' && 
+                                <>
+
+                                
                                 <div>
                                     <select value={leadrequirements.machinetype} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
@@ -847,6 +853,7 @@ function Managelead(){
                                         <option value='FALCON'>FALCON</option>
                                     </select>
                                 </div>
+                                
                                 <div>
                                     <select value={leadrequirements.std} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
@@ -895,6 +902,8 @@ function Managelead(){
                                         }
                                     </select>
                                 </div>
+                                </>
+                                }
                                 <div>
                                     <textarea value={leadrequirements.reqdes} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,

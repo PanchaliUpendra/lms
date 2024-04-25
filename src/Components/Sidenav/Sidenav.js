@@ -78,7 +78,9 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </NavLink>
 
                     {/* snav each div --> MANAGE LEAD */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+                    (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
+                    || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>
                         <div
                         className={`snav-mle-inner-div ${location.pathname==='/managelead/leadcreate'||location.pathname==='/managelead/viewlead'?'snav-mle-inner-div-active':''}`}
@@ -137,7 +139,9 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' || sharedvalue.role==='customer') && 
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+                    (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) ) 
+                    || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>
                         <div 
                         className={`snav-mle-inner-div ${location.pathname==='/manageticket/createticket'||location.pathname==='/manageticket/viewticket'?'snav-mle-inner-div-active':''}`}
