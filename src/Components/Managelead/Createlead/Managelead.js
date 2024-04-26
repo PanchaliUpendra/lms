@@ -138,7 +138,7 @@ function Managelead(){
                 leadofficedtls.ofdcountry!=='' &&
                 leadofficedtls.ofdst!=='' &&
                 leadrequirements.machinereq!=='' &&
-                leadrequirements.chutes!=='' &&
+                (leadrequirements.machinereq==='Sorter'?leadrequirements.chutes!=='':true) &&
                 custinquiry.custnextdate!==''
             ){
              //fetching uuid  
