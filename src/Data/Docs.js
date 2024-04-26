@@ -14,4 +14,4 @@ export const leadsgraphdoc = doc(db,"leadsgraph","1HXMGFXVYcIjbuMzMZo4");
 export const ticketsgraphdoc = doc(db,"ticketsgraph","Wrbujr45rUXPWaurALzs");
 export const documentsdoc = doc(db,"Documents","wacaEmr1ZlRV7GTfVHfc");
 
-export const API_ONE_TO_ONE = 'https://13.127.100.208:8000';
+export const API_ONE_TO_ONE = 'https://www.message.ultrasorters.com:8000';
