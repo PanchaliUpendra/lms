@@ -200,7 +200,10 @@ function Dashboard(){
                             </div>
                             <div className="dashboard-each-profile-content-div">
                                 <p>total leads</p>
-                                <p>{sharedvalue.leadskeys.length}</p>
+                                <p>{sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 &&
+                                    sharedvalue.leadskeys
+                                    .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
+                                    .length}</p>
                             </div>
                         </div>
                         {/* div five */}
@@ -210,7 +213,12 @@ function Dashboard(){
                             </div>
                             <div className="dashboard-each-profile-content-div">
                                 <p>total tickets</p>
-                                <p>{sharedvalue.ticketskeys.length}</p>
+                                <p>{sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
+                                    sharedvalue.ticketskeys
+                                    .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
+                                    (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
+                                    (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+                                    .length}</p>
                             </div>
                         </div>
                     </div>

@@ -46,7 +46,9 @@ function Viewemployee(){
 
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully changed the manager');
+    const employeesuccess = () =>toast.success('Successfully changed the employee category');
     const loginerror = () =>toast.error('you got an error while changing the manager');
+    const employeeerror= () =>toast.error('you got an error while changing the employee category');
 
     //lets change the manager 
     async function handlechangemanager(e,workerid){
@@ -78,10 +80,10 @@ function Viewemployee(){
                 }
             });
             await batch.commit();
-            loginsuccess();
+            employeesuccess();
         }catch(error){
             console.log('you got error while changing the employee type ',error);
-            loginerror();
+            employeeerror();
         }
         setshowprogress(false);
     }

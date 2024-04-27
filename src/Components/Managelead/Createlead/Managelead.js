@@ -28,7 +28,7 @@ function Managelead(){
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Added The LEAD');
     const loginerror = () =>toast.error('Getting error while Adding the LEAD data');
-    const loginformerror = () => toast.info('please fill the form correctly');
+    const loginformerror = () => toast.info('please fill the required fields');
     const invalidmail = () => toast.warn('unique id was not generating!!!');
 
 
