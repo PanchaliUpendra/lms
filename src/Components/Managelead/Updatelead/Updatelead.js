@@ -138,7 +138,7 @@ function Updatelead(){
                 leadofficedtls.ofdcountry!=='' &&
                 leadofficedtls.ofdst!=='' &&
                 leadrequirements.machinereq!=='' &&
-                leadrequirements.chutes!=='' &&
+                (leadrequirements.machinereq==='Sorter'?leadrequirements.chutes!=='':true) &&
                 custinquiry.custnextdate!==''
             ){
              
@@ -258,6 +258,12 @@ function Updatelead(){
             }
         }
         else{//if given credentials are not given
+            console.log('all required fields data',contpersondtl.contperson," ",
+            leadofficedtls.ofdcountrycontperson," ",
+            leadofficedtls.ofdstcontperson," ",
+            leadrequirements.machinereqcontperson," ",
+            leadrequirements.chutescontperson," ",
+            custinquiry.custnextdate," ");
             loginformerror();
         }
         
