@@ -14,6 +14,7 @@ function MyProvider({children}){
         userdtl:'',
         role:''
     })
+    const [sideNavOnOff,setSideNavOnOff] = useState(false);
     const [workersdata,setworkersdata]=useState({});//workerdsata storage
     const [workerskeys,setworkerskeys]=useState([]);//workers keys storage
     const [leadsdata,setleadsdata]=useState({});//leads data storage
@@ -33,6 +34,10 @@ function MyProvider({children}){
     const [documentsdata,setdocumentsdata] = useState({});//ADD DOCUMENTS DATA
     const [documentskeys,setdocumentskeys] = useState([]);// document keys
    
+
+    const updateSideNav = ()=>{
+      setSideNavOnOff(prev=>!prev);
+    }
     
     const sharedvalue ={
         isAuthed:user.isAuthed,
@@ -56,7 +61,9 @@ function MyProvider({children}){
         ticketsgraphlasttwelve:ticketsgraphlasttwelve,
         documentsdata:documentsdata,
         documentskeys:documentskeys,
-        role:user.role
+        role:user.role,
+        sideNavOnOff:sideNavOnOff,
+        updateSideNav
     }
 
     useEffect(()=>{

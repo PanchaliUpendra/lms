@@ -19,6 +19,8 @@ import { auth } from '../../Firebase';
 import MyContext from '../../MyContext';
 import ArticleIcon from '@mui/icons-material/Article';
 
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+
 //importing the gif
 import comaasicon from '../../Assets/comaas.gif'
 
@@ -35,6 +37,10 @@ function Sidenav({menutoggle,handlemenutoggle}){
         [divId]: !prevStates[divId],
         }));
     };
+
+    const handlesidenavdisplay = () =>{
+        sharedvalue.updateSideNav();
+    }
 
     //function for signout
     async function handlesignout(){
@@ -54,10 +60,13 @@ function Sidenav({menutoggle,handlemenutoggle}){
 
     return(
         <>
-            <div className={`sidenav-con ${menutoggle===true?'tactive':''}`}>
+            <div className={`sidenav-con ${menutoggle===true?'tactive':''} ${sharedvalue.sideNavOnOff===true?'sidenavscrollleft':''}`}>
                 <div className='snav-inner'>
+                    <div className='snav-close-left-arrow' onClick={()=>handlesidenavdisplay()}>
+                        <KeyboardArrowLeftIcon className={`sidenavonofficon ${sharedvalue.sideNavOnOff?'sidenavonoffrotate':''}`} sx={{color:"white"}}/>
+                    </div>
                     <div className='snav-cross-syb'>
-                        <CloseIcon onClick={()=>handlemenutoggle()}/>
+                        <CloseIcon  onClick={()=>handlemenutoggle()}/>
                     </div>
                     <div className='snav-inner-head'>
                         {/* <h1>COMAAS Dashboard</h1> */}
@@ -78,7 +87,8 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </NavLink>
 
                     {/* snav each div --> MANAGE LEAD */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+                    {(sharedvalue.role==='admin' || 
+                    (sharedvalue.role==='manager' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid],"mcat")?(sharedvalue.workersdata[sharedvalue.uid].mcat==="both"||sharedvalue.workersdata[sharedvalue.uid].mcat==="sales"):true) )||
                     (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
                     || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>
@@ -139,7 +149,8 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     </div>
                     }
                     {/* snav each div  */}
-                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+                    {(sharedvalue.role==='admin' ||
+                    (sharedvalue.role==='manager' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid],"mcat")?(sharedvalue.workersdata[sharedvalue.uid].mcat==="both"||sharedvalue.workersdata[sharedvalue.uid].mcat==="service"):true) ) ||
                     (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) ) 
                     || sharedvalue.role==='customer') && 
                     <div className='snav-inner-each'>

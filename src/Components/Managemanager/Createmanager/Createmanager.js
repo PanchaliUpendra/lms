@@ -29,6 +29,7 @@ function Createmanager(){
         name:'',
         email:'',
         phnnumber:'',
+        mcat:'both',
         password:'',
         cnfpassword:'',
         role:'manager'
@@ -66,6 +67,7 @@ function Createmanager(){
                         "uid":user.uid,
                         "name":formdetails.name,
                         "email":formdetails.email,
+                        "mcat":formdetails.mcat,
                         "phnnumber":formdetails.phnnumber,
                         "role":formdetails.role,
                         "password":formdetails.password,
@@ -79,6 +81,7 @@ function Createmanager(){
                 setformdetails({
                     name:'',
                     email:'',
+                    mcat:'both',
                     phnnumber:'',
                     password:'',
                     cnfpassword:'',
@@ -153,6 +156,17 @@ function Createmanager(){
                                     ...prev,
                                     phnnumber:e.target.value
                                 }))}/>
+                            </div>
+                            <div>
+                                <label>Manager Category<span>*</span></label>
+                                <select value={formdetails.mcat} onChange={(e)=>setformdetails(prev=>({
+                                    ...prev,
+                                    mcat:e.target.value
+                                }))}>
+                                    <option value='sales'>Sales</option>
+                                    <option value='service'>Service</option>
+                                    <option value='both'>Both</option>
+                                </select>
                             </div>
                             <div>
                                 <label>password<span>*</span></label>

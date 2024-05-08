@@ -5,14 +5,25 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
+import { db } from "../../../Firebase";
+import { writeBatch } from "firebase/firestore";
+import { createworkers } from "../../../Data/Docs";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { useNavigate } from "react-router-dom";
+//show processing
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+//toastify importing
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 function Viewmanager(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const batch = writeBatch(db);//get a new write batch
+    const [showprogress,setshowprogress]=useState(false);
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //deleting user input
@@ -20,6 +31,11 @@ function Viewmanager(){
         active:false,
         uid:''
     });
+    // adding notifications 
+    // const loginsuccess = () =>toast.success('Successfully changed the manager');
+    const employeesuccess = () =>toast.success('Successfully changed the Manager category');
+    // const loginerror = () =>toast.error('you got an error while changing the manager');
+    const employeeerror= () =>toast.error('you got an error while changing the Manager category');
     const deleteUserByUID = async () => {
         
         setworkerdelete({
@@ -33,6 +49,25 @@ function Viewmanager(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+    //lets change the manage type
+    async function handlechangemanagertype(e,empid){
+        setshowprogress(true);
+        try{
+            batch.update(createworkers,{
+                [empid]:{
+                    ...sharedvalue.workersdata[empid],
+                    "mcat":e.target.value
+                }
+            });
+            await batch.commit();
+            employeesuccess();
+        }catch(error){
+            console.log('you got error while changing the employee type ',error);
+            employeeerror();
+        }
+        setshowprogress(false);
+    }
     return(
         <>
             <div className={`manlead-con ${workerdelete.active===true?'manlead-con-inactive':''}`}>
@@ -74,6 +109,9 @@ function Viewmanager(){
                                             <th>name</th>
                                             <th>email</th>
                                             <th>status</th>
+                                            {
+                                                sharedvalue.role==='admin' && <th>Employee Type</th>
+                                            }
                                             <th>action</th>
                                         </tr>
                                     </thead>
@@ -100,6 +138,20 @@ function Viewmanager(){
                                                             {sharedvalue.workersdata[worker].role}
                                                         </p>
                                                     </td>
+                                                    {
+                                                        sharedvalue.role==='admin' &&
+                                                        <td className="view-select-field-in-viewemployee">
+                                                            <select
+                                                             value={Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[worker], "mcat")?sharedvalue.workersdata[worker].mcat:''}
+                                                             onChange={(e)=>handlechangemanagertype(e,worker)}
+                                                             >
+                                                                <option value=''>Choose Type</option>
+                                                                <option value='sales'>Sales</option>
+                                                                <option value='service'>Service</option>
+                                                                <option value='both'>Both</option>
+                                                            </select>
+                                                        </td>
+                                                    }
                                                     <td >
                                                         <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}}
                                                          onClick={()=>setworkerdelete(prev=>({
@@ -134,6 +186,27 @@ function Viewmanager(){
                     }))}>No</button>
                 </div>
             </div>
+            {/* bacdrop */}
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showprogress}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {/* adding the notifications */}
+            <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    limit={1}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover
+                    theme="light"
+                    />
         </>
     );
 }
