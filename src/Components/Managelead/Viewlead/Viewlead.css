@@ -1,0 +1,102 @@
+.viewlead-filter-menubar{
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: white;
+    overflow-y: scroll;
+    box-shadow: -8px 2px 19px -12px rgba(97,97,97,1);
+    transition: all 0.4s ease;
+}
+.viewlead-filter-menubar-inactive{
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: -600px;
+    background-color: white;
+    overflow-y: scroll;
+    box-shadow: -8px 2px 19px -12px rgba(97,97,97,1);
+    transition: all 0.4s ease;
+}
+.viewlead-filter-manubar-cross-btn{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.viewlead-display-search-filter{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 20px;
+}
+.viewlead-display-search-filter>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+.viewlead-display-search-filter>div label{
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7b809a;
+    text-transform: capitalize;
+}
+.viewlead-display-search-filter>div input{
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d2d6da;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 5px;
+    min-width: 210px;
+    font-size: 0.9rem;
+}
+.viewlead-display-search-filter>div input::placeholder{
+    color: rgb(150, 150, 150);
+    font-weight: 500;
+}
+
+/* viewlead-filter-menu-nav */
+.viewlead-filter-menu-nav{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.viewlead-filter-header{
+    padding-top: 10px;
+}
+.viewlead-filter-header>h1{
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.viewlead-filter-status-box{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    margin-top: 15px;
+}
+.viewlead-filter-status-box>h2{
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgb(141, 141, 141);
+}
+.viewlead-filter-status-box>select{
+    height: 35px;
+    border: 1px solid rgb(173, 173, 173);
+    outline: none;
+    border-radius: 3px;
+    padding-left: 5px;
+}
+
+@media all and (max-width:599px){
+    .viewlead-display-search-filter{
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    .viewlead-display-search-filter>div input{
+        min-width: 0px;
+        width: 100%;
+    }
+}

@@ -10,6 +10,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 
+import CancelIcon from '@mui/icons-material/Cancel';
+import FilterListIcon from '@mui/icons-material/FilterList';
+
 function Viewlead(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -18,6 +21,7 @@ function Viewlead(){
      
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
+    const [crossbtn,setcrossbtn] = useState(false);
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
@@ -50,7 +54,11 @@ function Viewlead(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search">
+                            <div className="viewlead-display-search-filter">
+                                <div onClick={()=>setcrossbtn(true)}>
+                                    <FilterListIcon sx={{fontWeight:"500",cursor:'pointer'}}/>
+                                    <label style={{fontWeight:"500",cursor:'pointer',color:'black'}}>Filter</label>
+                                </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Name/RegID" onChange={(e)=>setsearchworker(e.target.value)}/>
@@ -233,6 +241,41 @@ function Viewlead(){
                         </div>
                     </div>
                     {/* your view lead ends here */}
+                </div>
+            </div>
+            <div className={crossbtn?"viewlead-filter-menubar":"viewlead-filter-menubar-inactive"}>
+                <div className="viewlead-filter-manubar-cross-btn">
+                    <CancelIcon sx={{cursor:'pointer'}} onClick={()=>setcrossbtn(false)}/>
+                </div>
+                <div className="viewlead-filter-menu-nav">
+                    <div className="viewlead-filter-header">
+                        <h1>Filter By</h1>
+                    </div>
+                    {/* status */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>Status</h2>
+                        <select>
+                            <option value='Active'>Active</option>
+                            <option value='Closed'>Closed</option>
+                            <option value='Lost'>Lost</option>
+                            <option value='Cold'>Cold</option>
+                            <option value=''>All</option>
+                        </select>
+                    </div>
+                    {/* manager */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>Manager</h2>
+                        <select>
+                            <option value=''>All</option>
+                        </select>
+                    </div>
+                    {/* employee */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>Employee</h2>
+                        <select>
+                            <option value=''>All</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             
