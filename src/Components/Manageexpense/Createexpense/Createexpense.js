@@ -21,10 +21,11 @@ function Createexpense(){
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
+    const[errors,setErrors]=useState({});
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the expense');
     const loginerror = () =>toast.error('Getting Error while Creating expense');
-    const loginformerror = () => toast.info('please fill the form correctly');
+    const loginformerror = () => toast.info('please fill the required fields');
     const invalidmail = () => toast.warn('unique id was not generating!!!');
     //expense details
     const[expenseinfo,setexpenseinfo] = useState({
@@ -176,8 +177,23 @@ function Createexpense(){
                             expcustomername:'',
                             explatestcomment:''
                         }));
+                    setErrors({});
                 }
             }else{
+                const newErrors={};
+                if(expenseinfo.fromdate==='') newErrors.fromdate='From Date Field Is Required';
+                if(expenseinfo.fromtime==='') newErrors.fromtime='From Time Field Is Required';
+                if(expenseinfo.fromplace==='') newErrors.fromplace='From Place Field Is Required';
+                if(expenseinfo.todate==='') newErrors.todate='To Date Field Is Required';
+                if(expenseinfo.totime==='') newErrors.totime='To Time Field Is Required';
+                if(expenseinfo.toplace==='') newErrors.toplace='To Place Field Is Required';
+                if(expenseinfo.expamountpaid===''||expenseinfo.expamountpaid===0) newErrors.expamountpaid='Amount Paid Field Is Required';
+                if(expenseinfo.expcustomername==='') newErrors.expcustomername='Customer Name  Is Required';
+                if(expenseinfo.expfoodcost===''||expenseinfo.expfoodcost===0) newErrors.expfoodcost='Food Cost Field Is Required';
+                if(expenseinfo.expmode==='') newErrors.expmode='This Field Is Required';
+                if(expenseinfo.exppurpose==='') newErrors.exppurpose='Purpose Field Is Required';
+                if(expenseinfo.exptransportcost===''||expenseinfo.exptransportcost===0) newErrors.exptransportcost='Transport Cost Field Is Required';
+                setErrors(newErrors);
                 loginformerror();
             }
         }catch(e){
@@ -234,6 +250,7 @@ function Createexpense(){
                                             ...prev,
                                             fromdate:e.target.value
                                         }))} required/>
+                                        {errors.fromdate && <small style={{color:'red'}}>{errors.fromdate}</small>}
                                     </div>
                                     <div>
                                         <label>Time<span style={{color:'red'}}>*</span></label>
@@ -241,6 +258,7 @@ function Createexpense(){
                                             ...prev,
                                             fromtime:e.target.value
                                         }))} required/>
+                                        {errors.fromtime && <small style={{color:'red'}}>{errors.fromtime}</small>}
                                     </div>
                                     <div>
                                         <label>Place<span style={{color:'red'}}>*</span></label>
@@ -248,6 +266,7 @@ function Createexpense(){
                                             ...prev,
                                             fromplace:e.target.value
                                         }))} required/>
+                                        {errors.fromplace && <small style={{color:'red'}}>{errors.fromplace}</small>}
                                     </div>
                             </div>
                             
@@ -268,6 +287,7 @@ function Createexpense(){
                                             ...prev,
                                             todate:e.target.value
                                         }))} required />
+                                        {errors.todate && <small style={{color:'red'}}>{errors.todate}</small>}
                                     </div>
                                     <div>
                                         <label>Time<span style={{color:'red'}}>*</span></label>
@@ -275,6 +295,7 @@ function Createexpense(){
                                             ...prev,
                                             totime:e.target.value
                                         }))} required/>
+                                        {errors.totime && <small style={{color:'red'}}>{errors.totime}</small>}
                                     </div>
                                     <div>
                                         <label>Place<span style={{color:'red'}}>*</span></label>
@@ -282,6 +303,7 @@ function Createexpense(){
                                             ...prev,
                                             toplace:e.target.value
                                         }))} required/>
+                                        {errors.toplace && <small style={{color:'red'}}>{errors.toplace}</small>}
                                     </div>
                             </div>
                         </div>
@@ -300,6 +322,7 @@ function Createexpense(){
                                             <option value='Car'>Car</option>
                                             <option value='Train'>Train</option>
                                         </select>
+                                        {errors.expmode && <small style={{color:'red'}}>{errors.expmode}</small>}
                                     </div>
                                     <div>
                                         <label>Transport Cost<span style={{color:'red'}}>*</span></label>
@@ -307,6 +330,7 @@ function Createexpense(){
                                             ...prev,
                                             exptransportcost:e.target.value
                                         }))} required/>
+                                        {errors.exptransportcost && <small style={{color:'red'}}>{errors.exptransportcost}</small>}
                                     </div>
                                     <div>
                                         <label>Food Cost<span style={{color:'red'}}>*</span></label>
@@ -314,6 +338,7 @@ function Createexpense(){
                                             ...prev,
                                             expfoodcost:e.target.value
                                         }))} required/>
+                                        {errors.expfoodcost && <small style={{color:'red'}}>{errors.expfoodcost}</small>}
                                     </div>
                                     <div>
                                         <label>Purpose<span style={{color:'red'}}>*</span></label>
@@ -325,6 +350,7 @@ function Createexpense(){
                                             <option value='Service'>Service</option>
                                             <option value='Sale'>Sale</option>
                                         </select>
+                                        {errors.exppurpose && <small style={{color:'red'}}>{errors.exppurpose}</small>}
                                     </div>
                                     <div>
                                         <label>Amount Paid<span style={{color:'red'}}>*</span></label>
@@ -332,6 +358,7 @@ function Createexpense(){
                                             ...prev,
                                             expamountpaid:e.target.value
                                         }))} required/>
+                                        {errors.expamountpaid && <small style={{color:'red'}}>{errors.expamountpaid}</small>}
                                     </div>
                                     <div>
                                         <label>Amount Pending</label>
@@ -343,6 +370,7 @@ function Createexpense(){
                                             ...prev,
                                             expcustomername:e.target.value
                                         }))}  required/>
+                                        {errors.expcustomername && <small style={{color:'red'}}>{errors.expcustomername}</small>}
                                     </div>
                                     
                                 </div>

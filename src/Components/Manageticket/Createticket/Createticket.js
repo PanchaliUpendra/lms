@@ -28,6 +28,7 @@ function Createticket(){
     const sharedvalue = useContext(MyContext);
     // State to keep track of the checkbox value
     const [isChecked, setIsChecked] = useState(false);
+    const [errors,setErrors] = useState({});
 
     //four fields data
     const [importfourfld,setimportfourfld] = useState({
@@ -52,7 +53,7 @@ function Createticket(){
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the Ticket');
     const loginerror = () =>toast.error('Getting Error while Creating ticket');
-    const loginformerror = () => toast.info('please fill the form correctly');
+    const loginformerror = () => toast.info('please fill the Required Fields');
     const invalidmail = () => toast.warn('unique id was not generating!!!');
     const batch = writeBatch(db);//get a new write batch
     const [pleasewait,setpleasewait] = useState(false);
@@ -289,9 +290,19 @@ function Createticket(){
                         ctktservicereport:''
                     });
                     setctktfile('');
+                    setErrors({});
                 }
             }
             else{
+                const newErrors={};
+                if(ticketinfo.ctktcountry==='') newErrors.ctktcountry='Country Field Is Required';
+                if(ticketinfo.ctktstate==='') newErrors.ctktstate='State Field Is Required';
+                if(ticketinfo.ctktdist==='') newErrors.ctktdist='District Field Is Required';
+                //ticketinfo.ctktcustname==='')
+                if(sharedvalue.role==='customer'||ticketinfo.ctktcustname==='') newErrors.ctktcustname='Customer Name Is Required';
+                if(ticketinfo.ctktcalltype==='') newErrors.ctktcalltype='Call Type Field Is Required';
+                if(ticketinfo.ctktpriority==='') newErrors.ctktpriority='Ticket Priority Is Required';
+                setErrors(newErrors);
                 loginformerror();
             }
         }catch(e){
@@ -452,6 +463,7 @@ function Createticket(){
                                         ))
                                     }
                                 </select>
+                                {errors.ctktcountry && <small style={{color:'red'}}>{errors.ctktcountry}</small>}
                             </div>
                             <div>
                                 <label>state<span style={{color:'red'}}>*</span></label>
@@ -476,6 +488,7 @@ function Createticket(){
                                         ctktstate:e.target.value
                                     }))} required/>
                                 }
+                                {errors.ctktstate && <small style={{color:'red'}}>{errors.ctktstate}</small>}
                             </div>
                             <div>
 
@@ -484,6 +497,7 @@ function Createticket(){
                                 {/* if selected country is india */}
                                 {
                                     ticketinfo.ctktcountry==='India' && ticketinfo.ctktstate!=='' &&
+                                    <>
                                     <select value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
                                         ctktdist:e.target.value
@@ -493,21 +507,28 @@ function Createticket(){
                                             <option key={idx} value={prod}>{prod}</option>
                                         ))}
                                     </select>
+                                    {errors.ctktdist && <small style={{color:'red'}}>{errors.ctktdist}</small>}
+                                    </>
                                 }
                                 {/* if selected country is not india */}
                                 {
                                     ticketinfo.ctktcountry!=='India' &&
-                                    <input type='text' value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
-                                        ...prev,
-                                        ctktdist:e.target.value
-                                    }))} required/>
+                                    <>
+                                        <input type='text' value={ticketinfo.ctktdist} onChange={(e)=>setticketinfo(prev=>({
+                                            ...prev,
+                                            ctktdist:e.target.value
+                                        }))} required/>
+                                        {errors.ctktdist && <small style={{color:'red'}}>{errors.ctktdist}</small>}
+                                    </>
                                 }
+                                
                             </div>
                             
                             {sharedvalue.role==='customer'?
                                 <div>
                                     <label>Company Name<span style={{color:'red'}}>*</span></label>
                                     <input type='text' value={sharedvalue.workersdata[sharedvalue.uid].cname} readOnly />
+                                    {errors.ctktcustname && <small style={{color:'red'}}>{errors.ctktcustname}</small>}
                                 </div>
                                 :
                                 <div>
@@ -530,6 +551,7 @@ function Createticket(){
                                         <option value='other'>other</option>
 
                                     </select>
+                                    {errors.ctktcustname && <small style={{color:'red'}}>{errors.ctktcustname}</small>}
                                 </div>
                             }
                             {
@@ -603,6 +625,7 @@ function Createticket(){
                                     ctktothercustname:e.target.value
                                 }
                                 ))}/>
+                                {errors.ctktothercustname && <small style={{color:'red'}}>{errors.ctktothercustname}</small>}
                             </div>
                              }
                             <div>
@@ -636,6 +659,7 @@ function Createticket(){
                                     <option value='AMC'>AMC</option>
                                     {/* <option value='Free'>Free</option> */}
                                 </select>
+                                {errors.ctktcalltype && <small style={{color:'red'}}>{errors.ctktcalltype}</small>}
                             </div>
                             {/* if call type is free or charge */}
 
@@ -661,6 +685,7 @@ function Createticket(){
                                         <option value='Glass Changing'>Glass Changing</option>
                                         <option value='Other'>Other</option>
                                     </select>
+                                    {errors.ctktcate && <small style={{color:'red'}}>{errors.ctktcate}</small>}
                                 </div>
                             }
                             {/* category completed */}
@@ -808,6 +833,7 @@ function Createticket(){
                                             <option value='Medium'>Medium</option>
                                             <option value='Low'>Low</option>
                                         </select>
+                                        {errors.ctktpriority && <small style={{color:'red'}}>{errors.ctktpriority}</small>}
                                     </div>
                             {/* priority ends here */}
                                

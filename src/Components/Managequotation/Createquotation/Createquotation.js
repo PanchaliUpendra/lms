@@ -29,12 +29,13 @@ function Createquotation(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
     const navigate = useNavigate();
+    const [errors,setErrors]=useState({});
      //backdrop loading toggle
      const[showloading,setshowloading] = useState(false);
      // adding notifications 
      const loginsuccess = () =>toast.success('Successfully Created the Quotation');
      const loginerror = () =>toast.error('Getting Error while Creating Quotation');
-     const loginformerror = () => toast.info('please fill the form correctly');
+     const loginformerror = () => toast.info('please fill the all Required Fields');
      const invalidmail = () => toast.warn('unique id was not generating!!!');
     //create quotation all required fields comes here
     const [quotinfo,setquotinfo] = useState({
@@ -216,9 +217,24 @@ function Createquotation(){
                     withgstornot:''
                 }));
                 setEditorData('');
+                setErrors({});
             }
         }else{
-            loginformerror();
+                const newErrors ={};
+                if(quotinfo.quotcountry==='') newErrors.quotcountry='Country Field is Required';
+                if(quotinfo.quotstate==='') newErrors.quotstate='State Field Is Required';
+                if(quotinfo.quotcustname==='') newErrors.quotcustname='Customer Name Is Required';
+                if(quotinfo.quotlead!=='') newErrors.quotlead='Please Choose The Lead';
+                if(quotinfo.quotmachinetype==='') newErrors.quotmachinetype='Machine Type Is Required';
+                if(quotinfo.quotprodtype==='') newErrors.quotprodtype='Product Type Is Required';
+                if(quotinfo.quotcap==='') newErrors.quotcap='Chutes Field Is Required';
+                if(quotinfo.quotprice==='') newErrors.quotprice='Price Field Is Required';
+                if(quotinfo.quotpayment==='') newErrors.quotpayment='Payment Type Is Required';
+                if(quotinfo.quotwarranty==='') newErrors.quotwarranty='Warrenty field is Required';
+                if(quotinfo.quotperfomaiorquot==='') newErrors.quotperfomaiorquot='This Field is Required';
+                if(quotinfo.withgstornot==='') newErrors.withgstornot='Choose gst field is Required';
+                setErrors(newErrors);
+                loginformerror();
         }
         }catch(e){
             console.log('you got an error while adding the quotation',e);
@@ -254,7 +270,7 @@ function Createquotation(){
                             <div className='create-lead-requirements-all-fields creatquotation-forms'>
                                 {/* quotation type */}
                                 <div>
-                                    <label>Quotation type<span style={{color:'red'}}>*</span></label>
+                                    <label>Performa Invoice or Quotation<span style={{color:'red'}}>*</span></label>
                                     <select value={quotinfo.quotperfomaiorquot} onChange={(e)=>setquotinfo(prev=>({
                                         ...prev,
                                         withgstornot:e.target.value==='Performa Invoice'?'GST':e.target.value==='Quotation'?'Without GST':'',
@@ -264,6 +280,7 @@ function Createquotation(){
                                         <option value='Performa Invoice'>Performa Invoice</option>
                                         <option value='Quotation'>Quotation</option>
                                     </select>
+                                    {errors.quotperfomaiorquot && <small style={{color:'red'}}>{errors.quotperfomaiorquot}</small>}
                                 </div>
                                 {/* With Gst Or Without GST */}
                                 <div>
@@ -280,6 +297,7 @@ function Createquotation(){
                                     :
                                     <input type='text' value={quotinfo.withgstornot} readOnly/>
                                     }
+                                    {errors.withgstorno && <small style={{color:'red'}}>{errors.withgstorno}</small>}
                                 </div>
                                 
                                 {/* country */}
@@ -292,6 +310,7 @@ function Createquotation(){
                                             item.name==='Pakistan' || item.name==='Nepal' || item.name==='Ghana') &&<option key={idx} value={item.name}>{item.name}</option>)
                                         ))}
                                     </select>
+                                    {errors.quotcountry && <small style={{color:'red'}}>{errors.quotcountry}</small>}
                                 </div>
                                 {/* state */}
                                 {quotinfo.quotcountry!=='' && 
@@ -306,6 +325,7 @@ function Createquotation(){
                                             <option key={idx} value={item}>{item}</option>
                                         ))}
                                     </select>
+                                    {errors.quotstate && <small style={{color:'red'}}>{errors.quotstate}</small>}
                                 </div>
                                 }
                                 
@@ -322,6 +342,7 @@ function Createquotation(){
                                             <option key={idx} value={sharedvalue.leadsdata[lead].custcompanyname}>{sharedvalue.leadsdata[lead].custcompanyname}</option>
                                         ))}
                                     </select>
+                                    {errors.quotcustname && <small style={{color:'red'}}>{errors.quotcustname}</small>}
                                 </div>
                                 }
                                 {/* lead id */}
@@ -337,6 +358,7 @@ function Createquotation(){
                                                 <option key={idx} value={lead}>{lead}</option>
                                             ))}
                                         </select>
+                                        {errors.quotlead && <small style={{color:'red'}}>{errors.quotlead}</small>}
                                     </div>
                                 }
                                 {/* quotation type */}
@@ -381,6 +403,7 @@ function Createquotation(){
                                         <option value='RGB'>RGB</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
+                                    {errors.quotmachinetype && <small style={{color:'red'}}>{errors.quotmachinetype}</small>}
                                 </div>
                                 {/* product type */}
                                 <div>
@@ -393,6 +416,7 @@ function Createquotation(){
                                         <option value='STD'>STD</option>
                                         <option value='EXP'>EXP</option>
                                     </select>
+                                    {errors.quotprodtype && <small style={{color:'red'}}>{errors.quotprodtype}</small>}
                                 </div>
                                 {/* capacity here it is also known as chutes*/}
                                 <div>
@@ -417,6 +441,7 @@ function Createquotation(){
                                         {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='13'>13</option>}
                                         {(quotinfo.quotmachinetype==='ULTRA-S'||quotinfo.quotmachinetype==='FALCON') && <option value='14'>14</option>}
                                     </select>
+                                    {errors.quotcap && <small style={{color:'red'}}>{errors.quotcap}</small>}
                                 </div>
                                 {/* price */}
                                 <div>
@@ -425,6 +450,7 @@ function Createquotation(){
                                         ...prev,
                                         quotprice:e.target.value
                                     }))} required/>
+                                    {errors.quotprice && <small style={{color:'red'}}>{errors.quotprice}</small>}
                                 </div>
                                 {/* dimension */}
                                 {quotinfo.quottype==='USD' && 
@@ -468,6 +494,7 @@ function Createquotation(){
                                         <option value='TT'>TT</option>
                                         <option value='EMI'>EMI</option>
                                     </select>
+                                    {errors.quotpayment && <small style={{color:'red'}}>{errors.quotpayment}</small>}
                                 </div>
                                 {/* clearing expenses at port and transportation */}
                                 {(quotinfo.quottype==='HSS'  || quotinfo.quottype==='GST') && 
@@ -524,6 +551,7 @@ function Createquotation(){
                                         <option value='4'>4 YEARS</option>
                                         <option value='5'>5 YEARS</option>
                                     </select>
+                                    {errors.quotwarranty && <small style={{color:'red'}}>{errors.quotwarranty}</small>}
                                 </div>
                                 
                                 {/* additional info */}

@@ -23,6 +23,7 @@ function Managelead(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [errors,setErrors] = useState({});
     const batch = writeBatch(db);// Get a new write batch
 
     // adding notifications 
@@ -307,12 +308,22 @@ function Managelead(){
                     chutes:'',
                     reqdes:''
                 }));
+
+                setErrors({});
                 window.scrollTo({top:0,behavior:'smooth'})
             }else{
                 invalidmail()
             }
         }
         else{//if given credentials are not given
+            const newErrors={};
+            if(contpersondtl.contperson==='') newErrors.contperson='Contact Person Is Required';
+            if(leadofficedtls.ofdcountry==='') newErrors.ofdcountry='Country field is Required';
+            if(leadofficedtls.ofdst==='') newErrors.ofdst='State field is Required';
+            if(leadrequirements.machinereq==='') newErrors.machinereq='Please Fill the Machine Required Field';
+            if(leadrequirements.machinereq==='Sorter'?leadrequirements.chutes==='':false) newErrors.chutes='Chutes Field is Required';
+            if(custinquiry.custnextdate==='') newErrors.custnextdate='Next Date field is Required';
+            setErrors(newErrors);
             loginformerror();
         }
         
@@ -323,6 +334,13 @@ function Managelead(){
         setOpen(false);
     }
     
+    // const [contperson, setContperson] = useState('');
+    // const [submitted, setSubmitted] = useState(false);
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setSubmitted(true);
+    // }
     useEffect(()=>{
         const currentDate = new Date();
         // Calculate the future date by adding 75 years
@@ -422,6 +440,7 @@ function Managelead(){
                                             ...prev,
                                             custnextdate:e.target.value
                                         }))} required/>
+                                        {errors.custnextdate && <small style={{color:'red'}}>{errors.custnextdate}</small>}
                                     </div>
                                 </div>
                                 {/* third row */}
@@ -460,11 +479,18 @@ function Managelead(){
                             {/* personal row 1 */}
                             <div className='con-contact-designation-person'>
                                 <div className='con-contact-person'>
-                                    <label>contact person<span style={{color:'red'}}>*</span></label>
+                                    <label>contact person<span style={{color:'red'}}>*</span>
+                                    {/* {submitted && contperson === '' && (
+                                        <small style={{ color: 'red', marginLeft: '5px' }}>
+                                            This field is required
+                                        </small>
+                                    )} */}
+                                    </label>
                                     <input type='text' value={contpersondtl.contperson} onChange={(e)=>setcontpersondtl(prev=>({
                                         ...prev,
                                         contperson:e.target.value
                                     }))} required/>
+                                    {errors.contperson && <small style={{color:'red'}}>{errors.contperson}</small>}
                                 </div>
                                 <div className='con-designation-person'>
                                     <label>Designation</label>
@@ -603,6 +629,7 @@ function Managelead(){
                                             }
                                             <option value='other'>other</option>
                                         </select>
+                                        {errors.ofdcountry && <small style={{color:'red'}}>{errors.ofdcountry}</small>}
                                     </div>
                                 </div>
                                 {/* grid for remaing office details */}
@@ -623,6 +650,7 @@ function Managelead(){
                                                 ))
                                             }
                                         </select>
+                                        
                                         }
                                         {/* if country is not india select state*/}
                                         {
@@ -632,6 +660,7 @@ function Managelead(){
                                                     ofdst:e.target.value
                                                 }))}/>
                                         }
+                                        {errors.ofdst && <small style={{color:'red'}}>{errors.ofdst}</small>}
                                     </div>
                                    }
                                    {/* this is the option for district */}
@@ -825,6 +854,7 @@ function Managelead(){
                                         <option value='Complete Projects'>Complete Projects</option>
                                         <option value='Grain Dryers'>Grain Dryers</option>
                                     </select>
+                                    {errors.machinereq && <small style={{color:'red'}}>{errors.machinereq}</small>}
                                 </div>
                                 <div>
                                     <label>Make</label>
@@ -846,7 +876,7 @@ function Managelead(){
                                     ...prev,
                                     machinetype:e.target.value
                                 }))} >
-                                        <option value=''>Select</option>
+                                        <option value=''>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGBS'>RGBS</option>
@@ -869,7 +899,7 @@ function Managelead(){
                                     ...prev,
                                     payment:e.target.value
                                 }))}>
-                                        <option value='' selected disabled>Select</option>
+                                        <option value='' selected disabled>Select Payment Type</option>
                                         <option value='LC'>LC</option>
                                         <option value='TT'>TT</option>
                                         <option value='EMI'>EMI</option>
@@ -889,7 +919,7 @@ function Managelead(){
                                         <option value='6'>6</option>
                                         <option value='7'>7</option>
                                         {
-                                            (leadrequirements.machinetype==='ULTRA' || leadrequirements.machinetype==='FALCON') &&
+                                            (leadrequirements.machinetype==='ULTRA-S' || leadrequirements.machinetype==='FALCON') &&
                                             <>
                                             <option value='8'>8</option>
                                             <option value='9'>9</option>
@@ -901,6 +931,7 @@ function Managelead(){
                                             </>
                                         }
                                     </select>
+                                    {errors.chutes && <small style={{color:'red'}}>{errors.chutes}</small>}
                                 </div>
                                 </>
                                 }
