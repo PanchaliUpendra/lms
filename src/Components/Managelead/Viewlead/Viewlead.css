@@ -8,6 +8,7 @@
     overflow-y: scroll;
     box-shadow: -8px 2px 19px -12px rgba(97,97,97,1);
     transition: all 0.4s ease;
+    
 }
 .viewlead-filter-menubar-inactive{
     width: 300px;
@@ -19,6 +20,20 @@
     overflow-y: scroll;
     box-shadow: -8px 2px 19px -12px rgba(97,97,97,1);
     transition: all 0.4s ease;
+}
+.viewlead-filter-menubar::-webkit-scrollbar{
+    width: 0.5em;
+}
+.viewlead-filter-menubar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.viewlead-filter-menubar::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Change the color as needed */
+    border-radius: 20px;
+}
+.viewlead-filter-menubar::-webkit-scrollbar-thumb {
+    background-color: #c7c7c733; /* Change the color as needed */
+    border-radius: 20px;
 }
 .viewlead-filter-manubar-cross-btn{
     margin-top: 10px;
@@ -61,6 +76,7 @@
 .viewlead-filter-menu-nav{
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 70px;
 }
 .viewlead-filter-header{
     padding-top: 10px;
@@ -81,6 +97,7 @@
     font-size: 0.95rem;
     font-weight: 400;
     color: rgb(141, 141, 141);
+    text-transform: capitalize;
 }
 .viewlead-filter-status-box>select{
     height: 35px;
@@ -88,6 +105,34 @@
     outline: none;
     border-radius: 3px;
     padding-left: 5px;
+}
+.viewlead-filter-status-box>input{
+    height: 35px;
+    border: 1px solid rgb(173, 173, 173);
+    outline: none;
+    border-radius: 3px;
+    padding-left: 5px;
+}
+/* viewlead-filter-bottom-btn */
+.viewlead-filter-bottom-btn{
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    width: 300px;
+    margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 10px;
+}
+.viewlead-filter-bottom-btn>button{
+    width: 100%;
+    border: none;
+    background:linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+    border-radius: 3px;
+    min-height: 35px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 @media all and (max-width:599px){

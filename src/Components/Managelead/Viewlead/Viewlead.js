@@ -9,6 +9,8 @@ import MyContext from "../../../MyContext";
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
+import { counrtycode } from "../../../Data/countrycode";
+import { states } from "../../../Data/states";
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -21,6 +23,16 @@ function Viewlead(){
      
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
+    //filter data
+    const [filterdataset,setfilterdataset] = useState({
+        status:'Active',
+        manager:'',
+        employee:'',
+        country:'India',
+        state:'',
+        district:''
+    });
+    //crossbtn function
     const [crossbtn,setcrossbtn] = useState(false);
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -109,6 +121,10 @@ function Viewlead(){
                                                 const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
                                                 return dateA - dateB;
                                             })
+                                            .filter(item=>(sharedvalue.leadsdata[item].custstatus.includes(filterdataset.status)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     <td>
@@ -254,7 +270,10 @@ function Viewlead(){
                     {/* status */}
                     <div className="viewlead-filter-status-box">
                         <h2>Status</h2>
-                        <select>
+                        <select value={filterdataset.status} onChange={(e)=>setfilterdataset(prev=>({
+                            ...prev,
+                            status:e.target.value
+                        }))}>
                             <option value='Active'>Active</option>
                             <option value='Closed'>Closed</option>
                             <option value='Lost'>Lost</option>
@@ -276,6 +295,81 @@ function Viewlead(){
                             <option value=''>All</option>
                         </select>
                     </div>
+                    {/* country */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>country</h2>
+                        <select value={filterdataset.country} onChange={(e)=>setfilterdataset(prev=>({
+                            ...prev,
+                            country:e.target.value,
+                            state:'',
+                            district:''
+                        }))}>
+                            <option value=''>All</option>
+                            {
+                                counrtycode.map((item,idx)=>(
+                                    <option key={idx} value={item.name}>{item.name}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                    {/* state */}
+                    
+                        {
+                        filterdataset.country==='India' &&
+                        <div className="viewlead-filter-status-box">
+                            <h2>state</h2>
+                            <select value={filterdataset.state} onChange={(e)=>setfilterdataset(prev=>({
+                                ...prev,
+                                state:e.target.value,
+                                district:''
+                            }))} required>
+                                <option value=''>All</option>
+                                    {states.map((item,idx)=>(
+                                    <option key={idx} value={item.state}>{item.state}</option>
+                                    ))}
+                            </select>
+                        </div>
+                        }
+                        {
+                        filterdataset.country!=='India' &&
+                        <div className="viewlead-filter-status-box">
+                            <h2>state</h2>
+                            <input type="text" value={filterdataset.state} onChange={(e)=>setfilterdataset(prev=>({
+                                ...prev,
+                                state:e.target.value
+                            }))} placeholder="enter the your state.."/>
+                               
+                        </div>
+                        }
+
+                        {
+                            filterdataset.country==='India' && filterdataset.state!=='' &&
+                            <div className="viewlead-filter-status-box">
+                                <h2>district</h2>
+                                <select value={filterdataset.district} onChange={(e)=>setfilterdataset(prev=>({
+                                    ...prev,
+                                    district:e.target.value
+                                }))}>
+                                    <option value=''>All</option>
+                                    {states.filter(item=>item.state===filterdataset.state)[0].districts.map((prod,idx)=>(
+                                        <option key={idx} value={prod}>{prod}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        }
+                        
+                    
+                </div>
+                {/* remove filter */}
+                <div className="viewlead-filter-bottom-btn">
+                    <button onClick={()=>setfilterdataset({
+                        status:'Active',
+                        manager:'',
+                        employee:'',
+                        country:'India',
+                        state:'',
+                        district:''
+                    })}>Remove All Filters</button>
                 </div>
             </div>
             
