@@ -125,6 +125,8 @@ function Viewlead(){
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     <td>
@@ -282,19 +284,42 @@ function Viewlead(){
                         </select>
                     </div>
                     {/* manager */}
-                    <div className="viewlead-filter-status-box">
-                        <h2>Manager</h2>
-                        <select>
-                            <option value=''>All</option>
-                        </select>
-                    </div>
+                    {sharedvalue.role==='admin' && 
+                        <div className="viewlead-filter-status-box">
+                            <h2>Manager</h2>
+                                    
+                            <select value={filterdataset.manager} onChange={(e)=>setfilterdataset(prev=>({
+                                ...prev,
+                                employee:'',
+                                manager:e.target.value
+                            }))}>
+                                <option value=''>All</option>
+                                {
+                                    sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='manager').map((manager,idx)=>(
+                                    <option value={manager} key={idx}>{sharedvalue.workersdata[manager].name}</option>
+                                    ))
+                                }
+                            </select>
+                                    
+                        </div>
+                    }
                     {/* employee */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ) &&
                     <div className="viewlead-filter-status-box">
                         <h2>Employee</h2>
-                        <select>
-                            <option value=''>All</option>
-                        </select>
-                    </div>
+                            <select value={filterdataset.employee} onChange={(e)=>setfilterdataset(prev=>({
+                                ...prev,
+                                employee:e.target.value
+                            }))}>
+                                <option value=''>All</option>
+                                {
+                                sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='employee' && sharedvalue.workersdata[item].managerid===filterdataset.manager).map((employee,idx)=>(
+                                <option value={employee} key={idx}>{sharedvalue.workersdata[employee].name}</option>
+                                ))
+                                }
+                            </select>
+                        </div>
+                    }
                     {/* country */}
                     <div className="viewlead-filter-status-box">
                         <h2>country</h2>
