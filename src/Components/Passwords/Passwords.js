@@ -15,7 +15,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 function Passwords(){
     const [open, setOpen] = React.useState(false);
-    
+    const [filter,setfilter] = useState('');
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //code only for toggle the menu bar
@@ -92,7 +92,17 @@ function Passwords(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search">
+                            <div className="view-list-of-all-search view-passwords-filter">
+                                <div>
+                                    <label>Filter:</label>
+                                    <select value={filter} onChange={(e)=>setfilter(e.target.value)}>
+                                        <option value=''>All</option>
+                                        <option value='admin'>Admin</option>
+                                        <option value='manager'>Manager</option>
+                                        <option value='employee'>Employee</option>
+                                        <option value='customer'>Customer</option>
+                                    </select>
+                                </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Name/Email" onChange={(e)=>setsearchworker(e.target.value)}/>
@@ -106,14 +116,16 @@ function Passwords(){
                                             <th>name</th>
                                             <th>email</th>
                                             <th>Password</th>
-                                            <th>status</th>
+                                            <th>Profile</th>
                                             <th>Login</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     {
                                             sharedvalue.workerskeys.length>0 &&
-                                            sharedvalue.workerskeys.filter((item)=> (sharedvalue.workersdata[item].name.includes(searchworker) ||sharedvalue.workersdata[item].email.includes(searchworker) )).map((worker,idx)=>(
+                                            sharedvalue.workerskeys.filter((item)=> (sharedvalue.workersdata[item].name.includes(searchworker) ||sharedvalue.workersdata[item].email.includes(searchworker) ))
+                                            .filter((item)=> sharedvalue.workersdata[item].role.includes(filter))
+                                            .map((worker,idx)=>(
                                                 <tr key={idx}>
                                                     {/* <td>
                                                         <p className="view-manager-list-sino">
