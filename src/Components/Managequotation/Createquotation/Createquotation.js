@@ -59,7 +59,18 @@ function Createquotation(){
         quotaddinfo:'',
         quotstatus:'open',
         quotperfomaiorquot:'',
-        withgstornot:''
+        withgstornot:'',
+        //common for both usd and gst
+        // custcompanyname:'',
+        ofdcty:'',
+        contperson:'',
+        businesstype:'',
+        //extra fields for gst
+        // ofdst:'',//state
+        ofddst:'',//district
+        ofdpinc:'',//pincode
+        contmobilenum:'',//mobile number
+        altcontmobile:''//alternative mobile number
     })
     //create all states
     const [allstates,setallstates] = useState([]);
@@ -146,7 +157,10 @@ function Createquotation(){
                 quotinfo.quotpayment!=='' &&
                 quotinfo.quotwarranty!=='' &&
                 quotinfo.quotperfomaiorquot!=='' &&
-                quotinfo.withgstornot!==''
+                quotinfo.withgstornot!=='' &&
+                quotinfo.quottype!=='' &&
+                (quotinfo.quottype==='USD'?(quotinfo.ofdcty!=='' && quotinfo.contperson!=='' && quotinfo.businesstype!=='')
+                :(quotinfo.ofdcty!=='' && quotinfo.contperson!=='' && quotinfo.businesstype!=='' && quotinfo.ofddst!=='' && quotinfo.ofdpinc!=='' && quotinfo.contmobilenum!==''))
             ){
             const result = await fetchquotationid();
             if(result!==0){
@@ -184,6 +198,19 @@ function Createquotation(){
                         quotcreatedby:sharedvalue.uid,
                         quotperfomaiorquot:quotinfo.quotperfomaiorquot,
                         withgstornot:quotinfo.withgstornot,
+                        //__________________________________________________________
+                        //common for both usd and gst
+                        // custcompanyname:quotinfo.custcompanyname,
+                        ofdcty:quotinfo.ofdcty,
+                        contperson:quotinfo.contperson,
+                        businesstype:quotinfo.businesstype,
+                        //extra fields for gst
+                        ofddst:quotinfo.ofddst,//district
+                        // ofdst:quotinfo.ofdst,//state
+                        ofdpinc:quotinfo.ofdpinc,//pincode
+                        contmobilenum:quotinfo.contmobilenum,//mobile number
+                        altcontmobile:quotinfo.altcontmobile,//alternative mobile number
+                        //_________________________________________________________
                         quotadmincommt:''
                     }
                 })
@@ -233,6 +260,15 @@ function Createquotation(){
                 if(quotinfo.quotwarranty==='') newErrors.quotwarranty='Warrenty field is Required';
                 if(quotinfo.quotperfomaiorquot==='') newErrors.quotperfomaiorquot='This Field is Required';
                 if(quotinfo.withgstornot==='') newErrors.withgstornot='Choose gst field is Required';
+                // _____ new modifications________
+                if(quotinfo.quottype==='') newErrors.quottype='please select  the quotation type';
+                if(quotinfo.ofdcty==='') newErrors.ofdcty='please enter the city name';
+                if(quotinfo.contperson==='') newErrors.contperson='please enter the contact person name';
+                if(quotinfo.businesstype==='') newErrors.businesstype='please fill the businesstype';
+                if(quotinfo.ofddst==='') newErrors.ofddst='please enter the district name';
+                if(quotinfo.ofdpinc==='') newErrors.ofdpinc='please enter the pincode';
+                if(quotinfo.contmobilenum==='') newErrors.contmobilenum='please enter the mobile number';
+
                 setErrors(newErrors);
                 loginformerror();
         }
@@ -368,12 +404,92 @@ function Createquotation(){
                                         ...prev,
                                         quottype:e.target.value
                                     }))}>
-                                        <option value='' >Select Quotation Type</option>
+                                        <option value='' >Select Quotation Type<span style={{color:'red'}}>*</span></option>
                                         <option value='USD'>USD</option>
                                         <option value='HSS'>HSS</option>
                                         <option value='GST'>GST</option>
                                     </select>
+                                    {errors.quottype && <small style={{color:'red'}}>{errors.quottype}</small>}
                                 </div>
+                                {/* city and district */}
+                                {quotinfo.quottype==='GST' &&
+                                <div>
+                                    <label>district<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofddst} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        ofddst:e.target.value
+                                    }))}/>
+                                    {errors.ofddst && <small style={{color:'red'}}>{errors.ofddst}</small>}
+                                </div>
+                                }
+
+                                {(quotinfo.quottype==='USD'||quotinfo.quottype==='GST')===true &&<>
+                                <div>
+                                    <label>city<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofdcty} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        ofdcty:e.target.value
+                                    }))}/>
+                                    {errors.ofddst && <small style={{color:'red'}}>{errors.ofddst}</small>}
+                                </div>
+                                <div>
+                                    <label>contact person name<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.contperson} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        contperson:e.target.value
+                                    }))} />
+                                    {errors.contperson && <small style={{color:'red'}}>{errors.contperson}</small>}
+                                </div>
+                                <div>
+                                    <label>businesstype<span style={{color:'red'}}>*</span></label>
+                                    <select value={quotinfo.businesstype} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        businesstype:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select Mill/Business Type</option>
+                                        <option value='dall mill'>Dall Mill</option>
+                                        <option value='rice mill'>Rice Mill</option>
+                                        <option value='multigrain'>Multigrain</option>
+                                        <option value='spices'>Spices</option>
+                                        <option value='quartz'>Quartz</option>
+                                        <option value='mminerals'>Minerals</option>
+                                        <option value='plastics'>Plastics</option>
+                                        <option value='others'>Others</option>
+                                    </select>
+                                    {errors.businesstype && <small style={{color:'red'}}>{errors.businesstype}</small>}
+                                </div>
+                                </>
+                                }
+                                {/* pincode ,mobile number and alternative mobile number */}
+                                {quotinfo.quottype==='GST' &&
+                                    <>
+                                        <div>
+                                            <label>pincode<span style={{color:'red'}}>*</span></label>
+                                            <input type="number" value={quotinfo.ofdpinc} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                ofdpinc:e.target.value
+                                            }))}/>
+                                            {errors.ofdpinc && <small style={{color:'red'}}>{errors.ofdpinc}</small>}
+                                        </div>
+                                        <div>
+                                            <label>mobile number<span style={{color:'red'}}>*</span></label>
+                                            <input type="number" value={quotinfo.contmobilenum} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                contmobilenum:e.target.value
+                                            }))}/>
+                                            {errors.contmobilenum && <small style={{color:'red'}}>{errors.contmobilenum}</small>}
+                                        </div>
+                                        <div>
+                                            <label>alternate mobile number</label>
+                                            <input type="number" value={quotinfo.altcontmobile} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                altcontmobile:e.target.value
+                                            }))}/>
+                                        </div>
+                                    </>
+                                }
+
+                                
                                 {/* company name */}
                                 {(quotinfo.quottype==='GST' || quotinfo.quottype ==='HSS') && 
                                 <div>

@@ -100,6 +100,7 @@ function Passwords(){
                                         <option value='admin'>Admin</option>
                                         <option value='manager'>Manager</option>
                                         <option value='employee'>Employee</option>
+                                        <option value='finance'>Finance</option>
                                         <option value='customer'>Customer</option>
                                     </select>
                                 </div>

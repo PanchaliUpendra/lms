@@ -148,6 +148,60 @@ function Sidenav({menutoggle,handlemenutoggle}){
                         </div>
                     </div>
                     }
+                    {/* snav each div spare quotation */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
+                    <div className='snav-inner-each'>
+                        <div 
+                        className={`snav-mle-inner-div ${location.pathname==='/managespare/createspare'||location.pathname==='/manageamc/viewspare'?'snav-mle-inner-div-active':''}`}
+                        onClick={() => handleImageClick('uniqueDiv11')}
+                        >
+                            <div className='snav-mle-names'>
+                                <FormatQuoteIcon/>
+                                <h2>Manage Spare Quotation</h2>
+                            </div>
+                            <div className={`iconrotatecon ${rotationStates['uniqueDiv11'] ? 'rotated': ''}`}>
+                            <KeyboardArrowDownIcon />
+                            </div>
+                        </div>
+                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv11'] ? 'extendmenu':''}`}>
+                            <div onClick={()=>navigate('/managespare/createspare')}>
+                                <AddIcon/>
+                                <h2>Create Spare</h2>
+                            </div>
+                            <div onClick={()=>navigate('/managespare/viewspare')}>
+                                <FilterListIcon/>
+                                <h2>View Spare</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    {/* snav each div AMC quotation */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
+                    <div className='snav-inner-each'>
+                        <div 
+                        className={`snav-mle-inner-div ${location.pathname==='/manageamc/createamc'||location.pathname==='/manageamc/viewamc'?'snav-mle-inner-div-active':''}`}
+                        onClick={() => handleImageClick('uniqueDiv10')}
+                        >
+                            <div className='snav-mle-names'>
+                                <FormatQuoteIcon/>
+                                <h2>Manage AMC</h2>
+                            </div>
+                            <div className={`iconrotatecon ${rotationStates['uniqueDiv10'] ? 'rotated': ''}`}>
+                            <KeyboardArrowDownIcon />
+                            </div>
+                        </div>
+                        <div className={`snav-each-dropdown ${rotationStates['uniqueDiv10'] ? 'extendmenu':''}`}>
+                            <div onClick={()=>navigate('/manageamc/createamc')}>
+                                <AddIcon/>
+                                <h2>Create AMC</h2>
+                            </div>
+                            <div onClick={()=>navigate('/manageamc/viewamc')}>
+                                <FilterListIcon/>
+                                <h2>View AMC</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
                     {/* snav each div  */}
                     {(sharedvalue.role==='admin' ||
                     (sharedvalue.role==='manager' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid],"mcat")?(sharedvalue.workersdata[sharedvalue.uid].mcat==="both"||sharedvalue.workersdata[sharedvalue.uid].mcat==="service"):true) ) ||

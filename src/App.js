@@ -36,6 +36,12 @@ import Verifyquotation from './Components/Managequotation/Verifyquotation/Verify
 import Passwords from './Components/Passwords/Passwords';
 import Documents from './Components/Documents/Documents';
 import AddDocuments from './Components/Documents/AddDocuments';
+//create amc and view aMC
+import CreateAmc from './Components/ManageAmc/CreateAmc/CreateAmc';
+import ViewAmc from './Components/ManageAmc/ViewAmc/ViewAmc';
+//create and view  spare
+import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
+import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -109,6 +115,12 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents/:category/:subcategory' element={<Documents/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/adddocuments' element={<AddDocuments/>}/>}
+        {/* managing amc */}
+        <Route path='/manageamc/createamc' element={<CreateAmc/>}/>
+        <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>
+        {/* manage spare quotation */}
+        <Route path='/managespare/createspare' element={<CreateSpare/>}/>
+        <Route path='/managespare/viewspare' element={<ViewSpare/>}/>
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
 
