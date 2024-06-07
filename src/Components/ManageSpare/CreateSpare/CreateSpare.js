@@ -138,7 +138,8 @@ function CreateSpare(){
                             sparecity:sparequotedata.sparecity,
                             sparereqmachine:sparequotedata.sparereqmachine,
                             spares:spares,
-                            docid:result.docid
+                            docid:result.docid,
+                            sparecreatedby:sharedvalue.uid,
                         }
                     })
                     await batch.update(sparequotationid,{
@@ -363,7 +364,7 @@ function CreateSpare(){
                                                     <input type="text" value={item.sparepart} onChange={(e)=>handleEachElementData(e,idx,'sparepart')}/>
                                                 </div>
                                                 <div>
-                                                    <label>qty<span style={{color:'red'}}>*</span></label>
+                                                    <label>quantity<span style={{color:'red'}}>*</span></label>
                                                     <input type="number" value={item.qty} onChange={(e)=>handleEachElementData(e,idx,'qty')}/>
                                                 </div>
                                                 <div>
