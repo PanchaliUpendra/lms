@@ -1,4 +1,4 @@
-import { doc } from "firebase/firestore";
+import {collection, doc } from "firebase/firestore";
 import { db } from "../Firebase";
 export const leaddoc = doc(db,"leads" ,"XpjPVNyiDaRgsN6emVjZ");
 export const createleadiddoc = doc(db,"createleadID","uCvGx1JiukzI8SCdnJDx");
@@ -13,5 +13,9 @@ export const createworkers = doc(db,"workers","yWXH2DQO8DlAbkmQEQU4");
 export const leadsgraphdoc = doc(db,"leadsgraph","1HXMGFXVYcIjbuMzMZo4");
 export const ticketsgraphdoc = doc(db,"ticketsgraph","Wrbujr45rUXPWaurALzs");
 export const documentsdoc = doc(db,"Documents","wacaEmr1ZlRV7GTfVHfc");
+
+//spare parts collection
+export const sparequotation = collection(db,"sparequotation");
+export const sparequotationid = doc(db,"sparequotationID","AZBR29znExz9beVQPHym");
 
 export const API_ONE_TO_ONE = 'https://www.message.ultrasorters.com:8000';

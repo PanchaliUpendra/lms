@@ -4,7 +4,28 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc , documentsdoc} from "./Data/Docs";
+import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation} from "./Data/Docs";
+
+// ____________________________
+// import { collection, onSnapshot } from "firebase/firestore";
+// import { db } from "./firebase"; // Assuming you have initialized your Firestore connection
+
+// // Reference to the collection
+// const leadsCollection = collection(db, "leadsgraph");
+
+// // Listen to changes in the entire collection
+// const unsubscribe = onSnapshot(leadsCollection, (snapshot) => {
+//   snapshot.forEach((doc) => {
+//     // Access doc.id for the document ID
+//     // Access doc.data() for the document data
+//     console.log(doc.id, " => ", doc.data());
+//   });
+// });
+
+// To stop listening to changes, you can call unsubscribe()
+// unsubscribe();
+
+//_____________________________
 
 function MyProvider({children}){
 
@@ -78,6 +99,23 @@ function MyProvider({children}){
                 uid:uid,
                 userdtl:userd
               }))
+
+              //spare quotation fetching
+              const fetchSpareData = async() =>{
+                try{
+                  await onSnapshot(sparequotation,(snapshot)=>{
+                    snapshot.forEach((doc)=>{
+                      console.log(doc.id," => ",doc.data());
+                    })
+                  })
+                }catch(err){
+                  console.error('you got an error while fetching spare data: ',err);
+                }
+              }
+              fetchSpareData();
+              //spare quotation ending here
+
+
               //fetching the documents data
               const fetchdocumentsdata = async() =>{
                 try{
