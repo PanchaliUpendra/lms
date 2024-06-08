@@ -6,9 +6,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
-import { createquoteid, createquotes ,API_ONE_TO_ONE} from "../../../Data/Docs";
-import { onSnapshot ,writeBatch} from "firebase/firestore";
+import { createquoteid ,API_ONE_TO_ONE} from "../../../Data/Docs";
+import { doc, onSnapshot ,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
+import { v4 as uuidv4 } from 'uuid';
 //importing the notifications
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
@@ -42,7 +43,7 @@ function Createquotation(){
         quotcountry:'',
         quotstate:'',
         quotcustname:'',
-        quotlead:'',
+        // quotlead:'',
         quottype:'',
         quotcompanyname:'Sruthi Technologies',
         quotmachinetype:'',
@@ -98,7 +99,11 @@ function Createquotation(){
             return new Promise((resolve,reject)=>{
                 onSnapshot(createquoteid,(doc)=>{
                     const temptexpid = doc.data();
-                    resolve(temptexpid.quoteID+1);
+                    resolve({
+                        ...temptexpid,
+                        count:temptexpid.count+1,
+                        id:temptexpid.id+1
+                    });
                 })
             })
         }catch(e){
@@ -149,7 +154,7 @@ function Createquotation(){
                 quotinfo.quotcountry!=='' &&
                 quotinfo.quotstate!=='' &&
                 quotinfo.quotcustname!=='' &&
-                quotinfo.quotlead!=='' &&
+                // quotinfo.quotlead!=='' &&
                 quotinfo.quotmachinetype!=='' &&
                 quotinfo.quotprodtype!=='' &&
                 quotinfo.quotcap!=='' &&
@@ -172,13 +177,15 @@ function Createquotation(){
                 }
                 await handleSendMsgToAdmin(data);
              }
-            if(result!==0){
-                await batch.update(createquotes,{
-                    [result]:{
+            if(result && result.id!==0){
+
+                if(result.count<=500){
+                await batch.update(doc(db,"quotes",`${result.docid}`),{
+                    [result.id]:{
                         quotcountry:quotinfo.quotcountry,
                         quotstate:quotinfo.quotstate,
                         quotcustname:quotinfo.quotcustname,
-                        quotlead:quotinfo.quotlead,
+                        // quotlead:quotinfo.quotlead,
                         quottype:quotinfo.quottype,
                         quotcompanyname:quotinfo.quotcompanyname,
                         quotmachinetype:quotinfo.quotmachinetype,
@@ -211,11 +218,13 @@ function Createquotation(){
                         contmobilenum:quotinfo.contmobilenum,//mobile number
                         altcontmobile:quotinfo.altcontmobile,//alternative mobile number
                         //_________________________________________________________
-                        quotadmincommt:''
+                        quotadmincommt:'',
+                        docid:result.docid
                     }
                 })
+            
                 await batch.update(createquoteid,{
-                    "quoteID":result
+                    ...result
                 })
                 await batch.commit();//commit all baches
                 window.scrollTo({top:0,behavior:'smooth'});
@@ -225,7 +234,86 @@ function Createquotation(){
                     quotcountry:'',
                     quotstate:'',
                     quotcustname:'',
-                    quotlead:'',
+                    // quotlead:'',
+                    quottype:'',
+                    quotcompanyname:'',
+                    quotmachinetype:'',
+                    quotprodtype:'',
+                    quotcap:'',
+                    quotprice:'',
+                    quotdim:'',
+                    quotcon:'',
+                    quotunits:'',
+                    quotpayment:'',
+                    quotclearing:'',
+                    quotdestination:'',
+                    quotwarranty:'',
+                    quotaddinfo:'',
+                    quotperfomaiorquot:'',
+                    withgstornot:''
+                }));
+                setEditorData('');
+                setErrors({});
+            }
+            }else{
+                const id = uuidv4();
+                await batch.update(doc(db,"quotes",`${id}`),{
+                    [result.id]:{
+                        quotcountry:quotinfo.quotcountry,
+                        quotstate:quotinfo.quotstate,
+                        quotcustname:quotinfo.quotcustname,
+                        // quotlead:quotinfo.quotlead,
+                        quottype:quotinfo.quottype,
+                        quotcompanyname:quotinfo.quotcompanyname,
+                        quotmachinetype:quotinfo.quotmachinetype,
+                        quotprodtype:quotinfo.quotprodtype,
+                        quotcap:quotinfo.quotcap,
+                        quotprice:quotinfo.quotprice,
+                        quotdim:quotinfo.quotdim,
+                        quotcon:quotinfo.quotcon,
+                        quotunits:quotinfo.quotunits,
+                        quotpayment:quotinfo.quotpayment,
+                        quotclearing:quotinfo.quotclearing,
+                        quotdestination:quotinfo.quotdestination,
+                        quotwarranty:quotinfo.quotwarranty,
+                        quotaddinfo:quotinfo.quotaddinfo,
+                        quotpayterm:editorData,
+                        quotstatus:quotinfo.quotstatus,
+                        quotcreatedby:sharedvalue.uid,
+                        quotperfomaiorquot:quotinfo.quotperfomaiorquot,
+                        withgstornot:quotinfo.withgstornot,
+                        //__________________________________________________________
+                        //common for both usd and gst
+                        // custcompanyname:quotinfo.custcompanyname,
+                        ofdcty:quotinfo.ofdcty,
+                        contperson:quotinfo.contperson,
+                        businesstype:quotinfo.businesstype,
+                        //extra fields for gst
+                        ofddst:quotinfo.ofddst,//district
+                        // ofdst:quotinfo.ofdst,//state
+                        ofdpinc:quotinfo.ofdpinc,//pincode
+                        contmobilenum:quotinfo.contmobilenum,//mobile number
+                        altcontmobile:quotinfo.altcontmobile,//alternative mobile number
+                        //_________________________________________________________
+                        quotadmincommt:'',
+                        docid:id
+                    }
+                })
+            
+                await batch.update(createquoteid,{
+                    ...result,
+                        count:0,
+                        docid:id
+                })
+                await batch.commit();//commit all baches
+                window.scrollTo({top:0,behavior:'smooth'});
+                loginsuccess();//success notification
+                setquotinfo(prev=>({
+                    ...prev,
+                    quotcountry:'',
+                    quotstate:'',
+                    quotcustname:'',
+                    // quotlead:'',
                     quottype:'',
                     quotcompanyname:'',
                     quotmachinetype:'',
@@ -251,7 +339,7 @@ function Createquotation(){
                 if(quotinfo.quotcountry==='') newErrors.quotcountry='Country Field is Required';
                 if(quotinfo.quotstate==='') newErrors.quotstate='State Field Is Required';
                 if(quotinfo.quotcustname==='') newErrors.quotcustname='Customer Name Is Required';
-                if(quotinfo.quotlead!=='') newErrors.quotlead='Please Choose The Lead';
+                // if(quotinfo.quotlead!=='') newErrors.quotlead='Please Choose The Lead';
                 if(quotinfo.quotmachinetype==='') newErrors.quotmachinetype='Machine Type Is Required';
                 if(quotinfo.quotprodtype==='') newErrors.quotprodtype='Product Type Is Required';
                 if(quotinfo.quotcap==='') newErrors.quotcap='Chutes Field Is Required';
@@ -382,7 +470,7 @@ function Createquotation(){
                                 </div>
                                 }
                                 {/* lead id */}
-                                {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
+                                {/* {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
                                     <div>
                                         <label>lead<span style={{color:'red'}}>*</span></label>
                                         <select value={quotinfo.quotlead} onChange={(e)=>setquotinfo(prev=>({
@@ -396,7 +484,7 @@ function Createquotation(){
                                         </select>
                                         {errors.quotlead && <small style={{color:'red'}}>{errors.quotlead}</small>}
                                     </div>
-                                }
+                                } */}
                                 {/* quotation type */}
                                 <div>
                                     <label>quotation type</label>

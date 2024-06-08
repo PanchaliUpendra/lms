@@ -80,9 +80,9 @@ const Comaasrgb = (props) => {
                               <View style={first.p1sec121}>
                                 <Text style={styles.customerInfo}>Customer:</Text></View>
                               <View style={first.p1sec122}>
-                                <Text style={styles.customerInfo121}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].custcompanyname},</Text>
-                                <Text style={styles.customerInfo121}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofdcty}</Text>
-                                <Text style={styles.customerInfoContPer}>Kind Attn: {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
+                                <Text style={styles.customerInfo121}>{sharedvalue.quotesdata[quoteid].quotcustname},</Text>
+                                <Text style={styles.customerInfo121}>{sharedvalue.quotesdata[quoteid].ofdcty}</Text>
+                                <Text style={styles.customerInfoContPer}>Kind Attn: {sharedvalue.quotesdata[quoteid].contperson}</Text>
                               </View>
                             </View>
                             <View style={first.section1}>
@@ -130,7 +130,7 @@ const Comaasrgb = (props) => {
                                 <Text style={styles.tableheadertext}>1</Text>
                               </View>
                               <View style={styles.pricetableeachhead2}>
-                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?
+                                <Text style={styles.tableheadertext1}>COLOR Sorter for {sharedvalue.quotesdata[quoteid].businesstype} with spares kit model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?
                                 (Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
                                 <Text style={styles.tableheadertext1}>Capacity: {sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap)-2:(Number(sharedvalue.quotesdata[quoteid].quotcap)+1)-2):Number(sharedvalue.quotesdata[quoteid].quotcap)}-
                                 {sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Ton/Hr</Text>
@@ -237,7 +237,7 @@ const Comaasrgb = (props) => {
                         <Text style={styles.saleconditioninnerhead}>capacity</Text>
                         <Text style={styles.saleconditioninnertext}>
                           Capacity will depends on type of contamination; percentage of contamination and type of Umaterial. The capacity mentioned
-                          in this quotation based on Steam {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} upto 5-10% contamination with only India {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}, with nill broken {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}
+                          in this quotation based on Steam {sharedvalue.quotesdata[quoteid].businesstype} upto 5-10% contamination with only India {sharedvalue.quotesdata[quoteid].businesstype}, with nill broken {sharedvalue.quotesdata[quoteid].businesstype}
                            without  stones/foreign material. Contamination will be Counted based on <Text style={{textTransform:'uppercase',fontWeight:600}}>Count</Text> not on weight method. 
                         </Text>
                         <Text style={styles.saleconditioninnerhead}>warranty</Text>
@@ -271,7 +271,7 @@ const Comaasrgb = (props) => {
 
                         <Text style={styles.tableeachheading}>3. description:<Text style={{fontWeight:600,color:'#6004DA'}}> super</Text>
                         <Text style={{fontWeight:600,color:'#017BE6'}}> high</Text><Text style={{fontWeight:600,color:'green'}}> precision </Text>- 
-                        <Text style={{fontWeight:600,color:'#D35400'}}>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} </Text>
+                        <Text style={{fontWeight:600,color:'#D35400'}}>{sharedvalue.quotesdata[quoteid].businesstype} </Text>
                         <Text style={{fontWeight:600,color:'red'}}>color </Text><Text style={{fontWeight:600,color:'green'}}>sorter</Text></Text>
 
                         <View style={styles.descriptiontable}>

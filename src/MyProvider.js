@@ -4,8 +4,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, createquotes, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation} from "./Data/Docs";
-
+import { createtickets, leaddoc,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation} from "./Data/Docs";
+import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
 // import { db } from "./firebase"; // Assuming you have initialized your Firestore connection
@@ -184,21 +184,39 @@ function MyProvider({children}){
               }
               fetchleadsgraphdata();//calling the leads graph data
               
+              // __________________________________________Quotation_____________________________
               //fetching the quotes
               const fetchquotationsdata = async() =>{
                 try{
-                  await onSnapshot(createquotes,(doc)=>{
-                    const tempquotesdata = doc.data();
-                    setquotesdata(tempquotesdata);
-                    const tempquoteskeys = Object.keys(tempquotesdata);
-                    const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
-                    setquoteskeys(sorttempquoteskeys);
+                  await onSnapshot(createquotes,(snapshot)=>{
+                    snapshot.forEach((doc)=>{
+                      const tempquotesdata = doc.data();
+                      console.log("data", tempquotesdata);
+                      setquotesdata(prev=>({
+                        ...prev,
+                        ...tempquotesdata
+                      }));
+                      const tempquoteskeys = Object.keys(tempquotesdata);
+                      const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
+                      setquoteskeys(prev => Array.from(new Set([...prev, ...sorttempquoteskeys])))
+                      // console.log(doc.id," => ",doc.data());
+                    })
                   })
+                  // await onSnapshot(createquotes,(doc)=>{
+                  //   const tempquotesdata = doc.data();
+                  //   setquotesdata(tempquotesdata);
+                  //   const tempquoteskeys = Object.keys(tempquotesdata);
+                  //   const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
+                  //   setquoteskeys(sorttempquoteskeys);
+                  // })
                 }catch(e){
                   console.log('you got an error while fetching the quotations data',e);
                 }
               }
               fetchquotationsdata();//calling the function  to fetch quotation data
+              // ________________________________________________________________________________
+
+
               //fetching the expenses
               const fetchexpensesdata = async() =>{
                 try{

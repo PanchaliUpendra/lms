@@ -13,20 +13,21 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import Comaasrgb from "../Comaasrgb";
 
 //share icon
-import ShareIcon from '@mui/icons-material/Share';
+// import ShareIcon from '@mui/icons-material/Share';
 //download icon
 import DownloadIcon from '@mui/icons-material/Download';
 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import {writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
+import { doc } from "firebase/firestore";
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { createquotes } from "../../../Data/Docs";
+// import { createquotes } from "../../../Data/Docs";
 import { updateDoc, deleteField } from "firebase/firestore";
 
-import { EmailShareButton } from "react-share";
+// import { EmailShareButton } from "react-share";
 
 import Sruthitech from "../Sruthitech";
 
@@ -95,7 +96,7 @@ function Viewquotation(){
         setshowloading(true);
         try{
             if(workerdelete.quoteid!==''){
-                await batch.update(createquotes,{
+                await batch.update(doc(db,"quotes",`${sharedvalue.quotesdata[workerdelete.quoteid].docid}`),{
                     [workerdelete.quoteid]:{
                         ...sharedvalue.quotesdata[workerdelete.quoteid],
                         quotstatus:'closed'
@@ -119,7 +120,7 @@ function Viewquotation(){
     async function handledeletequotation(quoteid){
         setshowloading(true);
         try{
-            await updateDoc(createquotes,{
+            await updateDoc(doc(db,"quotes",`${sharedvalue.quotesdata[quoteid].docid}`),{
                 [quoteid]:deleteField()
             });
             await batch.commit();
@@ -209,13 +210,13 @@ function Viewquotation(){
                                                                 <p className='view-manager-list-acttion-icon'>
                                                                      { (sharedvalue.quotesdata[quote].quotstatus==='open' || sharedvalue.quotesdata[quote].quotstatus==='rework') && sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${quote}`)} />}
                                                                     
-                                                                    {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && sharedvalue.quotesdata[quote].quotstatus==='approved' && <EmailShareButton
+                                                                    {/* {((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && sharedvalue.quotesdata[quote].quotstatus==='approved' && <EmailShareButton
                                                                         url={sharedvalue.leadsdata[sharedvalue.quotesdata[quote].quotlead].contpersonemail}
                                                                         subject="add your subject"
                                                                         body="here is the content of the body"
                                                                     >
                                                                         <ShareIcon sx={{ color: 'grey', cursor: 'pointer' }} fontSize="small" />
-                                                                    </EmailShareButton> }
+                                                                    </EmailShareButton> } */}
                                                                     {/* {
                                                                         dwnquote!==`${quote}` && ((sharedvalue.uid===sharedvalue.quotesdata[quote].quotcreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.quotesdata[quote].quotstatus==='approved'||sharedvalue.quotesdata[quote].quotstatus==='closed' ) && sharedvalue.quotesdata[quote].quottype==='USD' && 
                                                                         <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>setdwnquote(quote)} />
@@ -249,7 +250,8 @@ function Viewquotation(){
                                                                     }))} >close</span>} 
                                                            
                                                                     {sharedvalue.quotesdata[quote].quotstatus!=='closed' && sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small" onClick={()=>navigate(`/managequotation/verifyquotation/${quote}`)}/>}
-                                                                    {sharedvalue.quotesdata[quote].quotstatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(quote)}/>}
+                                                                    {/* {sharedvalue.quotesdata[quote].quotstatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(quote)}/>} */}
+                                                                    <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(quote)}/>
                                                                 </p>
                                                             </td>
                                                             {/* 2. quotation customer */}

@@ -140,6 +140,8 @@ function CreateSpare(){
                             spares:spares,
                             docid:result.docid,
                             sparecreatedby:sharedvalue.uid,
+                            sparestatus:'open',
+                            spareadmincommt:''
                         }
                     })
                     await batch.update(sparequotationid,{
@@ -179,7 +181,10 @@ function CreateSpare(){
                             sparecity:sparequotedata.sparecity,
                             sparereqmachine:sparequotedata.sparereqmachine,
                             spares:spares,
-                            docid:id
+                            docid:id,
+                            sparecreatedby:sharedvalue.uid,
+                            sparestatus:'open',
+                            spareadmincommt:''
                         }
                     });
                     await batch.update(sparequotationid,{

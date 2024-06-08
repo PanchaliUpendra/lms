@@ -6,9 +6,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 
-import {  createquotes } from "../../../Data/Docs";
+// import {  createquotes } from "../../../Data/Docs";
 import {writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
+import { doc } from "firebase/firestore";
 //importing the notifications
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
@@ -47,7 +48,7 @@ function Verifyquotation(){
         quotcountry:'',
         quotstate:'',
         quotcustname:'',
-        quotlead:'',
+        // quotlead:'',
         quottype:'',
         quotcompanyname:'',
         quotmachinetype:'',
@@ -64,7 +65,18 @@ function Verifyquotation(){
         quotaddinfo:'',
         quotstatus:'open',
         quotperfomaiorquot:'',
-        withgstornot:''
+        withgstornot:'',
+        //common for both usd and gst
+        // custcompanyname:'',
+        ofdcty:'',
+        contperson:'',
+        businesstype:'',
+        //extra fields for gst
+        // ofdst:'',//state
+        ofddst:'',//district
+        ofdpinc:'',//pincode
+        contmobilenum:'',//mobile number
+        altcontmobile:''//alternative mobile number
     })
     //create all states
     
@@ -93,7 +105,7 @@ function Verifyquotation(){
                 quotinfo.quotcountry!=='' &&
                 quotinfo.quotstate!=='' &&
                 quotinfo.quotcustname!=='' &&
-                quotinfo.quotlead!=='' &&
+                // quotinfo.quotlead!=='' &&
                 quotinfo.quotmachinetype!=='' &&
                 quotinfo.quotprodtype!=='' &&
                 quotinfo.quotcap!=='' &&
@@ -103,7 +115,7 @@ function Verifyquotation(){
                 ((temquot.tempstatus==='rework' && temquot.tempcomment!=='')||(temquot.tempstatus!=='rework'))
             ){
             if(quoteid!==0){
-                await batch.update(createquotes,{
+                await batch.update(doc(db,"quotes",`${sharedvalue.quotesdata[quoteid].docid}`),{
                     [quoteid]:{
                         ...sharedvalue.quotesdata[quoteid],
                         quotstatus:temquot.tempstatus,
@@ -131,7 +143,7 @@ function Verifyquotation(){
                 quotcountry:sharedvalue.quotesdata[quoteid].quotcountry,
                 quotstate:sharedvalue.quotesdata[quoteid].quotstate,
                 quotcustname:sharedvalue.quotesdata[quoteid].quotcustname,
-                quotlead:sharedvalue.quotesdata[quoteid].quotlead,
+                // quotlead:sharedvalue.quotesdata[quoteid].quotlead,
                 quottype:sharedvalue.quotesdata[quoteid].quottype,
                 quotcompanyname:sharedvalue.quotesdata[quoteid].quotcompanyname,
                 quotmachinetype:sharedvalue.quotesdata[quoteid].quotmachinetype,
@@ -148,6 +160,17 @@ function Verifyquotation(){
                 quotaddinfo:sharedvalue.quotesdata[quoteid].quotaddinfo,
                 quotperfomaiorquot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")?sharedvalue.quotesdata[quoteid].quotperfomaiorquot:'',
                 withgstornot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot")?sharedvalue.quotesdata[quoteid].withgstornot:'',
+                //common for both usd and gst
+                // custcompanyname:'',
+                ofdcty:sharedvalue.quotesdata[quoteid].ofdcty,
+                contperson:sharedvalue.quotesdata[quoteid].contperson,
+                businesstype:sharedvalue.quotesdata[quoteid].businesstype,
+                //extra fields for gst
+                // ofdst:sharedvalue.quotesdata[quoteid].,//state
+                ofddst:sharedvalue.quotesdata[quoteid].ofddst,//district
+                ofdpinc:sharedvalue.quotesdata[quoteid].ofdpinc,//pincode
+                contmobilenum:sharedvalue.quotesdata[quoteid].contmobilenum,//mobile number
+                altcontmobile:sharedvalue.quotesdata[quoteid].altcontmobile//alternative mobile number
             }));
             settempquot(prev=>({
                 ...prev,
@@ -233,19 +256,64 @@ function Verifyquotation(){
                                 </div>
                                 }
                                 {/* lead id */}
-                                {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
+                                {/* {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
                                     <div>
                                         <label>lead</label>
                                         <input value={quotinfo.quotlead} readOnly/>
                                         
                                     </div>
-                                }
+                                } */}
                                 {/* quotation type */}
                                 <div>
                                     <label>quotation type</label>
                                     <input value={quotinfo.quottype} readOnly/>
                                     
                                 </div>
+                                {quotinfo.quottype==='GST' &&
+                                <div>
+                                    <label>district<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofddst} readOnly/>
+                                    
+                                </div>
+                                }
+
+                                {(quotinfo.quottype==='USD'||quotinfo.quottype==='GST')===true &&<>
+                                <div>
+                                    <label>city<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofdcty} readOnly/>
+                                    
+                                </div>
+                                <div>
+                                    <label>contact person name<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.contperson}  readOnly/>
+                                    
+                                </div>
+                                <div>
+                                    <label>businesstype<span style={{color:'red'}}>*</span></label>
+                                    <input value={quotinfo.businesstype} readOnly/>
+                                    
+                                </div>
+                                </>
+                                }
+                                {/* pincode ,mobile number and alternative mobile number */}
+                                {quotinfo.quottype==='GST' &&
+                                    <>
+                                        <div>
+                                            <label>pincode<span style={{color:'red'}}>*</span></label>
+                                            <input  value={quotinfo.ofdpinc} readOnly/>
+                                            
+                                        </div>
+                                        <div>
+                                            <label>mobile number<span style={{color:'red'}}>*</span></label>
+                                            <input value={quotinfo.contmobilenum} readOnly/>
+                                            
+                                        </div>
+                                        <div>
+                                            <label>alternate mobile number</label>
+                                            <input type="number" value={quotinfo.altcontmobile} />
+                                        </div>
+                                    </>
+                                }
                                 {/* company name */}
                                 {(quotinfo.quottype==='GST' || quotinfo.quottype ==='HSS') && 
                                 <div>

@@ -146,14 +146,14 @@ const Sruthitech = (props) => {
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, marginTop:3}}>
                             <Text>To</Text>
-                            <Text>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].custcompanyname},</Text>
-                            <Text>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofdcty}, {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofddst},</Text>
-                            <Text>{sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofdst} - {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].ofdpinc}</Text>
+                            <Text>{sharedvalue.quotesdata[quoteid].quotcustname},</Text>
+                            <Text>{sharedvalue.quotesdata[quoteid].ofdcty}, {sharedvalue.quotesdata[quoteid].ofddst},</Text>
+                            <Text>{sharedvalue.quotesdata[quoteid].quotstate} - {sharedvalue.quotesdata[quoteid].ofdpinc}</Text>
                         </View>
 
                         <View style={{fontWeight:400,fontFamily:'OpenSans',fontSize:10, textAlign:'center', marginTop:8,marginBottom:8}}>
-                            <Text>Kind Attn: (Mr) {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text>
-                            <Text>Mobile : {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contmobilenum} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile!==''?'/':''} {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].altcontmobile}</Text>
+                            <Text>Kind Attn: (Mr) {sharedvalue.quotesdata[quoteid].contperson}</Text>
+                            <Text>Mobile : {sharedvalue.quotesdata[quoteid].contmobilenum} {sharedvalue.quotesdata[quoteid].altcontmobile!==''?'/':''} {sharedvalue.quotesdata[quoteid].altcontmobile}</Text>
                             {/* <Text>Kind Attn: (Mr/Ms/Miss). {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].contperson}</Text> */}
                         </View>
 
@@ -162,7 +162,7 @@ const Sruthitech = (props) => {
                         <Text style={{fontFamily:'OpenSans',fontSize:10, fontWeight:400, textAlign:'center', marginTop:7, marginBottom:7}}>Sub: {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} for COMAS Sorter:-Reg</Text>
 
                         <Text style={styles.thankyoumsg}>
-                            Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype}.
+                            Thank you very much for your interest in our products. We are here by offering our best price for world best quality COMAS BRAND Sortex for {sharedvalue.quotesdata[quoteid].businesstype}.
                              The details as follows.
                         </Text>
 
@@ -178,7 +178,7 @@ const Sruthitech = (props) => {
                                 <Text style={styles.srthtblcol11}>1</Text>
                                 <View style={styles.srthtblcol21}>
                                     <Text>COMAS Color Sorter</Text>
-                                    <Text>for {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} with spares kit.</Text>
+                                    <Text>for {sharedvalue.quotesdata[quoteid].businesstype} with spares kit.</Text>
                                     <Text>Model: {sharedvalue.quotesdata[quoteid].quotmachinetype}-{sharedvalue.quotesdata[quoteid].quotmachinetype==='ULTRA-S'?(Number(sharedvalue.quotesdata[quoteid].quotcap)%2===0?Number(sharedvalue.quotesdata[quoteid].quotcap):Number(sharedvalue.quotesdata[quoteid].quotcap)+1):sharedvalue.quotesdata[quoteid].quotcap}</Text>
                                 </View>
                                 <Text style={styles.srthtblcol31}>{Number(sharedvalue.quotesdata[quoteid].quotcap)===14?14:Number(sharedvalue.quotesdata[quoteid].quotcap)} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':'-'} {Number(sharedvalue.quotesdata[quoteid].quotcap)===14?'':Number(sharedvalue.quotesdata[quoteid].quotcap)+1} Tons/Hr</Text>
@@ -338,7 +338,7 @@ const Sruthitech = (props) => {
                         <Text style={styles.steheader}>Capacity</Text>
                         <Text style={styles.stetext}>
                             Capacity will depends on type of contamination, percantage of contamination and type of material. The capacity mentioned in this {Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")? (sharedvalue.quotesdata[quoteid].quotperfomaiorquot==='Performa Invoice'?'Performa Invoice':'Quotation'):'Quotation'} based on 5% contamination with
-                            Indian {sharedvalue.leadsdata[sharedvalue.quotesdata[quoteid].quotlead].businesstype} without stones/foreign material.
+                            Indian {sharedvalue.quotesdata[quoteid].businesstype} without stones/foreign material.
                         </Text>
 
                         <Text style={styles.steheader}>Validty</Text>

@@ -8,9 +8,29 @@ import Sidenav from "../../Sidenav/Sidenav";
 import { useNavigate } from "react-router-dom";
 import MyContext from "../../../MyContext";
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+//toastify importing
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { onSnapshot, writeBatch } from "firebase/firestore";
+import { amcquotesid } from "../../../Data/Docs";
+import { db } from "../../../Firebase";
+import { doc , setDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
+
 function CreateAmc(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const [showloading,setshowloading] = useState(false);
+    const batch = writeBatch(db);
+
+    // adding notifications 
+    const loginsuccess = () =>toast.success('Successfully Created the amc Quotation');
+    const loginerror = () =>toast.error('Getting Error while Creating amc Quotation');
+    const loginformerror = () => toast.info('please fill the all Required Fields');
+    const invalidmail = () => toast.warn('unique id was not generating!!!');
 
     const[amcdata,setamcdata] = useState({
         amcquottype:'',
@@ -29,6 +49,147 @@ function CreateAmc(){
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
+    }
+
+    //function to fetch the amc quote id
+    const fetchamcquotesid = async() =>{
+        try{
+            return new Promise((resolve,reject)=>{
+                onSnapshot(amcquotesid,(doc)=>{
+                    const temptexpid = doc.data();
+                    resolve({
+                        ...temptexpid,
+                        count:temptexpid.count+1,
+                        id:temptexpid.id+1
+                    });
+                })
+            })
+
+        }catch(err){
+            console.log("you got an error while  fetching the amc quotation id: ",err);
+            invalidmail();
+        }
+    }
+
+    //function handle the submit data
+    async function handlesubmitdata(event){
+        event.preventDefault();
+        setshowloading(true);
+        try{
+            if(
+                amcdata.amcquottype!=='' &&
+                amcdata.amccompanyname!=='' &&
+                amcdata.amccountry!=='' &&
+                amcdata.amcstate!=='' &&
+                amcdata.amcdistrict!=='' &&
+                amcdata.amcmachine!=='' &&
+                amcdata.amcperiod!=='' &&
+                amcdata.amcunitprice!=='' &&
+                amcdata.amcqty!=='' &&
+                amcdata.amcvisit!==''
+            ){
+            const result = await fetchamcquotesid();
+            if(result && result.id!==0){
+                if(result.count<=500){
+                    await batch.update(doc(db,"amcdoc",`${result.docid}`),{
+                        [result.id]:{
+                            amcquottype:amcdata.amcquottype,
+                            amccompanyname:amcdata.amccompanyname,
+                            amccountry:amcdata.amccountry,
+                            amcstate:amcdata.amcstate,
+                            amcdistrict:amcdata.amcdistrict,
+                            amccity:amcdata.amccity,
+                            amcmachine:amcdata.amcmachine,
+                            amcperiod:amcdata.amcperiod,
+                            amcunitprice:amcdata.amcunitprice,
+                            amcqty:amcdata.amcqty,
+                            amcvisit:amcdata.amcvisit,
+                            // ....below are most import for every creating quotation
+                            docid:result.docid,
+                            amccreatedby:sharedvalue.uid,
+                            amcstatus:'open',
+                            amcadmincommt:''
+                        }
+                    })
+                    await batch.update(amcquotesid,{
+                        ...result
+                    })
+                    await batch.commit();
+                    window.scrollTo({top:0,behavior:'smooth'});
+                    loginsuccess();
+                    setamcdata(prev=>({
+                        ...prev,
+                        amcquottype:'',
+                        amccompanyname:'',
+                        amccountry:'',
+                        amcstate:'',
+                        amcdistrict:'',
+                        amccity:'',
+                        amcmachine:'',
+                        amcperiod:'',
+                        amcunitprice:'',
+                        amcqty:'',
+                        amcvisit:''
+                    }))
+                }
+                else{
+                    const id = uuidv4();
+                    await setDoc(doc(db,"amcdoc",`${id}`),{
+                        [result.id]:{
+                            amcquottype:amcdata.amcquottype,
+                            amccompanyname:amcdata.amccompanyname,
+                            amccountry:amcdata.amccountry,
+                            amcstate:amcdata.amcstate,
+                            amcdistrict:amcdata.amcdistrict,
+                            amccity:amcdata.amccity,
+                            amcmachine:amcdata.amcmachine,
+                            amcperiod:amcdata.amcperiod,
+                            amcunitprice:amcdata.amcunitprice,
+                            amcqty:amcdata.amcqty,
+                            amcvisit:amcdata.amcvisit,
+                            // ....below are most import for every creating quotation
+                            docid:id,
+                            amccreatedby:sharedvalue.uid,
+                            amcstatus:'open',
+                            amcadmincommt:''
+                        }
+                    })
+    
+                    await batch.update(amcquotesid,{
+                        ...result,
+                        count:0,
+                        docid:id
+                    })
+    
+                    await batch.commit();
+                    window.scrollTo({top:0,behavior:'smooth'});
+                    loginsuccess();
+    
+                    setamcdata(prev=>({
+                        ...prev,
+                        amcquottype:'',
+                        amccompanyname:'',
+                        amccountry:'',
+                        amcstate:'',
+                        amcdistrict:'',
+                        amccity:'',
+                        amcmachine:'',
+                        amcperiod:'',
+                        amcunitprice:'',
+                        amcqty:'',
+                        amcvisit:''
+                    }))
+                }
+            }
+        }else{
+            loginformerror();
+        }
+            
+        }catch(err){
+            console.log('you got an error while adding the spare quotation',err);
+            loginerror();
+        }
+        setshowloading(false);
     }
     return(
         <>
@@ -163,13 +324,32 @@ function CreateAmc(){
                                 </div>
 
                             </div>
-                            <button className="creatquotation-final-button" >
+                            <button className="creatquotation-final-button" onClick={(e)=>handlesubmitdata(e)}>
                                 create AMC
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+            <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    limit={1}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover
+                    theme="light"
+            />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showloading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     );
 }

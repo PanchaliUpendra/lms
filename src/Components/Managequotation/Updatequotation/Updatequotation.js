@@ -6,9 +6,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
-import {  createquotes } from "../../../Data/Docs";
+// import {  createquotes } from "../../../Data/Docs";
 import {writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
+import { doc } from "firebase/firestore";
 //importing the notifications
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
@@ -44,7 +45,7 @@ function Updatequotation(){
         quotcountry:'',
         quotstate:'',
         quotcustname:'',
-        quotlead:'',
+        // quotlead:'',
         quottype:'',
         quotcompanyname:'',
         quotmachinetype:'',
@@ -61,7 +62,18 @@ function Updatequotation(){
         quotaddinfo:'',
         quotstatus:'open',
         quotperfomaiorquot:'',
-        withgstornot:''
+        withgstornot:'',
+        //common for both usd and gst
+        // custcompanyname:'',
+        ofdcty:'',
+        contperson:'',
+        businesstype:'',
+        //extra fields for gst
+        // ofdst:'',//state
+        ofddst:'',//district
+        ofdpinc:'',//pincode
+        contmobilenum:'',//mobile number
+        altcontmobile:''//alternative mobile number
     })
     //create all states
     const [allstates,setallstates] = useState([]);
@@ -108,7 +120,7 @@ function Updatequotation(){
                 quotinfo.quotcountry!=='' &&
                 quotinfo.quotstate!=='' &&
                 quotinfo.quotcustname!=='' &&
-                quotinfo.quotlead!=='' &&
+                // quotinfo.quotlead!=='' &&
                 quotinfo.quotmachinetype!=='' &&
                 quotinfo.quotprodtype!=='' &&
                 quotinfo.quotcap!=='' &&
@@ -119,13 +131,13 @@ function Updatequotation(){
                 quotinfo.withgstornot!==''
             ){
             if(quoteid!==0){
-                await batch.update(createquotes,{
+                await batch.update(doc(db,"quotes",`${sharedvalue.quotesdata[quoteid].docid}`),{
                     [quoteid]:{
                         ...sharedvalue.quotesdata[quoteid],
                         quotcountry:quotinfo.quotcountry,
                         quotstate:quotinfo.quotstate,
                         quotcustname:quotinfo.quotcustname,
-                        quotlead:quotinfo.quotlead,
+                        // quotlead:quotinfo.quotlead,
                         quottype:quotinfo.quottype,
                         quotcompanyname:quotinfo.quotcompanyname,
                         quotmachinetype:quotinfo.quotmachinetype,
@@ -144,6 +156,17 @@ function Updatequotation(){
                         quotstatus:'open',
                         quotperfomaiorquot:quotinfo.quotperfomaiorquot,
                         withgstornot:quotinfo.withgstornot,
+                        //common for both usd and gst
+                        // custcompanyname:'',
+                        ofdcty:quotinfo.ofdcty,
+                        contperson:quotinfo.contperson,
+                        businesstype:quotinfo.businesstype,
+                        //extra fields for gst
+                        // ofdst:quotinfo.,//state
+                        ofddst:quotinfo.ofddst,//district
+                        ofdpinc:quotinfo.ofdpinc,//pincode
+                        contmobilenum:quotinfo.contmobilenum,//mobile number
+                        altcontmobile:quotinfo.altcontmobile//alternative mobile number
                     }
                 })
                 await batch.commit();//commit all baches
@@ -167,7 +190,7 @@ function Updatequotation(){
                 quotcountry:sharedvalue.quotesdata[quoteid].quotcountry,
                 quotstate:sharedvalue.quotesdata[quoteid].quotstate,
                 quotcustname:sharedvalue.quotesdata[quoteid].quotcustname,
-                quotlead:sharedvalue.quotesdata[quoteid].quotlead,
+                // quotlead:sharedvalue.quotesdata[quoteid].quotlead,
                 quottype:sharedvalue.quotesdata[quoteid].quottype,
                 quotcompanyname:sharedvalue.quotesdata[quoteid].quotcompanyname,
                 quotmachinetype:sharedvalue.quotesdata[quoteid].quotmachinetype,
@@ -185,6 +208,17 @@ function Updatequotation(){
                 quotstatus:sharedvalue.quotesdata[quoteid].quotstatus,
                 quotperfomaiorquot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "quotperfomaiorquot")?sharedvalue.quotesdata[quoteid].quotperfomaiorquot:'',
                 withgstornot:Object.prototype.hasOwnProperty.call(sharedvalue.quotesdata[quoteid], "withgstornot")?sharedvalue.quotesdata[quoteid].withgstornot:'',
+                //common for both usd and gst
+                // custcompanyname:'',
+                ofdcty:sharedvalue.quotesdata[quoteid].ofdcty,
+                contperson:sharedvalue.quotesdata[quoteid].contperson,
+                businesstype:sharedvalue.quotesdata[quoteid].businesstype,
+                //extra fields for gst
+                // ofdst:sharedvalue.quotesdata[quoteid].,//state
+                ofddst:sharedvalue.quotesdata[quoteid].ofddst,//district
+                ofdpinc:sharedvalue.quotesdata[quoteid].ofdpinc,//pincode
+                contmobilenum:sharedvalue.quotesdata[quoteid].contmobilenum,//mobile number
+                altcontmobile:sharedvalue.quotesdata[quoteid].altcontmobile//alternative mobile number
             }));
 
             setEditorData(sharedvalue.quotesdata[quoteid].quotpayterm);
@@ -309,7 +343,7 @@ function Updatequotation(){
                                 </div>
                                 }
                                 {/* lead id */}
-                                {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
+                                {/* {quotinfo.quotcountry!=='' && quotinfo.quotstate!=='' && quotinfo.quotcustname!=='' && 
                                     <div>
                                         <label>lead</label>
                                         <select value={quotinfo.quotlead} onChange={(e)=>setquotinfo(prev=>({
@@ -322,7 +356,7 @@ function Updatequotation(){
                                             ))}
                                         </select>
                                     </div>
-                                }
+                                } */}
                                 {/* quotation type */}
                                 <div>
                                     <label>quotation type</label>
@@ -336,6 +370,82 @@ function Updatequotation(){
                                         <option value='GST'>GST</option>
                                     </select>
                                 </div>
+                                {quotinfo.quottype==='GST' &&
+                                <div>
+                                    <label>district<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofddst} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        ofddst:e.target.value
+                                    }))}/>
+                                    
+                                </div>
+                                }
+
+                                {(quotinfo.quottype==='USD'||quotinfo.quottype==='GST')===true &&<>
+                                <div>
+                                    <label>city<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.ofdcty} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        ofdcty:e.target.value
+                                    }))}/>
+                                    
+                                </div>
+                                <div>
+                                    <label>contact person name<span style={{color:'red'}}>*</span></label>
+                                    <input type="text" value={quotinfo.contperson} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        contperson:e.target.value
+                                    }))} />
+                                    
+                                </div>
+                                <div>
+                                    <label>businesstype<span style={{color:'red'}}>*</span></label>
+                                    <select value={quotinfo.businesstype} onChange={(e)=>setquotinfo(prev=>({
+                                        ...prev,
+                                        businesstype:e.target.value
+                                    }))}>
+                                        <option value='' disabled>Select Mill/Business Type</option>
+                                        <option value='dall mill'>Dall Mill</option>
+                                        <option value='rice mill'>Rice Mill</option>
+                                        <option value='multigrain'>Multigrain</option>
+                                        <option value='spices'>Spices</option>
+                                        <option value='quartz'>Quartz</option>
+                                        <option value='mminerals'>Minerals</option>
+                                        <option value='plastics'>Plastics</option>
+                                        <option value='others'>Others</option>
+                                    </select>
+                                    
+                                </div>
+                                </>
+                                }
+                                {/* pincode ,mobile number and alternative mobile number */}
+                                {quotinfo.quottype==='GST' &&
+                                    <>
+                                        <div>
+                                            <label>pincode<span style={{color:'red'}}>*</span></label>
+                                            <input type="number" value={quotinfo.ofdpinc} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                ofdpinc:e.target.value
+                                            }))}/>
+                                            
+                                        </div>
+                                        <div>
+                                            <label>mobile number<span style={{color:'red'}}>*</span></label>
+                                            <input type="number" value={quotinfo.contmobilenum} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                contmobilenum:e.target.value
+                                            }))}/>
+                                            
+                                        </div>
+                                        <div>
+                                            <label>alternate mobile number</label>
+                                            <input type="number" value={quotinfo.altcontmobile} onChange={(e)=>setquotinfo(prev=>({
+                                                ...prev,
+                                                altcontmobile:e.target.value
+                                            }))}/>
+                                        </div>
+                                    </>
+                                }
                                 {/* company name */}
                                 {(quotinfo.quottype==='GST' || quotinfo.quottype ==='HSS') && 
                                 <div>
