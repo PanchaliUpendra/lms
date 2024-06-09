@@ -152,7 +152,7 @@ function Sidenav({menutoggle,handlemenutoggle}){
                     {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && 
                     <div className='snav-inner-each'>
                         <div 
-                        className={`snav-mle-inner-div ${location.pathname==='/managespare/createspare'||location.pathname==='/manageamc/viewspare'?'snav-mle-inner-div-active':''}`}
+                        className={`snav-mle-inner-div ${location.pathname==='/managespare/createspare'||location.pathname==='/managespare/viewspare'?'snav-mle-inner-div-active':''}`}
                         onClick={() => handleImageClick('uniqueDiv11')}
                         >
                             <div className='snav-mle-names'>

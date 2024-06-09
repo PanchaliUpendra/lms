@@ -402,6 +402,11 @@ function Updatelead(){
                                 Go Back
                             </button>
                         </div>
+                        <div className='updatelead-top-button'>
+                            <div className='create-lead-submit-btns updatele-top-btn-inner'>
+                                <button onClick={()=>handlecreatelead()}>update lead</button>
+                            </div>
+                        </div>
                         {/* view manqager and employee starts here*/}
                         <div className='create-lead-requirements'>
                             {(sharedvalue.role==='admin' || sharedvalue.role==='manager') && 

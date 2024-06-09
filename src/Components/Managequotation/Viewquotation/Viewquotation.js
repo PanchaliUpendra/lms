@@ -120,10 +120,12 @@ function Viewquotation(){
     async function handledeletequotation(quoteid){
         setshowloading(true);
         try{
+            
             await updateDoc(doc(db,"quotes",`${sharedvalue.quotesdata[quoteid].docid}`),{
                 [quoteid]:deleteField()
             });
             await batch.commit();
+            sharedvalue.DeleteQuoteElement(quoteid);
         }catch(e){
             console.log('you got an error while deleting the quotation',e);
         }

@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation} from "./Data/Docs";
+import { createtickets, leaddoc,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation, amcquotes} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
@@ -54,10 +54,24 @@ function MyProvider({children}){
     const [ticketsgraphlasttwelve,setticketsgraphlasttwelve]=useState([]);//array of last twelve months
     const [documentsdata,setdocumentsdata] = useState({});//ADD DOCUMENTS DATA
     const [documentskeys,setdocumentskeys] = useState([]);// document keys
+    const [sparesdata,setsparesdata] = useState({});//spares data
+    const [spareskeys,setspareskeys] = useState([]);//spares keys
+    const [amcdata,setamcdata] = useState({});//amc data
+    const [amckeys,setamckeys] = useState([]);//amc keys
    
 
     const updateSideNav = ()=>{
       setSideNavOnOff(prev=>!prev);
+    }
+
+    const DeleteQuoteElement = (quoteid)=>{
+      const temp_quote_data = quotesdata;
+      const temp_quote_key = quoteskeys.filter((item)=>item!==quoteid);
+      setquoteskeys(temp_quote_key);
+      if(quoteid in temp_quote_data){
+        delete temp_quote_data[quoteid];
+        setquotesdata(temp_quote_data);
+      }
     }
     
     const sharedvalue ={
@@ -82,9 +96,15 @@ function MyProvider({children}){
         ticketsgraphlasttwelve:ticketsgraphlasttwelve,
         documentsdata:documentsdata,
         documentskeys:documentskeys,
+        sparesdata:sparesdata,
+        spareskeys:spareskeys,
+        amcdata:amcdata,
+        amckeys:amckeys,
         role:user.role,
         sideNavOnOff:sideNavOnOff,
-        updateSideNav
+
+        updateSideNav,
+        DeleteQuoteElement
     }
 
     useEffect(()=>{
@@ -100,12 +120,48 @@ function MyProvider({children}){
                 userdtl:userd
               }))
 
+              //fetch amc data
+              const fetch_amc_data = async()=>{
+                try{
+                  await onSnapshot(amcquotes,(snapshot)=>{
+                    snapshot.forEach((doc)=>{
+                      const tempamcdata = doc.data();
+                      setamcdata(prev=>({
+                        ...prev,
+                        ...tempamcdata
+                      }));
+                      const tempamckeys = Object.keys(tempamcdata);
+                      const sorttempamckeys = [...tempamckeys].sort((a,b)=>b-a);
+                      setamckeys(prev=>Array.from(new Set([...prev,...sorttempamckeys])));
+                    })
+                  })
+                }catch(err){
+                  console.error('you got an error while fetching amc data: ',err);
+                }
+              }
+              fetch_amc_data();
+              //fetching amc ends here
+
               //spare quotation fetching
               const fetchSpareData = async() =>{
                 try{
+                  // await onSnapshot(sparequotation,(snapshot)=>{
+                  //   snapshot.forEach((doc)=>{
+                  //     console.log(doc.id," => ",doc.data());
+                  //   })
+                  // })
                   await onSnapshot(sparequotation,(snapshot)=>{
                     snapshot.forEach((doc)=>{
-                      console.log(doc.id," => ",doc.data());
+                      const tempsparedata = doc.data();
+                      // console.log("data", tempquotesdata);
+                      setsparesdata(prev=>({
+                        ...prev,
+                        ...tempsparedata
+                      }));
+                      const tempsparekeys = Object.keys(tempsparedata);
+                      const sorttempsparekeys = [...tempsparekeys].sort((a,b)=>b-a);
+                      setspareskeys(prev => Array.from(new Set([...prev, ...sorttempsparekeys])))
+                      // console.log(doc.id," => ",doc.data());
                     })
                   })
                 }catch(err){
@@ -191,7 +247,7 @@ function MyProvider({children}){
                   await onSnapshot(createquotes,(snapshot)=>{
                     snapshot.forEach((doc)=>{
                       const tempquotesdata = doc.data();
-                      console.log("data", tempquotesdata);
+                      // console.log("data", tempquotesdata);
                       setquotesdata(prev=>({
                         ...prev,
                         ...tempquotesdata

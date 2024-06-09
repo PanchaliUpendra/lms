@@ -39,9 +39,11 @@ import AddDocuments from './Components/Documents/AddDocuments';
 //create amc and view aMC
 import CreateAmc from './Components/ManageAmc/CreateAmc/CreateAmc';
 import ViewAmc from './Components/ManageAmc/ViewAmc/ViewAmc';
+import VerifyAmc from './Components/ManageAmc/VerifyAmc/VerifyAmc';
 //create and view  spare
 import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
 import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
+import VerifySpare from './Components/ManageSpare/VerifySapre/VerifySpare';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -118,9 +120,12 @@ function App() {
         {/* managing amc */}
         <Route path='/manageamc/createamc' element={<CreateAmc/>}/>
         <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>
+        <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>
         {/* manage spare quotation */}
         <Route path='/managespare/createspare' element={<CreateSpare/>}/>
         <Route path='/managespare/viewspare' element={<ViewSpare/>}/>
+        <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>
+
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
 

@@ -125,7 +125,7 @@ function Viewlead(){
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
-                                            .filter(item=>(sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager)))
+                                            .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
                                             .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
@@ -299,6 +299,7 @@ function Viewlead(){
                                     <option value={manager} key={idx}>{sharedvalue.workersdata[manager].name}</option>
                                     ))
                                 }
+                                <option value='none'>None</option>
                             </select>
                                     
                         </div>
