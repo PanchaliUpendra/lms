@@ -14,6 +14,9 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { writeBatch , doc} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { updateDoc, deleteField } from "firebase/firestore";
+import DownloadIcon from '@mui/icons-material/Download';
+import Sparequote from "../../Managequotation/Sparequote";
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 
 function ViewSpare(){
@@ -31,8 +34,29 @@ function ViewSpare(){
    });
    const [dwnquote,setdwnquote] = useState({
     active:false,
-    quoteid:''
+    spareid:''
     });
+
+    async function handledwnquote(spare){
+        setshowloading(true);
+        try{
+            setdwnquote(prev=>({
+                ...prev,
+                spareid:spare
+            }))
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:true,
+                }))
+                setshowloading(false);
+            }, 1800);
+        }catch(e){
+            alert('you got error while dwonloading...',e);
+        }
+        // setshowloading(false);
+    }
+
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
@@ -81,6 +105,19 @@ function ViewSpare(){
          setshowloading(false);
     }
     //function to delete the quotation ends here
+    async function handledwnquoteafterclose(){
+        try{
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:false,
+                    spareid:''
+                }))
+            },500);
+        }catch(e){
+            alert('you got an erro while closing...',e);
+        }
+    }
     return(
         <>
             <div className={`manlead-con ${(workerdelete.active===true || dwnquote.active===true)===true?'manlead-con-inactive':''}`} >
@@ -158,7 +195,12 @@ function ViewSpare(){
                                                         spareid:spare
                                                         }))} >close</span>}
                                                          {sharedvalue.sparesdata[spare].sparestatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(spare)}/>}
+                                                         {
+                                                        ((sharedvalue.uid===sharedvalue.sparesdata[spare].sparecreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.sparesdata[spare].sparestatus==='approved'||sharedvalue.sparesdata[spare].sparestatus==='closed' ) && 
+                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>handledwnquote(spare)} />
+                                                        }
                                                         </p>
+                                                        
                                                        
                                                     </td>
                                                     {/* company name */}
@@ -199,6 +241,24 @@ function ViewSpare(){
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            {/* popup to download the pdf */}
+            <div className={`view-manager-list-popup-delete ${dwnquote.active===true?'active-delete-popup':''}`}>
+                <p>Are you sure you want to download the pdf <span>{ dwnquote.spareid!==''?sharedvalue.sparesdata[dwnquote.spareid].companyname:''}</span></p>
+                <div>
+                    { 
+                        dwnquote.spareid!==''   && <PDFDownloadLink document={<Sparequote spareid={dwnquote.spareid} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.sparesdata[dwnquote.spareid].companyname}`}>
+                            <button onClick={()=>handledwnquoteafterclose()}>yes</button>
+                        </PDFDownloadLink>
+                    }
+                    
+                    {/* <button>Yes</button> */}
+                    <button onClick={()=>setdwnquote(prev=>({
+                        ...prev,
+                        active:false,
+                        spareid:''
+                    }))}>No</button>
                 </div>
             </div>
             {/* popup to close an item */}

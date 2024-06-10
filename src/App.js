@@ -46,6 +46,7 @@ import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
 import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
 import VerifySpare from './Components/ManageSpare/VerifySapre/VerifySpare';
 import UpdateSpare from './Components/ManageSpare/UpdateSpare/UpdateSpare';
+import Sparequote from './Components/Managequotation/Sparequote';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -130,7 +131,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/viewspare' element={<ViewSpare/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>}
-
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/sparepdf/:spareid' element={<Sparequote/>}/>}
 
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>
