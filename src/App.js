@@ -41,6 +41,7 @@ import CreateAmc from './Components/ManageAmc/CreateAmc/CreateAmc';
 import ViewAmc from './Components/ManageAmc/ViewAmc/ViewAmc';
 import VerifyAmc from './Components/ManageAmc/VerifyAmc/VerifyAmc';
 import UpdateAmc from './Components/ManageAmc/UpdateAmc/UpdateAmc';
+import Amcquote from './Components/Managequotation/Amcquote';
 //create and view  spare
 import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
 import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
@@ -125,6 +126,7 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updateamc/:amcid' element={<UpdateAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/amcpdf/:amcid' element={<Amcquote/>}/>}
 
         {/* manage spare quotation */}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/createspare' element={<CreateSpare/>}/>}

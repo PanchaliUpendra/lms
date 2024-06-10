@@ -77,7 +77,7 @@ const Sparequote = (props) =>{
             <>
             {sharedvalue.spareskeys.length>0 && 
                 <Document>
-                    <Page size='A4' style={StyleSheet.page}>
+                    <Page size='A4' style={styles.page}>
                         <View style={styles.section}>
                         <View style={{display:'flex',flexDirection:'row', alignItems:'center',justifyContent:'space-between',
                             paddingBottom:10, borderBottom:0.5,borderBottomColor:'gray'}}>
@@ -175,7 +175,7 @@ const Sparequote = (props) =>{
     )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     numbertorupees:{
         fontFamily:'OpenSans',
         fontWeight:600,
