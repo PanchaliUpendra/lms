@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { useNavigate } from "react-router-dom";
-// import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 function ViewSpare(){
     const sharedvalue = useContext(MyContext);
@@ -87,7 +87,7 @@ function ViewSpare(){
                                                     {/* action */}
                                                     <td>
                                                         <p className='view-manager-list-acttion-icon'>
-                                                        {/* { (sharedvalue.sparesdata[spare].sparestatus==='open' || sharedvalue.sparesdata[spare].sparestatus==='rework') && sharedvalue.uid===sharedvalue.sparesdata[spare].sparecreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managequotation/updatequotation/${spare}`)} />} */}
+                                                        { (sharedvalue.sparesdata[spare].sparestatus==='open' || sharedvalue.sparesdata[spare].sparestatus==='rework') && sharedvalue.uid===sharedvalue.sparesdata[spare].sparecreatedby && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/manageamc/updatespare/${spare}`)} />}
                                                         {sharedvalue.sparesdata[spare].sparestatus!=='closed' && sharedvalue.role==='admin' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}}  fontSize="small" onClick={()=>navigate(`/managespare/verifyspare/${spare}`)}/>}
                                                         </p>
                                                     </td>

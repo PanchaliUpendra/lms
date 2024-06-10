@@ -40,6 +40,7 @@ import AddDocuments from './Components/Documents/AddDocuments';
 import CreateAmc from './Components/ManageAmc/CreateAmc/CreateAmc';
 import ViewAmc from './Components/ManageAmc/ViewAmc/ViewAmc';
 import VerifyAmc from './Components/ManageAmc/VerifyAmc/VerifyAmc';
+import UpdateSpare from './Components/ManageSpare/UpdateSpare/UpdateSpare';
 //create and view  spare
 import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
 import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
@@ -121,10 +122,13 @@ function App() {
         <Route path='/manageamc/createamc' element={<CreateAmc/>}/>
         <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>
         <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>
+
         {/* manage spare quotation */}
         <Route path='/managespare/createspare' element={<CreateSpare/>}/>
         <Route path='/managespare/viewspare' element={<ViewSpare/>}/>
         <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>
+        <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>
+
 
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>

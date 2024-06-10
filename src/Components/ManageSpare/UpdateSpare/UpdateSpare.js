@@ -1,11 +1,11 @@
-import React,{useContext, useState} from "react";
-import './CreateSpare.css';
+import React,{useContext, useState , useEffect} from "react";
+import './UpdateSpare.css';
 
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 
@@ -23,12 +23,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Error from "../../../Error/Error";
 
-function CreateSpare(){
+function UpdateSpare(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);
     const navigate = useNavigate();
     const [showloading,setshowloading] = useState(false);
+    const {spareid} = useParams();
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the spare Quotation');
     const loginerror = () =>toast.error('Getting Error while Creating spare Quotation');
@@ -84,6 +86,8 @@ function CreateSpare(){
         sparedist:'',
         sparecity:'',
         sparereqmachine:'',
+        sparestatus:'open',
+        spareadmincommt:''
     });
     
     //code only for toggle the menu bar
@@ -155,7 +159,7 @@ function CreateSpare(){
                         sparequottype:'',
                         companyname:'',
                         othercompanyname:'',
-                        sparecountry:'',
+                        sparecountry:'India',
                         sparestate:'',
                         sparedist:'',
                         sparecity:'',
@@ -200,7 +204,7 @@ function CreateSpare(){
                         sparequottype:'',
                         companyname:'',
                         othercompanyname:'',
-                        sparecountry:'',
+                        sparecountry:'India',
                         sparestate:'',
                         sparedist:'',
                         sparecity:'',
@@ -225,8 +229,31 @@ function CreateSpare(){
         }
         setshowloading(false);
     }
+    useEffect(()=>{
+        if(sharedvalue.spareskeys.length>0 && sharedvalue.spareskeys.includes(spareid)){
+            setsparequotedata(prev => ({
+                ...prev,
+                sparequottype:sharedvalue.sparesdata[spareid].sparequottype,
+                companyname:sharedvalue.sparesdata[spareid].companyname,
+                othercompanyname:sharedvalue.sparesdata[spareid].othercompanyname,
+                sparecountry:sharedvalue.sparesdata[spareid].sparecountry,
+                sparestate:sharedvalue.sparesdata[spareid].sparestate,
+                sparedist:sharedvalue.sparesdata[spareid].sparedist,
+                sparecity:sharedvalue.sparesdata[spareid].sparecity,
+                sparereqmachine:sharedvalue.sparesdata[spareid].sparereqmachine,
+                spares:sharedvalue.sparesdata[spareid].spares,
+                docid:sharedvalue.sparesdata[spareid].docid,
+                sparecreatedby:sharedvalue.sparesdata[spareid].sparecreatedby,
+                sparestatus:sharedvalue.sparesdata[spareid].sparestatus,
+                spareadmincommt:sharedvalue.sparesdata[spareid].spareadmincommt
+            }))
+
+            setspares(sharedvalue.sparesdata[spareid].spares)
+        }
+    },[sharedvalue.spareskeys,spareid,sharedvalue.sparesdata,sharedvalue.uid])
     return(
         <>
+        {(sharedvalue.spareskeys.length>0 && sharedvalue.spareskeys.includes(spareid)===true && sharedvalue.sparesdata[spareid].sparecreatedby===sharedvalue.uid && (sharedvalue.sparesdata[spareid].sparestatus==='open' || sharedvalue.sparesdata[spareid].sparestatus==='rework'))===true?
             <div className='manlead-con'>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
@@ -394,7 +421,7 @@ function CreateSpare(){
                         </div>
                     </form>
                 </div>
-            </div>
+            </div>:<Error/>}
             <ToastContainer
                     position="top-center"
                     autoClose={2000}
@@ -418,4 +445,4 @@ function CreateSpare(){
     );
 }
 
-export default CreateSpare;
+export default UpdateSpare;
