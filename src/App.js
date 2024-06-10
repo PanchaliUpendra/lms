@@ -40,11 +40,12 @@ import AddDocuments from './Components/Documents/AddDocuments';
 import CreateAmc from './Components/ManageAmc/CreateAmc/CreateAmc';
 import ViewAmc from './Components/ManageAmc/ViewAmc/ViewAmc';
 import VerifyAmc from './Components/ManageAmc/VerifyAmc/VerifyAmc';
-import UpdateSpare from './Components/ManageSpare/UpdateSpare/UpdateSpare';
+import UpdateAmc from './Components/ManageAmc/UpdateAmc/UpdateAmc';
 //create and view  spare
 import CreateSpare from './Components/ManageSpare/CreateSpare/CreateSpare';
 import ViewSpare from './Components/ManageSpare/ViewSpare/ViewSpare';
 import VerifySpare from './Components/ManageSpare/VerifySapre/VerifySpare';
+import UpdateSpare from './Components/ManageSpare/UpdateSpare/UpdateSpare';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
 //please remove after completed the design
@@ -119,15 +120,16 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents/:category/:subcategory' element={<Documents/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/adddocuments' element={<AddDocuments/>}/>}
         {/* managing amc */}
-        <Route path='/manageamc/createamc' element={<CreateAmc/>}/>
-        <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>
-        <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/createamc' element={<CreateAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updateamc/:amcid' element={<UpdateAmc/>}/>}
 
         {/* manage spare quotation */}
-        <Route path='/managespare/createspare' element={<CreateSpare/>}/>
-        <Route path='/managespare/viewspare' element={<ViewSpare/>}/>
-        <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>
-        <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/createspare' element={<CreateSpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/viewspare' element={<ViewSpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>}
 
 
         <Route path='/spinner' element={<Spinner/>}/>

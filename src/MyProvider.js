@@ -74,6 +74,28 @@ function MyProvider({children}){
       }
     }
     
+    const delete_spare_quote = (spareid) =>{
+      const temp_spare_data = sparesdata;
+      const temp_spare_key = spareskeys.filter((item)=>item!==spareid);
+      setspareskeys(temp_spare_key);
+      if(spareid in temp_spare_data){
+        delete temp_spare_data[spareid];
+        setquotesdata(temp_spare_data);
+      }
+    }
+
+    const Delete_amc_quote = (amcid) =>{
+      const temp_amc_data = amcdata;
+      const temp_amc_key = amckeys.filter((item)=>amcid!==item);
+      setamckeys(temp_amc_key);
+      if(amcid in temp_amc_data){
+        delete temp_amc_data[amcid];
+        setamcdata(temp_amc_data);
+      }
+    }
+
+
+
     const sharedvalue ={
         isAuthed:user.isAuthed,
         uid:user.uid,
@@ -104,7 +126,9 @@ function MyProvider({children}){
         sideNavOnOff:sideNavOnOff,
 
         updateSideNav,
-        DeleteQuoteElement
+        DeleteQuoteElement,
+        delete_spare_quote,
+        Delete_amc_quote
     }
 
     useEffect(()=>{

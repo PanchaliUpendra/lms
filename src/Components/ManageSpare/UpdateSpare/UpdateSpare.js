@@ -4,18 +4,20 @@ import './UpdateSpare.css';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
 import Sidenav from "../../Sidenav/Sidenav";
 import { useNavigate, useParams } from "react-router-dom";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { onSnapshot , writeBatch } from "firebase/firestore";
-import { sparequotationid } from "../../../Data/Docs";
+import { writeBatch } from "firebase/firestore";
+// import { sparequotationid } from "../../../Data/Docs";
 import { db } from "../../../Firebase";
-import { doc , setDoc } from "firebase/firestore";
+import { doc} from "firebase/firestore";
 
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -32,10 +34,10 @@ function UpdateSpare(){
     const [showloading,setshowloading] = useState(false);
     const {spareid} = useParams();
     // adding notifications 
-    const loginsuccess = () =>toast.success('Successfully Created the spare Quotation');
-    const loginerror = () =>toast.error('Getting Error while Creating spare Quotation');
+    const loginsuccess = () =>toast.success('Successfully updated the spare Quotation');
+    const loginerror = () =>toast.error('Getting Error while updating spare Quotation');
     const loginformerror = () => toast.info('please fill the all Required Fields');
-    const invalidmail = () => toast.warn('unique id was not generating!!!');
+    // const invalidmail = () => toast.warn('unique id was not generating!!!');
     //array of spare parts data
     const [spares,setspares] = useState([{
         id:0,
@@ -97,23 +99,23 @@ function UpdateSpare(){
     }
 
     //function  to fetch the spare quotation id
-    const fetchsparequotationid = async()=>{
-        try{
-            return new Promise((resolve,reject)=>{
-                onSnapshot(sparequotationid,(doc)=>{
-                    const temptexpid = doc.data();
-                    resolve({
-                        ...temptexpid,
-                        count:temptexpid.count+1,
-                        id:temptexpid.id+1
-                    });
-                })
-            })
-        }catch(err){
-            console.log('you got an error while fetching the spare quotation id : ',err);
-            invalidmail();
-        }
-    }
+    // const fetchsparequotationid = async()=>{
+    //     try{
+    //         return new Promise((resolve,reject)=>{
+    //             onSnapshot(sparequotationid,(doc)=>{
+    //                 const temptexpid = doc.data();
+    //                 resolve({
+    //                     ...temptexpid,
+    //                     count:temptexpid.count+1,
+    //                     id:temptexpid.id+1
+    //                 });
+    //             })
+    //         })
+    //     }catch(err){
+    //         console.log('you got an error while fetching the spare quotation id : ',err);
+    //         invalidmail();
+    //     }
+    // }
     //function handle the submit data
     async function handlesubmitdata(event){
         event.preventDefault();
@@ -128,11 +130,12 @@ function UpdateSpare(){
                 sparequotedata.sparecity!=='' &&
                 sparequotedata.sparereqmachine!==''
             ){
-            const result = await fetchsparequotationid();
-            if(result && result.id!==0){
-                if(result.count<=500){
-                    await batch.update(doc(db,"sparequotation",`${result.docid}`),{
-                        [result.id]:{
+            // const result = await fetchsparequotationid();
+            if(spareid!==0){
+                // if(result.count<=500){
+                    await batch.update(doc(db,"sparequotation",`${sharedvalue.sparesdata[spareid].docid}`),{
+                        [spareid]:{
+                            ...sharedvalue.sparesdata[spareid],
                             sparequottype:sparequotedata.sparequottype,
                             companyname:sparequotedata.companyname,
                             othercompanyname:sparequotedata.othercompanyname,
@@ -142,82 +145,82 @@ function UpdateSpare(){
                             sparecity:sparequotedata.sparecity,
                             sparereqmachine:sparequotedata.sparereqmachine,
                             spares:spares,
-                            docid:result.docid,
-                            sparecreatedby:sharedvalue.uid,
-                            sparestatus:'open',
-                            spareadmincommt:''
+                            // docid:result.docid,
+                            // sparecreatedby:sharedvalue.uid,
+                            // sparestatus:'open',
+                            // spareadmincommt:''
                         }
                     })
-                    await batch.update(sparequotationid,{
-                        ...result
-                    })
+                    // await batch.update(sparequotationid,{
+                    //     ...result
+                    // })
                     await batch.commit();
                     window.scrollTo({top:0,behavior:'smooth'});
                     loginsuccess();
-                    setsparequotedata(prev=>({
-                        ...prev,
-                        sparequottype:'',
-                        companyname:'',
-                        othercompanyname:'',
-                        sparecountry:'India',
-                        sparestate:'',
-                        sparedist:'',
-                        sparecity:'',
-                        sparereqmachine:'',
-                    }));
-                    setspares([{
-                        id:0,
-                        sparepart:'',
-                        qty:0,
-                        unitprice:0,
-                        totalprice:0
-                    }]);
-                }else{
-                    const id = uuidv4();
-                    await setDoc(doc(db,'sparequotation',`${id}`),{
-                        [result.id]:{
-                            sparequottype:sparequotedata.sparequottype,
-                            companyname:sparequotedata.companyname,
-                            othercompanyname:sparequotedata.othercompanyname,
-                            sparecountry:sparequotedata.sparecountry,
-                            sparestate:sparequotedata.sparestate,
-                            sparedist:sparequotedata.sparedist,
-                            sparecity:sparequotedata.sparecity,
-                            sparereqmachine:sparequotedata.sparereqmachine,
-                            spares:spares,
-                            docid:id,
-                            sparecreatedby:sharedvalue.uid,
-                            sparestatus:'open',
-                            spareadmincommt:''
-                        }
-                    });
-                    await batch.update(sparequotationid,{
-                        ...result,
-                        count:0,
-                        docid:id
-                    })
-                    await batch.commit();
-                    window.scrollTo({top:0,behavior:'smooth'});
-                    loginsuccess();
-                    setsparequotedata(prev=>({
-                        ...prev,
-                        sparequottype:'',
-                        companyname:'',
-                        othercompanyname:'',
-                        sparecountry:'India',
-                        sparestate:'',
-                        sparedist:'',
-                        sparecity:'',
-                        sparereqmachine:'',
-                    }));
-                    setspares([{
-                        id:0,
-                        sparepart:'',
-                        qty:0,
-                        unitprice:0,
-                        totalprice:0
-                    }]);
-                }
+                    // setsparequotedata(prev=>({
+                    //     ...prev,
+                    //     sparequottype:'',
+                    //     companyname:'',
+                    //     othercompanyname:'',
+                    //     sparecountry:'India',
+                    //     sparestate:'',
+                    //     sparedist:'',
+                    //     sparecity:'',
+                    //     sparereqmachine:'',
+                    // }));
+                    // setspares([{
+                    //     id:0,
+                    //     sparepart:'',
+                    //     qty:0,
+                    //     unitprice:0,
+                    //     totalprice:0
+                    // }]);
+            //     }else{
+            //         const id = uuidv4();
+            //         await setDoc(doc(db,'sparequotation',`${id}`),{
+            //             [result.id]:{
+            //                 sparequottype:sparequotedata.sparequottype,
+            //                 companyname:sparequotedata.companyname,
+            //                 othercompanyname:sparequotedata.othercompanyname,
+            //                 sparecountry:sparequotedata.sparecountry,
+            //                 sparestate:sparequotedata.sparestate,
+            //                 sparedist:sparequotedata.sparedist,
+            //                 sparecity:sparequotedata.sparecity,
+            //                 sparereqmachine:sparequotedata.sparereqmachine,
+            //                 spares:spares,
+            //                 docid:id,
+            //                 sparecreatedby:sharedvalue.uid,
+            //                 sparestatus:'open',
+            //                 spareadmincommt:''
+            //             }
+            //         });
+            //         await batch.update(sparequotationid,{
+            //             ...result,
+            //             count:0,
+            //             docid:id
+            //         })
+            //         await batch.commit();
+            //         window.scrollTo({top:0,behavior:'smooth'});
+            //         loginsuccess();
+            //         setsparequotedata(prev=>({
+            //             ...prev,
+            //             sparequottype:'',
+            //             companyname:'',
+            //             othercompanyname:'',
+            //             sparecountry:'India',
+            //             sparestate:'',
+            //             sparedist:'',
+            //             sparecity:'',
+            //             sparereqmachine:'',
+            //         }));
+            //         setspares([{
+            //             id:0,
+            //             sparepart:'',
+            //             qty:0,
+            //             unitprice:0,
+            //             totalprice:0
+            //         }]);
+            //     }
                 
             }
             }else{
@@ -272,7 +275,17 @@ function UpdateSpare(){
                     {/* your createmanager starts from here */}
                     <form className='create-lead-con'>
                         <div className='create-lead-head'>
-                            <h1>Create Spare Quotation</h1>
+                            <h1>Update Spare Quotation</h1>
+                        </div>
+                        <div className='create-lead-head-button-comes-here updatequote-backwards'>
+                            <button onClick={(e)=>{
+                                e.preventDefault();
+                                navigate(-1);
+
+                                }}>
+                                <ChevronLeftIcon/>
+                                Go Back
+                            </button>
                         </div>
                         {/* form starts here */}
                         <div className="create-quotation-form-starts-here">
@@ -416,7 +429,7 @@ function UpdateSpare(){
                             </div>}
                             
                             <button className="creatquotation-final-button" onClick={(e)=>handlesubmitdata(e)}>
-                                create Spare quotation
+                                update Spare quotation
                             </button>
                         </div>
                     </form>
