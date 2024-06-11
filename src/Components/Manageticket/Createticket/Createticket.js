@@ -7,9 +7,9 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
-import { onSnapshot ,writeBatch} from "firebase/firestore";
+import { doc,onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createticketid, createtickets, ticketsgraphdoc , API_ONE_TO_ONE} from "../../../Data/Docs";
+import { createticketid, ticketsgraphdoc , API_ONE_TO_ONE} from "../../../Data/Docs";
 //import storage 
 import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 import { storage } from "../../../Firebase";
@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import loading from '../../../Assets/loading.gif';
 import { useNavigate } from "react-router-dom";
 import { months } from "../../../Data/Months";
+import { v4 as uuidv4 } from 'uuid';
 
 import { createworkers } from "../../../Data/Docs";
 
@@ -69,6 +70,8 @@ function Createticket(){
         ctktdes:'',
         ctktpriority:'',
         ctktasslc:'',
+        //device details
+        devicedtls:'',
         // extra fields for warranty
         ctktwtysrtdate:'',
         ctktwtydur:'',
@@ -102,7 +105,11 @@ function Createticket(){
             return new Promise((resolve, reject) =>{
                 onSnapshot(createticketid,(doc)=>{
                     const temptktid = doc.data();
-                    resolve(temptktid.tktid+1);
+                    resolve({
+                        ...temptktid,
+                        count:temptktid.count+1,
+                        id:temptktid.id+1
+                    });
                     resolve('ubbu')
                 });
             })
@@ -161,6 +168,7 @@ function Createticket(){
                 ticketinfo.ctktpriority!=='' 
             ){
                 const result = await fetchtktid();
+                if(result.count<=500){//result count<=500
                 var fileurl ='';
                 if(ctktfile!==''){
                     try{
@@ -185,8 +193,8 @@ function Createticket(){
                 const stringtodaydate = formatDateString(currentDate);
 
                 //sending msg to the admin when creating ticket
-                if(result>=1109699 && fileurl!==null){
-                    const message = `A new ticket [tkt.id ${result}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
+                if(result.id>=24041999 && fileurl!==null){
+                    const message = `A new ticket [tkt.id ${result.id}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
                     const phone = `9440000815`;//here we have to give the admin number
                     const data={
                         message:message,
@@ -196,9 +204,9 @@ function Createticket(){
                 }
                 
                 //adding the data here
-                if(result>=1109699 && fileurl!==null){
-                    await batch.update(createtickets,{
-                        [result]:{
+                if(result.id>=24041999 && fileurl!==null){
+                    await batch.update(doc(db,"tickets",`${result.docid}`),{
+                        [result.id]:{
                             ctktcountry:ticketinfo.ctktcountry,
                             ctktstate:ticketinfo.ctktstate,
                             ctktdist:ticketinfo.ctktdist,
@@ -214,11 +222,13 @@ function Createticket(){
                             status:'open',
                             workingstatus:'',
                             fileurl:fileurl,
-                            id:result,
+                            id:result.id,
                             createdbyid:sharedvalue.uid,
                             ctktopen:stringtodaydate,
                             ctktclose:'',
                             ctktdatetime:currentdatetime,
+                            devicedtls:ticketinfo.devicedtls,
+                            docid:result.docid,
                             // extra fields for warranty
                             ctktwtysrtdate:ticketinfo.ctktwtysrtdate,
                             ctktwtydur:ticketinfo.ctktwtydur,
@@ -260,7 +270,7 @@ function Createticket(){
                     }
 
                     await batch.update(createticketid,{
-                        "tktid":result
+                        ...result
                     });
 
                     await batch.commit();
@@ -276,6 +286,7 @@ function Createticket(){
                         ctktpriority:'',
                         ctktasslc:'',
                         ctktothercustname:'',
+                        devicedtls:'',
                         // extra fields for warranty
                         ctktwtysrtdate:'',
                         ctktwtydur:'',
@@ -292,6 +303,145 @@ function Createticket(){
                     setctktfile('');
                     setErrors({});
                 }
+            }else{
+                const id = uuidv4();
+                var fileurl1 ='';
+                if(ctktfile!==''){
+                    try{
+                        const storageref = ref(storage,ctktfile.name);
+                        const response = await uploadBytes(storageref,ctktfile);
+                        if(response){
+                            fileurl1= await downloadfileurl();
+                        }else{
+                            console.log('response error');
+                        }
+                    }catch(e){
+                        console.error('you got an error while uploading gthe file, ', e);
+                        alert('you got an  error');
+                    }
+                    
+                    
+                }
+
+                const formatDateString = (date) => date.toISOString().split('T')[0];
+                const currentDate = new Date();
+                const currentdatetime = currentDate.toISOString();
+                const stringtodaydate = formatDateString(currentDate);
+
+                //sending msg to the admin when creating ticket
+                if(result.id>=24041999 && fileurl1!==null){
+                    const message = `A new ticket [tkt.id ${result.id}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
+                    const phone = `9440000815`;//here we have to give the admin number
+                    const data={
+                        message:message,
+                        phone:phone
+                    }
+                    await handleSendMsgToAdmin(data);
+                }
+                
+                //adding the data here
+                if(result.id>=24041999 && fileurl1!==null){
+                    await setDoc(doc(db,"tickets",`${id}`),{
+                        [result.id]:{
+                            ctktcountry:ticketinfo.ctktcountry,
+                            ctktstate:ticketinfo.ctktstate,
+                            ctktdist:ticketinfo.ctktdist,
+                            ctktcustname:sharedvalue.role==='customer'?sharedvalue.uid:ticketinfo.ctktcustname,
+                            ctktothercustname:ticketinfo.ctktothercustname,
+                            ctktcalltype:ticketinfo.ctktcalltype,
+                            ctktcate:ticketinfo.ctktcate,
+                            ctktdes:ticketinfo.ctktdes,
+                            ctktpriority:ticketinfo.ctktpriority,
+                            ctktasslc:ticketinfo.ctktasslc,
+                            ctktmanager:sharedvalue.role==='manager'?sharedvalue.uid:sharedvalue.role==='employee'?sharedvalue.workersdata[sharedvalue.uid].managerid:'',
+                            ctktemployee:sharedvalue.role==='employee'?sharedvalue.uid:'',
+                            status:'open',
+                            workingstatus:'',
+                            fileurl:fileurl1,
+                            id:result.id,
+                            createdbyid:sharedvalue.uid,
+                            ctktopen:stringtodaydate,
+                            ctktclose:'',
+                            ctktdatetime:currentdatetime,
+                            devicedtls:ticketinfo.devicedtls,
+                            docid:id,
+                            // extra fields for warranty
+                            ctktwtysrtdate:ticketinfo.ctktwtysrtdate,
+                            ctktwtydur:ticketinfo.ctktwtydur,
+                            ctktwtyenddate:ticketinfo.ctktwtyenddate,
+                            //extra fields for AMC
+                            ctktamcsrtdate:ticketinfo.ctktamcsrtdate,
+                            ctktamcdur:ticketinfo.ctktamcdur,
+                            ctktamcvisits:ticketinfo.ctktamcvisits,
+                            ctktamcenddate:ticketinfo.ctktamcenddate,
+                            //extra fields for resolving work
+                            ctktmodedata:ticketinfo.ctktmodedata,
+                            ctktservicereport:ticketinfo.ctktservicereport
+                        }
+                    });
+                    //updating the tickets graph data
+                    let currentDate = new Date();
+                    let year = currentDate.getFullYear();
+                    let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                    let yearMonth = year + month;
+                    let yearMonthNumber = Number(yearMonth);
+                    
+                    if(sharedvalue.ticketsgraphkeys.includes(yearMonth)){
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                ...sharedvalue.ticketsgraphdata[yearMonthNumber],
+                                to:Number(sharedvalue.ticketsgraphdata[yearMonthNumber].to)+1
+                            }
+                        })
+                    }else{
+                        
+                        await batch.update(ticketsgraphdoc,{
+                            [yearMonthNumber]:{
+                                to:1,
+                                tc:0,
+                                month:months[month]
+                            }
+                        })
+                    }
+
+                    await batch.update(createticketid,{
+                        ...result,
+                        docid:id,
+                        count:0
+                    });
+
+                    await batch.commit();
+                    loginsuccess();//successfully added the data
+                    setticketinfo({
+                        ctktcountry:'India',
+                        ctktstate:'',
+                        ctktdist:'',
+                        ctktcustname:'',
+                        ctktcalltype:'',
+                        ctktcate:'-',
+                        ctktdes:'',
+                        ctktpriority:'',
+                        ctktasslc:'',
+                        ctktothercustname:'',
+                        devicedtls:'',
+                        // extra fields for warranty
+                        ctktwtysrtdate:'',
+                        ctktwtydur:'',
+                        ctktwtyenddate:'',
+                        //extra fields for AMC
+                        ctktamcsrtdate:'',
+                        ctktamcdur:'',
+                        ctktamcvisits:'',
+                        ctktamcenddate:'',
+                        //extra fields for resolving work
+                        ctktmodedata:'',
+                        ctktservicereport:''
+                    });
+                    setctktfile('');
+                    setErrors({});
+                }
+            }
             }
             else{
                 const newErrors={};
@@ -628,7 +778,15 @@ function Createticket(){
                                 {errors.ctktothercustname && <small style={{color:'red'}}>{errors.ctktothercustname}</small>}
                             </div>
                              }
-                            <div>
+                             {/* description starts here */}
+                             <div>
+                                        <label>device details</label>
+                                        <textarea placeholder="enter your device details..." value={ticketinfo.devicedtls} onChange={(e)=>setticketinfo(prev=>({
+                                            ...prev,
+                                            devicedtls:e.target.value
+                                        }))}/>
+                                    </div>
+                            {/* <div>
                                     <label>Associated Lead Code</label>
                                     <select value={ticketinfo.ctktasslc} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
@@ -643,7 +801,7 @@ function Createticket(){
                                             ))
                                         }
                                     </select>
-                                </div>
+                                </div> */}
                             {/* call type starts here */}
                             <div>
                                 <label>Call type<span style={{color:'red'}}>*</span></label>
@@ -815,7 +973,7 @@ function Createticket(){
                             {/* description starts here */}
                                     <div>
                                         <label>Description</label>
-                                        <textarea placeholder="Description" onChange={(e)=>setticketinfo(prev=>({
+                                        <textarea placeholder="Description" value={ticketinfo.ctktdes} onChange={(e)=>setticketinfo(prev=>({
                                             ...prev,
                                             ctktdes:e.target.value
                                         }))}/>

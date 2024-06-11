@@ -7,7 +7,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 import { createquoteid ,API_ONE_TO_ONE} from "../../../Data/Docs";
-import { doc, onSnapshot ,writeBatch} from "firebase/firestore";
+import { doc, onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { v4 as uuidv4 } from 'uuid';
 //importing the notifications
@@ -168,7 +168,7 @@ function Createquotation(){
                 :(quotinfo.ofdcty!=='' && quotinfo.contperson!=='' && quotinfo.businesstype!=='' && quotinfo.ofddst!=='' && quotinfo.ofdpinc!=='' && quotinfo.contmobilenum!==''))
             ){
             const result = await fetchquotationid();
-            if(result!==0){
+            if(result.id!==0){
                 const message = `A New quotation [quot.id:${result}] created by ${sharedvalue.workersdata[sharedvalue.uid].name}`;
                 const phone = `9440000815`;//here we have to give the admin number
                 const data={
@@ -257,7 +257,7 @@ function Createquotation(){
             }
             }else{
                 const id = uuidv4();
-                await batch.update(doc(db,"quotes",`${id}`),{
+                await setDoc(doc(db,"quotes",`${id}`),{
                     [result.id]:{
                         quotcountry:quotinfo.quotcountry,
                         quotstate:quotinfo.quotstate,

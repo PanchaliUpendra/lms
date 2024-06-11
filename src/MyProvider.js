@@ -64,7 +64,7 @@ function MyProvider({children}){
       setSideNavOnOff(prev=>!prev);
     }
 
-    const DeleteQuoteElement = (quoteid)=>{
+    const DeleteQuoteElement = (quoteid)=>{//deleting the quoations
       const temp_quote_data = quotesdata;
       const temp_quote_key = quoteskeys.filter((item)=>item!==quoteid);
       setquoteskeys(temp_quote_key);
@@ -74,7 +74,7 @@ function MyProvider({children}){
       }
     }
     
-    const delete_spare_quote = (spareid) =>{
+    const delete_spare_quote = (spareid) =>{ //deleting the spare
       const temp_spare_data = sparesdata;
       const temp_spare_key = spareskeys.filter((item)=>item!==spareid);
       setspareskeys(temp_spare_key);
@@ -84,7 +84,7 @@ function MyProvider({children}){
       }
     }
 
-    const Delete_amc_quote = (amcid) =>{
+    const Delete_amc_quote = (amcid) =>{ //deleting the amc
       const temp_amc_data = amcdata;
       const temp_amc_key = amckeys.filter((item)=>amcid!==item);
       setamckeys(temp_amc_key);
@@ -92,6 +92,17 @@ function MyProvider({children}){
         delete temp_amc_data[amcid];
         setamcdata(temp_amc_data);
       }
+    }
+
+    const Delete_tickets = (tktid) =>{ // here we are deleting the tickets
+      const temp_tkt_data = ticketsdata;
+      const temp_tkt_keys = ticketskeys.filter((item)=>item!==tktid);
+      setticketskeys(temp_tkt_keys);
+      if(tktid in temp_tkt_data){
+        delete temp_tkt_data[tktid];
+        setticketsdata(temp_tkt_data);
+      }
+
     }
 
 
@@ -128,7 +139,8 @@ function MyProvider({children}){
         updateSideNav,
         DeleteQuoteElement,
         delete_spare_quote,
-        Delete_amc_quote
+        Delete_amc_quote,
+        Delete_tickets
     }
 
     useEffect(()=>{
@@ -169,14 +181,10 @@ function MyProvider({children}){
               //spare quotation fetching
               const fetchSpareData = async() =>{
                 try{
-                  // await onSnapshot(sparequotation,(snapshot)=>{
-                  //   snapshot.forEach((doc)=>{
-                  //     console.log(doc.id," => ",doc.data());
-                  //   })
-                  // })
+                 
                   await onSnapshot(sparequotation,(snapshot)=>{
-                    snapshot.forEach((doc)=>{
-                      const tempsparedata = doc.data();
+                    snapshot.forEach((docs)=>{
+                      const tempsparedata = docs.data();
                       // console.log("data", tempquotesdata);
                       setsparesdata(prev=>({
                         ...prev,
@@ -185,7 +193,7 @@ function MyProvider({children}){
                       const tempsparekeys = Object.keys(tempsparedata);
                       const sorttempsparekeys = [...tempsparekeys].sort((a,b)=>b-a);
                       setspareskeys(prev => Array.from(new Set([...prev, ...sorttempsparekeys])))
-                      // console.log(doc.id," => ",doc.data());
+                      
                     })
                   })
                 }catch(err){
@@ -312,19 +320,25 @@ function MyProvider({children}){
                 }
               }
               fetchexpensesdata();//fetching the expenses data
+
+
               //fetching tickets data
               const fetchticketsdata = async() =>{
                 try{
-                  await onSnapshot(createtickets,(doc)=>{
-                    const tempticketsdata = doc.data();
-                    setticketsdata(tempticketsdata);
-                    const tempticketskeys = Object.keys(tempticketsdata);
-                    const sorttempticketskeys = [...tempticketskeys].sort((a,b)=>b-a);
-                    setticketskeys(sorttempticketskeys);
-
+                  await onSnapshot(createtickets,(snapshot)=>{
+                    snapshot.forEach((docs)=>{
+                      const temp_tickets_data = docs.data();
+                      setticketsdata(prev=>({
+                        ...prev,
+                        ...temp_tickets_data
+                      }));
+                      const temp_ticket_keys = Object.keys(temp_tickets_data);
+                      const sort_temp_tkt_keys = [...temp_ticket_keys].sort((a,b)=>b-a);
+                      setticketskeys(sort_temp_tkt_keys);
+                    })
                   })
-                }catch(e){
-                  console.error('you geting an error while fetching the tickets data ',e);
+                }catch(err){
+                  console.error('you geting an error while fetching the tickets data ',err);
                 }
               }
              

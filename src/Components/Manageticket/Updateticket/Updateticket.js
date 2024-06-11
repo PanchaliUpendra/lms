@@ -9,7 +9,8 @@ import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { writeBatch} from "firebase/firestore";
 import { db, storage } from "../../../Firebase";
-import {  createtickets , API_ONE_TO_ONE} from "../../../Data/Docs";
+import {  API_ONE_TO_ONE} from "../../../Data/Docs";
+import { doc } from "firebase/firestore";
 //import storage 
 // import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 // import { storage } from "../../../Firebase";
@@ -53,6 +54,7 @@ function Updateticket(){
         ctktemployee:'',
         ctktmanager:'',
         status:'',
+        devicedtls:'',
         //extra fields for resolving work
         ctktmodedata:'',
         ctktservicereport:''
@@ -184,7 +186,7 @@ function Updateticket(){
                 }
                 if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
                     
-                    await batch.update(createtickets,{
+                    await batch.update(doc(db,"tickets",`${sharedvalue.ticketsdata[tktid].docid}`),{
                         [tktid]:{
                             ...sharedvalue.ticketsdata[tktid],
                             ctktcountry:ticketinfo.ctktcountry,
@@ -199,6 +201,7 @@ function Updateticket(){
                             ctktmanager:ticketinfo.ctktmanager,
                             ctktemployee:ticketinfo.ctktemployee,
                             status:ticketinfo.status,
+                            devicedtls:ticketinfo.devicedtls,
                             ctktclose:(ticketinfo.status==='resolved'||ticketinfo.status==='close')?stringtodaydate:'',
                             workingstatus:'',
                             ctktothercustname:ticketinfo.ctktothercustname,
@@ -240,6 +243,7 @@ function Updateticket(){
                 ctktmanager:sharedvalue.ticketsdata[tktid].ctktmanager,
                 ctktemployee:sharedvalue.ticketsdata[tktid].ctktemployee,
                 status:sharedvalue.ticketsdata[tktid].status,
+                devicedtls:sharedvalue.ticketsdata[tktid].devicedtls,
                 ctktothercustname:sharedvalue.ticketsdata[tktid].ctktothercustname,
                 //extra fields for resolving work
                 //Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "cmachinetype")?
@@ -390,6 +394,14 @@ function Updateticket(){
                                 ))}/>
                             </div>
                              }
+                            {/* description starts here */}
+                            <div>
+                                <label>device details</label>
+                                <textarea placeholder="enter your device details..." value={ticketinfo.devicedtls} onChange={(e)=>setticketinfo(prev=>({
+                                    ...prev,
+                                    devicedtls:e.target.value
+                                }))}/>
+                            </div>
                             {/* call type starts here */}
                             <div>
                                 <label>Call type*</label>
@@ -510,7 +522,7 @@ function Updateticket(){
                                 </select>
                             </div>}
                                 {/* employee and manager ends here */}
-                                <div>
+                                {/* <div>
                                     <label>Associated Lead Code</label>
                                     <select value={ticketinfo.ctktasslc} onChange={(e)=>setticketinfo(prev=>({
                                         ...prev,
@@ -523,7 +535,7 @@ function Updateticket(){
                                             ))
                                         }
                                     </select>
-                                </div>
+                                </div> */}
                             {/* associated lead code ends here */}
                             {/* <div>
                                 <label>File</label>

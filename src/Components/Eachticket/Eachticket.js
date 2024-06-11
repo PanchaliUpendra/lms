@@ -88,6 +88,10 @@ function Eachticket(){
                                     
                                 </div>
                                 <div>
+                                    <label>Device Details</label>
+                                    <textarea value={sharedvalue.ticketsdata[tktid].devicedtls} readOnly/>
+                                </div>
+                                <div>
                                     <label>Call Type</label>
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktcalltype==='Charge'?'Chargable':sharedvalue.ticketsdata[tktid].ctktcalltype} readOnly/>
                                 </div>
@@ -113,10 +117,10 @@ function Eachticket(){
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktemployee].name:'-'} readOnly/>
                                 </div>
                                 {/* employee and manager ends here */}
-                                <div>
+                                {/* <div>
                                     <label>Associated Lead Code</label>
                                     <input type='text' value={sharedvalue.ticketsdata[tktid].ctktasslc} readOnly/>
-                                </div>
+                                </div> */}
                             </div>
                             {/* form ends here */}
                         </div>
