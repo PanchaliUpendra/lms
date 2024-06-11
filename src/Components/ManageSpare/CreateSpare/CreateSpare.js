@@ -32,7 +32,7 @@ function CreateSpare(){
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the spare Quotation');
     const loginerror = () =>toast.error('Getting Error while Creating spare Quotation');
-    const loginformerror = () => toast.info('please fill the all Required Fields');
+    const loginformerror = () => toast.info('please fill all the Required Fields');
     const invalidmail = () => toast.warn('unique id was not generating!!!');
     //array of spare parts data
     const [spares,setspares] = useState([{
@@ -265,16 +265,11 @@ function CreateSpare(){
                                 {/* company name */}
                                 <div>
                                     <label>Company Name<span style={{color:'red'}}>*</span></label>
-                                    <select value={sparequotedata.companyname} onChange={(e)=>setsparequotedata(prev=>({
+                                    <input value={sparequotedata.companyname} onChange={(e)=>setsparequotedata(prev=>({
                                         ...prev,
                                         companyname:e.target.value
-                                    }))}>
-                                        <option value=''>Choose Company Name</option>
-                                        {sharedvalue.leadskeys.map((lead,idx)=>(
-                                            <option key={idx} value={sharedvalue.leadsdata[lead].custcompanyname}>{sharedvalue.leadsdata[lead].custcompanyname}</option>
-                                        ))}
-                                        <option value='other'>Other</option>
-                                    </select>
+                                    }))}/>
+                                        
                                 </div>
                                 {/*enter your company name */}
                                 {
@@ -295,7 +290,7 @@ function CreateSpare(){
                                         ...prev,
                                         sparecountry:e.target.value
                                     }))}>
-                                        <option value=''>Choose Company Name</option>
+                                        <option value=''>Choose Country Name</option>
                                         {counrtycode.map((item,idx)=>(
                                             ((item.name==='India' || item.name==='Sri Lanka' || item.name==='Indonesia' ||
                                             item.name==='Pakistan' || item.name==='Nepal' || item.name==='Ghana') &&<option key={idx} value={item.name}>{item.name}</option>)
