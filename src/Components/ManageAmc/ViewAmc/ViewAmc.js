@@ -14,6 +14,9 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { updateDoc, deleteField } from "firebase/firestore";
+import DownloadIcon from '@mui/icons-material/Download';
+import Amcquote from "../../Managequotation/Amcquote";
+import { PDFDownloadLink } from '@react-pdf/renderer';
 function ViewAmc(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -32,6 +35,26 @@ function ViewAmc(){
         active:false,
         amcid:''
     });
+    async function handledwnquote(amc){
+        setshowloading(true);
+        try{
+            setdwnquote(prev=>({
+                ...prev,
+                amcid:amc
+            }))
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:true,
+                }))
+                setshowloading(false);
+            }, 1800);
+        }catch(e){
+            alert('you got error while dwonloading...',e);
+        }
+        // setshowloading(false);
+    }
+
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
@@ -80,6 +103,21 @@ function ViewAmc(){
          setshowloading(false);
     }
     //function to delete the quotation ends here
+
+     //function to delete the quotation ends here
+     async function handledwnquoteafterclose(){
+        try{
+            setTimeout(() => {
+                setdwnquote(prev=>({
+                    ...prev,
+                    active:false,
+                    amcid:''
+                }))
+            },500);
+        }catch(e){
+            alert('you got an erro while closing...',e);
+        }
+    }
     
     
     return(
@@ -164,6 +202,10 @@ function ViewAmc(){
                                                         amcid:amc
                                                         }))} >close</span>}
                                                         {sharedvalue.amcdata[amc].amcstatus==='closed' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red' , cursor:'pointer'}} fontSize="small" onClick={()=>handledeletequotation(amc)}/>}
+                                                        {
+                                                        ((sharedvalue.uid===sharedvalue.amcdata[amc].amccreatedby )|| (sharedvalue.role ==='admin')) ===true && (sharedvalue.amcdata[amc].amcstatus==='approved'||sharedvalue.amcdata[amc].amcstatus==='closed' ) && 
+                                                        <DownloadIcon sx={{color:'black',cursor:'pointer'}}  fontSize="small" onClick={()=>handledwnquote(amc)} />
+                                                        }
                                                         </p>
                                                     </td>
                                                     {/* company name */}
@@ -216,6 +258,24 @@ function ViewAmc(){
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            {/* popup to download the pdf */}
+            <div className={`view-manager-list-popup-delete ${dwnquote.active===true?'active-delete-popup':''}`}>
+                <p>Are you sure you want to download the pdf <span>{ dwnquote.amcid!==''?sharedvalue.amcdata[dwnquote.amcid].amccompanyname:''}</span></p>
+                <div>
+                    { 
+                        dwnquote.amcid!==''   && <PDFDownloadLink document={<Amcquote amcid={dwnquote.amcid} sharedvalue={sharedvalue}/>} fileName={`${sharedvalue.amcdata[dwnquote.amcid].amccompanyname}`}>
+                            <button onClick={()=>handledwnquoteafterclose()}>yes</button>
+                        </PDFDownloadLink>
+                    }
+                    
+                    {/* <button>Yes</button> */}
+                    <button onClick={()=>setdwnquote(prev=>({
+                        ...prev,
+                        active:false,
+                        amcid:''
+                    }))}>No</button>
                 </div>
             </div>
             {/* popup to close an item */}

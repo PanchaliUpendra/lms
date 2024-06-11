@@ -277,7 +277,7 @@ function Viewticket(){
                                                         <div className='view-manager-list-acttion-icon'>
                                                         {sharedvalue.ticketsdata[ticket].status==='open' && <EditIcon sx={{color:'green',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/updateticket/${ticket}`)}/>}
                                                         {sharedvalue.ticketsdata[ticket].status==='open' && <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} fontSize="small" onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}/>}
-                                                        {sharedvalue.ticketsdata[ticket].status==='resolved' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeleteticket(ticket)}/>}
+                                                        {sharedvalue.ticketsdata[ticket].status==='close' && sharedvalue.role==='admin' && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeleteticket(ticket)}/>}
                                                             {sharedvalue.ticketsdata[ticket].status==='resolved' && ((sharedvalue.ticketsdata[ticket].ctktcustname!=='other' &&
                                                              sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[ticket].ctktcustname].uid )||
                                                              (sharedvalue.ticketsdata[ticket].ctktcustname==='other' && sharedvalue.uid===sharedvalue.ticketsdata[ticket].createdbyid)) &&

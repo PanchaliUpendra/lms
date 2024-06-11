@@ -117,16 +117,16 @@ const Sparequote = (props) =>{
                             </View>
                             {sharedvalue.sparesdata[spareid].spares.map((item,idx)=>(
                                 <View style={styles.srthtblrow}>
-                                <Text style={styles.srthtblcol11}>{idx+1}</Text>
-                                <View style={styles.srthtblcol21}>
-                                    <Text>{item.sparepart}</Text>
+                                    <Text style={styles.srthtblcol11}>{idx+1}</Text>
+                                    <View style={styles.srthtblcol21}>
+                                        <Text>{item.sparepart}</Text>
+                                    </View>
+                                    <Text style={styles.srthtblcol31}>{item.qty}</Text>
+                                    <View style={styles.srthtblcol31}>
+                                        <Text>{item.unitprice}</Text>
+                                    </View>
+                                    <Text style={styles.srthtblcol31}>{Number(item.unitprice)*Number(item.qty)}/-</Text>
                                 </View>
-                                <Text style={styles.srthtblcol31}>{item.qty}</Text>
-                                <View style={styles.srthtblcol31}>
-                                    <Text>{item.unitprice}</Text>
-                                </View>
-                                <Text style={styles.srthtblcol31}>{Number(item.unitprice)*Number(item.qty)}/-</Text>
-                            </View>
                             ))}
                             <View style={styles.srthtblrow}>
                                 <Text style={{...styles.srthtblcol11,borderBottom:0,borderRight:0}}></Text>
@@ -176,6 +176,28 @@ const Sparequote = (props) =>{
 }
 
 export const styles = StyleSheet.create({
+    bankdetails:{
+        fontFamily:'OpenSans',
+        fontWeight:600,
+        textTransform:'uppercase',
+        fontSize:10,
+        marginTop:5,
+        marginBottom:5
+    },
+    mediumboldtextpoints:{
+        fontFamily:'OpenSans',
+        fontWeight:600,
+        textTransform:'capitalize',
+        fontSize:10,
+        marginTop:5,
+        marginBottom:5
+    },
+    mediumboldtext:{
+        fontFamily:'OpenSans',
+        fontWeight:600,
+        textTransform:'capitalize',
+        fontSize:10,
+    },
     numbertorupees:{
         fontFamily:'OpenSans',
         fontWeight:600,
