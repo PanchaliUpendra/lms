@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, {useContext, useEffect, useState } from "react";
 import './Viewlead.css';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
@@ -8,7 +8,7 @@ import MyContext from "../../../MyContext";
 //imported material ui 
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import { counrtycode } from "../../../Data/countrycode";
 import { states } from "../../../Data/states";
 
@@ -16,8 +16,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 function Viewlead(){
+    const location  = useLocation();
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const queryParams = new URLSearchParams(location.search);
     // console.log('leads all data: ',sharedvalue.leadsdata);
      //deleting lead
      
@@ -25,12 +27,12 @@ function Viewlead(){
     const [searchworker,setsearchworker]=useState('');
     //filter data
     const [filterdataset,setfilterdataset] = useState({
-        status:'Active',
-        manager:'',
-        employee:'',
-        country:'India',
-        state:'',
-        district:''
+        status:queryParams.get('status')||'Active',
+        manager:queryParams.get('manager')||'',
+        employee:queryParams.get('employee')||'',
+        country:queryParams.get('country')||'India',
+        state:queryParams.get('state')||'',
+        district:queryParams.get('district')||''
     });
     //crossbtn function
     const [crossbtn,setcrossbtn] = useState(false);
@@ -40,6 +42,32 @@ function Viewlead(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+
+    //const bupdate url
+    const updateURL =()=>{
+        const params = new URLSearchParams();
+        if(filterdataset.status) params.append('status',filterdataset.status);
+        if(filterdataset.manager) params.append('manager',filterdataset.manager);
+        if(filterdataset.employee) params.append('employee',filterdataset.employee);
+        if(filterdataset.country) params.append('country',filterdataset.country);
+        if(filterdataset.state) params.append('state',filterdataset.state);
+        if(filterdataset.district) params.append('district',filterdataset.district);
+        navigate(`/managelead/viewlead?${params.toString()}`)
+    }
+
+    //Update filters when URL parameters change
+    useEffect(()=>{
+        const newFilters={
+            status:queryParams.get('status')||'Active',
+            manager:queryParams.get('manager')||'',
+            employee:queryParams.get('employee')||'',
+            country:queryParams.get('country')||'India',
+            state:queryParams.get('state')||'',
+            district:queryParams.get('district')||''
+        };
+        setfilterdataset(newFilters);
+    },[location.search])
     return(
         <>
             <div className={`manlead-con`}>
@@ -388,14 +416,7 @@ function Viewlead(){
                 </div>
                 {/* remove filter */}
                 <div className="viewlead-filter-bottom-btn">
-                    <button onClick={()=>setfilterdataset({
-                        status:'Active',
-                        manager:'',
-                        employee:'',
-                        country:'India',
-                        state:'',
-                        district:''
-                    })}>Remove All Filters</button>
+                    <button onClick={()=>updateURL()}>Apply All Filters</button>
                 </div>
             </div>
             
