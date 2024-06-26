@@ -921,6 +921,10 @@ function Updatelead(){
                                         <option value='UPS'>UPS</option>
                                         <option value='Complete Projects'>Complete Projects</option>
                                         <option value='Grain Dryers'>Grain Dryers</option>
+                                        <option value='Silos'>Silos</option>
+                                        <option value='Rice Plant Structure'>Rice Plant Structure</option>
+                                        <option value='Dall Plant Structure'>Dall Plant Structure</option>
+                                        <option value='Seeding Machines'>Seeding Machines</option>
                                     </select>
                                 </div>
                                 <div>

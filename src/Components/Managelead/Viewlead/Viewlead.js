@@ -46,6 +46,7 @@ function Viewlead(){
 
     //const bupdate url
     const updateURL =()=>{
+        setcrossbtn(false);
         const params = new URLSearchParams();
         if(filterdataset.status) params.append('status',filterdataset.status);
         if(filterdataset.manager) params.append('manager',filterdataset.manager);
@@ -58,6 +59,7 @@ function Viewlead(){
 
     //Update filters when URL parameters change
     useEffect(()=>{
+        const queryParams = new URLSearchParams(location.search);
         const newFilters={
             status:queryParams.get('status')||'Active',
             manager:queryParams.get('manager')||'',
