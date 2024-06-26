@@ -11,7 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
-import { createtickets, ticketsgraphdoc,API_ONE_TO_ONE} from "../../../Data/Docs";
+import { ticketsgraphdoc,API_ONE_TO_ONE} from "../../../Data/Docs";
 import { writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { months } from "../../../Data/Months";
@@ -86,7 +86,7 @@ function Viewticket(){
         try{
             if( feedbackform.tktid!==''){
                 if(feedbackform.tktid!==''){
-                    await batch.update(createtickets,{
+                    await batch.update(doc(db,"tickets",`${sharedvalue.ticketsdata[feedbackform.tktid].docid}`),{
                         [feedbackform.tktid]:{
                             ...sharedvalue.ticketsdata[feedbackform.tktid],
                             status:'close',
