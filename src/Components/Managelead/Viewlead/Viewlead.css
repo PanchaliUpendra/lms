@@ -135,6 +135,24 @@
     cursor: pointer;
 }
 
+/* View Donload Excel Btton */
+.view-lead-DownloadExcelBtn{
+    margin-top: 10px;
+}
+.view-lead-DownloadExcelBtn>button{
+    padding: 5px 10px;
+    border:1px solid rgb(230, 230, 230);
+    border-radius: 4px;
+    background-color: white;
+    font-weight: 500;
+    color: black;
+    cursor: pointer;
+}
+
+.view-lead-DownloadExcelBtn>button:hover{
+    background-color: rgb(230, 230, 230);
+}
+
 @media all and (max-width:599px){
     .viewlead-display-search-filter{
         justify-content: flex-start;

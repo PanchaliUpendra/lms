@@ -15,6 +15,8 @@ import { states } from "../../../Data/states";
 import CancelIcon from '@mui/icons-material/Cancel';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
+import ExcelDocDownload from "../../DownloadDocs/ExcelDocDownload";
+
 function Viewlead(){
     const location  = useLocation();
     const sharedvalue = useContext(MyContext);
@@ -57,6 +59,45 @@ function Viewlead(){
         navigate(`/managelead/viewlead?${params.toString()}`)
     }
 
+    //function to download the excel sheet
+    const downloadExcel =(e)=>{
+        e.preventDefault();
+        if(sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0){
+            const exceldata = sharedvalue.leadskeys
+            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
+            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
+            .sort((a, b) => {
+                const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
+                const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
+                return dateA - dateB;
+            })
+            .filter(item=>(sharedvalue.leadsdata[item].custstatus.includes(filterdataset.status)))
+            .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
+            .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
+            .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+            .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
+            .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
+            .map((lead)=>({
+                status:sharedvalue.leadsdata[lead].custstatus,
+                company:sharedvalue.leadsdata[lead].custcompanyname,
+                contactPerson:sharedvalue.leadsdata[lead].contperson,
+                phoneNumber:sharedvalue.leadsdata[lead].contcountrycode+"-"+ sharedvalue.leadsdata[lead].contmobilenum,
+                country:sharedvalue.leadsdata[lead].ofdcountry,
+                state:sharedvalue.leadsdata[lead].ofdst,
+                district:sharedvalue.leadsdata[lead].ofddst,
+                machineType:sharedvalue.leadsdata[lead].machinetype,
+                numberOfChutes:sharedvalue.leadsdata[lead].chutes,
+                nextMeetingDate:sharedvalue.leadsdata[lead].custnextdate,
+                manager:sharedvalue.leadsdata[lead].managerid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].managerid].name:'-',
+                employee:sharedvalue.leadsdata[lead].employeeid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].employeeid].name:'-',
+                createdBy:sharedvalue.leadsdata[lead].createdbyid!==''?sharedvalue.workersdata[sharedvalue.leadsdata[lead].createdbyid].name:'-',
+                regId:lead,
+            }))
+
+            // console.log('here is the data: ',exceldata);
+            ExcelDocDownload(exceldata,'LeadsData');
+        }
+    }
     //Update filters when URL parameters change
     useEffect(()=>{
         const queryParams = new URLSearchParams(location.search);
@@ -105,6 +146,9 @@ function Viewlead(){
                                     <label>Search:</label>
                                     <input type='text' placeholder="Name/RegID" onChange={(e)=>setsearchworker(e.target.value)}/>
                                 </div>
+                            </div>
+                            <div className="view-lead-DownloadExcelBtn">
+                                <button onClick={(e)=>downloadExcel(e)}>download data</button>
                             </div>
                             {/* search bar complet6ed here */}
                             <div className="view-list-table-con">

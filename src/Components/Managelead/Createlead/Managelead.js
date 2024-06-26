@@ -854,8 +854,8 @@ function Managelead(){
                                         <option value='Complete Projects'>Complete Projects</option>
                                         <option value='Grain Dryers'>Grain Dryers</option>
                                         <option value='Silos'>Silos</option>
-                                        <option value='Rice Plant Structure'>Rice Plant Structure</option>
-                                        <option value='Dall Plant Structure'>Dall Plant Structure</option>
+                                        <option value='Rice Plant'>Rice Plant</option>
+                                        <option value='Dall Plant'>Dall Plant</option>
                                         <option value='Seeding Machines'>Seeding Machines</option>
                                     </select>
                                     {errors.machinereq && <small style={{color:'red'}}>{errors.machinereq}</small>}
