@@ -902,10 +902,12 @@ function Updatelead(){
                                 }))}/>
                                 </div>
                                 <div>
-                                    <label>Machine Required</label>
+                                    <label>Machine Required<span style={{color:'red'}}>*</span></label>
                                     <select value={leadrequirements.machinereq} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
-                                    machinereq:e.target.value
+                                    machinereq:e.target.value,
+                                    chutes:'',
+                                    machinetype:''
                                 }))}>
                                         
                                         <option value='Sorter'>Sorter</option>
@@ -945,7 +947,7 @@ function Updatelead(){
                                     ...prev,
                                     machinetype:e.target.value
                                 }))} >
-                                        
+                                        <option value=''>choose machine type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
                                         <option value='RGBS'>RGBS</option>
@@ -977,7 +979,7 @@ function Updatelead(){
                                     ...prev,
                                     chutes:e.target.value
                                 }))}>
-                                        
+                                        <option value=''>Choose Number of Chutes</option>
                                         <option value='1'>1</option>
                                         <option value='2'>2</option>
                                         <option value='3'>3</option>

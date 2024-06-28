@@ -263,6 +263,7 @@ function Dashboard(){
                                             {/* <th>state</th>
                                             <th>district</th> */}
                                             <th>
+                                                <p>Machine Require |</p>
                                                 <p>machine Type |</p>
                                                 <p>number of chutes</p>
                                             </th>
@@ -351,7 +352,8 @@ function Dashboard(){
                                                     </td> */}
                                                     {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-email">
+                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].machinereq}</p>
+                                                        <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].machinetype} - {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
                                                     </td>

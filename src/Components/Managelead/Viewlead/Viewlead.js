@@ -21,6 +21,7 @@ function Viewlead(){
     const location  = useLocation();
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
+    const [topleads,settopleads] = useState(30);
     const queryParams = new URLSearchParams(location.search);
     // console.log('leads all data: ',sharedvalue.leadsdata);
      //deleting lead
@@ -34,7 +35,17 @@ function Viewlead(){
         employee:queryParams.get('employee')||'',
         country:queryParams.get('country')||'India',
         state:queryParams.get('state')||'',
-        district:queryParams.get('district')||''
+        district:queryParams.get('district')||'',
+        machine:queryParams.get('machine')||''
+    });
+    const [tempfilterdataset,settempfilterdataset] = useState({
+       status:queryParams.get('status')||'Active',
+        manager:queryParams.get('manager')||'',
+        employee:queryParams.get('employee')||'',
+        country:queryParams.get('country')||'India',
+        state:queryParams.get('state')||'',
+        district:queryParams.get('district')||'',
+        machine:queryParams.get('machine')||''
     });
     //crossbtn function
     const [crossbtn,setcrossbtn] = useState(false);
@@ -50,12 +61,13 @@ function Viewlead(){
     const updateURL =()=>{
         setcrossbtn(false);
         const params = new URLSearchParams();
-        if(filterdataset.status) params.append('status',filterdataset.status);
-        if(filterdataset.manager) params.append('manager',filterdataset.manager);
-        if(filterdataset.employee) params.append('employee',filterdataset.employee);
-        if(filterdataset.country) params.append('country',filterdataset.country);
-        if(filterdataset.state) params.append('state',filterdataset.state);
-        if(filterdataset.district) params.append('district',filterdataset.district);
+        if(tempfilterdataset.status) params.append('status',tempfilterdataset.status);
+        if(tempfilterdataset.manager) params.append('manager',tempfilterdataset.manager);
+        if(tempfilterdataset.employee) params.append('employee',tempfilterdataset.employee);
+        if(tempfilterdataset.country) params.append('country',tempfilterdataset.country);
+        if(tempfilterdataset.state) params.append('state',tempfilterdataset.state);
+        if(tempfilterdataset.district) params.append('district',tempfilterdataset.district);
+        if(tempfilterdataset.machine) params.append('machine',tempfilterdataset.machine);
         navigate(`/managelead/viewlead?${params.toString()}`)
     }
 
@@ -75,6 +87,7 @@ function Viewlead(){
             .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
             .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
             .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+            .filter(item=>(sharedvalue.leadsdata[item].machinereq.includes(filterdataset.machine)))
             .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
             .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
             .map((lead)=>({
@@ -85,6 +98,7 @@ function Viewlead(){
                 country:sharedvalue.leadsdata[lead].ofdcountry,
                 state:sharedvalue.leadsdata[lead].ofdst,
                 district:sharedvalue.leadsdata[lead].ofddst,
+                machineRequire:sharedvalue.leadsdata[lead].machinereq,
                 machineType:sharedvalue.leadsdata[lead].machinetype,
                 numberOfChutes:sharedvalue.leadsdata[lead].chutes,
                 nextMeetingDate:sharedvalue.leadsdata[lead].custnextdate,
@@ -95,7 +109,7 @@ function Viewlead(){
             }))
 
             // console.log('here is the data: ',exceldata);
-            ExcelDocDownload(exceldata,'LeadsData');
+            ExcelDocDownload(exceldata,`${sharedvalue.workersdata[sharedvalue.uid].name} Leads`);
         }
     }
     //Update filters when URL parameters change
@@ -107,9 +121,11 @@ function Viewlead(){
             employee:queryParams.get('employee')||'',
             country:queryParams.get('country')||'India',
             state:queryParams.get('state')||'',
-            district:queryParams.get('district')||''
+            district:queryParams.get('district')||'',
+            machine:queryParams.get('machine')||''
         };
         setfilterdataset(newFilters);
+        settempfilterdataset(newFilters);
     },[location.search])
     return(
         <>
@@ -147,9 +163,11 @@ function Viewlead(){
                                     <input type='text' placeholder="Name/RegID" onChange={(e)=>setsearchworker(e.target.value)}/>
                                 </div>
                             </div>
+                            {/* download data only for admin */}
+                            {sharedvalue.role==='admin' && 
                             <div className="view-lead-DownloadExcelBtn">
                                 <button onClick={(e)=>downloadExcel(e)}>download data</button>
-                            </div>
+                            </div>}
                             {/* search bar complet6ed here */}
                             <div className="view-list-table-con">
                                 <table>
@@ -166,6 +184,7 @@ function Viewlead(){
                                             {/* <th>state</th>
                                             <th>district</th> */}
                                             <th>
+                                                <p>machine require |</p>
                                                 <p>machine Type |</p>
                                                 <p>number of chutes</p>
                                             </th>
@@ -190,6 +209,7 @@ function Viewlead(){
                                             sharedvalue.leadskeys
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
+                                            .slice(0,topleads)
                                             .sort((a, b) => {
                                                 const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
                                                 const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
@@ -199,6 +219,7 @@ function Viewlead(){
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
                                             .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].machinereq.includes(filterdataset.machine)))
                                             .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
                                             .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
                                             .map((lead,idx)=>(
@@ -260,7 +281,8 @@ function Viewlead(){
                                                     </td> */}
                                                     {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-email">
+                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].machinereq} |</p>
+                                                        <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].machinetype} - {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
                                                     </td>
@@ -329,9 +351,13 @@ function Viewlead(){
                                 </table>
                             </div>
                             {/* your table completes here */}
-                           
+                            <div className="veiw-leads-top-display-btn">
+                                <p>top {topleads} leads</p>
+                                <button onClick={()=>settopleads(prev=>prev+30)}>+</button>
+                            </div>
                         </div>
                     </div>
+                    
                     {/* your view lead ends here */}
                 </div>
             </div>
@@ -346,7 +372,7 @@ function Viewlead(){
                     {/* status */}
                     <div className="viewlead-filter-status-box">
                         <h2>Status</h2>
-                        <select value={filterdataset.status} onChange={(e)=>setfilterdataset(prev=>({
+                        <select value={tempfilterdataset.status} onChange={(e)=>settempfilterdataset(prev=>({
                             ...prev,
                             status:e.target.value
                         }))}>
@@ -357,12 +383,39 @@ function Viewlead(){
                             <option value=''>All</option>
                         </select>
                     </div>
+                    {/* machine require */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>machine require</h2>
+                        <select value={tempfilterdataset.machine} onChange={(e)=>settempfilterdataset(prev=>({
+                            ...prev,
+                            machine:e.target.value
+                        }))}>
+                                        <option value=''>All</option>
+                                        <option value='Sorter'>Sorter</option>
+                                        <option value='Packing Machine'>Packing Machine</option>
+                                        <option value='Classifer'>Classifer</option>
+                                        <option value='Destoner'>Destoner</option>
+                                        <option value='Cyclone'>Cyclone</option>
+                                        <option value='Airlock'>Airlock</option>
+                                        <option value='Elevator'>Elevator</option>
+                                        <option value='Rubber Rolls'>Rubber Rolls</option>
+                                        <option value='Emery stoner'>Emery stoner</option>
+                                        <option value='Air Compressor'>Air Compressor</option>
+                                        <option value='UPS'>UPS</option>
+                                        <option value='Complete Projects'>Complete Projects</option>
+                                        <option value='Grain Dryers'>Grain Dryers</option>
+                                        <option value='Silos'>Silos</option>
+                                        <option value='Rice Plant'>Rice Plant</option>
+                                        <option value='Dall Plant'>Dall Plant</option>
+                                        <option value='Seeding Machines'>Seeding Machines</option>
+                        </select>
+                    </div>
                     {/* manager */}
                     {sharedvalue.role==='admin' && 
                         <div className="viewlead-filter-status-box">
                             <h2>Manager</h2>
                                     
-                            <select value={filterdataset.manager} onChange={(e)=>setfilterdataset(prev=>({
+                            <select value={tempfilterdataset.manager} onChange={(e)=>settempfilterdataset(prev=>({
                                 ...prev,
                                 employee:'',
                                 manager:e.target.value
@@ -382,13 +435,14 @@ function Viewlead(){
                     {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ) &&
                     <div className="viewlead-filter-status-box">
                         <h2>Employee</h2>
-                            <select value={filterdataset.employee} onChange={(e)=>setfilterdataset(prev=>({
+                            <select value={tempfilterdataset.employee} onChange={(e)=>settempfilterdataset(prev=>({
                                 ...prev,
                                 employee:e.target.value
                             }))}>
                                 <option value=''>All</option>
                                 {
-                                sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='employee' && sharedvalue.workersdata[item].managerid===filterdataset.manager).map((employee,idx)=>(
+                                sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='employee' && (sharedvalue.workersdata[item].managerid===tempfilterdataset.manager||
+                                (sharedvalue.role==='manager' && sharedvalue.workersdata[item].managerid===sharedvalue.uid))).map((employee,idx)=>(
                                 <option value={employee} key={idx}>{sharedvalue.workersdata[employee].name}</option>
                                 ))
                                 }
@@ -398,7 +452,7 @@ function Viewlead(){
                     {/* country */}
                     <div className="viewlead-filter-status-box">
                         <h2>country</h2>
-                        <select value={filterdataset.country} onChange={(e)=>setfilterdataset(prev=>({
+                        <select value={tempfilterdataset.country} onChange={(e)=>settempfilterdataset(prev=>({
                             ...prev,
                             country:e.target.value,
                             state:'',
@@ -415,10 +469,10 @@ function Viewlead(){
                     {/* state */}
                     
                         {
-                        filterdataset.country==='India' &&
+                            tempfilterdataset.country==='India' &&
                         <div className="viewlead-filter-status-box">
                             <h2>state</h2>
-                            <select value={filterdataset.state} onChange={(e)=>setfilterdataset(prev=>({
+                            <select value={tempfilterdataset.state} onChange={(e)=>settempfilterdataset(prev=>({
                                 ...prev,
                                 state:e.target.value,
                                 district:''
@@ -431,10 +485,10 @@ function Viewlead(){
                         </div>
                         }
                         {
-                        filterdataset.country!=='India' &&
+                            tempfilterdataset.country!=='India' &&
                         <div className="viewlead-filter-status-box">
                             <h2>state</h2>
-                            <input type="text" value={filterdataset.state} onChange={(e)=>setfilterdataset(prev=>({
+                            <input type="text" value={tempfilterdataset.state} onChange={(e)=>settempfilterdataset(prev=>({
                                 ...prev,
                                 state:e.target.value
                             }))} placeholder="enter the your state.."/>
@@ -443,15 +497,15 @@ function Viewlead(){
                         }
 
                         {
-                            filterdataset.country==='India' && filterdataset.state!=='' &&
+                            tempfilterdataset.country==='India' && tempfilterdataset.state!=='' &&
                             <div className="viewlead-filter-status-box">
                                 <h2>district</h2>
-                                <select value={filterdataset.district} onChange={(e)=>setfilterdataset(prev=>({
+                                <select value={tempfilterdataset.district} onChange={(e)=>settempfilterdataset(prev=>({
                                     ...prev,
                                     district:e.target.value
                                 }))}>
                                     <option value=''>All</option>
-                                    {states.filter(item=>item.state===filterdataset.state)[0].districts.map((prod,idx)=>(
+                                    {states.filter(item=>item.state===tempfilterdataset.state)[0].districts.map((prod,idx)=>(
                                         <option key={idx} value={prod}>{prod}</option>
                                     ))}
                                 </select>

@@ -333,6 +333,21 @@ function Managelead(){
         }
         setOpen(false);
     }
+
+
+
+    // onClick handle errors
+    function onClickFindError(){
+        
+        const newErrors={};
+        if(contpersondtl.contperson==='') newErrors.contperson='Contact Person Is Required';
+        if(leadofficedtls.ofdcountry==='') newErrors.ofdcountry='Country field is Required';
+        if(leadofficedtls.ofdst==='') newErrors.ofdst='State field is Required';
+        if(leadrequirements.machinereq==='') newErrors.machinereq='Please Fill the Machine Required Field';
+        if(leadrequirements.machinereq==='Sorter'?leadrequirements.chutes==='':false) newErrors.chutes='Chutes Field is Required';
+        if(custinquiry.custnextdate==='') newErrors.custnextdate='Next Date field is Required';
+        setErrors(newErrors);
+    }
     
     // const [contperson, setContperson] = useState('');
     // const [submitted, setSubmitted] = useState(false);
@@ -377,7 +392,7 @@ function Managelead(){
                     </div>
 
                     {/* create lead starts from here */}
-                    <form className='create-lead-con'>
+                    <form className='create-lead-con' onSubmit={(e)=>handlecreatelead(e)}>
                         {/* create lead head */}
                         <div className='create-lead-head'>
                             <h1>Create Lead</h1>
@@ -465,7 +480,7 @@ function Managelead(){
                                     <input type='text' value={custinquiry.custcompanyname} onChange={(e)=>setcustinquiry(prev=>({
                                         ...prev,
                                         custcompanyname:e.target.value
-                                    }))}/>
+                                    }))} />
                                 </div>
                             </div>
                         </div>
@@ -837,7 +852,9 @@ function Managelead(){
                                     <label>Machine Required<span style={{color:'red'}}>*</span></label>
                                     <select value={leadrequirements.machinereq} onChange={(e)=>setleadrequirements(prev=>({
                                     ...prev,
-                                    machinereq:e.target.value
+                                    machinereq:e.target.value,
+                                    chutes:'',
+                                    machinetype:''
                                 }))} required>
                                         <option value='' selected>Required Machine</option>
                                         <option value='Sorter'>Sorter</option>
@@ -951,8 +968,8 @@ function Managelead(){
                         {/* create lead requirements ends here */}
 
                         {/* create lead button starts here */}
-                        <div className='create-lead-submit-btns'>
-                            <button onClick={(e)=>handlecreatelead(e)}>create lead</button>
+                        <div className='create-lead-submit-btns' onClick={()=>onClickFindError()} >
+                            <button type='submit' >create lead</button>
                         </div>
                         {/* create lead button ends here */}
                     </form>
