@@ -105,7 +105,11 @@ function Managelead(){
                     return new Promise((resolve, reject) => {
                         onSnapshot(createleadiddoc, (doc) => {
                             const tempuuid = doc.data();
-                            resolve(tempuuid.uuid + 1);
+                            resolve({
+                                ...tempuuid,
+                                uuid:tempuuid.uuid+1,
+                                count:tempuuid.count+1
+                            });
                         });
                     });
                 }catch(e){
@@ -144,7 +148,7 @@ function Managelead(){
             ){
              //fetching uuid  
              const result = await fetchuuid();
-             if(result!==0){
+             if(result.uuid!==0){
                 const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result}]`;
                 const phone = `9440000815`;//here we have to give the admin number
                 const data={
@@ -153,9 +157,9 @@ function Managelead(){
                 }
                 await handleSendMsgToAdmin(data);
              }
-            if(result!==0){
+            if(result.uuid!==0){
                 //this batch is for updating the leads document!!!
-                await batch.update(leaddoc, {[result]:{
+                await batch.update(leaddoc, {[result.uuid]:{
                         custtype:custinquiry.custtype,//customer type
                         custstatus:custinquiry.custstatus,//customer status
                         custstartdate:custinquiry.custstartdate,//customer start date
@@ -202,19 +206,20 @@ function Managelead(){
                         latestsubtitle:['No subtitle'],
                         latestcomment:['No Comment'],
                         modifiedby:[],
-                        createdbyid:sharedvalue.uid
+                        createdbyid:sharedvalue.uid,
+                        docid:result.docid
                     }});
                 
                 //updating the meeting
                 await batch.update(createmeetings,{
-                    [result]:[
+                    [result.uuid]:[
                         {
                             date:custinquiry.custnextdate,
                             title:'first meeting',
                             subtitle:'first one will come here',
                             comment:'no comments',
-                            addedby:sharedvalue.uid
-
+                            addedby:sharedvalue.uid,
+                            meetdocid:''
                         }
                     ]
                 })
@@ -248,7 +253,7 @@ function Managelead(){
 
                 //this is for updating the lead uuid
                 await batch.update(createleadiddoc,{
-                    "uuid":result
+                    ...result
                 })
                 await batch.commit();
                 loginsuccess();
