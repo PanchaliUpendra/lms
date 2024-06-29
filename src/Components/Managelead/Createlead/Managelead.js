@@ -7,9 +7,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from '../../../MyContext';
 import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
-import { onSnapshot, writeBatch} from "firebase/firestore"; 
+import { doc, onSnapshot, setDoc, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createleadiddoc, leaddoc , createmeetings ,leadsgraphdoc ,API_ONE_TO_ONE} from '../../../Data/Docs';
+import { createleadiddoc,leadsgraphdoc ,API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 //importing the months 
 import { months } from '../../../Data/Months';
+import { v4 as uuidv4 } from 'uuid';
 
 function Managelead(){
     const sharedvalue = useContext(MyContext);
@@ -157,9 +158,173 @@ function Managelead(){
                 }
                 await handleSendMsgToAdmin(data);
              }
-            if(result.uuid!==0){
-                //this batch is for updating the leads document!!!
-                await batch.update(leaddoc, {[result.uuid]:{
+            
+                //check the result is exit or not
+            if(result && result.uuid!==0){
+                if(result.count<=300){
+                    //this batch is for updating the leads document!!!
+                    await batch.update(doc(db,"leads",`${result.docid}`), {[result.uuid]:{
+                            custtype:custinquiry.custtype,//customer type
+                            custstatus:custinquiry.custstatus,//customer status
+                            custstartdate:custinquiry.custstartdate,//customer start date
+                            custenddate:custinquiry.custenddate,//customer end date
+                            custnextdate:custinquiry.custnextdate,//customer next date
+                            custsourceofenquiry:custinquiry.custsourceofenquiry,//cuatomer source of enquiry
+                            custcompanyname:custinquiry.custcompanyname,//customer company name
+                            contperson:contpersondtl.contperson,//contact person detail
+                            contdesignation:contpersondtl.contdesignation,//contact designation
+                            contcountrycode:contpersondtl.contcountrycode,//contact country code
+                            contmobilenum:contpersondtl.contmobilenum,//const mobile number
+                            contpersonemail:contpersondtl.contpersonemail,//const person email
+                            altcontperson:altcontdtl.altcontperson, //alternate contact person details
+                            altcontdesignation:altcontdtl.altcontdesignation,//alternate contact designation
+                            altcontmobile:altcontdtl.altcontmobile,//alternate contact mobile
+                            altcontemail:altcontdtl.altcontemail,//alternate contact email
+                            altercontact:altercontact,//altercontact will check here
+                            ofd:leadofficedtls.ofd,//office details
+                            ofdcountry:leadofficedtls.ofdcountry,//office details country
+                            ofdst:leadofficedtls.ofdst,//oofice details state
+                            ofddst:leadofficedtls.ofddst,//ofice details district
+                            ofdcty:leadofficedtls.ofdcty,//office city
+                            ofdpinc:leadofficedtls.ofdpinc,//office pincode
+                            ofdgstin:leadofficedtls.ofdgstin,//GSTIN
+                            ofdiec:leadofficedtls.ofdiec,//office details IE CODE
+                            leadofficefactory:leadofficefactory,//lead office factory is same or not
+                            factdtl:leadfactorydtl.factdtl,//lead factory dtls
+                            factdtlstate:leadfactorydtl.factdtlstate,//lead factory state
+                            factdtlcity:leadfactorydtl.factdtlcity,//lead factory city
+                            factdtlpinc:leadfactorydtl.factdtlpinc,//lead factory pincode
+                            businesstype:leadrequirements.businesstype,//lead requirements businesstype
+                            millcap:leadrequirements.millcap,//lead requirements mill cap
+                            capreq:leadrequirements.capreq,//lead requirements capacity required
+                            machinereq:leadrequirements.machinereq,//lead requirements machine req
+                            make:leadrequirements.make,//lead requirements make
+                            machinetype:leadrequirements.machinetype,//lead requirements machine type
+                            std:leadrequirements.std,//lead requirements std
+                            payment:leadrequirements.payment,//lead requirements payment
+                            chutes:leadrequirements.chutes,//leads requirement chutes
+                            reqdes:leadrequirements.reqdes,//lead requirement description,
+                            employeeid:sharedvalue.role==='employee'?sharedvalue.uid:'',
+                            managerid:sharedvalue.role==='manager'?sharedvalue.uid:sharedvalue.role==='employee'?sharedvalue.workersdata[sharedvalue.uid].managerid:'',
+                            latesttitle:['started now'],
+                            latestsubtitle:['No subtitle'],
+                            latestcomment:['No Comment'],
+                            modifiedby:[],
+                            createdbyid:sharedvalue.uid,
+                            docid:result.docid,
+                            meetid:result.meetid
+                        }});
+                    
+                    //updating the meeting
+                    await batch.update(doc(db,"meetings",`${result.meetid}`),{
+                        [result.uuid]:[
+                            {
+                                date:custinquiry.custnextdate,
+                                title:'first meeting',
+                                subtitle:'first one will come here',
+                                comment:'no comments',
+                                addedby:sharedvalue.uid,
+                                meetdocid:''
+                            }
+                        ]
+                    })
+
+                    //updating the leads graph data
+                    let currentDate = new Date();
+                    let year = currentDate.getFullYear();
+                    let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+                    let yearMonth = year + month;
+                    let yearMonthNumber = Number(yearMonth);
+                
+                    if(sharedvalue.leadsgraphkeys.includes(yearMonth)){
+                    
+                        await batch.update(leadsgraphdoc,{
+                            [yearMonthNumber]:{
+                                ...sharedvalue.leadsgraphdata[yearMonthNumber],
+                                lo:Number(sharedvalue.leadsgraphdata[yearMonthNumber].lo)+1,
+                            }
+                        })
+                    }else{
+                        
+                        await batch.update(leadsgraphdoc,{
+                            [yearMonthNumber]:{
+                                lo:1,
+                                lc:0,
+                                month:months[month]
+                            }
+                        })
+                    }
+                    //updating the leads graph ends here
+
+                    //this is for updating the lead uuid
+                    await batch.update(createleadiddoc,{
+                        ...result
+                    })
+                    await batch.commit();
+                    loginsuccess();
+                    //after completeing the form registration give the default values
+                    setcustinquiry(prev=>({ //filling the inquiry to its previous state
+                        ...prev,
+                        custtype:'New',//customer type
+                        custstatus:'Active',//customer status
+                        custsourceofenquiry:'Direct',//cuatomer source of enquiry
+                        custcompanyname:''//customer company name
+                    }));
+                    setcontpersondtl(prev=>({ //setting previous state to the contact person
+                        ...prev,
+                        contperson:'',//contact person detail
+                        contdesignation:'',//contact designation
+                        contcountrycode:'+91',//contact country code
+                        contmobilenum:'',//const mobile number
+                        contpersonemail:''//const person email
+                    }));
+                    setaltcontdtl(prev=>({
+                        ...prev,
+                        altcontperson:'', //alternate contact person details
+                        altcontdesignation:'',//alternate contact designation
+                        altcontmobile:'',//alternate contact mobile
+                        altcontemail:''//alternate contact email
+                    }));
+                    setaltercont('NO');//alternate contact is there or not
+                    setleadooficedtls(prev=>({ //lead office details
+                        ...prev,
+                        ofd:'',//office details
+                        ofdcountry:'India',//office details country
+                        ofdst:'',//oofice details state
+                        ofddst:'',//ofice details district
+                        ofdcty:'',//office city
+                        ofdpinc:'',//office pincode
+                        ofdgstin:'',//GSTIN
+                        ofdiec:''//office details IE CODE
+                    }))
+                    setleadofficefactory('YES');
+                    setleadfactorydtl(prev=>({
+                        ...prev,
+                        factdtl:'',
+                        factdtlstate:'',
+                        factdtlcity:'',
+                        factdtlpinc:''
+                    }));
+                    setleadrequirements(prev=>({
+                        ...prev,
+                        businesstype:'',
+                        millcap:'',
+                        capreq:'',
+                        machinereq:'Sorter',
+                        make:'Commas',
+                        machinetype:'ULTRA',
+                        std:'STD',
+                        payment:'',
+                        chutes:'',
+                        reqdes:''
+                    }));
+
+                    setErrors({});
+                    window.scrollTo({top:0,behavior:'smooth'})
+                }else{
+                    const tempdocid=uuidv4();
+                    const tempmeetid = uuidv4();
+                    await setDoc(doc(db,"leads",`${tempdocid}`), {[result.uuid]:{
                         custtype:custinquiry.custtype,//customer type
                         custstatus:custinquiry.custstatus,//customer status
                         custstartdate:custinquiry.custstartdate,//customer start date
@@ -207,11 +372,12 @@ function Managelead(){
                         latestcomment:['No Comment'],
                         modifiedby:[],
                         createdbyid:sharedvalue.uid,
-                        docid:result.docid
+                        docid:result.docid,
+                        meetid:result.meetid
                     }});
                 
                 //updating the meeting
-                await batch.update(createmeetings,{
+                await setDoc(doc(db,"meetings",`${tempmeetid}`),{
                     [result.uuid]:[
                         {
                             date:custinquiry.custnextdate,
@@ -230,9 +396,9 @@ function Managelead(){
                 let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
                 let yearMonth = year + month;
                 let yearMonthNumber = Number(yearMonth);
-               
+            
                 if(sharedvalue.leadsgraphkeys.includes(yearMonth)){
-                   
+                
                     await batch.update(leadsgraphdoc,{
                         [yearMonthNumber]:{
                             ...sharedvalue.leadsgraphdata[yearMonthNumber],
@@ -253,7 +419,10 @@ function Managelead(){
 
                 //this is for updating the lead uuid
                 await batch.update(createleadiddoc,{
-                    ...result
+                    ...result,
+                    count:0,
+                    docid:tempdocid,
+                    meetid:tempmeetid
                 })
                 await batch.commit();
                 loginsuccess();
@@ -316,6 +485,7 @@ function Managelead(){
 
                 setErrors({});
                 window.scrollTo({top:0,behavior:'smooth'})
+                }
             }else{
                 invalidmail()
             }

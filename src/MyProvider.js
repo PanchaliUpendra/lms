@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets, leaddoc,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation, amcquotes} from "./Data/Docs";
+import { createtickets,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation, amcquotes, leadcollection} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
@@ -348,20 +348,30 @@ function MyProvider({children}){
               //fetching leads data
               const fetchleadsdata = async() =>{
                 try{
-                  await onSnapshot(leaddoc,(doc)=>{
-                    const leadsdata = doc.data();
+                  await onSnapshot(leadcollection,(snapshot)=>{
+                    snapshot.forEach((docs)=>{
+                      const temp_leads_data = docs.data();
+                      setleadsdata(prev=>({
+                        ...prev,
+                        ...temp_leads_data
+                      }));
+                      const templeads_keys = Object.keys(temp_leads_data);
+                      const sorttempleads = [...templeads_keys].sort((a,b)=>b-a);
+                      setleadskeys(prev=>[...prev,...sorttempleads]);
+                    })
+                    // const leadsdata = doc.data();
 
-                    // just checking the data size
-                    const jsonString = JSON.stringify(leadsdata);
-                    // Calculate the size of the JSON string in bytes
-                    const sizeInBytes = new Blob([jsonString]).size;
-                    console.log('Document size in bytes:', sizeInBytes);
+                    // // just checking the data size
+                    // const jsonString = JSON.stringify(leadsdata);
+                    // // Calculate the size of the JSON string in bytes
+                    // const sizeInBytes = new Blob([jsonString]).size;
+                    // console.log('Document size in bytes:', sizeInBytes);
 
 
-                    setleadsdata(leadsdata);
-                    const leadskeyarray = Object.keys(leadsdata);
-                    const sortleadskeyarray = [...leadskeyarray].sort((a,b)=>b-a);
-                    setleadskeys(sortleadskeyarray);
+                    // setleadsdata(leadsdata);
+                    // const leadskeyarray = Object.keys(leadsdata);
+                    // const sortleadskeyarray = [...leadskeyarray].sort((a,b)=>b-a);
+                    // setleadskeys(sortleadskeyarray);
 
                   })
                 }catch(e){

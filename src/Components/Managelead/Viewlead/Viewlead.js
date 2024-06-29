@@ -6,6 +6,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //imported material ui 
+// import Backdrop from '@mui/material/Backdrop';
+// import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate ,useLocation} from "react-router-dom";
@@ -16,6 +18,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 import ExcelDocDownload from "../../DownloadDocs/ExcelDocDownload";
+// import { leaddoc } from "../../../Data/Docs";
+// import { writeBatch } from "firebase/firestore";
+// import { db } from "../../../Firebase";
 
 function Viewlead(){
     const location  = useLocation();
@@ -25,12 +30,13 @@ function Viewlead(){
     const queryParams = new URLSearchParams(location.search);
     // console.log('leads all data: ',sharedvalue.leadsdata);
      //deleting lead
-     
+    // const batch = writeBatch(db);
+    // const [open, setOpen] = useState(false);
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //filter data
     const [filterdataset,setfilterdataset] = useState({
-        status:queryParams.get('status')||'Active',
+        status:queryParams.get('status')||'',
         manager:queryParams.get('manager')||'',
         employee:queryParams.get('employee')||'',
         country:queryParams.get('country')||'India',
@@ -39,7 +45,7 @@ function Viewlead(){
         machine:queryParams.get('machine')||''
     });
     const [tempfilterdataset,settempfilterdataset] = useState({
-       status:queryParams.get('status')||'Active',
+       status:queryParams.get('status')||'',
         manager:queryParams.get('manager')||'',
         employee:queryParams.get('employee')||'',
         country:queryParams.get('country')||'India',
@@ -56,6 +62,23 @@ function Viewlead(){
     }
     // toggle menu bar code ends here
 
+
+    //function to handle the button
+    // async function tohandleadddoc(e,leadsid){
+    //     e.preventDefault();
+    //     setOpen(true);
+    //     try{
+    //         await batch.update(leaddoc,{[leadsid]:{
+    //             ...sharedvalue.leadsdata[leadsid],
+    //             docid:"XpjPVNyiDaRgsN6emVjZ",
+    //             meetid:"JqCkRuz9W6HVkhuERsrV"
+    //         }})
+    //         await batch.commit();
+    //     }catch(e){
+    //         console.log('you got an error while changing the docid , meetid',e);
+    //     }
+    //     setOpen(false);
+    // }
 
     //const bupdate url
     const updateURL =()=>{
@@ -116,7 +139,7 @@ function Viewlead(){
     useEffect(()=>{
         const queryParams = new URLSearchParams(location.search);
         const newFilters={
-            status:queryParams.get('status')||'Active',
+            status:queryParams.get('status')||'',
             manager:queryParams.get('manager')||'',
             employee:queryParams.get('employee')||'',
             country:queryParams.get('country')||'India',
@@ -552,7 +575,12 @@ function Viewlead(){
                     <button onClick={()=>updateURL()}>Apply All Filters</button>
                 </div>
             </div>
-            
+            {/* <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop> */}
         </>
     );
 }
