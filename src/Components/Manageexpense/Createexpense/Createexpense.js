@@ -357,11 +357,11 @@ function Createexpense(){
                                         <input type='number' value={expenseinfo.expamountpaid} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expamountpaid:e.target.value
-                                        }))} required/>
+                                        }))} min={0} required/>
                                         {errors.expamountpaid && <small style={{color:'red'}}>{errors.expamountpaid}</small>}
                                     </div>
                                     <div>
-                                        <label>Amount Pending</label>
+                                        <label>{Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid)<0?'employee need\'s to pay':'company need\'s to pay'}</label>
                                         <input type='number' value={Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid)} readOnly/>
                                     </div>
                                     <div>

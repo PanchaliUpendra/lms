@@ -95,10 +95,10 @@ function Editexpense(){
                                 expfoodcost:expenseinfo.expfoodcost,
                                 exppurpose:expenseinfo.exppurpose,
                                 expamountpaid:expenseinfo.expamountpaid,
-                                expamountpending:expenseinfo.expamountpending,
+                                expamountpending:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
                                 expremarks:expenseinfo.expremarks,
                                 expid:expid,
-                                expfinalamount:expenseinfo.expfinalamount,
+                                expfinalamount:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
                                 expstatus:'open',
                                 expfinanceid:expenseinfo.expfinanceid,
                                 expcreatedbyid:sharedvalue.uid,
@@ -179,7 +179,7 @@ function Editexpense(){
                     {/* your createexpense starts from here */}
                     <div className='create-lead-con'>
                         <div className='each-lead-head-comes-here'>
-                            <h1>Create Expense</h1>
+                            <h1>Edit Expense</h1>
                         </div>
                         <div className='create-lead-head-button-comes-here'>
                             <button onClick={()=>navigate(-1)}>
@@ -299,10 +299,10 @@ function Editexpense(){
                                         <input type='number' value={expenseinfo.expamountpaid} onChange={(e)=>setexpenseinfo(prev=>({
                                             ...prev,
                                             expamountpaid:e.target.value
-                                        }))} />
+                                        }))} min={0}/>
                                     </div>
                                     <div>
-                                        <label>Amount Pending</label>
+                                        <label>{Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid)<0?'employee need\'s to pay':'company need\'s to pay'}</label>
                                         <input type='number' value={Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid)} readOnly/>
                                     </div>
                                     <div>
