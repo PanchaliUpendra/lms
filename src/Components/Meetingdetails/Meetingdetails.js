@@ -6,9 +6,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
 import { useParams , useNavigate } from "react-router-dom";
-import { writeBatch} from "firebase/firestore"; 
+import { doc, writeBatch} from "firebase/firestore"; 
 import Error from "../../Error/Error";
-import { createmeetings, leaddoc } from "../../Data/Docs";
+import { meetingscollection} from "../../Data/Docs";
 import { onSnapshot } from "firebase/firestore";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { db } from "../../Firebase";
@@ -47,7 +47,7 @@ function Meetingdetails(){
                 nextmeetingdetails.comment!==''
             ){
                 if(leadid!==0){
-                    await batch.update(createmeetings,{
+                    await batch.update(doc(db,"meetings",`${sharedvalue.leadsdata[leadid].meetid}`),{
                         [leadid]:[
                             {
                                 date:nextmeetingdetails.date,
@@ -60,7 +60,7 @@ function Meetingdetails(){
                         ]    
                     });
 
-                    await batch.update(leaddoc,{
+                    await batch.update(doc(db,"leads",`${sharedvalue.leadsdata[leadid].docid}`),{
                         [leadid]:{
                             ...sharedvalue.leadsdata[leadid],
                             custnextdate:nextmeetingdetails.date,
@@ -85,9 +85,17 @@ function Meetingdetails(){
         if(sharedvalue.leadskeys.length>0 && sharedvalue.leadskeys.includes(leadid)){
             const fecthmeetingdetails = async() =>{
                 try{
-                    await onSnapshot(createmeetings,(doc)=>{
-                        const tempmeetingdetails = doc.data();
-                        setmeetingsdata(tempmeetingdetails[leadid]);
+                    await onSnapshot(meetingscollection,(snapshot)=>{
+                        let temparradata={}
+                        snapshot.forEach((docs)=>{
+                            const temp_meetings_data = docs.data();
+                            temparradata={
+                                ...temparradata,
+                                ...temp_meetings_data
+                            }
+                            
+                        })
+                        setmeetingsdata(temparradata[leadid]);
                     })
                 }catch(e){
                     console.log('you got an error while fetching the meeting details',e);

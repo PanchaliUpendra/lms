@@ -334,7 +334,7 @@ function MyProvider({children}){
                       }));
                       const temp_ticket_keys = Object.keys(temp_tickets_data);
                       const sort_temp_tkt_keys = [...temp_ticket_keys].sort((a,b)=>b-a);
-                      setticketskeys(sort_temp_tkt_keys);
+                      setticketskeys(prev=>Array.from(new Set([...prev,...sort_temp_tkt_keys])));
                     })
                   })
                 }catch(err){
@@ -357,7 +357,7 @@ function MyProvider({children}){
                       }));
                       const templeads_keys = Object.keys(temp_leads_data);
                       const sorttempleads = [...templeads_keys].sort((a,b)=>b-a);
-                      setleadskeys(prev=>[...prev,...sorttempleads]);
+                      setleadskeys(prev=>Array.from(new Set([...prev,...sorttempleads])));
                     })
                     // const leadsdata = doc.data();
 

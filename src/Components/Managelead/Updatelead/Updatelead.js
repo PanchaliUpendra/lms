@@ -7,9 +7,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from '../../../MyContext';
 import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
-import { writeBatch} from "firebase/firestore"; 
+import { doc, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { leaddoc , API_ONE_TO_ONE} from '../../../Data/Docs';
+import {  API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -167,7 +167,7 @@ function Updatelead(){
                     }
                     await handleSendMsgToAdmin(data);
                 }
-                await batch.update(leaddoc, {[leadid]:{
+                await batch.update(doc(db,"leads",`${sharedvalue.leadsdata[leadid].docid}`), {[leadid]:{
                         ...sharedvalue.leadsdata[leadid],
                         custtype:custinquiry.custtype,//customer type
                         custstatus:custinquiry.custstatus,//customer status
