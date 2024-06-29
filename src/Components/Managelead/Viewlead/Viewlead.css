@@ -182,6 +182,19 @@
     cursor: pointer;
 }
 
+/* view-lead-total-count */
+.view-lead-total-count{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:flex-end;
+}
+.view-lead-total-count>p{
+    font-size: 0.8rem;
+    font-weight:500;
+    text-transform: capitalize;
+}
+
 @media all and (max-width:599px){
     .viewlead-display-search-filter{
         justify-content: flex-start;

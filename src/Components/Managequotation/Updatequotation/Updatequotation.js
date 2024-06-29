@@ -472,7 +472,7 @@ function Updatequotation(){
                                         <option value='' selected>Select Machine Type</option>
                                         <option value='ULTIMA'>ULTIMA</option>
                                         <option value='ULTRA-S'>ULTRA-S</option>
-                                        <option value='RGB'>RGB</option>
+                                        <option value='RGBS'>RGBS</option>
                                         <option value='FALCON'>FALCON</option>
                                     </select>
                                 </div>

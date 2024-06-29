@@ -168,6 +168,23 @@ function Viewlead(){
                             <div className="view-lead-DownloadExcelBtn">
                                 <button onClick={(e)=>downloadExcel(e)}>download data</button>
                             </div>}
+                            <div className="view-lead-total-count">
+                                <p>total leads {`[`} {sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 && sharedvalue.leadskeys
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
+                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
+                                            .sort((a, b) => {
+                                                const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
+                                                const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
+                                                return dateA - dateB;
+                                            })
+                                            .filter(item=>(sharedvalue.leadsdata[item].custstatus.includes(filterdataset.status)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].machinereq.includes(filterdataset.machine)))
+                                            .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
+                                            .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee))).length} {`]`}</p>
+                            </div>
                             {/* search bar complet6ed here */}
                             <div className="view-list-table-con">
                                 <table>
@@ -209,7 +226,7 @@ function Viewlead(){
                                             sharedvalue.leadskeys
                                             .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
                                             .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
-                                            .slice(0,topleads)
+                                            
                                             .sort((a, b) => {
                                                 const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
                                                 const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
@@ -222,6 +239,7 @@ function Viewlead(){
                                             .filter(item=>(sharedvalue.leadsdata[item].machinereq.includes(filterdataset.machine)))
                                             .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
                                             .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee)))
+                                            .slice(0,topleads)
                                             .map((lead,idx)=>(
                                                 <tr key={idx} className="each-table-row-view" >
                                                     <td>
@@ -351,10 +369,25 @@ function Viewlead(){
                                 </table>
                             </div>
                             {/* your table completes here */}
+                            {sharedvalue.leadskeys.length>0 && sharedvalue.workerskeys.length>0 && sharedvalue.leadskeys
+                                            .filter(item =>((sharedvalue.role==='employee' && sharedvalue.leadsdata[item].employeeid===sharedvalue.uid)||(sharedvalue.role==='admin')||(sharedvalue.role==='manager' && sharedvalue.leadsdata[item].managerid===sharedvalue.uid) || sharedvalue.uid===sharedvalue.leadsdata[item].createdbyid))
+                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.leadsdata[item].contperson.includes(searchworker)))
+                                            .sort((a, b) => {
+                                                const dateA = new Date(sharedvalue.leadsdata[a].custnextdate);
+                                                const dateB = new Date(sharedvalue.leadsdata[b].custnextdate);
+                                                return dateA - dateB;
+                                            })
+                                            .filter(item=>(sharedvalue.leadsdata[item].custstatus.includes(filterdataset.status)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdcountry.includes(filterdataset.country)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofdst.includes(filterdataset.state)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].ofddst.includes(filterdataset.district)))
+                                            .filter(item=>(sharedvalue.leadsdata[item].machinereq.includes(filterdataset.machine)))
+                                            .filter(item=>(filterdataset.manager!=='none'?sharedvalue.leadsdata[item].managerid.includes(filterdataset.manager):sharedvalue.leadsdata[item].managerid===''))
+                                            .filter(item=>(sharedvalue.leadsdata[item].employeeid.includes(filterdataset.employee))).length>30 && 
                             <div className="veiw-leads-top-display-btn">
-                                <p>top {topleads} leads</p>
+                                <p>show more</p>
                                 <button onClick={()=>settopleads(prev=>prev+30)}>+</button>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                     
