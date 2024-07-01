@@ -90,7 +90,7 @@ function CreateAmc(){
             ){
             const result = await fetchamcquotesid();
             if(result && result.id!==0){
-                if(result.count<=500){
+                if(result.count<=340){
                     await batch.update(doc(db,"amcdoc",`${result.docid}`),{
                         [result.id]:{
                             amcquottype:amcdata.amcquottype,

@@ -126,7 +126,7 @@ function CreateSpare(){
             ){
             const result = await fetchsparequotationid();
             if(result && result.id!==0){
-                if(result.count<=500){
+                if(result.count<=340){
                     await batch.update(doc(db,"sparequotation",`${result.docid}`),{
                         [result.id]:{
                             sparequottype:sparequotedata.sparequottype,

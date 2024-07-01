@@ -102,6 +102,16 @@ function MyProvider({children}){
         delete temp_tkt_data[tktid];
         setticketsdata(temp_tkt_data);
       }
+    }
+
+    const Delete_Leads =(leadid) =>{// deleting the leads data
+      const temp_leads_data = leadsdata;
+      const temp_leads_keys = leadskeys.filter((item)=>item!==leadid);
+      setleadskeys(temp_leads_keys);
+      if(leadid in temp_leads_data){
+        delete temp_leads_data[leadid];
+        setleadsdata(temp_leads_data);
+      }
 
     }
 
@@ -140,7 +150,8 @@ function MyProvider({children}){
         DeleteQuoteElement,
         delete_spare_quote,
         Delete_amc_quote,
-        Delete_tickets
+        Delete_tickets,
+        Delete_Leads
     }
 
     useEffect(()=>{

@@ -6,8 +6,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 //imported material ui 
-// import Backdrop from '@mui/material/Backdrop';
-// import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate ,useLocation} from "react-router-dom";
@@ -18,9 +19,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 import ExcelDocDownload from "../../DownloadDocs/ExcelDocDownload";
+import { deleteField, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../Firebase";
 // import { leaddoc } from "../../../Data/Docs";
-// import { writeBatch } from "firebase/firestore";
-// import { db } from "../../../Firebase";
+import { writeBatch } from "firebase/firestore";
 
 function Viewlead(){
     const location  = useLocation();
@@ -30,8 +32,8 @@ function Viewlead(){
     const queryParams = new URLSearchParams(location.search);
     // console.log('leads all data: ',sharedvalue.leadsdata);
      //deleting lead
-    // const batch = writeBatch(db);
-    // const [open, setOpen] = useState(false);
+    const batch = writeBatch(db);
+    const [open, setOpen] = useState(false);
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //filter data
@@ -94,6 +96,26 @@ function Viewlead(){
         navigate(`/managelead/viewlead?${params.toString()}`)
     }
 
+    //function to delete the lead
+    async function handleDeleteLead(leadid){
+        setOpen(true);
+        try{
+            //deleting the lead
+            await updateDoc(doc(db,"leads",`${sharedvalue.leadsdata[leadid].docid}`),{
+                [leadid]:deleteField()
+            });
+
+            //lets delete the meetings of the lead
+            await updateDoc(doc(db,"meetings",`${sharedvalue.leadsdata[leadid].meetid}`),{
+                [leadid]:deleteField()
+            });
+            await batch.commit();
+            sharedvalue.Delete_Leads(leadid);
+        }catch(err){
+            console.log("you got an error while deleting the lead",err);
+        }
+        setOpen(false);
+    }
     //function to download the excel sheet
     const downloadExcel =(e)=>{
         e.preventDefault();
@@ -132,7 +154,7 @@ function Viewlead(){
             }))
 
             // console.log('here is the data: ',exceldata);
-            ExcelDocDownload(exceldata,`${sharedvalue.workersdata[sharedvalue.uid].name} Leads`);
+            ExcelDocDownload(exceldata,`${(filterdataset.manager==='none'||filterdataset.manager==='')?'All':sharedvalue.workersdata[filterdataset.manager].name} Leads`);
         }
     }
     //Update filters when URL parameters change
@@ -273,6 +295,7 @@ function Viewlead(){
                                                         <div className='view-manager-list-acttion-icon'>
                                                             {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===false && <EditIcon fontSize="small" sx={{color:'green',cursor:'pointer'}} onClick={()=>navigate(`/managelead/updatelead/${lead}`)}/>}
                                                             <VisibilityIcon sx={{color:'#1A73E8',cursor:'pointer'}} onClick={()=>navigate(`/managelead/viewlead/${lead}`)} fontSize="small"/>
+                                                            {(sharedvalue.leadsdata[lead].custstatus==='Lost' || sharedvalue.leadsdata[lead].custstatus==='Closed' )===true && <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handleDeleteLead(lead)}/>}
                                                         </div>
                                                     </td>
                                                     {/* company name */}
@@ -575,12 +598,12 @@ function Viewlead(){
                     <button onClick={()=>updateURL()}>Apply All Filters</button>
                 </div>
             </div>
-            {/* <Backdrop
+            <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={open}
             >
                 <CircularProgress color="inherit" />
-            </Backdrop> */}
+            </Backdrop>
         </>
     );
 }

@@ -168,7 +168,7 @@ function Createticket(){
                 ticketinfo.ctktpriority!=='' 
             ){
                 const result = await fetchtktid();
-                if(result.count<=500){//result count<=500
+                if(result.count<=321){//result count<=500
                 var fileurl ='';
                 if(ctktfile!==''){
                     try{

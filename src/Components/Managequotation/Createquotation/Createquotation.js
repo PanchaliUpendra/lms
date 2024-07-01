@@ -179,7 +179,7 @@ function Createquotation(){
              }
             if(result && result.id!==0){
 
-                if(result.count<=500){
+                if(result.count<=330){
                 await batch.update(doc(db,"quotes",`${result.docid}`),{
                     [result.id]:{
                         quotcountry:quotinfo.quotcountry,

@@ -35,7 +35,7 @@ function Updatelead(){
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Updated The LEAD');
     const loginerror = () =>toast.error('Getting error while updaing the LEAD data');
-    const loginformerror = () => toast.info('please fill the form correctly');
+    const loginformerror = (temp_show_data) => toast.info(`please fill following required fields: ${temp_show_data}`);
     const invalidmail = () => toast.warn('leadid does found here!!!');
 
     //select manager and employee
@@ -264,7 +264,13 @@ function Updatelead(){
             leadrequirements.machinereqcontperson," ",
             leadrequirements.chutescontperson," ",
             custinquiry.custnextdate," ");
-            loginformerror();
+            let show_data="";
+            show_data+=contpersondtl.contperson===''?"contact person , ":"";
+            show_data+=leadofficedtls.ofdcountry===''?"country, ":"";
+            show_data+=leadofficedtls.ofdst===''?"state, ":"";
+            show_data+=leadrequirements.machinereq===''?"machine required, ":"";
+            show_data+=(leadrequirements.machinereq==='Sorter' && leadrequirements.chutes==='')?"chutes":"";
+            loginformerror(show_data);
         }
         
         }catch(e){
