@@ -18,6 +18,7 @@ function Profile(){
     const batch = writeBatch(db);
     const navigate = useNavigate();
     const [editmobile,seteditmobile] = useState('');
+    const [editname,seteditname] = useState('');
     const[editmobbtn, seteditmobbtn] = useState(false);
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
@@ -32,7 +33,8 @@ function Profile(){
                 batch.update(createworkers,{
                     [sharedvalue.uid]:{
                         ...sharedvalue.workersdata[sharedvalue.uid],
-                        "cNum":editmobile
+                        "cNum":editmobile,
+                        "name":editname!==''?editname:sharedvalue.workersdata[sharedvalue.uid].name
                     }            
                 });
                 await batch.commit();
@@ -86,7 +88,9 @@ function Profile(){
                                 </div>
                                 {editmobbtn===true && 
                                     <div className="edit-mobile-number-div-buttons">
+                                        <input placeholder="enter your name" type="text" value={editname} onChange={(e)=>seteditname(e.target.value)}/>
                                         <input placeholder="enter the mobile number" type='number' value={editmobile} onChange={(e)=>seteditmobile(e.target.value)}/>
+
                                         <div>
                                             <button onClick={()=>seteditmobbtn(false)}>cancel</button>
                                             <button onClick={()=>{
@@ -104,6 +108,13 @@ function Profile(){
                                     <NavLink to='/adddocuments'><p>Add Documents {`>`}</p></NavLink>
                                 </div>
                                 }
+
+                                
+                            </div>
+                        </div>
+                        <div className="profile-spares-div">
+                            <div className="profile-spares-header">
+                                <h1>spares table</h1>
                             </div>
                         </div>
                     </div>
