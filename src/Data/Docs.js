@@ -8,6 +8,9 @@ export const leadcollection = collection(db,"leads");
 
 export const createexpenseid = doc(db,"createexpenseID","1Oo3vlubLKwRqA9jjvBw");
 export const createexpense = doc(db,"expenses","zitABqYQwdvVCAqUR7HP");
+export const expensecollection = collection(db,"expenses");
+
+
 export const createmeetings = doc(db,"meetings","JqCkRuz9W6HVkhuERsrV");
 export const meetingscollection = collection(db,"meetings");
 

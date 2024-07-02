@@ -7,9 +7,9 @@ import Sidenav from '../../Sidenav/Sidenav';
 import MyContext from '../../../MyContext';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useParams ,useNavigate } from "react-router-dom";
-import {writeBatch} from "firebase/firestore"; 
+import {doc, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createexpense } from '../../../Data/Docs';
+// import { createexpense } from '../../../Data/Docs';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -49,7 +49,7 @@ function Financeverify(){
                       return dateTime.toLocaleTimeString('en-US', options);
                 };
                 
-                await batch.update(createexpense,{
+                await batch.update(doc(db,"expenses",`${sharedvalue.expensesdata[expid].docid}`),{
                     [expid]:{
                         ...sharedvalue.expensesdata[expid],
                         expcloseremarks:`paid on ${closeddate}, ${formatDateTimeString(currentDate)} `,

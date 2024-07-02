@@ -5,15 +5,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
-import { onSnapshot ,writeBatch} from "firebase/firestore";
+import { doc, onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createexpenseid ,createexpense, API_ONE_TO_ONE } from "../../../Data/Docs";
+import { createexpenseid ,API_ONE_TO_ONE } from "../../../Data/Docs";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 function Createexpense(){
     const sharedvalue = useContext(MyContext);
@@ -64,7 +65,11 @@ function Createexpense(){
             return new Promise((resolve,reject)=>{
                 onSnapshot(createexpenseid,(doc)=>{
                     const temptexpid = doc.data();
-                    resolve(temptexpid.expenseid+1);
+                    resolve({
+                        ...temptexpid,
+                        count:temptexpid.count+1,
+                        expenseid:temptexpid.expenseid+1
+                    });
                 })
             })
         }catch(e){
@@ -111,7 +116,7 @@ function Createexpense(){
                 expenseinfo.exptransportcost!==''
                 ){
                     const result = await fetchexpenseid();
-                    if(result!==0){
+                    if(result && result.expenseid!==0){
                         const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the expense.[exp.id${result}]`;
                         const phone = `9440000815`;//here we have to give the admin number
                         const data={
@@ -120,64 +125,129 @@ function Createexpense(){
                         }
                         await handleSendMsgToAdmin(data);
                     }
-                    if(result!==0){
-                        await batch.update(createexpense,{
-                            [result]:{
-                                fromdate:expenseinfo.fromdate,
-                                fromtime:expenseinfo.fromtime,
-                                fromplace:expenseinfo.fromplace,
-                                todate:expenseinfo.todate,
-                                totime:expenseinfo.totime,
-                                toplace:expenseinfo.toplace,
-                                expmode:expenseinfo.expmode,
-                                exptransportcost:expenseinfo.exptransportcost,
-                                expfoodcost:expenseinfo.expfoodcost,
-                                exppurpose:expenseinfo.exppurpose,
-                                expamountpaid:expenseinfo.expamountpaid,
-                                expamountpending:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
-                                expremarks:expenseinfo.expremarks,
-                                expid:result,
-                                expfinalamount:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
-                                expstatus:'open',
-                                expfinanceid:expenseinfo.expfinanceid,
-                                expcreatedbyid:sharedvalue.uid,
-                                expcustomername:expenseinfo.expcustomername,
-                                expaddeddate:expenseinfo.expaddeddate,
-                                explatestcomment:'',
-                                expcloseremarks:''
-                            }
-                        });
+                    if( result && result.expenseid!==0){
+                        if(result.count<=321){
+                            await batch.update(doc(db,"expenses",`${result.docid}`),{
+                                [result.expenseid]:{
+                                    fromdate:expenseinfo.fromdate,
+                                    fromtime:expenseinfo.fromtime,
+                                    fromplace:expenseinfo.fromplace,
+                                    todate:expenseinfo.todate,
+                                    totime:expenseinfo.totime,
+                                    toplace:expenseinfo.toplace,
+                                    expmode:expenseinfo.expmode,
+                                    exptransportcost:expenseinfo.exptransportcost,
+                                    expfoodcost:expenseinfo.expfoodcost,
+                                    exppurpose:expenseinfo.exppurpose,
+                                    expamountpaid:expenseinfo.expamountpaid,
+                                    expamountpending:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
+                                    expremarks:expenseinfo.expremarks,
+                                    expid:result.expenseid,
+                                    expfinalamount:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
+                                    expstatus:'open',
+                                    expfinanceid:expenseinfo.expfinanceid,
+                                    expcreatedbyid:sharedvalue.uid,
+                                    expcustomername:expenseinfo.expcustomername,
+                                    expaddeddate:expenseinfo.expaddeddate,
+                                    explatestcomment:'',
+                                    expcloseremarks:'',
+                                    docid:result.docid
+                                }
+                            });
 
-                        await batch.update(createexpenseid,{
-                            "expenseid":result
-                        })
-                        await batch.commit();//commit all batches at once
-                        window.scrollTo({top:0,behavior:'smooth'})
-                        loginsuccess();//success notification
-                        setexpenseinfo(prev=>({
-                            ...prev,
-                            fromdate:'',
-                            fromtime:'',
-                            fromplace:'',
-                            todate:'',
-                            totime:'',
-                            toplace:'',
-                            expmode:'',
-                            exptransportcost:0,
-                            expfoodcost:0,
-                            exppurpose:'',
-                            expamountpaid:0,
-                            expamountpending:0,
-                            expremarks:'',
-                            expid:'',
-                            expfinalamount:'',
-                            expstatus:'open',
-                            expfinanceid:'',
-                            expcreatedbyid:'',
-                            expcustomername:'',
-                            explatestcomment:''
-                        }));
-                    setErrors({});
+                            await batch.update(createexpenseid,{
+                                ...result
+                            })
+                            await batch.commit();//commit all batches at once
+                            window.scrollTo({top:0,behavior:'smooth'})
+                            loginsuccess();//success notification
+                            setexpenseinfo(prev=>({
+                                ...prev,
+                                fromdate:'',
+                                fromtime:'',
+                                fromplace:'',
+                                todate:'',
+                                totime:'',
+                                toplace:'',
+                                expmode:'',
+                                exptransportcost:0,
+                                expfoodcost:0,
+                                exppurpose:'',
+                                expamountpaid:0,
+                                expamountpending:0,
+                                expremarks:'',
+                                expid:'',
+                                expfinalamount:'',
+                                expstatus:'open',
+                                expfinanceid:'',
+                                expcreatedbyid:'',
+                                expcustomername:'',
+                                explatestcomment:''
+                            }));
+                            setErrors({});
+                        }else{
+                            const tempdocid = uuidv4();
+                            await setDoc(doc(db,"expenses",`${tempdocid}`),{
+                                [result.expenseid]:{
+                                    fromdate:expenseinfo.fromdate,
+                                    fromtime:expenseinfo.fromtime,
+                                    fromplace:expenseinfo.fromplace,
+                                    todate:expenseinfo.todate,
+                                    totime:expenseinfo.totime,
+                                    toplace:expenseinfo.toplace,
+                                    expmode:expenseinfo.expmode,
+                                    exptransportcost:expenseinfo.exptransportcost,
+                                    expfoodcost:expenseinfo.expfoodcost,
+                                    exppurpose:expenseinfo.exppurpose,
+                                    expamountpaid:expenseinfo.expamountpaid,
+                                    expamountpending:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
+                                    expremarks:expenseinfo.expremarks,
+                                    expid:result.expenseid,
+                                    expfinalamount:Number(expenseinfo.exptransportcost)+Number(expenseinfo.expfoodcost)-Number(expenseinfo.expamountpaid),
+                                    expstatus:'open',
+                                    expfinanceid:expenseinfo.expfinanceid,
+                                    expcreatedbyid:sharedvalue.uid,
+                                    expcustomername:expenseinfo.expcustomername,
+                                    expaddeddate:expenseinfo.expaddeddate,
+                                    explatestcomment:'',
+                                    expcloseremarks:'',
+                                    docid:tempdocid
+                                }
+                            });
+
+                            await batch.update(createexpenseid,{
+                                ...result,
+                                count:0,
+                                docid:tempdocid
+                            })
+                            await batch.commit();//commit all batches at once
+                            window.scrollTo({top:0,behavior:'smooth'})
+                            loginsuccess();//success notification
+                            setexpenseinfo(prev=>({
+                                ...prev,
+                                fromdate:'',
+                                fromtime:'',
+                                fromplace:'',
+                                todate:'',
+                                totime:'',
+                                toplace:'',
+                                expmode:'',
+                                exptransportcost:0,
+                                expfoodcost:0,
+                                exppurpose:'',
+                                expamountpaid:0,
+                                expamountpending:0,
+                                expremarks:'',
+                                expid:'',
+                                expfinalamount:'',
+                                expstatus:'open',
+                                expfinanceid:'',
+                                expcreatedbyid:'',
+                                expcustomername:'',
+                                explatestcomment:''
+                            }));
+                            setErrors({});
+                        }
                 }
             }else{
                 const newErrors={};

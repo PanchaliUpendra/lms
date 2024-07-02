@@ -4,7 +4,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
-import { createtickets,createexpense, leadsgraphdoc ,ticketsgraphdoc , documentsdoc, sparequotation, amcquotes, leadcollection} from "./Data/Docs";
+import { createtickets, leadsgraphdoc ,ticketsgraphdoc , 
+  documentsdoc, sparequotation, amcquotes, leadcollection, expensecollection} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
@@ -112,7 +113,16 @@ function MyProvider({children}){
         delete temp_leads_data[leadid];
         setleadsdata(temp_leads_data);
       }
+    }
 
+    const Delete_Expenses = (expid) =>{//deleting the expenses data
+      const temp_expense_data = expensesdata;
+      const temp_expense_keys = expenseskeys.filter((item)=>item!==expid);
+      setexpenseskeys(temp_expense_keys);
+      if(expid in temp_expense_data){
+        delete temp_expense_data[expid];
+        setexpensesdata(temp_expense_data);
+      }
     }
 
 
@@ -151,7 +161,8 @@ function MyProvider({children}){
         delete_spare_quote,
         Delete_amc_quote,
         Delete_tickets,
-        Delete_Leads
+        Delete_Leads,
+        Delete_Expenses
     }
 
     useEffect(()=>{
@@ -319,15 +330,21 @@ function MyProvider({children}){
               //fetching the expenses
               const fetchexpensesdata = async() =>{
                 try{
-                  await onSnapshot(createexpense,(doc)=>{
-                    const tempexpensesdata = doc.data();
-                    setexpensesdata(tempexpensesdata);
-                    const tempexpenseskeys = Object.keys(tempexpensesdata);
-                    const sorttempexpenseskeys = [...tempexpenseskeys].sort((a,b)=>b-a);
-                    setexpenseskeys(sorttempexpenseskeys);
+                  await onSnapshot(expensecollection,(snapshot)=>{
+                    snapshot.forEach((docs)=>{
+                      const temp_expenses_data = docs.data();
+                      setexpensesdata(prev=>({
+                        ...prev,
+                        ...temp_expenses_data
+                      }));
+                      const temp_expenses_keys = Object.keys(temp_expenses_data);
+                      const sort_temp_expenses_keys = [...temp_expenses_keys].sort((a,b)=>b-a);
+                      setexpenseskeys(prev=>Array.from(new Set([...prev,...sort_temp_expenses_keys])));
+                    })
+                    
                   })
-                }catch(e){
-                  console.log('you got an error while fetching the expenses data',e);
+                }catch(err){
+                  console.log('you got an error while fetching the expenses data',err);
                 }
               }
               fetchexpensesdata();//fetching the expenses data

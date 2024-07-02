@@ -5,9 +5,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
-import { writeBatch} from "firebase/firestore";
+import { doc, writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createexpense } from "../../../Data/Docs";
+// import { createexpense } from "../../../Data/Docs";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -81,7 +81,7 @@ function Editexpense(){
                 ){
                     
                     if(expid!==0){
-                        await batch.update(createexpense,{
+                        await batch.update(doc(db,"expenses",`${sharedvalue.expensesdata[expid].docid}`),{
                             [expid]:{
                                 ...sharedvalue.expensesdata[expid],
                                 fromdate:expenseinfo.fromdate,

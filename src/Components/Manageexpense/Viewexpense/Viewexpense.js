@@ -9,10 +9,10 @@ import MyContext from "../../../MyContext";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
-import { writeBatch} from "firebase/firestore";
+import { doc, writeBatch} from "firebase/firestore";
 import { updateDoc, deleteField } from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createexpense } from "../../../Data/Docs";
+// import { createexpense } from "../../../Data/Docs";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -27,10 +27,11 @@ function Viewexpense(){
     async function handleDeleteClosedExp(expid){
         setshowloading(true)
         try{
-            await updateDoc(createexpense, {
+            await updateDoc(doc(db,"expenses",`${sharedvalue.expensesdata[expid].docid}`), {
                 [expid]: deleteField()
             });
             await batch.commit();
+            sharedvalue.Delete_Expenses(expid);
         }catch(e){
             console.log('you got an error while updating ',e);
         }
@@ -47,6 +48,25 @@ function Viewexpense(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
+
+    //function to add the docid
+
+    // async function handleadddocid(e,expenseid){
+    //     e.preventDefault();
+    //     setshowloading(true);
+    //     try{
+    //         await updateDoc(createexpense,{
+    //             [expenseid]:{
+    //                 ...sharedvalue.expensesdata[expenseid],
+    //                 docid:'zitABqYQwdvVCAqUR7HP'
+    //             }
+    //         });
+    //         await batch.commit();
+    //     }catch(err){
+    //         console.log('you got an error while adding the docid: ',err);
+    //     }
+    //     setshowloading(false);
+    // }
     
     
     return(
@@ -272,6 +292,7 @@ function Viewexpense(){
                                                             {expense}
                                                         </p>
                                                     </td>
+                                                    
                                                 </tr>
                                             ))
                                         }

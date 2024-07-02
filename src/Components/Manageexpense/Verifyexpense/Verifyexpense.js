@@ -8,7 +8,7 @@ import MyContext from '../../../MyContext';
 import { useParams ,useNavigate } from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
-import { writeBatch} from "firebase/firestore";
+import { doc, writeBatch} from "firebase/firestore";
 import { db } from '../../../Firebase';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -16,7 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
-import { createexpense } from '../../../Data/Docs';
+// import { createexpense } from '../../../Data/Docs';
 
 function Verifyexpense(){
     const sharedvalue = useContext(MyContext);
@@ -50,7 +50,7 @@ function Verifyexpense(){
                 editdata.expfinanceid!==''
             ){
                 if(expid!==0){
-                    await batch.update(createexpense,{
+                    await batch.update(doc(db,"expenses",`${sharedvalue.expensesdata[expid].docid}`),{
                         [expid]:{
                             ...sharedvalue.expensesdata[expid],
                             expfinalamount:editdata.expfinalamount,

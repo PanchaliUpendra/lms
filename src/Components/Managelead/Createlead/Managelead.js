@@ -372,8 +372,8 @@ function Managelead(){
                         latestcomment:['No Comment'],
                         modifiedby:[],
                         createdbyid:sharedvalue.uid,
-                        docid:result.docid,
-                        meetid:result.meetid
+                        docid:tempdocid,
+                        meetid:tempmeetid
                     }});
                 
                 //updating the meeting
