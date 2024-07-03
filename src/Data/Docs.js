@@ -35,4 +35,7 @@ export const sparequotationid = doc(db,"sparequotationID","AZBR29znExz9beVQPHym"
 export const amcquotes = collection(db,"amcdoc");
 export const amcquotesid = doc(db,"amcdocID","TKn38PbAmjRxA9d1tkLr");
 
+//spares and machines
+export const spareAndMachineDoc = doc(db,"sparesandmachine","7DyUV2gokfkrnOaLl2Rs");
+
 export const API_ONE_TO_ONE = 'https://www.message.ultrasorters.com:8000';

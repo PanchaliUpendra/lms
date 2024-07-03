@@ -5,7 +5,8 @@ import { auth } from "./Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase";
 import { createtickets, leadsgraphdoc ,ticketsgraphdoc , 
-  documentsdoc, sparequotation, amcquotes, leadcollection, expensecollection} from "./Data/Docs";
+  documentsdoc, sparequotation, amcquotes, leadcollection, expensecollection,
+  spareAndMachineDoc} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
@@ -59,6 +60,10 @@ function MyProvider({children}){
     const [spareskeys,setspareskeys] = useState([]);//spares keys
     const [amcdata,setamcdata] = useState({});//amc data
     const [amckeys,setamckeys] = useState([]);//amc keys
+
+
+    const[sparesArray,setSparesArray] = useState([]);//spares data
+    const[machinesArray,setmachinesArray] = useState([]);//spares data
    
 
     const updateSideNav = ()=>{
@@ -155,6 +160,8 @@ function MyProvider({children}){
         amckeys:amckeys,
         role:user.role,
         sideNavOnOff:sideNavOnOff,
+        sparesArray:sparesArray,
+        machinesArray:machinesArray,
 
         updateSideNav,
         DeleteQuoteElement,
@@ -162,7 +169,7 @@ function MyProvider({children}){
         Delete_amc_quote,
         Delete_tickets,
         Delete_Leads,
-        Delete_Expenses
+        Delete_Expenses,
     }
 
     useEffect(()=>{
@@ -178,6 +185,19 @@ function MyProvider({children}){
                 userdtl:userd
               }))
 
+              //spares and machines data fetching
+              const fetch_spares_and_machine_data = async() =>{
+                try{
+                  await onSnapshot(spareAndMachineDoc,(docs)=>{
+                    const sparesandmachinedata = docs.data();
+                    setmachinesArray(sparesandmachinedata.machines);
+                    setSparesArray(sparesandmachinedata.spares);
+                  })
+                }catch(err){
+                  console.log('you got an error while fetching spares and machines data: ',err);
+                }
+              }
+              fetch_spares_and_machine_data();
               //fetch amc data
               const fetch_amc_data = async()=>{
                 try{

@@ -38,7 +38,7 @@
     width: 100%;
     overflow-x: auto;
 }
-table{
+.view-list-table-con table{
     width: 100%;
     background-color:white;
     margin-top: 15px;
@@ -53,7 +53,7 @@ table{
 }
 
 
-table>thead th{
+.view-list-table-con table>thead th{
     min-width: 150px;
     max-width: 100%;
     background-color:white;
@@ -68,12 +68,12 @@ table>thead th{
     padding-left: 10px;
     padding-right: 10px;
 }
-table>thead th>p{
+.view-list-table-con table>thead th>p{
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-table>tbody tr td{
+.view-list-table-con table>tbody tr td{
     /* min-height: 40px; */
     padding-top: 10px;
     padding-bottom: 10px;
