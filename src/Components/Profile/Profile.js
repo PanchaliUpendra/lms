@@ -12,6 +12,7 @@ import {  writeBatch } from "firebase/firestore";
 import { db } from "../../Firebase";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 
 function Profile(){
@@ -24,6 +25,12 @@ function Profile(){
     const [editname,seteditname] = useState('');
     const[editmobbtn, seteditmobbtn] = useState(false);
     const [showprogress,setshowprogress]=useState(false);
+    //spares table view
+    const [sparesviewcount,setsparesviewcount] = useState(10);
+    //machines table view
+    const [machinesviewcount,setmachinesviewcount] = useState(10);
+
+
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
@@ -126,6 +133,43 @@ function Profile(){
         setshowprogress(false);
     }
 
+    //function to delete the spare part
+    async function handledeletesparepart(item,model,subtype){
+        setshowprogress(true);
+        try{
+            const temp_spare_data = sharedvalue.sparesArray.filter((eachdoc)=>!(eachdoc.item===item && eachdoc.model.includes(model) && eachdoc.subtype.includes(subtype)));
+            // console.log('temp_spares_data: ',temp_spare_data);
+            batch.update(spareAndMachineDoc,{
+                "spares":[
+                    ...temp_spare_data
+                ]
+            })
+            await batch.commit();
+        }catch(err){
+            console.log('you getting an error while deleting the spare part: ',err);
+        }
+        setshowprogress(false);
+    }
+
+    //function to the delete the machine part
+    async function handledeletemachinepart(discreption,product,capacity,specification){
+        setshowprogress(true);
+        try{
+            const temp_machine_data = sharedvalue.machinesArray.filter((eachdoc)=>!(eachdoc.discreption===discreption && eachdoc.product===product && eachdoc.capacity===capacity && eachdoc.specification===specification));
+            // console.log('temp_machine_data: ',temp_machine_data);
+            batch.update(spareAndMachineDoc,{
+                "machines":[
+                   ...temp_machine_data
+                ]
+            })
+            await batch.commit();
+
+        }catch(err){
+            console.log('you got an error while deleting the machine part ',err);
+        }
+        setshowprogress(false);
+    }
+
 
 
    
@@ -210,19 +254,24 @@ function Profile(){
                                         <th>Model</th>
                                         <th>subtype</th>
                                         <th>price</th>
+                                        <th>delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sharedvalue.sparesArray.length>0 && sharedvalue.sparesArray.map((item,idx)=>(
+                                    {sharedvalue.sparesArray.length>0 && sharedvalue.sparesArray.slice(0,sparesviewcount).map((item,idx)=>(
                                         <tr key={idx}>
                                             <td>{item.item}</td>
                                             <td>{item.model}</td>
                                             <td>{item.subtype}</td>
                                             <td>{item.price}</td>
+                                            <td><DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} fontSize="small" onClick={()=>handledeletesparepart(item.item,item.model,item.subtype)}/></td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                            <div className="spares-and-machines-show-more-btn">
+                                <p onClick={()=>setsparesviewcount(prev=>prev===10?sharedvalue.sparesArray.length:10)}>show {sparesviewcount===10?'more':'less'} {`>`}</p>
+                            </div>
                         </div>
                         {!showAddSpareItem && <div className="spare-add-item-btn">
                             <p onClick={()=>setShowAddSpareItem(prev=>!prev)}>+ add spare</p>
@@ -288,26 +337,31 @@ function Profile(){
                             <table className="profile-table">
                                 <thead>
                                     <tr>
-                                        <th>Discreption</th>
+                                        <th>Description</th>
                                         <th>Product</th>
                                         <th>capacity(ton/hr)</th>
                                         <th>Specification</th>
                                         <th>price</th>
+                                        <th>delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sharedvalue.machinesArray.length>0 && sharedvalue.machinesArray.map((item,idx)=>(
+                                    {sharedvalue.machinesArray.length>0 && sharedvalue.machinesArray.slice(0,machinesviewcount).map((item,idx)=>(
                                         <tr key={idx}>
                                             <td>{item.discreption}</td>
                                             <td>{item.product}</td>
                                             <td>{item.capacity}</td>
                                             <td>{item.specification}</td>
                                             <td>{item.price}</td>
+                                            <td><DeleteOutlineRoundedIcon onClick={()=>handledeletemachinepart(item.discreption,item.product,item.capacity,item.specification)} sx={{color:'red',cursor:'pointer'}} fontSize="small"/></td>
                                         </tr>
                                     ))}
                                     
                                 </tbody>
                             </table>
+                            <div className="spares-and-machines-show-more-btn">
+                                <p onClick={()=>setmachinesviewcount(prev=>prev===10?sharedvalue.machinesArray.length:10)}>show {machinesviewcount===10?'more':'less'} {`>`}</p>
+                            </div>
                         </div>
                         {!showAddMachineItem && 
                         <div className="spare-add-item-btn">

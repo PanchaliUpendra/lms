@@ -329,3 +329,18 @@
     outline: none;
 
 }
+
+/* spares-and-machines-show-more-btn */
+.spares-and-machines-show-more-btn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+.spares-and-machines-show-more-btn>p{
+    color: gray;
+    cursor: pointer;
+    font-weight: 500;
+    text-transform: capitalize;
+}

@@ -38,10 +38,17 @@ function VerifySpare(){
     const loginformerror = () => toast.info('please fill the all Required Fields');
     // const invalidmail = () => toast.warn('unique id was not generating!!!');
     //array of spare parts data
-    const [spares,setspares] = useState([{
+    const [spares,setspares] = useState([{//here spares means both machines and spares
         id:0,
+        reqtype:'spare',
         sparepart:'',
+        machinepart:'',
         qty:0,
+        sparemodel:'',
+        sparesubtype:'',
+        machineproduct:'',
+        machinecap:'',
+        machinespecification:'',
         unitprice:0,
     }]);
 
@@ -339,23 +346,62 @@ function VerifySpare(){
                                 spares.map((item,idx)=>(
                                         <div key={idx}>
                                             <div className="eachspare-part-header">
-                                                <h1>spare part_{Number(idx)+1}</h1>
-                                                
+                                                <h1>{item.reqtype} part_{Number(idx)+1}</h1>
                                             </div>
                         
                                             <div  className='create-lead-requirements-all-fields creatquotation-forms'>
                                                 {/* quotation type */}
                                                 <div>
-                                                    <label>Enter required spare<span style={{color:'red'}}>*</span></label>
-                                                    <input type="text" value={item.sparepart} readOnly/>
+                                                    <label>required type</label>
+                                                    <input type="text" value={item.reqtype} readOnly/>
                                                 </div>
+                                                {item.reqtype==='spare' && 
+                                                <>
+                                                    <div>
+                                                        <label>Enter required spare<span style={{color:'red'}}>*</span></label>
+                                                        <input type="text" value={item.sparepart} readOnly/>
+                                                    </div>
+                                                    {item.sparepart!=='' && 
+                                                    <div>
+                                                        <label>model</label>
+                                                        <input type="text" value={item.sparemodel} readOnly/>
+                                                    </div>}
+
+                                                    {item.sparepart!=='' && item.sparemodel!=='' && 
+                                                    <div>
+                                                        <label>sub type</label>
+                                                        <input type="text" value={item.sparesubtype} readOnly/>
+                                                    </div>}
+                                                </>}
+                                                {
+                                                item.reqtype==='machine' &&
+                                                <>
+                                                    <div>
+                                                        <label>Enter required machine<span style={{color:'red'}}>*</span></label>
+                                                        <input value={item.machinepart} type="text" readOnly/>
+                                                    </div>
+                                                    {item.machinepart!=='' && 
+                                                    <div>
+                                                        <label>product</label>
+                                                        <input value={item.machineproduct} type="text" readOnly/>
+                                                    </div>}
+                                                    <div>
+                                                        <label>capacity</label>
+                                                        <input type="text" value={item.machinecap} readOnly/>
+                                                    </div>
+                                                    <div>
+                                                        <label>specification</label>
+                                                        <input value={item.machinespecification} type="text" readOnly/>
+                                                    </div>
+                                                </>
+                                                }
                                                 <div>
                                                     <label>quantity<span style={{color:'red'}}>*</span></label>
                                                     <input type="number" value={item.qty} readOnly/>
                                                 </div>
                                                 <div>
                                                     <label>unit price<span style={{color:'red'}}>*</span></label>
-                                                    <input type="number" value={item.unitprice} readOnly/>
+                                                    <input value={item.unitprice} type="text" readOnly/>
                                                 </div>
                                                 <div>
                                                     <label>totalprice<span style={{color:'red'}}>*</span></label>

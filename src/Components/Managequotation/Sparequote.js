@@ -119,7 +119,7 @@ const Sparequote = (props) =>{
                                 <View style={styles.srthtblrow}>
                                     <Text style={styles.srthtblcol11}>{idx+1}</Text>
                                     <View style={styles.srthtblcol21}>
-                                        <Text>{item.sparepart}</Text>
+                                        <Text>{item.reqtype==='spare'?item.sparepart:item.machinepart}</Text>
                                     </View>
                                     <Text style={styles.srthtblcol31}>{item.qty}</Text>
                                     <View style={styles.srthtblcol31}>

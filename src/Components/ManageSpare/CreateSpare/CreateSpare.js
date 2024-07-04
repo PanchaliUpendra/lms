@@ -35,10 +35,17 @@ function CreateSpare(){
     const loginformerror = () => toast.info('please fill all the Required Fields');
     const invalidmail = () => toast.warn('unique id was not generating!!!');
     //array of spare parts data
-    const [spares,setspares] = useState([{
+    const [spares,setspares] = useState([{//here spares means both machines and spares
         id:0,
+        reqtype:'spare',
         sparepart:'',
+        machinepart:'',
         qty:0,
+        sparemodel:'',
+        sparesubtype:'',
+        machineproduct:'',
+        machinecap:'',
+        machinespecification:'',
         unitprice:0,
     }]);
 
@@ -49,8 +56,15 @@ function CreateSpare(){
             ...prev,
             {
                 id:spares.length,
+                reqtype:'spare',
                 sparepart:'',
+                machinepart:'',
                 qty:0,
+                sparemodel:'',
+                sparesubtype:'',
+                machineproduct:'',
+                machinecap:'',
+                machinespecification:'',
                 unitprice:0,
             }
 
@@ -68,7 +82,21 @@ function CreateSpare(){
         e.preventDefault();
         const { value } = e.target;
         setspares(prevSpares => {
-            const updatedItem = { ...prevSpares[idx], [field]: value };
+            const updatedItem = field==='reqtype'?
+            {
+                ...prevSpares[idx],
+                reqtype:'spare',
+                sparepart:'',
+                machinepart:'',
+                qty:0,
+                sparemodel:'',
+                sparesubtype:'',
+                machineproduct:'',
+                machinecap:'',
+                machinespecification:'',
+                unitprice:0,
+                [field]:value
+            }:{ ...prevSpares[idx], [field]: value };
             return [...prevSpares.slice(0, idx), updatedItem, ...prevSpares.slice(idx + 1)];
         });
 
@@ -137,7 +165,7 @@ function CreateSpare(){
                             sparedist:sparequotedata.sparedist,
                             sparecity:sparequotedata.sparecity,
                             sparereqmachine:sparequotedata.sparereqmachine,
-                            spares:spares,
+                            spares:spares,//here spares means both machines and spares
                             docid:result.docid,
                             sparecreatedby:sharedvalue.uid,
                             sparestatus:'open',
@@ -163,10 +191,16 @@ function CreateSpare(){
                     }));
                     setspares([{
                         id:0,
+                        reqtype:'spare',
                         sparepart:'',
+                        machinepart:'',
                         qty:0,
+                        sparemodel:'',
+                        sparesubtype:'',
+                        machineproduct:'',
+                        machinecap:'',
+                        machinespecification:'',
                         unitprice:0,
-                        totalprice:0
                     }]);
                 }else{
                     const id = uuidv4();
@@ -180,7 +214,7 @@ function CreateSpare(){
                             sparedist:sparequotedata.sparedist,
                             sparecity:sparequotedata.sparecity,
                             sparereqmachine:sparequotedata.sparereqmachine,
-                            spares:spares,
+                            spares:spares,//here spares means both machines and spares
                             docid:id,
                             sparecreatedby:sharedvalue.uid,
                             sparestatus:'open',
@@ -208,10 +242,16 @@ function CreateSpare(){
                     }));
                     setspares([{
                         id:0,
+                        reqtype:'spare',
                         sparepart:'',
+                        machinepart:'',
                         qty:0,
+                        sparemodel:'',
+                        sparesubtype:'',
+                        machineproduct:'',
+                        machinecap:'',
+                        machinespecification:'',
                         unitprice:0,
-                        totalprice:0
                     }]);
                 }
                 
@@ -353,23 +393,149 @@ function CreateSpare(){
                                 spares.map((item,idx)=>(
                                         <div key={idx}>
                                             <div className="eachspare-part-header">
-                                                <h1>spare part_{Number(idx)+1}</h1>
+                                                <h1>{item.reqtype} part_{Number(idx)+1}</h1>
                                                 {Number(idx)>0 && <DeleteOutlineIcon sx={{color:'red' , fontSize:20 , cursor:'pointer'}} onClick={()=>handleDeleteElement(item.id)}/>}
                                             </div>
                         
                                             <div  className='create-lead-requirements-all-fields creatquotation-forms'>
                                                 {/* quotation type */}
                                                 <div>
-                                                    <label>Enter required spare<span style={{color:'red'}}>*</span></label>
-                                                    <input type="text" value={item.sparepart} onChange={(e)=>handleEachElementData(e,idx,'sparepart')}/>
+                                                    <label>required type</label>
+                                                    <select value={item.reqtype} onChange={(e)=>handleEachElementData(e,idx,'reqtype')}>
+                                                        <option value='spare'>spare</option>
+                                                        <option value='machine'>machine</option>
+                                                    </select>
                                                 </div>
+                                                {item.reqtype==='spare' && 
+                                                <>
+                                                    <div>
+                                                        <label>Enter required spare<span style={{color:'red'}}>*</span></label>
+                                                        <select value={item.sparepart} onChange={(e)=>handleEachElementData(e,idx,'sparepart')}>
+                                                            <option value=''>Choose the Spare part</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.sparesArray.map((item)=>{
+                                                                    return item.item;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    {item.sparepart!=='' && 
+                                                    <div>
+                                                        <label>model</label>
+                                                        <select value={item.sparemodel} onChange={(e)=>handleEachElementData(e,idx,'sparemodel')}>
+                                                            <option value=''>choose model</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model!=='')).map((prod)=>{
+                                                                    return prod.model;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>}
+
+                                                    {item.sparepart!=='' && item.sparemodel!=='' && 
+                                                    <div>
+                                                        <label>sub type</label>
+                                                        <select value={item.sparesubtype} onChange={(e)=>handleEachElementData(e,idx,'sparesubtype')}>
+                                                            <option value=''>choose sub type</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model.includes(item.sparemodel) && val.subtype!=='')).map((prod)=>{
+                                                                    return prod.subtype;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>}
+                                                </>}
+                                                {
+                                                item.reqtype==='machine' &&
+                                                <>
+                                                    <div>
+                                                        <label>Enter required machine<span style={{color:'red'}}>*</span></label>
+                                                        <select value={item.machinepart} onChange={(e)=>handleEachElementData(e,idx,'machinepart')}>
+                                                            <option value=''>choose machine</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.machinesArray.filter((val)=>val.discreption!=='').map((prod)=>{
+                                                                    return prod.discreption;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    {item.machinepart!=='' && 
+                                                    <div>
+                                                        <label>product</label>
+                                                        <select value={item.machineproduct} onChange={(e)=>handleEachElementData(e,idx,'machineproduct')}>
+                                                            <option value=''>choose product</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.machinesArray.filter((val)=>val.discreption.includes(item.machinepart)).map((prod)=>{
+                                                                    return prod.product;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>}
+                                                    <div>
+                                                        <label>capacity</label>
+                                                        <select value={item.machinecap} onChange={(e)=>handleEachElementData(e,idx,'machinecap')}>
+                                                            <option value=''>choose capacity</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.machinesArray.filter((val)=>(val.discreption.includes(item.machinepart) && val.product.includes(item.machineproduct))).map((prod)=>{
+                                                                    return prod.capacity;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label>specification</label>
+                                                        <select value={item.machinespecification} onChange={(e)=>handleEachElementData(e,idx,'machinespecification')}>
+                                                            <option value=''>choose specification</option>
+                                                            {
+                                                                Array.from(new Set(sharedvalue.machinesArray.filter((val)=>(val.discreption.includes(item.machinepart) && val.product.includes(item.machineproduct) && val.capacity.includes(item.machinecap) && val.specification!=='')).map((prod)=>{
+                                                                    return prod.specification;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </>
+                                                }
                                                 <div>
                                                     <label>quantity<span style={{color:'red'}}>*</span></label>
                                                     <input type="number" value={item.qty} onChange={(e)=>handleEachElementData(e,idx,'qty')}/>
                                                 </div>
                                                 <div>
                                                     <label>unit price<span style={{color:'red'}}>*</span></label>
-                                                    <input type="number" value={item.unitprice} onChange={(e)=>handleEachElementData(e,idx,'unitprice')}/>
+                                                    <select value={item.unitprice} onChange={(e)=>handleEachElementData(e,idx,'unitprice')}>
+                                                            <option value=''>choose price</option>
+                                                            {item.reqtype==='spare' &&
+                                                                
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model.includes(item.sparemodel) && val.subtype.includes(item.sparesubtype))).map((prod)=>{
+                                                                    return prod.price;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            }
+                                                            {
+                                                                item.reqtype==='machine' &&
+                                                                
+                                                                Array.from(new Set(sharedvalue.machinesArray.filter((val)=>(val.discreption.includes(item.machinepart) && val.product.includes(item.machineproduct) && val.capacity.includes(item.machinecap) && val.specification.includes(item.machinespecification))).map((prod)=>{
+                                                                    return prod.price;
+                                                                }))).map((values)=>(
+                                                                    <option value={values}>{values}</option>
+                                                                ))
+                                                            
+                                                            }
+                                                    </select>
                                                 </div>
                                                 <div>
                                                     <label>totalprice<span style={{color:'red'}}>*</span></label>
