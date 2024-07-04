@@ -189,6 +189,7 @@ function Viewquotation(){
                                                     <th>add.info</th>
                                                     
                                                     <th>admin comment</th>
+                                                    <th>created by</th>
                                                     
                                                     <th>quote.ID</th>
                                                 </tr>
@@ -329,6 +330,13 @@ function Viewquotation(){
                                                             <td>
                                                                 <p className={`view-manager-list-name`}>
                                                                     {sharedvalue.quotesdata[quote].quotadmincommt}
+                                                                </p>
+                                                            </td>
+
+                                                            {/* created by */}
+                                                            <td>
+                                                                <p className={`view-manager-list-name`}>
+                                                                    {sharedvalue.workersdata[sharedvalue.quotesdata[quote].quotcreatedby].name}
                                                                 </p>
                                                             </td>
                                                             

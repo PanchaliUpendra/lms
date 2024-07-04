@@ -171,6 +171,7 @@ function ViewAmc(){
                                             </th>
                                             <th>quotation type</th>
                                             <th>admin comment</th>
+                                            <th>created by</th>
                                             <th>AMC.ID</th>
                                         </tr>
                                     </thead>
@@ -242,6 +243,12 @@ function ViewAmc(){
                                                     <td>
                                                         <p className={`view-manager-list-name`}>
                                                             {sharedvalue.amcdata[amc].amcadmincommt}
+                                                        </p>
+                                                    </td>
+                                                    {/* created by */}
+                                                    <td>
+                                                        <p className="view-manager-list-name">
+                                                            {sharedvalue.workersdata[sharedvalue.amcdata[amc].amccreatedby].name}
                                                         </p>
                                                     </td>
                                                     {/*  amc  id */}

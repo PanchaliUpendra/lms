@@ -164,6 +164,7 @@ function ViewSpare(){
                                             </th>
                                             <th>quotation type</th>
                                             <th>admin comment</th>
+                                            <th>created by</th>
                                             <th>Spare.ID</th>
                                         </tr>
                                     </thead>
@@ -225,6 +226,12 @@ function ViewSpare(){
                                                     <td>
                                                         <p className={`view-manager-list-name`}>
                                                             {sharedvalue.sparesdata[spare].spareadmincommt}
+                                                        </p>
+                                                    </td>
+                                                    {/* created by */}
+                                                    <td>
+                                                        <p className={`view-manager-list-name`}>
+                                                            {sharedvalue.workersdata[sharedvalue.sparesdata[spare].sparecreatedby].name}
                                                         </p>
                                                     </td>
                                                     {/*  spare id */}

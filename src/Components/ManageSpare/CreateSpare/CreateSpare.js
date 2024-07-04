@@ -138,6 +138,11 @@ function CreateSpare(){
             invalidmail();
         }
     }
+    //function to send the price
+    // function calculateSpareTotal(sparepart,sparemodel,sparesubtype){
+    //     return sharedvalue.machinesArray.filter((item)=>(item.sparepart===sparepart && item.sparemodel===sparemodel && item.sparesubtype===sparesubtype)).length>0?
+    //     sharedvalue.machinesArray.filter((item)=>(item.sparepart===sparepart && item.sparemodel===sparemodel && item.sparesubtype===sparesubtype))[0].price:0;
+    // }
     //function handle the submit data
     async function handlesubmitdata(event){
         event.preventDefault();
@@ -410,7 +415,9 @@ function CreateSpare(){
                                                 <>
                                                     <div>
                                                         <label>Enter required spare<span style={{color:'red'}}>*</span></label>
-                                                        <select value={item.sparepart} onChange={(e)=>handleEachElementData(e,idx,'sparepart')}>
+                                                        <select value={item.sparepart} onChange={(e)=>{
+                                                            handleEachElementData(e,idx,'sparepart');
+                                                            }}>
                                                             <option value=''>Choose the Spare part</option>
                                                             {
                                                                 Array.from(new Set(sharedvalue.sparesArray.map((item)=>{
@@ -421,35 +428,35 @@ function CreateSpare(){
                                                             }
                                                         </select>
                                                     </div>
-                                                    {item.sparepart!=='' && 
+                                                    
                                                     <div>
                                                         <label>model</label>
                                                         <select value={item.sparemodel} onChange={(e)=>handleEachElementData(e,idx,'sparemodel')}>
                                                             <option value=''>choose model</option>
                                                             {
-                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model!=='')).map((prod)=>{
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item===item.sparepart && val.model!=='')).map((prod)=>{
                                                                     return prod.model;
-                                                                }))).map((values)=>(
-                                                                    <option value={values}>{values}</option>
-                                                                ))
+                                                                }))).map((values)=>{
+                                                                    return <option value={values}>{values}</option>
+                                                                })
                                                             }
                                                         </select>
-                                                    </div>}
+                                                    </div>
 
-                                                    {item.sparepart!=='' && item.sparemodel!=='' && 
+                                                    
                                                     <div>
                                                         <label>sub type</label>
                                                         <select value={item.sparesubtype} onChange={(e)=>handleEachElementData(e,idx,'sparesubtype')}>
                                                             <option value=''>choose sub type</option>
                                                             {
-                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model.includes(item.sparemodel) && val.subtype!=='')).map((prod)=>{
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item===item.sparepart && val.model===item.sparemodel && val.subtype!=='')).map((prod)=>{
                                                                     return prod.subtype;
                                                                 }))).map((values)=>(
                                                                     <option value={values}>{values}</option>
                                                                 ))
                                                             }
                                                         </select>
-                                                    </div>}
+                                                    </div>
                                                 </>}
                                                 {
                                                 item.reqtype==='machine' &&
@@ -519,7 +526,7 @@ function CreateSpare(){
                                                             <option value=''>choose price</option>
                                                             {item.reqtype==='spare' &&
                                                                 
-                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item.includes(item.sparepart) && val.model.includes(item.sparemodel) && val.subtype.includes(item.sparesubtype))).map((prod)=>{
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item===item.sparepart && val.model===item.sparemodel && val.subtype===item.sparesubtype)).map((prod)=>{
                                                                     return prod.price;
                                                                 }))).map((values)=>(
                                                                     <option value={values}>{values}</option>
@@ -536,6 +543,8 @@ function CreateSpare(){
                                                             
                                                             }
                                                     </select>
+                                                    {/* {item.reqtype==='spare' &&
+                                                    <input type="number" value={item.unitprice} readOnly/>} */}
                                                 </div>
                                                 <div>
                                                     <label>totalprice<span style={{color:'red'}}>*</span></label>
