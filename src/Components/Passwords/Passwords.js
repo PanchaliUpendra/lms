@@ -7,15 +7,18 @@ import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
 import { useNavigate } from "react-router-dom";
 import {signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../Firebase';
+import { auth, db } from '../../Firebase';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { doc, writeBatch } from "firebase/firestore";
 function Passwords(){
     const [open, setOpen] = React.useState(false);
     const [filter,setfilter] = useState('');
+    const batch = writeBatch(db);
+
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
     //code only for toggle the menu bar
@@ -61,6 +64,53 @@ function Passwords(){
             
         }catch(e){
             alert('you got an error')
+        }
+        setOpen(false);
+    }
+
+    //convert employee to manager
+    async function convertEmployeeToManager(e,uid){
+        e.preventDefault();
+        setOpen(true);
+        try{
+            //updating the leads
+            const templeads = sharedvalue.leadskeys.filter((item)=>sharedvalue.leadsdata[item].employeeid===uid);
+            // console.log('here is the temp_leads: ',templeads);
+            for(const eachleadid of templeads){//updating the leads
+                await batch.update(doc(db,"leads",`${sharedvalue.leadsdata[eachleadid].docid}`),{
+                    [eachleadid]:{
+                        ...sharedvalue.leadsdata[eachleadid],
+                        employeeid:'',
+                        managerid:uid
+                    }
+                })
+            }
+            //updating tickets
+            const temptickets = sharedvalue.ticketskeys.filter((item)=>sharedvalue.ticketsdata[item].ctktemployee===uid);
+            // console.log('temptickets data: ',temptickets);
+            for(const eachtktid of temptickets){//updating tickets starts from here
+                await batch.update(doc(db,"tickets",`${sharedvalue.ticketsdata[eachtktid].docid}`),{
+                    [eachtktid]:{
+                        ...sharedvalue.ticketsdata[eachtktid],
+                        ctktemployee:'',
+                        ctktmanager:uid
+                    }
+                })
+            }
+            //updating the workers data
+            batch.update(doc(db,'workers',`${sharedvalue.workersdata[uid].docid}`),{
+                [uid]:{
+                    ...sharedvalue.workersdata[uid],
+                    "managerid":'',
+                    "mcat":'both',
+                    "role":'manager',
+                }
+            })
+            await batch.commit();
+
+
+        }catch(err){
+            console.log('you getting an error while converting employee from manager ',err);
         }
         setOpen(false);
     }
@@ -119,6 +169,7 @@ function Passwords(){
                                             <th>Password</th>
                                             <th>Profile</th>
                                             <th>Login</th>
+                                            <th>promote to</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,6 +215,11 @@ function Passwords(){
                                                             uid:worker
                                                         }))}/>
                                                     </td> */}
+                                                    <td>
+                                                        {
+                                                            sharedvalue.workersdata[worker].role==='employee' && <button onClick={(e)=>convertEmployeeToManager(e,sharedvalue.workersdata[worker].uid)}>manager</button>
+                                                        }
+                                                    </td>
                                                 </tr>
                                             ))
                                         }
