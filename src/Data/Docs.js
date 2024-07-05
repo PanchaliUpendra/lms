@@ -14,7 +14,14 @@ export const expensecollection = collection(db,"expenses");
 export const createmeetings = doc(db,"meetings","JqCkRuz9W6HVkhuERsrV");
 export const meetingscollection = collection(db,"meetings");
 
+
+//workers collection
 export const createworkers = doc(db,"workers","yWXH2DQO8DlAbkmQEQU4");
+export const workerscollection = collection(db,"workers");
+export const workerscountid = doc(db,"workersID","gUvKlC82ouhqbFmOe3E0");
+
+
+//graphs data
 export const leadsgraphdoc = doc(db,"leadsgraph","1HXMGFXVYcIjbuMzMZo4");
 export const ticketsgraphdoc = doc(db,"ticketsgraph","Wrbujr45rUXPWaurALzs");
 export const documentsdoc = doc(db,"Documents","wacaEmr1ZlRV7GTfVHfc");
