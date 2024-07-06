@@ -30,10 +30,15 @@ import { updateDoc, deleteField } from "firebase/firestore";
 // import { EmailShareButton } from "react-share";
 
 import Sruthitech from "../Sruthitech";
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 function Viewquotation(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
+    //crossbtn function
+    const [crossbtn,setcrossbtn] = useState(false);
      //backdrop loading toggle
      const[showloading,setshowloading] = useState(false);
      //deleting lead
@@ -158,7 +163,11 @@ function Viewquotation(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search">
+                            <div className="viewlead-display-search-filter">
+                                <div onClick={()=>setcrossbtn(true)}>
+                                    <FilterListIcon sx={{fontWeight:"500",cursor:'pointer'}}/>
+                                    <label style={{fontWeight:"500",cursor:'pointer',color:'black'}}>Filter</label>
+                                </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Customer/QuoteID" onChange={(e)=>setsearchworker(e.target.value)}/>
@@ -361,6 +370,67 @@ function Viewquotation(){
                     </div>
                 </div>
             </div>
+            <div className={crossbtn?"viewlead-filter-menubar":"viewlead-filter-menubar-inactive"}>
+                <div className="viewlead-filter-manubar-cross-btn">
+                    <CancelIcon sx={{cursor:'pointer'}} onClick={()=>setcrossbtn(false)}/>
+                </div>
+                <div className="viewlead-filter-menu-nav">
+                    <div className="viewlead-filter-header">
+                        <h1>Filter By</h1>
+                    </div>
+                    {/* status */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>status</h2>
+                        <select>
+                            <option value=''>All</option>
+                            <option value='open'>Open</option>
+                            <option value='rework'>Rework</option>
+                            <option value='approved'>Approved</option>
+                            <option value='closed'>Closed</option>
+                        </select>
+                    </div>
+                    <div className="viewlead-filter-status-box">
+                        <h2>machine model</h2>
+                        <select>
+                            <option value=''>All</option>
+                            <option value='ULTIMA'>ULTIMA</option>
+                            <option value='ULTRA-S'>ULTRA-S</option>
+                            <option value='RGBS'>RGBS</option>
+                            <option value="FALCON">FALCON</option>
+                        </select>
+                    </div>
+                    <div className="viewlead-filter-status-box">
+                        <h2>Quotation type</h2>
+                        <select>
+                            <option value=''>All</option>
+                            <option value='USD'>USD</option>
+                            <option value='HSS'>HSS</option>
+                            <option value='GST'>GST</option>
+                        </select>
+                    </div>
+                    <div className="viewlead-filter-status-box">
+                        <h2>Company Name</h2>
+                        <select>
+                            <option value=''>All</option>
+                            <option value='Sruthi Technologies'>Sruthi Technologies</option>
+                            <option value='Comaas India Pvt Ltd'>Comaas India Pvt Ltd-COMAAS</option>
+                        </select>
+                    </div>
+                    {sharedvalue.role==='admin' && 
+                    <div className="viewlead-filter-status-box">
+                        <h2>created By</h2>
+                        <select>
+                            <option value=''>All</option>
+                        </select>
+                    </div>}
+                </div>
+                <div className="viewlead-filter-bottom-btn">
+                    <button>Apply All Filters</button>
+                </div>
+            </div>
+
+
+
             {/* popup to download the pdf */}
             <div className={`view-manager-list-popup-delete ${dwnquote.active===true?'active-delete-popup':''}`}>
                 <p>Are you sure you want to download the pdf <span>{ dwnquote.quoteid!==''?`${sharedvalue.quotesdata[dwnquote.quoteid].quotcustname}_${sharedvalue.quotesdata[dwnquote.quoteid].quotmachinetype}.pdf`:''}</span></p>

@@ -237,7 +237,11 @@ function Viewlead(){
                                         <tr className="table-head-row">
                                             <th>status</th>
                                             <th>action</th>
-                                            <th><p>Company | Contact Person| Mobile</p></th>
+                                            <th>
+                                                <p>Company |</p>
+                                                <p>Contact Person|</p> 
+                                                <p>Mobile</p>
+                                            </th>
                                             {/* <th>Contact Person</th> */}
                                             <th>
                                                 <p>country |</p>

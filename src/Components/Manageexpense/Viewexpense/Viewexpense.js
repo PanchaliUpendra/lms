@@ -15,6 +15,8 @@ import { db } from "../../../Firebase";
 // import { createexpense } from "../../../Data/Docs";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 function Viewexpense(){
@@ -23,6 +25,8 @@ function Viewexpense(){
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
+    //crossbtn function
+    const [crossbtn,setcrossbtn] = useState(false);
     
     async function handleDeleteClosedExp(expid){
         setshowloading(true)
@@ -96,7 +100,11 @@ function Viewexpense(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search">
+                            <div className="viewlead-display-search-filter">
+                                <div onClick={()=>setcrossbtn(true)}>
+                                    <FilterListIcon sx={{fontWeight:"500",cursor:'pointer'}}/>
+                                    <label style={{fontWeight:"500",cursor:'pointer',color:'black'}}>Filter</label>
+                                </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Customer/ExpID" onChange={(e)=>setsearchworker(e.target.value)}/>
@@ -305,6 +313,45 @@ function Viewexpense(){
 
                 </div>
                 {/* mange con inner ends here */}
+            </div>
+            <div className={crossbtn?"viewlead-filter-menubar":"viewlead-filter-menubar-inactive"}>
+                <div className="viewlead-filter-manubar-cross-btn">
+                    <CancelIcon sx={{cursor:'pointer'}} onClick={()=>setcrossbtn(false)}/>
+                </div>
+                <div className="viewlead-filter-menu-nav">
+                    <div className="viewlead-filter-header">
+                        <h1>Filter By</h1>
+                    </div>
+                    <div className="viewlead-filter-status-box">
+                        <h2>status</h2>
+                        <select>
+                            <option>All</option>
+                        </select>
+                    </div>
+                    <div className="viewlead-filter-status-box">
+                        <h2>purpose</h2>
+                        <select>
+                            <option>Both</option>
+                        </select>
+                    </div>
+                    {sharedvalue.role==='admin' && 
+                    <div className="viewlead-filter-status-box">
+                        <h2>created by</h2>
+                        <select>
+                            <option>All</option>
+                        </select>
+                    </div>}
+                    {sharedvalue.role==='admin' && 
+                    <div className="viewlead-filter-status-box">
+                        <h2>finance manager</h2>
+                        <select>
+                            <option>All</option>
+                        </select>
+                    </div>}
+                </div>
+                <div className="viewlead-filter-bottom-btn">
+                    <button>Apply All Filters</button>
+                </div>
             </div>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
