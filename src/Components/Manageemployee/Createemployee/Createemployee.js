@@ -10,13 +10,15 @@ import {createUserWithEmailAndPassword ,signOut } from "firebase/auth";
 import { secondauth } from "../../../Firebase";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { writeBatch, doc } from "firebase/firestore"; 
+import { writeBatch, doc, onSnapshot, setDoc } from "firebase/firestore"; 
 import { db } from "../../../Firebase";
 
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
+import { workerscountid } from "../../../Data/Docs";
 
 function Createemployee(){
     const sharedvalue = useContext(MyContext);
@@ -48,6 +50,22 @@ function Createemployee(){
      const emailalreadyexists = () =>toast.error('email already exists');
      const notcreated = () => toast.error('you got an error while creating the employee');
 
+    //generating the docid and count
+    const fetchworkerid = async() =>{
+        try{
+            return new Promise((resolve,reject)=>{
+                onSnapshot(workerscountid,(docs)=>{
+                    const tempworkerid = docs.data();
+                    resolve({
+                        ...tempworkerid,
+                        count:tempworkerid.count+1,
+                    });
+                })
+            })
+        }catch(err){
+            console.log("you got an error while fetching the cuistomer workerid: ",err);
+        }
+    }
     //form registration start's here
     async function handleregistration(){
         setshowprogress(true);
@@ -60,19 +78,46 @@ function Createemployee(){
                 //we have to take user.email,user.uid
                 // Update the workers of 'lms'
                 if(user){
-                    const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
-                    batch.update(sfRef, {[user.uid]:{
-                        "uid":user.uid,
-                        "name":formdetails.name,
-                        "email":formdetails.email,
-                        "ecat":formdetails.ecat,
-                        "phnnumber":formdetails.phnnumber,
-                        "role":formdetails.role,
-                        "password":formdetails.password,
-                        "disable":false,
-                        "managerid":sharedvalue.role==='manager'?sharedvalue.uid:''
-                    }});
-                    await batch.commit();
+                    const result = fetchworkerid();
+                    // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
+                    if(result.count<=340){
+                        batch.update(doc(db,"workers",`${result.docid}`), {[user.uid]:{
+                            "uid":user.uid,
+                            "name":formdetails.name,
+                            "email":formdetails.email,
+                            "ecat":formdetails.ecat,
+                            "phnnumber":formdetails.phnnumber,
+                            "role":formdetails.role,
+                            "password":formdetails.password,
+                            "disable":false,
+                            "managerid":sharedvalue.role==='manager'?sharedvalue.uid:'',
+                            "docid":result.docid
+                        }});
+                        await batch.update(workerscountid,{
+                            ...result
+                        });
+                        await batch.commit();
+                    }else{
+                        const id = uuidv4();
+                        await setDoc(doc(db,"workers",`${id}`), {[user.uid]:{
+                            "uid":user.uid,
+                            "name":formdetails.name,
+                            "email":formdetails.email,
+                            "ecat":formdetails.ecat,
+                            "phnnumber":formdetails.phnnumber,
+                            "role":formdetails.role,
+                            "password":formdetails.password,
+                            "disable":false,
+                            "managerid":sharedvalue.role==='manager'?sharedvalue.uid:'',
+                            "docid":id
+                        }});
+                        await batch.update(workerscountid,{
+                            ...result,
+                            docid:id,
+                            count:0
+                        });
+                        await batch.commit();
+                    }
                 }
                 await signOut(secondauth)
                 loginsuccess();

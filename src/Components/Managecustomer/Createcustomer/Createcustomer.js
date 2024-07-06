@@ -10,7 +10,7 @@ import {createUserWithEmailAndPassword,signOut} from "firebase/auth";
 import { secondauth } from "../../../Firebase";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { writeBatch, doc } from "firebase/firestore"; 
+import { writeBatch, doc, onSnapshot, setDoc } from "firebase/firestore"; 
 import { db } from "../../../Firebase";
 //toastify importing
 import { counrtycode } from "../../../Data/countrycode";
@@ -18,6 +18,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import {  useNavigate } from "react-router-dom";
 import { states } from "../../../Data/states";
+import { workerscountid } from "../../../Data/Docs";
+import { v4 as uuidv4 } from 'uuid';
 function Createcustomer(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -66,6 +68,22 @@ function Createcustomer(){
     const emailalreadyexists = () =>toast.error('email already exists');
     const notcreated = () => toast.error('you got an error while creating the customer');
 
+    //generating the docid and count
+    const fetchworkerid = async() =>{
+        try{
+            return new Promise((resolve,reject)=>{
+                onSnapshot(workerscountid,(docs)=>{
+                    const tempworkerid = docs.data();
+                    resolve({
+                        ...tempworkerid,
+                        count:tempworkerid.count+1,
+                    });
+                })
+            })
+        }catch(err){
+            console.log("you got an error while fetching the cuistomer workerid: ",err);
+        }
+    }
     //form registration start's here
     async function handleregistration(){
         setshowprogress(true);
@@ -78,34 +96,76 @@ function Createcustomer(){
                 //we have to take user.email,user.uid
                 // Update the workers of 'lms'
                 if(user){
-                    const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
-                    batch.update(sfRef, {[user.uid]:{
-                        "uid":user.uid,
-                        "cname":formdetails.cname,
-                        "name":formdetails.name,
-                        "email":formdetails.email,
-                        "role":formdetails.role,
-                        "password":formdetails.password,
-                        "disable":false,
-                        "managerid":'',
-                        "cNum":formdetails.cNum,
-                        "cMdate":formdetails.cMdate,
-                        "cmachinetype":formdetails.cmachinetype,
-                        "cSnum":formdetails.cSnum,
-                        "cIdate":formdetails.cIdate,
-                        "ccountry":formdetails.ccountry,
-                        "cstate":formdetails.cstate,
-                        "cdist":formdetails.cdist,
-                        // amc inputs starts from here
-                        "woramc":formdetails.woramc,
-                        "amcsrtdate":formdetails.amcsrtdate,
-                        "amcdur":formdetails.amcdur,
-                        "amcvisits":formdetails.amcvisits,
-                        "wtydur":formdetails.wtydur,
-                        "amcenddate":formdetails.amcenddate,
-                        "wtyenddate":formdetails.wtyenddate
-                    }}); // need to update backend with new fields
-                    await batch.commit();
+                    const result = fetchworkerid();
+                    // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
+                    if(result.count<=340){
+                        batch.update(doc(db,"workers",`${result.docid}`), {[user.uid]:{
+                            "uid":user.uid,
+                            "cname":formdetails.cname,
+                            "name":formdetails.name,
+                            "email":formdetails.email,
+                            "role":formdetails.role,
+                            "password":formdetails.password,
+                            "disable":false,
+                            "managerid":'',
+                            "cNum":formdetails.cNum,
+                            "cMdate":formdetails.cMdate,
+                            "cmachinetype":formdetails.cmachinetype,
+                            "cSnum":formdetails.cSnum,
+                            "cIdate":formdetails.cIdate,
+                            "ccountry":formdetails.ccountry,
+                            "cstate":formdetails.cstate,
+                            "cdist":formdetails.cdist,
+                            // amc inputs starts from here
+                            "woramc":formdetails.woramc,
+                            "amcsrtdate":formdetails.amcsrtdate,
+                            "amcdur":formdetails.amcdur,
+                            "amcvisits":formdetails.amcvisits,
+                            "wtydur":formdetails.wtydur,
+                            "amcenddate":formdetails.amcenddate,
+                            "wtyenddate":formdetails.wtyenddate,
+                            "docid":result.docid
+                        }}); // need to update backend with new fields
+                        await batch.update(workerscountid,{
+                            ...result
+                        });
+                        await batch.commit();
+                    }else{
+                        const id = uuidv4();
+                        await setDoc(doc(db,"workers",`${id}`), {[user.uid]:{
+                            "uid":user.uid,
+                            "cname":formdetails.cname,
+                            "name":formdetails.name,
+                            "email":formdetails.email,
+                            "role":formdetails.role,
+                            "password":formdetails.password,
+                            "disable":false,
+                            "managerid":'',
+                            "cNum":formdetails.cNum,
+                            "cMdate":formdetails.cMdate,
+                            "cmachinetype":formdetails.cmachinetype,
+                            "cSnum":formdetails.cSnum,
+                            "cIdate":formdetails.cIdate,
+                            "ccountry":formdetails.ccountry,
+                            "cstate":formdetails.cstate,
+                            "cdist":formdetails.cdist,
+                            // amc inputs starts from here
+                            "woramc":formdetails.woramc,
+                            "amcsrtdate":formdetails.amcsrtdate,
+                            "amcdur":formdetails.amcdur,
+                            "amcvisits":formdetails.amcvisits,
+                            "wtydur":formdetails.wtydur,
+                            "amcenddate":formdetails.amcenddate,
+                            "wtyenddate":formdetails.wtyenddate,
+                            "docid":id
+                        }}); // need to update backend with new fields
+                        await batch.update(workerscountid,{
+                            ...result,
+                            docid:id,
+                            count:0
+                        })
+                        await batch.commit();
+                    }
                 }
                 await signOut(secondauth)
                 loginsuccess();

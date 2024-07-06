@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import MyContext from "./MyContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "./Firebase";
+import { onSnapshot } from "firebase/firestore";
+// import { db } from "./Firebase";
 import { createtickets, leadsgraphdoc ,ticketsgraphdoc , 
   documentsdoc, sparequotation, amcquotes, leadcollection, expensecollection,
-  spareAndMachineDoc} from "./Data/Docs";
+  spareAndMachineDoc,
+  workerscollection} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
@@ -202,8 +203,10 @@ function MyProvider({children}){
               const fetch_amc_data = async()=>{
                 try{
                   await onSnapshot(amcquotes,(snapshot)=>{
-                    snapshot.forEach((doc)=>{
-                      const tempamcdata = doc.data();
+                    const tempamcdata = {};
+                    snapshot.forEach((docs)=>{
+                      Object.assign(tempamcdata,docs.data());
+                    })
                       setamcdata(prev=>({
                         ...prev,
                         ...tempamcdata
@@ -211,7 +214,7 @@ function MyProvider({children}){
                       const tempamckeys = Object.keys(tempamcdata);
                       const sorttempamckeys = [...tempamckeys].sort((a,b)=>b-a);
                       setamckeys(prev=>Array.from(new Set([...prev,...sorttempamckeys])));
-                    })
+                    
                   })
                 }catch(err){
                   console.error('you got an error while fetching amc data: ',err);
@@ -225,9 +228,10 @@ function MyProvider({children}){
                 try{
                  
                   await onSnapshot(sparequotation,(snapshot)=>{
+                    const tempsparedata = {};
                     snapshot.forEach((docs)=>{
-                      const tempsparedata = docs.data();
-                      // console.log("data", tempquotesdata);
+                      Object.assign(tempsparedata,docs.data())
+                    })
                       setsparesdata(prev=>({
                         ...prev,
                         ...tempsparedata
@@ -235,8 +239,6 @@ function MyProvider({children}){
                       const tempsparekeys = Object.keys(tempsparedata);
                       const sorttempsparekeys = [...tempsparekeys].sort((a,b)=>b-a);
                       setspareskeys(prev => Array.from(new Set([...prev, ...sorttempsparekeys])))
-                      
-                    })
                   })
                 }catch(err){
                   console.error('you got an error while fetching spare data: ',err);
@@ -319,9 +321,10 @@ function MyProvider({children}){
               const fetchquotationsdata = async() =>{
                 try{
                   await onSnapshot(createquotes,(snapshot)=>{
-                    snapshot.forEach((doc)=>{
-                      const tempquotesdata = doc.data();
-                      // console.log("data", tempquotesdata);
+                    const tempquotesdata = {};
+                    snapshot.forEach((docs)=>{
+                      Object.assign(tempquotesdata,docs.data());
+                    })
                       setquotesdata(prev=>({
                         ...prev,
                         ...tempquotesdata
@@ -329,16 +332,7 @@ function MyProvider({children}){
                       const tempquoteskeys = Object.keys(tempquotesdata);
                       const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
                       setquoteskeys(prev => Array.from(new Set([...prev, ...sorttempquoteskeys])))
-                      // console.log(doc.id," => ",doc.data());
-                    })
                   })
-                  // await onSnapshot(createquotes,(doc)=>{
-                  //   const tempquotesdata = doc.data();
-                  //   setquotesdata(tempquotesdata);
-                  //   const tempquoteskeys = Object.keys(tempquotesdata);
-                  //   const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
-                  //   setquoteskeys(sorttempquoteskeys);
-                  // })
                 }catch(e){
                   console.log('you got an error while fetching the quotations data',e);
                 }
@@ -351,8 +345,11 @@ function MyProvider({children}){
               const fetchexpensesdata = async() =>{
                 try{
                   await onSnapshot(expensecollection,(snapshot)=>{
+                    const temp_expenses_data={};
                     snapshot.forEach((docs)=>{
-                      const temp_expenses_data = docs.data();
+                      // const temp_expenses_data = docs.data();
+                      Object.assign(temp_expenses_data,docs.data());
+                    })
                       setexpensesdata(prev=>({
                         ...prev,
                         ...temp_expenses_data
@@ -360,7 +357,7 @@ function MyProvider({children}){
                       const temp_expenses_keys = Object.keys(temp_expenses_data);
                       const sort_temp_expenses_keys = [...temp_expenses_keys].sort((a,b)=>b-a);
                       setexpenseskeys(prev=>Array.from(new Set([...prev,...sort_temp_expenses_keys])));
-                    })
+                    
                     
                   })
                 }catch(err){
@@ -374,8 +371,11 @@ function MyProvider({children}){
               const fetchticketsdata = async() =>{
                 try{
                   await onSnapshot(createtickets,(snapshot)=>{
+                    const temp_tickets_data={};
                     snapshot.forEach((docs)=>{
-                      const temp_tickets_data = docs.data();
+                      // const temp_tickets_data = docs.data();
+                      Object.assign(temp_tickets_data,docs.data());
+                    })
                       setticketsdata(prev=>({
                         ...prev,
                         ...temp_tickets_data
@@ -383,7 +383,7 @@ function MyProvider({children}){
                       const temp_ticket_keys = Object.keys(temp_tickets_data);
                       const sort_temp_tkt_keys = [...temp_ticket_keys].sort((a,b)=>b-a);
                       setticketskeys(prev=>Array.from(new Set([...prev,...sort_temp_tkt_keys])));
-                    })
+                    
                   })
                 }catch(err){
                   console.error('you geting an error while fetching the tickets data ',err);
@@ -397,8 +397,11 @@ function MyProvider({children}){
               const fetchleadsdata = async() =>{
                 try{
                   await onSnapshot(leadcollection,(snapshot)=>{
+                    const temp_leads_data={};
                     snapshot.forEach((docs)=>{
-                      const temp_leads_data = docs.data();
+                      // const temp_leads_data = docs.data();
+                      Object.assign(temp_leads_data,docs.data());
+                    })
                       setleadsdata(prev=>({
                         ...prev,
                         ...temp_leads_data
@@ -406,7 +409,7 @@ function MyProvider({children}){
                       const templeads_keys = Object.keys(temp_leads_data);
                       const sorttempleads = [...templeads_keys].sort((a,b)=>b-a);
                       setleadskeys(prev=>Array.from(new Set([...prev,...sorttempleads])));
-                    })
+                    
                     // const leadsdata = doc.data();
 
                     // // just checking the data size
@@ -428,23 +431,32 @@ function MyProvider({children}){
               }
               fetchleadsdata()//fetching the leads data -->function calling
               //fetching the workers data
-              const unsubsec = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
+              // const unsubsec = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
               const fetchworkerdata = async() =>{
                 try{
-                  await onSnapshot(unsubsec,(doc)=>{
-                    const workerdata = doc.data();
-                    
-                    setworkersdata(workerdata);
-                    setuser(prev=>({
+                  await onSnapshot(workerscollection, (snapshot) => {
+                    const temp_workers_data = {};
+                    snapshot.forEach((doc) => {
+                      Object.assign(temp_workers_data, doc.data());
+                    });
+              
+                    if (uid in temp_workers_data) {
+                      // console.log(temp_workers_data[uid].role);
+                      setuser((prev) => ({
+                        ...prev,
+                        role: temp_workers_data[uid].role,
+                      }));
+                    }
+              
+                    setworkersdata((prev) => ({
                       ...prev,
-                      role:workerdata[uid].role
-                     
-                    }))
-                    
-                    const keysarray = Object.keys(workerdata);
-                    const sortkeysarray = [...keysarray].sort((a,b)=>b-a);
-                    setworkerskeys(sortkeysarray);
-                  })
+                      ...temp_workers_data,
+                    }));
+              
+                    const temp_workers_keys = Object.keys(temp_workers_data);
+                    const sortworkerskeys = [...temp_workers_keys].sort((a, b) => b - a);
+                    setworkerskeys((prev) => Array.from(new Set([...prev, ...sortworkerskeys])));
+                  });
                 }catch(e){
                   console.log('you got an error while fetching the users data');
                 }
