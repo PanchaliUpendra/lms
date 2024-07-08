@@ -279,7 +279,7 @@ function Viewticket(){
         if(tempfilterdataset.country) params.append('country',tempfilterdataset.country);
         if(tempfilterdataset.state) params.append('state',tempfilterdataset.state);
         if(tempfilterdataset.priority) params.append('priority',tempfilterdataset.priority);
-        if(tempfilterdataset.calltype) params.append('machine',tempfilterdataset.calltype);
+        if(tempfilterdataset.calltype) params.append('calltype',tempfilterdataset.calltype);
         navigate(`/manageticket/viewticket?${params.toString()}`)
     }
 
