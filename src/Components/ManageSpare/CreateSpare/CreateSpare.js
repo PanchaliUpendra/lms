@@ -526,7 +526,7 @@ function CreateSpare(){
                                                             <option value=''>choose price</option>
                                                             {item.reqtype==='spare' &&
                                                                 
-                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item===item.sparepart && val.model===item.sparemodel && val.subtype===item.sparesubtype)).map((prod)=>{
+                                                                Array.from(new Set(sharedvalue.sparesArray.filter((val)=>(val.item===item.sparepart && val.model.includes(item.sparemodel) && val.subtype.includes(item.sparesubtype))).map((prod)=>{
                                                                     return prod.price;
                                                                 }))).map((values)=>(
                                                                     <option value={values}>{values}</option>

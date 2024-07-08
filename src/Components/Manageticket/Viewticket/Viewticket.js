@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, {useContext, useEffect, useState } from "react";
 import './Viewticket.css';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
@@ -8,7 +8,7 @@ import MyContext from "../../../MyContext";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { ticketsgraphdoc,API_ONE_TO_ONE} from "../../../Data/Docs";
@@ -23,17 +23,24 @@ import { updateDoc, deleteField } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 
 import {differenceInHours} from 'date-fns';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { counrtycode } from "../../../Data/countrycode";
+import { states } from "../../../Data/states";
+import ExcelDocDownload from "../../DownloadDocs/ExcelDocDownload";
 
 function Viewticket(){
+    const location = useLocation();
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);//get a new write batch
     //backdrop loading toggle
     const[showloading,setshowloading] = useState(false);
     //time difference
     // const[tkttimediff,settkttimediff] = useState('-')
-
-    const[statusfilter,setstatusfilter] = useState('');//state to take the status input
-
+    const[showmore,setshowmore]=useState(30);
+    const queryParams = new URLSearchParams(location.search);
+    //crossbtn function
+    const [crossbtn,setcrossbtn] = useState(false);
     const navigate = useNavigate();
         //feedback state handling
         const[feedbackform,setfeedbackform] = useState({
@@ -43,6 +50,27 @@ function Viewticket(){
             techspt:'Excellent',
             res:'Excellent'
         })
+    //filter data
+    
+    const [filterdataset,setfilterdataset] = useState({
+        status:queryParams.get('status')||'',
+        manager:queryParams.get('manager')||'',
+        employee:queryParams.get('employee')||'',
+        country:queryParams.get('country')||'India',
+        state:queryParams.get('state')||'',
+        priority:queryParams.get('priority')||'',
+        calltype:queryParams.get('calltype')||'',
+        
+    });
+    const [tempfilterdataset,settempfilterdataset] = useState({
+       status:queryParams.get('status')||'',
+        manager:queryParams.get('manager')||'',
+        employee:queryParams.get('employee')||'',
+        country:queryParams.get('country')||'India',
+        state:queryParams.get('state')||'',
+        priority:queryParams.get('priority')||'',
+        calltype:queryParams.get('calltype')||'',
+    });
         
      // search bar input 
      const [searchworker,setsearchworker]=useState('');
@@ -63,6 +91,60 @@ function Viewticket(){
             return hoursDifference;
         }
         return '-';
+    }
+    //time after the resolved state
+    async function handleAutoClose(ticket){
+        try{
+            await batch.update(doc(db,"tickets",`${sharedvalue.ticketsdata[ticket].docid}`),{
+                [ticket]:{
+                    ...sharedvalue.ticketsdata[ticket],
+                    status:'close',
+                    workingstatus:`-`
+                }
+            });
+            //updating the tickets graph data
+            let currentDate = new Date();
+            let year = currentDate.getFullYear();
+            let month = (currentDate.getMonth()+1).toString().padStart(2,'0');
+            let yearMonth = year + month;
+            let yearMonthNumber = Number(yearMonth);
+            
+            if(sharedvalue.ticketsgraphkeys.includes(yearMonth)){
+                
+                await batch.update(ticketsgraphdoc,{
+                    [yearMonthNumber]:{
+                        ...sharedvalue.ticketsgraphdata[yearMonthNumber],
+                        tc:Number(sharedvalue.ticketsgraphdata[yearMonthNumber].tc)+1
+                    }
+                })
+            }else{
+                
+                await batch.update(ticketsgraphdoc,{
+                    [yearMonthNumber]:{
+                        to:0,
+                        tc:1,
+                        month:months[month]
+                    }
+                })
+            }
+            //updating the the tickets ends here
+            await batch.commit();
+        }catch(err){
+            console.log('automatic closing error while updating the handleautoclosing: ',err);
+        }
+    }
+     function handleAutomaticCloasingFunction(ticket){
+            if(Object.prototype.hasOwnProperty.call(sharedvalue.ticketsdata[ticket], "ctktclose")){
+                const closeDate = new Date(sharedvalue.ticketsdata[ticket].ctktclose);
+                const presentTime = new Date();
+                const currentTime = presentTime.toISOString();
+                const hoursDifference = differenceInHours(new Date(currentTime),closeDate);
+                // console.log('resloved state:',hoursDifference)
+                if(hoursDifference>=130){
+                    handleAutoClose(ticket)
+                }
+            }
+            return 'Resolved';
     }
     // send msg to admin
     async function handleSendMsgToAdmin(data){
@@ -186,6 +268,68 @@ function Viewticket(){
         setshowloading(false);
     }
     //deleting the tickets end here
+
+    //const bupdate url
+    const updateURL =()=>{
+        setcrossbtn(false);
+        const params = new URLSearchParams();
+        if(tempfilterdataset.status) params.append('status',tempfilterdataset.status);
+        if(tempfilterdataset.manager) params.append('manager',tempfilterdataset.manager);
+        if(tempfilterdataset.employee) params.append('employee',tempfilterdataset.employee);
+        if(tempfilterdataset.country) params.append('country',tempfilterdataset.country);
+        if(tempfilterdataset.state) params.append('state',tempfilterdataset.state);
+        if(tempfilterdataset.priority) params.append('priority',tempfilterdataset.priority);
+        if(tempfilterdataset.calltype) params.append('machine',tempfilterdataset.calltype);
+        navigate(`/manageticket/viewticket?${params.toString()}`)
+    }
+
+    //function to download the excel sheet
+    const downloadExcel = (e) =>{
+        e.preventDefault();
+        if(sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0){
+            const exceldata = sharedvalue.ticketskeys
+            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
+            (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
+            (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+            .filter(item => sharedvalue.ticketsdata[item].ctktcountry.includes(filterdataset.country))
+            .filter(item => sharedvalue.ticketsdata[item].ctktstate.includes(filterdataset.state))
+            .filter(item => sharedvalue.ticketsdata[item].ctktmanager.includes(filterdataset.manager))
+            .filter(item => sharedvalue.ticketsdata[item].ctktemployee.includes(filterdataset.employee))
+            .filter(item => sharedvalue.ticketsdata[item].status.includes(filterdataset.status))
+            .filter(item => sharedvalue.ticketsdata[item].ctktpriority.includes(filterdataset.priority))
+            .filter(item => sharedvalue.ticketsdata[item].ctktcalltype.includes(filterdataset.calltype))
+            .map((tktid)=>({
+                status:sharedvalue.ticketsdata[tktid].status,
+                employee:sharedvalue.ticketsdata[tktid].ctktemployee!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktemployee].name:'-',
+                companyName:sharedvalue.ticketsdata[tktid].ctktcustname,
+                priority:sharedvalue.ticketsdata[tktid].ctktpriority,
+                manager:sharedvalue.ticketsdata[tktid].ctktmanager!==''?sharedvalue.workersdata[sharedvalue.ticketsdata[tktid].ctktmanager].name:'-',
+                openDate:sharedvalue.ticketsdata[tktid].ctktopen,
+                closeDate:sharedvalue.ticketsdata[tktid].ctktclose,
+                country:sharedvalue.ticketsdata[tktid].ctktcountry,
+                state:sharedvalue.ticketsdata[tktid].ctktstate,
+                callType:sharedvalue.ticketsdata[tktid].ctktcalltype,
+                category:sharedvalue.ticketsdata[tktid].ctktcate
+            }))
+            ExcelDocDownload(exceldata ,`${(filterdataset.manager==='none'||filterdataset.manager==='')?'All':sharedvalue.workersdata[filterdataset.manager].name} Leads`)
+        }
+    }
+
+    //useEffect
+    useEffect(()=>{
+        const queryParams = new URLSearchParams(location.search);
+        const newFilters={
+            status:queryParams.get('status')||'',
+            manager:queryParams.get('manager')||'',
+            employee:queryParams.get('employee')||'',
+            country:queryParams.get('country')||'India',
+            state:queryParams.get('state')||'',
+            priority:queryParams.get('priority')||'',
+            calltype:queryParams.get('calltype')||'',
+        }
+        setfilterdataset(newFilters);
+        settempfilterdataset(newFilters);
+    },[location.search]);
     return(
         <>
             <div className={`manlead-con ${feedbackform.active===true?'manlead-con-inactive':''}`}>
@@ -212,22 +356,38 @@ function Viewticket(){
                         </div>
                         {/* list starts from here */}
                         <div className="view-manager-list-con">
-                            <div className="view-list-of-all-search view-list-of-all-status-viewticket">
-                                <div>
-                                    <label>Status:</label>
-                                    <select value={statusfilter} onChange={(e)=>setstatusfilter(e.target.value)}>
-                                        <option value=''>All</option>
-                                        <option value='open'>Open</option>
-                                        <option value='resolved'>Resolved</option>
-                                        <option value='close'>Closed</option>
-                                    </select>
+                            <div className="viewlead-display-search-filter">
+                                <div onClick={()=>setcrossbtn(true)}>
+                                    <FilterListIcon sx={{fontWeight:"500",cursor:'pointer'}}/>
+                                    <label style={{fontWeight:"500",cursor:'pointer',color:'black'}}>Filter</label>
                                 </div>
                                 <div>
                                     <label>Search:</label>
                                     <input type='text' placeholder="Customer/TktID" onChange={(e)=>setsearchworker(e.target.value)}/>
                                 </div>
-                                
                             </div>
+                            
+                            {/* download data only for admin */}
+                            {sharedvalue.role==='admin' && 
+                                <div className="view-lead-DownloadExcelBtn">
+                                    <button onClick={(e)=>downloadExcel(e)}>download data</button>
+                                </div>}
+                                <div className="view-lead-total-count">
+                                <p>total leads {`[`} {
+                                    sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
+                                    sharedvalue.ticketskeys
+                                    .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
+                                    (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
+                                    (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktcountry.includes(filterdataset.country))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktstate.includes(filterdataset.state))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktmanager.includes(filterdataset.manager))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktemployee.includes(filterdataset.employee))
+                                    .filter(item => sharedvalue.ticketsdata[item].status.includes(filterdataset.status))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktpriority.includes(filterdataset.priority))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktcalltype.includes(filterdataset.calltype))
+                                    .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).length} {`]`}</p>
+                                </div>
                             {/* table starts from here */}
                             <div className="view-list-table-con">
                                 <table>
@@ -263,13 +423,19 @@ function Viewticket(){
                                             .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
                                             (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
                                             (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
-                                            .filter(item=>sharedvalue.ticketsdata[item].status.includes(statusfilter))
-                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).map((ticket,idx)=>(
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktcountry.includes(filterdataset.country))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktstate.includes(filterdataset.state))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktmanager.includes(filterdataset.manager))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktemployee.includes(filterdataset.employee))
+                                            .filter(item => sharedvalue.ticketsdata[item].status.includes(filterdataset.status))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktpriority.includes(filterdataset.priority))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktcalltype.includes(filterdataset.calltype))
+                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).slice(0,showmore).map((ticket,idx)=>(
                                                 <tr key={idx}>
                                                     {/* status */}
                                                     <td onClick={()=>navigate(`/manageticket/viewticket/${ticket}`)}>
                                                         <p className={`${(sharedvalue.ticketsdata[ticket].status==='open')?'active-ticket-view-condition':sharedvalue.ticketsdata[ticket].status==='close'?'inactive-ticket-view-condition':'resolve-ticket-view-condition'}`}>
-                                                            {(sharedvalue.ticketsdata[ticket].status==='open')?'Active':sharedvalue.ticketsdata[ticket].status==='close'?'Closed':'Resolved'}
+                                                            {(sharedvalue.ticketsdata[ticket].status==='open')?'Active':sharedvalue.ticketsdata[ticket].status==='close'?'Closed':handleAutomaticCloasingFunction(ticket)}
                                                         </p>
                                                     </td>
                                                     {/* action */}
@@ -432,6 +598,26 @@ function Viewticket(){
                                 </table>
                             </div>
                             {/* table ends here */}
+                            {
+                                sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
+                                            sharedvalue.ticketskeys
+                                            .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||
+                                            (sharedvalue.ticketsdata[item].ctktcustname!=='other' && sharedvalue.uid===sharedvalue.workersdata[sharedvalue.ticketsdata[item].ctktcustname].uid)||
+                                            (sharedvalue.ticketsdata[item].ctktcustname==='other' &&sharedvalue.uid===sharedvalue.ticketsdata[item].createdbyid)))
+                                            .filter(item => sharedvalue.ticketsdata[item].ctktcountry.includes(filterdataset.country))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktstate.includes(filterdataset.state))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktmanager.includes(filterdataset.manager))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktemployee.includes(filterdataset.employee))
+                                    .filter(item => sharedvalue.ticketsdata[item].status.includes(filterdataset.status))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktpriority.includes(filterdataset.priority))
+                                    .filter(item => sharedvalue.ticketsdata[item].ctktcalltype.includes(filterdataset.calltype))
+                                            .filter(item=>(JSON.stringify(item).includes(searchworker)||sharedvalue.ticketsdata[item].ctktcustname.includes(searchworker))).length>showmore
+                                 && 
+                                <div className="veiw-leads-top-display-btn">
+                                    <p>show more</p>
+                                    <button onClick={()=>setshowmore(prev=>prev+30)}>+</button>
+                                </div>          
+                            }
                         </div>
                         {/* list ends here */}
                     </div>
@@ -450,6 +636,159 @@ function Viewticket(){
                     }))}>No</button>
                 </div>
             </div> */}
+            {/* filter by */}
+            <div className={crossbtn?"viewlead-filter-menubar":"viewlead-filter-menubar-inactive"}>
+                <div className="viewlead-filter-manubar-cross-btn">
+                    <CancelIcon sx={{cursor:'pointer'}} onClick={()=>setcrossbtn(false)}/>
+                </div>
+                <div className="viewlead-filter-menu-nav">
+                    <div className="viewlead-filter-header">
+                        <h1>Filter By</h1>
+                    </div>
+                    {/* status */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>Status</h2>
+                        <select value={tempfilterdataset.status} onChange={(e)=>settempfilterdataset(prev=>({
+                            ...prev,
+                            status:e.target.value
+                        }))}>
+                            <option value='open'>Open</option>
+                            <option value='resolved'>Resolved</option>
+                            <option value='close'>Close</option>
+                            <option value=''>All</option>
+                        </select>
+                    </div>
+                    {/* manager */}
+                    {sharedvalue.role==='admin' && 
+                        <div className="viewlead-filter-status-box">
+                            <h2>Manager</h2>
+                                    
+                            <select value={tempfilterdataset.manager} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                employee:'',
+                                manager:e.target.value
+                            }))}>
+                                <option value=''>All</option>
+                                {
+                                    sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='manager').map((manager,idx)=>(
+                                    <option value={manager} key={idx}>{sharedvalue.workersdata[manager].name}</option>
+                                    ))
+                                }
+                                <option value='none'>None</option>
+                            </select>
+                                    
+                        </div>
+                    }
+
+                    {/* employee */}
+                    {(sharedvalue.role==='admin' || sharedvalue.role==='manager' ) &&
+                    <div className="viewlead-filter-status-box">
+                        <h2>Employee</h2>
+                            <select value={tempfilterdataset.employee} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                employee:e.target.value
+                            }))}>
+                                <option value=''>All</option>
+                                {
+                                sharedvalue.workerskeys.filter((item)=>sharedvalue.workersdata[item].role==='employee' && (sharedvalue.workersdata[item].managerid===tempfilterdataset.manager||
+                                (sharedvalue.role==='manager' && sharedvalue.workersdata[item].managerid===sharedvalue.uid))).map((employee,idx)=>(
+                                <option value={employee} key={idx}>{sharedvalue.workersdata[employee].name}</option>
+                                ))
+                                }
+                            </select>
+                        </div>
+                    }
+                    {/* country */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>country</h2>
+                        <select value={tempfilterdataset.country} onChange={(e)=>settempfilterdataset(prev=>({
+                            ...prev,
+                            country:e.target.value,
+                            state:'',
+                        }))}>
+                            <option value=''>All</option>
+                            {
+                                counrtycode.map((item,idx)=>(
+                                    <option key={idx} value={item.name}>{item.name}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                    {/* state */}
+                    {
+                            tempfilterdataset.country==='India' &&
+                        <div className="viewlead-filter-status-box">
+                            <h2>state</h2>
+                            <select value={tempfilterdataset.state} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                state:e.target.value,
+                                district:''
+                            }))} required>
+                                <option value=''>All</option>
+                                    {states.map((item,idx)=>(
+                                    <option key={idx} value={item.state}>{item.state}</option>
+                                    ))}
+                            </select>
+                        </div>
+                        }
+                        {
+                            tempfilterdataset.country!=='India' &&
+                        <div className="viewlead-filter-status-box">
+                            <h2>state</h2>
+                            <input type="text" value={tempfilterdataset.state} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                state:e.target.value
+                            }))} placeholder="enter the your state.."/>
+                               
+                        </div>
+                        }
+                    {/* priority */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>priority</h2>
+                        <select value={tempfilterdataset.priority} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                priority:e.target.value
+                            }))}>
+                            <option value=''>All</option>
+                            <option value='Urgent'>Urgent</option>
+                            <option value='High'>High</option>
+                            <option value='Medium'>Medium</option>
+                            <option value='Low'>Low</option>
+                        </select>
+                    </div>
+                    {/* call type */}
+                    <div className="viewlead-filter-status-box">
+                        <h2>call type</h2>
+                        <select value={tempfilterdataset.calltype} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                calltype:e.target.value
+                            }))}>
+                            <option value=''>All</option>
+                            <option value='Pre-Installation'>Pre-Installation</option>
+                            <option value='Installation'>Installation</option>
+                            <option value='Charge'>Chargable</option>
+                            <option value='Warranty'>Warranty</option>
+                            <option value='AMC'>AMC</option>
+                        </select>
+                    </div>
+                     
+                    {/* {
+                        tempfilterdataset.country!=='India' &&
+                        <div className="viewlead-filter-status-box">
+                            <h2>state</h2>
+                            <input type="text" value={tempfilterdataset.state} onChange={(e)=>settempfilterdataset(prev=>({
+                                ...prev,
+                                state:e.target.value
+                            }))} placeholder="enter the your state.."/>
+                               
+                        </div>
+                        } */}
+
+                    <div className="viewlead-filter-bottom-btn">
+                        <button onClick={()=>updateURL()}>Apply All Filters</button>
+                    </div>
+                </div>
+            </div>
             {/* feed back pop to close the ticket */}
             <div  className={`view-ticket-list-popup-feedback ${feedbackform.active===true?'active-delete-popup-feedback':''}`} >
                 <div className="viewticket-closeicon-comes-here">
