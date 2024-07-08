@@ -99,7 +99,7 @@ function Viewticket(){
                 [ticket]:{
                     ...sharedvalue.ticketsdata[ticket],
                     status:'close',
-                    workingstatus:`-`
+                    workingstatus:`Feedback Not Provided.`
                 }
             });
             //updating the tickets graph data
