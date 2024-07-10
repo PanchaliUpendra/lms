@@ -373,7 +373,7 @@ function Viewticket(){
                                     <button onClick={(e)=>downloadExcel(e)}>download data</button>
                                 </div>}
                                 <div className="view-lead-total-count">
-                                <p>total leads {`[`} {
+                                <p>total tickets {`[`} {
                                     sharedvalue.ticketskeys.length>0 && sharedvalue.workerskeys.length>0 &&
                                     sharedvalue.ticketskeys
                                     .filter(item=>(sharedvalue.role==='admin' ||(sharedvalue.role==='employee' && sharedvalue.ticketsdata[item].ctktemployee===sharedvalue.uid)||(sharedvalue.role==='manager' && sharedvalue.ticketsdata[item].ctktmanager===sharedvalue.uid)||

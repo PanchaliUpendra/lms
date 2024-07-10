@@ -420,7 +420,7 @@ function Updateticket(){
                             {/* if call type is free or charge */}
 
                             {
-                                (ticketinfo.ctktcalltype==='Charge' || ticketinfo.ctktcalltype==='Free') &&
+                                (ticketinfo.ctktcalltype==='Charge' || ticketinfo.ctktcalltype==='Warranty' || ticketinfo.ctktcalltype==='AMC') &&
                                 <div>
                                     <label>Category*</label>
                                     <select value={ticketinfo.ctktcate} onChange={(e)=>setticketinfo(prev=>({
@@ -444,6 +444,51 @@ function Updateticket(){
                                 </div>
                             }
                             {/* category completed */}
+                            {
+                                ticketinfo.ctktcustname!=='other' && ticketinfo.ctktcustname!=='' &&
+                                 (ticketinfo.ctktcalltype==='Warranty' || ticketinfo.ctktcalltype==='AMC') &&
+                                 ((Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[ticketinfo.ctktcustname], "woramc") && sharedvalue.workersdata[ticketinfo.ctktcustname].woramc!=='')===true?
+                                 (sharedvalue.workersdata[ticketinfo.ctktcustname].woramc==='Warranty')?
+                                 <section className="create-ticket-imported-data">
+                                    <div>
+                                        <label>warranty start date</label>
+                                        <input type='date' value={sharedvalue.workersdata[ticketinfo.ctktcustname].cIdate} readOnly/>
+                                    </div>
+                                    <div>
+                                        <label>warranty duration</label>
+                                        <input type='text' value={`${sharedvalue.workersdata[ticketinfo.ctktcustname].wtydur} Years`} readOnly/>
+                                            
+                                    </div>
+                                    <div>
+                                        <label>warranty end date</label>
+                                        <input type='date' value={sharedvalue.workersdata[ticketinfo.ctktcustname].wtyenddate} readOnly/>
+                                    </div>
+
+                                </section>:
+                                <section className="create-ticket-imported-data">
+                                    <div>
+                                        <label>AMC start date</label>
+                                        <input type='date' value={sharedvalue.workersdata[ticketinfo.ctktcustname].amcsrtdate} readOnly/>
+                                    </div>
+                                    <div>
+                                        <label>AMC duration</label>
+                                        <input type="text" value={`${sharedvalue.workersdata[ticketinfo.ctktcustname].amcdur} months`} readOnly/>
+                                            
+                                    </div>
+                                    <div>
+                                        <label>AMC visits</label>
+                                        <input type='text' value={`${sharedvalue.workersdata[ticketinfo.ctktcustname].amcvisits} visits`} readOnly/>
+                                            
+                                    </div>
+                                    <div>
+                                        <label>AMC end date</label>
+                                        <input type='date' value={sharedvalue.workersdata[ticketinfo.ctktcustname].amcenddate} readOnly/>
+                                    </div>
+
+                                </section>
+                                 :
+                                 <p>Sorry you won't have any AMC or warranty!!!</p>)
+                            }
                             {/* description starts here */}
                                     <div>
                                         <label>Description*</label>
