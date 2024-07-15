@@ -87,7 +87,7 @@ function Managelead(){
         capreq:'',
         machinereq:'Sorter',
         make:'Comaas',
-        machinetype:'ULTRA',
+        machinetype:'ULTRA-S',
         std:'STD',
         payment:'',
         chutes:'',
