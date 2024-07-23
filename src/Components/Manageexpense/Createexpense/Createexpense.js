@@ -7,7 +7,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { doc, onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createexpenseid ,API_ONE_TO_ONE } from "../../../Data/Docs";
+import { createexpenseid , GCP_API_ONE_TO_ONE } from "../../../Data/Docs";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -82,7 +82,7 @@ function Createexpense(){
     async function handleSendMsgToAdmin(data){
         try{
             // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+            const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -116,12 +116,14 @@ function Createexpense(){
                 expenseinfo.exptransportcost!==''
                 ){
                     const result = await fetchexpenseid();
-                    if(result && result.expenseid!==0){
-                        const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the expense.[exp.id${result}]`;
-                        const phone = `9440000815`;//here we have to give the admin number
+                    if(result && result.expenseid!==0 && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
                         const data={
-                            message:message,
-                            phone:phone
+                            regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                            msg:{
+                                title: `${sharedvalue.role} created the new Expense`,
+                                body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the expense.[ID${result.expenseid}]`,
+                                image: "your-image-url" // Optional
+                            }
                         }
                         await handleSendMsgToAdmin(data);
                     }

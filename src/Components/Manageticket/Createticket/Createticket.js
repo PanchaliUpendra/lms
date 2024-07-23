@@ -9,7 +9,7 @@ import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
 import { doc,onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import { createticketid, ticketsgraphdoc , API_ONE_TO_ONE} from "../../../Data/Docs";
+import { createticketid, ticketsgraphdoc , GCP_API_ONE_TO_ONE} from "../../../Data/Docs";
 //import storage 
 import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
 import { storage } from "../../../Firebase";
@@ -139,7 +139,7 @@ function Createticket(){
     async function handleSendMsgToAdmin(data){
         try{
             // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+            const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -168,7 +168,7 @@ function Createticket(){
                 ticketinfo.ctktpriority!=='' 
             ){
                 const result = await fetchtktid();
-                if(result.count<=321){//result count<=500
+            if(result.count<=321){//result count<=500
                 var fileurl ='';
                 if(ctktfile!==''){
                     try{
@@ -193,12 +193,14 @@ function Createticket(){
                 const stringtodaydate = formatDateString(currentDate);
 
                 //sending msg to the admin when creating ticket
-                if(result.id>=24041999 && fileurl!==null){
-                    const message = `A new ticket [tkt.id ${result.id}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
-                    const phone = `9440000815`;//here we have to give the admin number
+                if(result.id>=24041999 && fileurl!==null && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
                     const data={
-                        message:message,
-                        phone:phone
+                        regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                        msg:{
+                            title: `${sharedvalue.role} created the new Ticket`,
+                            body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the new Ticket.[ID${result.id}]`,
+                            image: "your-image-url" // Optional
+                        }
                     }
                     await handleSendMsgToAdmin(data);
                 }
@@ -329,12 +331,14 @@ function Createticket(){
                 const stringtodaydate = formatDateString(currentDate);
 
                 //sending msg to the admin when creating ticket
-                if(result.id>=24041999 && fileurl1!==null){
-                    const message = `A new ticket [tkt.id ${result.id}] created by  ${sharedvalue.workersdata[sharedvalue.uid].name}`;
-                    const phone = `9440000815`;//here we have to give the admin number
+                if(result.id>=24041999 && fileurl1!==null && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
                     const data={
-                        message:message,
-                        phone:phone
+                        regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                        msg:{
+                            title: `${sharedvalue.role} created the new Lead`,
+                            body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result.uuid}]`,
+                            image: "your-image-url" // Optional
+                        }
                     }
                     await handleSendMsgToAdmin(data);
                 }

@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
-import { createquoteid ,API_ONE_TO_ONE} from "../../../Data/Docs";
+import { createquoteid ,GCP_API_ONE_TO_ONE} from "../../../Data/Docs";
 import { doc, onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { v4 as uuidv4 } from 'uuid';
@@ -131,7 +131,7 @@ function Createquotation(){
     async function handleSendMsgToAdmin(data){
         try{
             // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+            const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -141,7 +141,7 @@ function Createquotation(){
             console.log(await response.json());
 
         }catch(e){
-            console.log('you got an error while send msg to adim..',e);
+            console.log('you got an error while send msg to adim in quotation..',e);
         }
     }
     
@@ -168,12 +168,14 @@ function Createquotation(){
                 :(quotinfo.ofdcty!=='' && quotinfo.contperson!=='' && quotinfo.businesstype!=='' && quotinfo.ofddst!=='' && quotinfo.ofdpinc!=='' && quotinfo.contmobilenum!==''))
             ){
             const result = await fetchquotationid();
-            if(result.id!==0){
-                const message = `A New quotation [quot.id:${result}] created by ${sharedvalue.workersdata[sharedvalue.uid].name}`;
-                const phone = `9440000815`;//here we have to give the admin number
+            if(result.id!==0 && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
                 const data={
-                    message:message,
-                    phone:phone
+                    regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                    msg:{
+                        title: `${sharedvalue.role} created the new quotation`,
+                        body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the quotation.[ID${result.id}]`,
+                        image: "your-image-url" // Optional
+                    }
                 }
                 await handleSendMsgToAdmin(data);
              }

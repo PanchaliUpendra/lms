@@ -153,8 +153,9 @@ function Managelead(){
                 const data={
                     regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
                     msg:{
-                        title:`${sharedvalue.role} created the new Lead`,
-                        body:`${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result.uuid}]`
+                        title: `${sharedvalue.role} created the new Lead`,
+                        body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result.uuid}]`,
+                        image: "your-image-url" // Optional
                     }
                 }
                 await handleSendMsgToAdmin(data);
