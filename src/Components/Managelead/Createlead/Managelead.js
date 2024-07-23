@@ -9,7 +9,7 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { doc, onSnapshot, setDoc, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import { createleadiddoc,leadsgraphdoc ,API_ONE_TO_ONE} from '../../../Data/Docs';
+import { createleadiddoc,leadsgraphdoc , GCP_API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -121,7 +121,7 @@ function Managelead(){
     async function handleSendMsgToAdmin(data){
         try{
             // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+            const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -149,12 +149,13 @@ function Managelead(){
             ){
              //fetching uuid  
              const result = await fetchuuid();
-             if(result.uuid!==0){
-                const message = `${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result}]`;
-                const phone = `9440000815`;//here we have to give the admin number
+             if(result.uuid!==0 && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
                 const data={
-                    message:message,
-                    phone:phone
+                    regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                    msg:{
+                        title:`${sharedvalue.role} created the new Lead`,
+                        body:`${sharedvalue.workersdata[sharedvalue.uid].name} created the new lead.[ID${result.uuid}]`
+                    }
                 }
                 await handleSendMsgToAdmin(data);
              }

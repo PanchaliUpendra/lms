@@ -46,3 +46,5 @@ export const amcquotesid = doc(db,"amcdocID","TKn38PbAmjRxA9d1tkLr");
 export const spareAndMachineDoc = doc(db,"sparesandmachine","7DyUV2gokfkrnOaLl2Rs");
 
 export const API_ONE_TO_ONE = 'https://www.message.ultrasorters.com:8000';
+
+export const GCP_API_ONE_TO_ONE = 'http://localhost:8000';

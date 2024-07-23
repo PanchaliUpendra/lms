@@ -9,6 +9,11 @@ import { createtickets, leadsgraphdoc ,ticketsgraphdoc ,
   spareAndMachineDoc,
   workerscollection} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
+import { messaging } from "./Firebase";
+import {getToken} from 'firebase/messaging';
+import { writeBatch } from "firebase/firestore";
+import { db } from "./Firebase";
+import {doc} from "firebase/firestore";
 // ____________________________
 // import { collection, onSnapshot } from "firebase/firestore";
 // import { db } from "./firebase"; // Assuming you have initialized your Firestore connection
@@ -32,6 +37,7 @@ import { createquotes } from "./Data/Docs";
 
 function MyProvider({children}){
 
+    // const[basicToken,setbasicToken]=useState('');
     const [user,setuser] = useState({
         isAuthed:false,
         uid:'',
@@ -432,6 +438,24 @@ function MyProvider({children}){
               fetchleadsdata()//fetching the leads data -->function calling
               //fetching the workers data
               // const unsubsec = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
+              async function requestPermission(temp_workers_data){
+                const permission = await Notification.requestPermission();
+                if(permission === 'granted'){
+                  const batch = writeBatch(db);// Get a new write batch
+                  // Generate Token
+                  const token = await getToken(messaging,{vapidKey:'BB6UCV85cN-An7EfH2WSLhiLirOs7JEh3yur2_QlF9Z-ISP4yvCJTj1MgobxOhgYTqfZBSKb3Jf8bsjdTxyH_z0'});
+                  console.log('Token Gen',token);
+                  // setbasicToken(token);
+                  batch.update(doc(db,"workers",`${temp_workers_data[uid].docid}`), {[uid]:{
+                    ...temp_workers_data[uid],
+                    token:token
+                  }});
+                  await batch.commit();
+                }else if(permission === 'denied'){
+                  alert("you denied for the notification");
+            
+                }
+              }
               const fetchworkerdata = async() =>{
                 try{
                   await onSnapshot(workerscollection, (snapshot) => {
@@ -446,6 +470,7 @@ function MyProvider({children}){
                         ...prev,
                         role: temp_workers_data[uid].role,
                       }));
+
                     }
               
                     setworkersdata((prev) => ({
@@ -456,6 +481,8 @@ function MyProvider({children}){
                     const temp_workers_keys = Object.keys(temp_workers_data);
                     const sortworkerskeys = [...temp_workers_keys].sort((a, b) => b - a);
                     setworkerskeys((prev) => Array.from(new Set([...prev, ...sortworkerskeys])));
+                    uid in temp_workers_data && requestPermission(temp_workers_data);
+
                   });
                 }catch(e){
                   console.log('you got an error while fetching the users data');

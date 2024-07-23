@@ -14,7 +14,6 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
-
 function Profile(){
     const sharedvalue = useContext(MyContext);
     
@@ -169,9 +168,6 @@ function Profile(){
         }
         setshowprogress(false);
     }
-
-
-
    
     return(
         <>
