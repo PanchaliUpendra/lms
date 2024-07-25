@@ -8,7 +8,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 import { createquoteid ,GCP_API_ONE_TO_ONE} from "../../../Data/Docs";
-import { doc, onSnapshot ,setDoc,writeBatch} from "firebase/firestore";
+import { doc, onSnapshot ,setDoc,writeBatch,runTransaction} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { v4 as uuidv4 } from 'uuid';
 //importing the notifications
@@ -127,6 +127,51 @@ function Createquotation(){
         // console.log('data:',e.target.value);
         setEditorData(e.target.value);
     }
+    //function handle notification
+    async function handlenotification(data){
+        try{
+             await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",'uEZqZKjorFWUmEQuBW5icGmfMrH3'));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+
+                const newNotify = notifyDoc.data().notify;
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                console.log(newNotify);
+                transaction.update(doc(db,"notifications",'uEZqZKjorFWUmEQuBW5icGmfMrH3'),{
+                    notify:[{
+                        time:formattedTime,
+                        date:formattedDate,
+                        title:'new quotation created',
+                        body:data.msg.body,
+                        nid:nuid,
+                        seen:false
+                    },
+                    ...newNotify
+                ]})
+            });
+            console.log('transaction successfully committed!!');
+        }catch(err){
+            console.log('you got an error while uploading the notifications in  create lead: ',err);
+        }
+    }
 
     // send msg to admin
     async function handleSendMsgToAdmin(data){
@@ -140,6 +185,7 @@ function Createquotation(){
                 body:JSON.stringify(data)
             });
             console.log(await response.json());
+            await handlenotification(data);
 
         }catch(e){
             console.log('you got an error while send msg to adim in quotation..',e);

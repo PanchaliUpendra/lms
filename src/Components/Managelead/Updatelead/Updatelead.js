@@ -10,7 +10,7 @@ import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
 import { doc, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
-import {  API_ONE_TO_ONE} from '../../../Data/Docs';
+// import {  API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
@@ -114,14 +114,15 @@ function Updatelead(){
     async function handleSendMsgToAdmin(data){
         try{
             // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(data)
-            });
-            console.log(await response.json());
+            // const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
+            //     method:'POST',
+            //     headers:{
+            //         'Content-Type':'application/json'
+            //     },
+            //     body:JSON.stringify(data)
+            // });
+            // console.log(await response.json());
+            console.log('updated the lead',data);
 
         }catch(e){
             console.log('you got an error while send msg to adim..',e);
