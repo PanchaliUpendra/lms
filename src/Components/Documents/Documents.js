@@ -1,7 +1,7 @@
 import React,{useContext, useState} from "react";
 import './Documents.css';
 import Sidenav from "../Sidenav/Sidenav";
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from "../../MyContext";
@@ -14,6 +14,7 @@ import {  ref, deleteObject } from "firebase/storage";
 import { storage , db} from "../../Firebase";
 import { updateDoc, deleteField, writeBatch } from "firebase/firestore";
 import { documentsdoc } from "../../Data/Docs";
+import Notify from "../Notifications/Notify";
 function Documents(){
     const {category,subcategory} = useParams();
     const [grainsfilter,setgrainsfilter] = useState('');
@@ -71,7 +72,8 @@ function Documents(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

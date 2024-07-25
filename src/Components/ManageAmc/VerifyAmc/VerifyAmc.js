@@ -1,7 +1,8 @@
 import React,{useContext, useEffect, useState} from "react";
 import './VerifyAmc.css';
 
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -222,7 +223,8 @@ function VerifyAmc(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

@@ -1,6 +1,7 @@
 import React, {useContext, useState } from "react";
 import './Viewmanager.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -10,7 +11,7 @@ import { writeBatch } from "firebase/firestore";
 import { createworkers } from "../../../Data/Docs";
 //imported material ui 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 //show processing
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Viewmanager(){
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const batch = writeBatch(db);//get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     // search bar input 
@@ -80,7 +81,8 @@ function Viewmanager(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

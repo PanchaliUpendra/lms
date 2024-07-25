@@ -1,6 +1,6 @@
 import React, {useContext, useState } from "react";
 import './ViewAmc.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -17,6 +17,7 @@ import { updateDoc, deleteField } from "firebase/firestore";
 import DownloadIcon from '@mui/icons-material/Download';
 import Amcquote from "../../Managequotation/Amcquote";
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import Notify from "../../Notifications/Notify";
 function ViewAmc(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -132,7 +133,8 @@ function ViewAmc(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

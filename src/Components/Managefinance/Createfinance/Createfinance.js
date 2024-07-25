@@ -1,6 +1,7 @@
 import React, {useContext, useState } from "react";
 import './Createfinance.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -18,11 +19,11 @@ import { workerscountid } from "../../../Data/Docs";
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function Createfinance(){
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const batch = writeBatch(db);// Get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     const [formdetails,setformdetails]=useState({//form details will take here
@@ -77,6 +78,9 @@ function Createfinance(){
                 // Update the workers of 'lms'
                 if(user){
                     const result = fetchworkerid();
+                    setDoc(doc(db,"notifications",user.uid),{
+                        notify:[]
+                    })
                     // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
                     if(result.count<=340){
                         batch.update(doc(db,"workers",`${result.docid}`), {[user.uid]:{
@@ -161,7 +165,8 @@ function Createfinance(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

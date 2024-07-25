@@ -1,11 +1,12 @@
 import React,{useContext, useState} from "react";
 import './CreateSpare.css';
 
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 
@@ -27,7 +28,7 @@ import "react-toastify/dist/ReactToastify.css";
 function CreateSpare(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [showloading,setshowloading] = useState(false);
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the spare Quotation');
@@ -282,7 +283,8 @@ function CreateSpare(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

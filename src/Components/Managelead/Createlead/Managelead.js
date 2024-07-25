@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Managelead.css';
 import Sidenav from '../../Sidenav/Sidenav';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from '../../Notifications/Notify';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from '../../../MyContext';
@@ -15,14 +16,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 //importing the months 
 import { months } from '../../../Data/Months';
 import { v4 as uuidv4 } from 'uuid';
 
 function Managelead(){
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [errors,setErrors] = useState({});
     const batch = writeBatch(db);// Get a new write batch
@@ -562,7 +563,8 @@ function Managelead(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

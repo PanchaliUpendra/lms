@@ -1,6 +1,6 @@
 import React, { useContext,  useState } from 'react';
 import './Eachticket.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from '../Sidenav/Sidenav';
@@ -8,7 +8,7 @@ import MyContext from '../../MyContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../Error/Error';
-
+import Notify from '../Notifications/Notify';
 function Eachticket(){
     const sharedvalue = useContext(MyContext);
     const navigate = useNavigate();
@@ -38,7 +38,8 @@ function Eachticket(){
                                 <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                             </div>
                             <div className='search-icon-top-nav'>
-                                <SearchIcon onClick={()=>navigate('/search')} />
+                                {/* <SearchIcon onClick={()=>navigate('/search')} /> */}
+                                <Notify/>
                             </div>
                             <PersonIcon/>
                             <p>{sharedvalue.userdtl.email}</p>

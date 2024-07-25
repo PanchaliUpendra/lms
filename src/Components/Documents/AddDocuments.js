@@ -1,11 +1,11 @@
 import React, { useContext ,useState} from "react";
 import './AddDocuments.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../Sidenav/Sidenav";
 import MyContext from "../../MyContext";
-import {useNavigate} from 'react-router-dom';
+// import {useNavigate} from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { db } from "../../Firebase";
@@ -19,10 +19,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Notify from "../Notifications/Notify";
 
 function AddDocuments(){
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const[showloading,setshowloading] = useState(false);
     const [adddocdata,setadddocdata] = useState({
         adoccate:'',
@@ -144,7 +145,8 @@ function AddDocuments(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')} />
+                            {/* <SearchIcon onClick={()=>navigate('/search')} /> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

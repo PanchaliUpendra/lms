@@ -1,6 +1,7 @@
 import React, {useContext, useState } from "react";
 import './Viewemployee.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -16,11 +17,11 @@ import "react-toastify/dist/ReactToastify.css";
 //show processing
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function Viewemployee(){ 
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const batch = writeBatch(db);//get a new write batch
     const [showprogress,setshowprogress]=useState(false);
     // search bar input 
@@ -99,7 +100,8 @@ function Viewemployee(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

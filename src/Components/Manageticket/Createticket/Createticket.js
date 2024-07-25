@@ -1,6 +1,7 @@
 import React, {useContext, useState } from "react";
 import './Createticket.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
@@ -18,7 +19,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 //loading gif
 import loading from '../../../Assets/loading.gif';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { months } from "../../../Data/Months";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,7 +51,7 @@ function Createticket(){
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked); // Toggle the checkbox value
     };
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the Ticket');
     const loginerror = () =>toast.error('Getting Error while Creating ticket');
@@ -587,7 +588,8 @@ function Createticket(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

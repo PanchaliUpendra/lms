@@ -50,6 +50,9 @@ import UpdateSpare from './Components/ManageSpare/UpdateSpare/UpdateSpare';
 import Sparequote from './Components/Managequotation/Sparequote';
 // import Comaasrgb from './Components/Managequotation/Comaasrgb';
 
+//notifications
+import Notifications from './Components/Notifications/Notifications';
+
 //please remove after completed the design
 import Spinner from './Components/Spinner/Spinner';
 import Sruthitech from './Components/Managequotation/Sruthitech';
@@ -134,6 +137,9 @@ function App() {
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>}
         {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/sparepdf/:spareid' element={<Sparequote/>}/>}
+
+        {/* notifications components */}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/notifications' element={<Notifications/>}/>}
 
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>

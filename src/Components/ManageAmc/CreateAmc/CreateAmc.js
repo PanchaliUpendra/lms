@@ -1,11 +1,12 @@
 import React,{useContext, useState} from "react";
 import './CreateAmc.css';
 
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import Notify from "../../Notifications/Notify";
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidenav from "../../Sidenav/Sidenav";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import MyContext from "../../../MyContext";
 
 import Backdrop from '@mui/material/Backdrop';
@@ -22,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function CreateAmc(){
     const sharedvalue = useContext(MyContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [showloading,setshowloading] = useState(false);
     const batch = writeBatch(db);
 
@@ -203,7 +204,8 @@ function CreateAmc(){
                             <MenuIcon  onClick={()=>setmenutoggle(prev=>!prev)}/>
                         </div>
                         <div className='search-icon-top-nav'>
-                            <SearchIcon onClick={()=>navigate('/search')}/>
+                            {/* <SearchIcon onClick={()=>navigate('/search')}/> */}
+                            <Notify/>
                         </div>
                         <PersonIcon/>
                         <p>{sharedvalue.userdtl.email}</p>

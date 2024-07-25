@@ -71,6 +71,8 @@ function MyProvider({children}){
 
     const[sparesArray,setSparesArray] = useState([]);//spares data
     const[machinesArray,setmachinesArray] = useState([]);//spares data
+
+    const[notifications,setnotifications] = useState([]);//notifications
    
 
     const updateSideNav = ()=>{
@@ -169,6 +171,7 @@ function MyProvider({children}){
         sideNavOnOff:sideNavOnOff,
         sparesArray:sparesArray,
         machinesArray:machinesArray,
+        notifications:notifications,
 
         updateSideNav,
         DeleteQuoteElement,
@@ -191,6 +194,19 @@ function MyProvider({children}){
                 uid:uid,
                 userdtl:userd
               }))
+
+              //fetch users notifications
+              const usersNotificationsData = async()=>{
+                try{
+                  await onSnapshot(doc(db,"notifications",uid),(docs)=>{
+                    const notifyData = docs.data();
+                    setnotifications(notifyData.notify);
+                  });
+                }catch(err){
+                  console.error('you got an error while fetching the notifications',err);
+                }
+              }
+              usersNotificationsData();
 
               //spares and machines data fetching
               const fetch_spares_and_machine_data = async() =>{
