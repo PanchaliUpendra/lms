@@ -201,6 +201,7 @@ function MyProvider({children}){
                   await onSnapshot(doc(db,"notifications",uid),(docs)=>{
                     const notifyData = docs.data();
                     setnotifications(notifyData.notify);
+                    console.log('successfully fetched the notifications data');
                   });
                 }catch(err){
                   console.error('you got an error while fetching the notifications',err);
@@ -213,8 +214,10 @@ function MyProvider({children}){
                 try{
                   await onSnapshot(spareAndMachineDoc,(docs)=>{
                     const sparesandmachinedata = docs.data();
+
                     setmachinesArray(sparesandmachinedata.machines);
                     setSparesArray(sparesandmachinedata.spares);
+                    console.log('successfully fetched the spares and machines data');
                   })
                 }catch(err){
                   console.log('you got an error while fetching spares and machines data: ',err);
@@ -236,6 +239,7 @@ function MyProvider({children}){
                       const tempamckeys = Object.keys(tempamcdata);
                       const sorttempamckeys = [...tempamckeys].sort((a,b)=>b-a);
                       setamckeys(prev=>Array.from(new Set([...prev,...sorttempamckeys])));
+                      console.log('successfully fetched the amc data');
                     
                   })
                 }catch(err){
@@ -261,7 +265,9 @@ function MyProvider({children}){
                       const tempsparekeys = Object.keys(tempsparedata);
                       const sorttempsparekeys = [...tempsparekeys].sort((a,b)=>b-a);
                       setspareskeys(prev => Array.from(new Set([...prev, ...sorttempsparekeys])))
+                      console.log('successfully fetched the spares data');
                   })
+
                 }catch(err){
                   console.error('you got an error while fetching spare data: ',err);
                 }
@@ -278,6 +284,7 @@ function MyProvider({children}){
                     setdocumentsdata(tempdocdata);
                     const tempdockeys = Object.keys(tempdocdata);
                     setdocumentskeys(tempdockeys);
+                    console.log('successfully fetched the documents data');
                   })
                 }catch(e){
                   console.log('you got an error while fetching the documents data',e);
@@ -354,6 +361,7 @@ function MyProvider({children}){
                       const tempquoteskeys = Object.keys(tempquotesdata);
                       const sorttempquoteskeys = [...tempquoteskeys].sort((a,b)=>b-a);
                       setquoteskeys(prev => Array.from(new Set([...prev, ...sorttempquoteskeys])))
+                      console.log('successfully fetched the quotation data');
                   })
                 }catch(e){
                   console.log('you got an error while fetching the quotations data',e);
@@ -379,8 +387,7 @@ function MyProvider({children}){
                       const temp_expenses_keys = Object.keys(temp_expenses_data);
                       const sort_temp_expenses_keys = [...temp_expenses_keys].sort((a,b)=>b-a);
                       setexpenseskeys(prev=>Array.from(new Set([...prev,...sort_temp_expenses_keys])));
-                    
-                    
+                      console.log('successfully fetched the expenses data');
                   })
                 }catch(err){
                   console.log('you got an error while fetching the expenses data',err);
@@ -405,7 +412,7 @@ function MyProvider({children}){
                       const temp_ticket_keys = Object.keys(temp_tickets_data);
                       const sort_temp_tkt_keys = [...temp_ticket_keys].sort((a,b)=>b-a);
                       setticketskeys(prev=>Array.from(new Set([...prev,...sort_temp_tkt_keys])));
-                    
+                      console.log('successfully fetched the tickets data');
                   })
                 }catch(err){
                   console.error('you geting an error while fetching the tickets data ',err);
@@ -431,6 +438,7 @@ function MyProvider({children}){
                       const templeads_keys = Object.keys(temp_leads_data);
                       const sorttempleads = [...templeads_keys].sort((a,b)=>b-a);
                       setleadskeys(prev=>Array.from(new Set([...prev,...sorttempleads])));
+                      console.log('successfully fetched the leads data');
                     
                     // const leadsdata = doc.data();
 
@@ -454,31 +462,36 @@ function MyProvider({children}){
               fetchleadsdata()//fetching the leads data -->function calling
               //fetching the workers data
               // const unsubsec = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
-              // async function requestPermission(temp_workers_data){
-              //   const permission = await Notification.requestPermission();
-              //   if(permission === 'granted'){
-              //     // Check if the existing token is the same as the new token
-              //     const existingToken = temp_workers_data[uid].token;
-              //     const newToken = await getToken(messaging, {vapidKey: 'BB6UCV85cN-An7EfH2WSLhiLirOs7JEh3yur2_QlF9Z-ISP4yvCJTj1MgobxOhgYTqfZBSKb3Jf8bsjdTxyH_z0'});
-              
-              //     if(existingToken !== newToken){
-              //       console.log('New Token Generated', newToken);
-              
-              //       const batch = writeBatch(db); // Get a new write batch
-              //       batch.update(doc(db, "workers", `${temp_workers_data[uid].docid}`), {
-              //         [uid]: {
-              //           ...temp_workers_data[uid],
-              //           token: newToken
-              //         }
-              //       });
-              //       await batch.commit();
-              //     } else {
-              //       console.log('Existing token is already up-to-date');
-              //     }
-              //   } else if(permission === 'denied'){
-              //     alert("You denied the notification permission");
-              //   }
-              // }
+              async function requestPermission(temp_workers_data){
+                const permission = await Notification.requestPermission();
+                if(permission === 'granted'){
+                  try{
+                      // Check if the existing token is the same as the new token
+                      const existingToken = temp_workers_data[uid].token;
+                      const newToken = await getToken(messaging, {vapidKey: 'BB6UCV85cN-An7EfH2WSLhiLirOs7JEh3yur2_QlF9Z-ISP4yvCJTj1MgobxOhgYTqfZBSKb3Jf8bsjdTxyH_z0'});
+                  
+                      if(existingToken !== newToken){
+                        console.log('New Token Generated', newToken);
+                        
+                        const batch = writeBatch(db); // Get a new write batch
+                        batch.update(doc(db, "workers", `${temp_workers_data[uid].docid}`), {
+                          [uid]: {
+                            ...temp_workers_data[uid],
+                            token: newToken
+                          }
+                        });
+                        await batch.commit();
+                    
+                        } else {
+                          console.log('Existing token is already up-to-date');
+                        }
+                      }catch(err){
+                        console.log('you getting an error while uploading the token :',err);
+                      }
+                  } else if(permission === 'denied'){
+                    alert("You denied the notification permission");
+                  }
+              }
               
               const fetchworkerdata = async() => {
                 try {
@@ -503,10 +516,10 @@ function MyProvider({children}){
                     const temp_workers_keys = Object.keys(temp_workers_data);
                     const sortworkerskeys = [...temp_workers_keys].sort((a, b) => b - a);
                     setworkerskeys((prev) => Array.from(new Set([...prev, ...sortworkerskeys])));
-              
-                    // if (uid in temp_workers_data) {
-                    //   requestPermission(temp_workers_data);
-                    // }
+                    console.log('successfully fetched the workers data');
+                    if (uid in temp_workers_data) {
+                      requestPermission(temp_workers_data);
+                    }
                   });
                 } catch(e) {
                   console.log('You got an error while fetching the users data', e);
