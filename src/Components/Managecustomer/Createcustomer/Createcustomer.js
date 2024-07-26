@@ -100,7 +100,8 @@ function Createcustomer(){
                     const result = fetchworkerid();
                     //setting notify documentation
                     setDoc(doc(db,"notifications",user.uid),{
-                        notify:[]
+                        notify:[],
+                        token:''
                     })
                     // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
                     if(result.count<=340){

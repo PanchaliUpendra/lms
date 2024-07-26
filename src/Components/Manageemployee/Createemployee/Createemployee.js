@@ -83,7 +83,8 @@ function Createemployee(){
                     // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
                     //here we have to add the documentation of notification
                     setDoc(doc(db,"notifications",user.uid),{
-                        notify:[]
+                        notify:[],
+                        token:''
                     })
                     //here we have to add the data
                     if(result.count<=340){

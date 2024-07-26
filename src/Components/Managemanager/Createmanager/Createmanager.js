@@ -83,7 +83,8 @@ function Createmanager(){
                 if(user){
                     //setting notify document
                     setDoc(doc(db,"notifications",user.uid),{
-                        notify:[]
+                        notify:[],
+                        token:''
                     })
                     // const sfRef = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
                     const result = fetchworkerid();

@@ -17,6 +17,10 @@ import {signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../Firebase';
 
 import { useNavigate } from 'react-router-dom';
+import { messaging } from '../Firebase';
+import { getToken } from '../Firebase';
+import { db } from '../Firebase';
+import { doc,writeBatch } from 'firebase/firestore';
 
 
 function Login(){
@@ -33,6 +37,34 @@ function Login(){
     const loginerror = () =>toast.error('please check your credientials');
     const loginformerror = () => toast.info('please fill the form correctly');
 
+    async function requestPermission(useruid){
+        const permission = await Notification.requestPermission();
+        if(permission === 'granted'){
+          try{
+              // Check if the existing token is the same as the new token
+            //   const existingToken = temp_workers_data[uid].token;
+              const newToken = await getToken(messaging, {vapidKey: 'BB6UCV85cN-An7EfH2WSLhiLirOs7JEh3yur2_QlF9Z-ISP4yvCJTj1MgobxOhgYTqfZBSKb3Jf8bsjdTxyH_z0'});
+          
+              if(newToken){
+                console.log('New Token Generated', newToken);
+                
+                const batch = writeBatch(db); // Get a new write batch
+                batch.update(doc(db, "notifications", `${useruid}`), {
+                    token:newToken
+                });
+                await batch.commit();
+            
+                } else {
+                  console.log('token was not generated when user login');
+                }
+              }catch(err){
+                console.log('you getting an error while uploading the token :',err);
+              }
+          } else if(permission === 'denied'){
+            alert("You denied the notification permission");
+          }
+      }
+
     
     const invalidmail = () => toast.warn('Invalid Mail')
 
@@ -45,6 +77,8 @@ function Login(){
                     // Signed in 
                     const user = userCredential.user;
                     if(user){
+                        requestPermission(user.uid);
+                        // console.log('here is the user id: ',user)
                         loginsuccess();
                         
                     }

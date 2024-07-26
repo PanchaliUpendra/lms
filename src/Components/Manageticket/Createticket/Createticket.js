@@ -31,6 +31,7 @@ function Createticket(){
     // State to keep track of the checkbox value
     const [isChecked, setIsChecked] = useState(false);
     const [errors,setErrors] = useState({});
+    const [token,setToken] = useState('');
 
     //four fields data
     const [importfourfld,setimportfourfld] = useState({
@@ -135,16 +136,21 @@ function Createticket(){
             invalidmail();
         }
     }
-    //function handle notification
-    async function handlenotification(data){
+    
+
+    // send msg to admin
+    async function handleSendMsgToAdmin(data){
         try{
-             await runTransaction(db,async(transaction)=>{
+            await runTransaction(db,async(transaction)=>{
                 const notifyDoc = await transaction.get(doc(db,"notifications",'uEZqZKjorFWUmEQuBW5icGmfMrH3'));
                 if(!notifyDoc.exists()){
                     return "Document does not exist!!";
                 }
-
+                const dataset = notifyDoc.data();
                 const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
                 const now = new Date();
                 const options ={
                     timeZone:'Asia/Kolkata',
@@ -176,25 +182,22 @@ function Createticket(){
                         ...newNotify
                 ]})
             });
-            console.log('transaction successfully committed!!');
-        }catch(err){
-            console.log('you got an error while uploading the notifications in  create lead: ',err);
-        }
-    }
-
-    // send msg to admin
-    async function handleSendMsgToAdmin(data){
-        try{
             // console.log('response is here...');
-            const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(data)
-            });
-            console.log(await response.json());
-            await handlenotification(data)
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
+            
 
         }catch(e){
             console.log('you got an error while send msg to adim..',e);
@@ -241,9 +244,9 @@ function Createticket(){
                 const stringtodaydate = formatDateString(currentDate);
 
                 //sending msg to the admin when creating ticket
-                if(result.id>=24041999 && fileurl!==null && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
+                if(result.id>=24041999 && fileurl!==null){
                     const data={
-                        regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
+                        regToken:'',
                         msg:{
                             title: `${sharedvalue.role} created the new Ticket`,
                             body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the new Ticket.[ID${result.id}]`,
@@ -379,7 +382,7 @@ function Createticket(){
                 const stringtodaydate = formatDateString(currentDate);
 
                 //sending msg to the admin when creating ticket
-                if(result.id>=24041999 && fileurl1!==null && Object.prototype.hasOwnProperty.call(sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'],'token')){
+                if(result.id>=24041999 && fileurl1!==null ){
                     const data={
                         regToken:sharedvalue.workersdata['uEZqZKjorFWUmEQuBW5icGmfMrH3'].token,
                         msg:{

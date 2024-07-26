@@ -9,9 +9,9 @@ import { createtickets, leadsgraphdoc ,ticketsgraphdoc ,
   spareAndMachineDoc,
   workerscollection} from "./Data/Docs";
 import { createquotes } from "./Data/Docs";
-import { messaging } from "./Firebase";
-import {getToken} from 'firebase/messaging';
-import { writeBatch } from "firebase/firestore";
+// import { messaging } from "./Firebase";
+// import {getToken} from 'firebase/messaging';
+// import { writeBatch } from "firebase/firestore";
 import { db } from "./Firebase";
 import {doc} from "firebase/firestore";
 // ____________________________
@@ -462,36 +462,7 @@ function MyProvider({children}){
               fetchleadsdata()//fetching the leads data -->function calling
               //fetching the workers data
               // const unsubsec = doc(db,'workers','yWXH2DQO8DlAbkmQEQU4');
-              async function requestPermission(temp_workers_data){
-                const permission = await Notification.requestPermission();
-                if(permission === 'granted'){
-                  try{
-                      // Check if the existing token is the same as the new token
-                      const existingToken = temp_workers_data[uid].token;
-                      const newToken = await getToken(messaging, {vapidKey: 'BB6UCV85cN-An7EfH2WSLhiLirOs7JEh3yur2_QlF9Z-ISP4yvCJTj1MgobxOhgYTqfZBSKb3Jf8bsjdTxyH_z0'});
-                  
-                      if(existingToken !== newToken){
-                        console.log('New Token Generated', newToken);
-                        
-                        const batch = writeBatch(db); // Get a new write batch
-                        batch.update(doc(db, "workers", `${temp_workers_data[uid].docid}`), {
-                          [uid]: {
-                            ...temp_workers_data[uid],
-                            token: newToken
-                          }
-                        });
-                        await batch.commit();
-                    
-                        } else {
-                          console.log('Existing token is already up-to-date');
-                        }
-                      }catch(err){
-                        console.log('you getting an error while uploading the token :',err);
-                      }
-                  } else if(permission === 'denied'){
-                    alert("You denied the notification permission");
-                  }
-              }
+              
               
               const fetchworkerdata = async() => {
                 try {
@@ -517,9 +488,9 @@ function MyProvider({children}){
                     const sortworkerskeys = [...temp_workers_keys].sort((a, b) => b - a);
                     setworkerskeys((prev) => Array.from(new Set([...prev, ...sortworkerskeys])));
                     console.log('successfully fetched the workers data');
-                    if (uid in temp_workers_data) {
-                      requestPermission(temp_workers_data);
-                    }
+                    // if (uid in temp_workers_data) {
+                    //   requestPermission(temp_workers_data);
+                    // }
                   });
                 } catch(e) {
                   console.log('You got an error while fetching the users data', e);
