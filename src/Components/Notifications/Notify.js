@@ -21,9 +21,11 @@ function Notify(){
     const navigate = useNavigate();
     return(
         <>
-         <CustomBadgetwo badgeContent={sharedvalue.notifications.length} color="Primary" onClick={()=>navigate('/notifications')}>
+        {sharedvalue.notifications.length>=0 &&
+         <CustomBadgetwo badgeContent={sharedvalue.notifications.length>0?sharedvalue.notifications.filter(item=>item.seen===false).length:0} color="Primary" onClick={()=>navigate('/notifications')}>
             <NotificationsNoneIcon   sx={{fontSize:'20px',color:'black'}}/>
         </CustomBadgetwo>
+        }
         </>
     );
 }

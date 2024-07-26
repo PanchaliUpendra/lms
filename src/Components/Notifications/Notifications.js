@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext,useEffect,useState } from 'react';
 import './Notifications.css';
 import MyContext from '../../MyContext';
 // import SearchIcon from '@mui/icons-material/Search';
@@ -8,6 +8,8 @@ import Sidenav from '../Sidenav/Sidenav';
 // import { useNavigate } from 'react-router-dom';
 // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Notify from './Notify';
+import { doc, writeBatch } from 'firebase/firestore';
+import { db } from '../../Firebase';
 
 
 
@@ -19,6 +21,21 @@ function Notifications(){
     function handlemenutoggle(){
         setmenutoggle(prev=>!prev);
     }
+    useEffect(()=>{
+        if(sharedvalue.notifications.length>0){
+            const unSeenData = sharedvalue.notifications.filter((item)=>item.seen===false).length;
+            if(unSeenData>0){
+                const batch = writeBatch(db);
+                batch.update(doc(db,"notifications",sharedvalue.uid),{
+                    notify:sharedvalue.notifications.map((item,idx)=>({
+                        ...item,
+                        seen:true
+                    }))
+                })
+                batch.commit();
+            }
+        }
+    },[sharedvalue.notifications,sharedvalue.uid]);
     
     return(
         <>
@@ -42,6 +59,25 @@ function Notifications(){
                         {/* create lead head */}
                         <div className='create-lead-head'>
                             <h1>Notifications</h1>
+                        </div>
+
+                        <div className='whole-notification-list'>
+                            { sharedvalue.notifications.length>0 && 
+                                sharedvalue.notifications.map((item,idx)=>(
+                                    <div className='notification-each-list' key={idx}>
+                                        <div className='notification-each-list-div1'>
+                                            <h1>{item.title}</h1>
+                                            <h2>{item.body}</h2>
+                                        </div>
+                                        <div className='notification-each-list-div2'>
+                                            <h3>{item.date}</h3>
+                                            <p>{item.time}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                            
+
                         </div>
                         
                         {/* customer inquiry form */}
