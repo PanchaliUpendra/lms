@@ -43,6 +43,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    color: gray;
 }
 
 /* create lead starts from here */
@@ -654,7 +655,9 @@
 
 @media all and (max-width:600px){
     .search-icon-top-nav{
-        display: none;
+        position: absolute;
+        right:60px;
+        
     }
     .top-bar{
         display: flex;
