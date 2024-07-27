@@ -8,7 +8,7 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 
 // import {  createquotes } from "../../../Data/Docs";
-import {writeBatch} from "firebase/firestore";
+import {runTransaction, writeBatch} from "firebase/firestore";
 import { db } from "../../../Firebase";
 import { doc } from "firebase/firestore";
 //importing the notifications
@@ -27,7 +27,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Error from "../../../Error/Error";
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
+import { v4 as uuidv4 } from 'uuid';
+import { GCP_API_ONE_TO_ONE } from "../../../Data/Docs";
 
 function Verifyquotation(){
     const sharedvalue = useContext(MyContext);
@@ -36,6 +37,7 @@ function Verifyquotation(){
     const {quoteid} = useParams();
      //backdrop loading toggle
      const[showloading,setshowloading] = useState(false);
+     const [token,setToken] = useState('');
      const [temquot,settempquot] = useState({
         tempstatus:'',
         tempcomment:''
@@ -87,15 +89,73 @@ function Verifyquotation(){
         setmenutoggle(prev=>!prev);
     }
     // toggle menu bar code ends here
-    //function to create the array of states
     
+    //send notification
+    async function handleSendMsgToAdmin(data , notifyID , notmsg){
+        try{
+            
+            await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",notifyID));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+                const dataset = notifyDoc.data();
+                const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                // console.log(newNotify);
+                transaction.update(doc(db,"notifications",notifyID),{
+                    notify:[
+                        {
+                            time:formattedTime,
+                            date:formattedDate,
+                            title:notmsg,
+                            body:data.msg.body,
+                            nid:nuid,
+                            seen:false
+                        },
+                        ...newNotify
+                        ]
+                    })
+                })
+            // console.log('updated the lead',data);
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
 
-   
-    
-
-    //ck editor is completed, lest get data from it , thats it!!!
-    // const [editorData,setEditorData] = useState(''); //ck editor data
-
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
     
 
     // here handling the submitdata
@@ -116,6 +176,17 @@ function Verifyquotation(){
                 ((temquot.tempstatus==='rework' && temquot.tempcomment!=='')||(temquot.tempstatus!=='rework'))
             ){
             if(quoteid!==0){
+                if(sharedvalue.quotesdata[quoteid].quotstatus!==temquot.tempstatus){
+                    const data={
+                        regToken:'',
+                        msg:{
+                            title:`${sharedvalue.role} Verified the Quotation`,
+                            body:`${sharedvalue.workersdata[sharedvalue.uid].name} Verified the Quotation and changed the  Status to ${temquot.tempstatus}.[ID${quoteid}]`
+                        }
+                    }
+                    const notmsg = "Quotation verified";
+                    await handleSendMsgToAdmin(data,sharedvalue.quotesdata[quoteid].quotcreatedby,notmsg)
+                }
                 await batch.update(doc(db,"quotes",`${sharedvalue.quotesdata[quoteid].docid}`),{
                     [quoteid]:{
                         ...sharedvalue.quotesdata[quoteid],

@@ -8,9 +8,9 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import {counrtycode} from '../../../Data/countrycode';
 import {states} from '../../../Data/states';
-import { writeBatch} from "firebase/firestore";
+import { runTransaction, writeBatch} from "firebase/firestore";
 import { db, storage } from "../../../Firebase";
-import {  API_ONE_TO_ONE} from "../../../Data/Docs";
+import {GCP_API_ONE_TO_ONE} from "../../../Data/Docs";
 import { doc } from "firebase/firestore";
 //import storage 
 // import { getDownloadURL,ref,uploadBytes } from 'firebase/storage';
@@ -24,6 +24,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
 import {getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
 
 function Updateticket(){
     const sharedvalue = useContext(MyContext);
@@ -39,6 +40,7 @@ function Updateticket(){
     const [pleasewait,setpleasewait] = useState(false);
     const [tktfileone,settktfileone] = useState('');
     const [tktfiletwo,settktfiletwo] = useState('');
+    const [token,setToken] = useState('');
 
     // selected ticket information
     const [ticketinfo,setticketinfo] = useState({
@@ -119,17 +121,66 @@ function Updateticket(){
     }
 
     // send msg to admin
-    async function handleSendMsgToAdmin(data){
+    async function handleSendMsgToAdmin(data , notifyID , notmsg){
         try{
-            // console.log('response is here...');
-            const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(data)
-            });
-            console.log(await response.json());
+            
+            await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",notifyID));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+                const dataset = notifyDoc.data();
+                const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                // console.log(newNotify);
+                transaction.update(doc(db,"notifications",notifyID),{
+                    notify:[
+                        {
+                            time:formattedTime,
+                            date:formattedDate,
+                            title:notmsg,
+                            body:data.msg.body,
+                            nid:nuid,
+                            seen:false
+                        },
+                        ...newNotify
+                        ]
+                    })
+                })
+            // console.log('updated the lead',data);
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
 
         }catch(e){
             console.log('you got an error while send msg to adim..',e);
@@ -175,14 +226,49 @@ function Updateticket(){
                     console.log('fileurl2:',fileurl2);
                 }
                 if(tktid!==0 && fileurl1!==null && fileurl2!==null ){
-                    if(sharedvalue.ticketsdata[tktid].status!==ticketinfo.status){
-                        const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of ticket [tkt.id ${tktid}] to ${ticketinfo.status} state`;
-                        const phone = `9440000815`;//here we have to give the admin number
+                    // if(sharedvalue.ticketsdata[tktid].status!==ticketinfo.status){
+                    //     const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of ticket [tkt.id ${tktid}] to ${ticketinfo.status} state`;
+                    //     const phone = `9440000815`;//here we have to give the admin number
+                    //     const data={
+                    //         message:message,
+                    //         phone:phone
+                    //     }
+                    //     await handleSendMsgToAdmin(data);
+                    // }
+                    if(sharedvalue.ticketsdata[tktid].ctktmanager!==ticketinfo.ctktmanager){
                         const data={
-                            message:message,
-                            phone:phone
+                            regToken:'',
+                            msg:{
+                                title:`${sharedvalue.role} assinged a ticket`,
+                                body:`${sharedvalue.workersdata[sharedvalue.uid].name} assigned the new ticket.[ID${tktid}]`
+                            }
                         }
-                        await handleSendMsgToAdmin(data);
+                        const notmsg = 'Assigned a Lead';
+                        await handleSendMsgToAdmin(data,ticketinfo.ctktmanager,notmsg)
+                    }
+
+                    if(sharedvalue.ticketsdata[tktid].ctktemployee!==ticketinfo.ctktemployee){
+                        const data={
+                            regToken:'',
+                            msg:{
+                                title:`${sharedvalue.role} assinged a ticket`,
+                                body:`${sharedvalue.workersdata[sharedvalue.uid].name} assigned the new ticket.[ID${tktid}]`
+                            }
+                        }
+                        const notmsg = 'Assigned a Lead';
+                        await handleSendMsgToAdmin(data,ticketinfo.ctktemployee,notmsg)
+                    }
+
+                    if(sharedvalue.ticketsdata[tktid].status!==ticketinfo.status){
+                        const data={
+                            regToken:'',
+                            msg:{
+                                title:`${sharedvalue.role} Changed  the ticket Status`,
+                                body:`${sharedvalue.workersdata[sharedvalue.uid].name} Changed  the ticket Status to ${ticketinfo.status}.[ID${tktid}]`
+                            }
+                        }
+                        const notmsg ="ticket status chnaged"
+                        await handleSendMsgToAdmin(data,'uEZqZKjorFWUmEQuBW5icGmfMrH3',notmsg)
                     }
                 }
                 if(tktid!==0 && fileurl1!==null && fileurl2!==null ){

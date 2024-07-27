@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MyContext from '../../../MyContext';
 import { counrtycode } from '../../../Data/countrycode';
 import { states } from '../../../Data/states';
-import { doc, writeBatch} from "firebase/firestore"; 
+import { doc, runTransaction, writeBatch} from "firebase/firestore"; 
 import { db } from '../../../Firebase';
 // import {  API_ONE_TO_ONE} from '../../../Data/Docs';
 import Backdrop from '@mui/material/Backdrop';
@@ -20,11 +20,14 @@ import { useParams, useNavigate} from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Error from '../../../Error/Error';
 
-import { leadsgraphdoc} from '../../../Data/Docs';
+import { leadsgraphdoc, GCP_API_ONE_TO_ONE} from '../../../Data/Docs';
 import { months } from '../../../Data/Months';
+
+import { v4 as uuidv4 } from 'uuid';
 
 function Updatelead(){
     const sharedvalue = useContext(MyContext);
+    const [token,setToken] = useState('');
 
     //lead id
     const {leadid} = useParams();
@@ -42,7 +45,7 @@ function Updatelead(){
     //select manager and employee
     const [selectmanager,setselectmanager]=useState({
         managerid:'',
-        employee:''
+        employeeid:''
     })
     //customer inquiry
     const [custinquiry,setcustinquiry] = useState({
@@ -111,7 +114,7 @@ function Updatelead(){
     // toggle menu bar code ends here
 
     // send msg to admin
-    async function handleSendMsgToAdmin(data){
+    async function handleSendMsgToAdmin(data , notifyID){
         try{
             // console.log('response is here...');
             // const response = await fetch(`${API_ONE_TO_ONE}/v1`,{
@@ -122,8 +125,63 @@ function Updatelead(){
             //     body:JSON.stringify(data)
             // });
             // console.log(await response.json());
-            console.log('updated the lead',data);
-
+            await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",notifyID));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+                const dataset = notifyDoc.data();
+                const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                // console.log(newNotify);
+                transaction.update(doc(db,"notifications",notifyID),{
+                    notify:[
+                        {
+                            time:formattedTime,
+                            date:formattedDate,
+                            title:'Assigned a Lead',
+                            body:data.msg.body,
+                            nid:nuid,
+                            seen:false
+                        },
+                        ...newNotify
+                        ]
+                    })
+                })
+            // console.log('updated the lead',data);
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
         }catch(e){
             console.log('you got an error while send msg to adim..',e);
         }
@@ -159,15 +217,37 @@ function Updatelead(){
                       return dateTime.toLocaleTimeString('en-US', options);
                 };
                 
-                if(sharedvalue.leadsdata[leadid].custstatus!==custinquiry.custstatus){ // sending msg to admin when we changed the status of the lead
+                // if(sharedvalue.leadsdata[leadid].custstatus!==custinquiry.custstatus){ // sending msg to admin when we changed the status of the lead
                     
-                    const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of the lead id ${leadid} to ${custinquiry.custstatus}`;
-                    const phone = `9440000815`;//here we have to give the admin number
-                    const data={
-                        message:message,
-                        phone:phone
-                    }
-                    await handleSendMsgToAdmin(data);
+                //     const message = `${sharedvalue.workersdata[sharedvalue.uid].name} changed the status of the lead id ${leadid} to ${custinquiry.custstatus}`;
+                //     const phone = `9440000815`;//here we have to give the admin number
+                //     const data={
+                //         message:message,
+                //         phone:phone
+                //     }
+                //     await handleSendMsgToAdmin(data);
+                // }
+                if(sharedvalue.leadsdata[leadid].employeeid!==selectmanager.employeeid || sharedvalue.leadsdata[leadid].managerid!==selectmanager.managerid){
+                   if(sharedvalue.leadsdata[leadid].employeeid!==selectmanager.employeeid){
+                        const data={
+                            regToken:'',
+                            msg:{
+                                title:`${sharedvalue.role} assinged a Lead`,
+                                body:`${sharedvalue.workersdata[sharedvalue.uid].name} assigned the new lead.[ID${leadid}]`
+                            }
+                        }
+                        await handleSendMsgToAdmin(data,selectmanager.employeeid);
+                   }
+                   if(sharedvalue.leadsdata[leadid].managerid!==selectmanager.managerid){
+                        const data={
+                            regToken:'',
+                            msg:{
+                                title:`${sharedvalue.role} assinged a Lead`,
+                                body:`${sharedvalue.workersdata[sharedvalue.uid].name} assigned the new lead.[ID${leadid}]`
+                            }
+                        }
+                        await handleSendMsgToAdmin(data,selectmanager.managerid);
+                   }
                 }
                 await batch.update(doc(db,"leads",`${sharedvalue.leadsdata[leadid].docid}`), {[leadid]:{
                         ...sharedvalue.leadsdata[leadid],

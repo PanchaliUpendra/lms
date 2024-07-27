@@ -11,7 +11,7 @@ import MyContext from "../../../MyContext";
 import { counrtycode } from "../../../Data/countrycode";
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { onSnapshot , writeBatch } from "firebase/firestore";
+import { onSnapshot , runTransaction, writeBatch } from "firebase/firestore";
 import { sparequotationid } from "../../../Data/Docs";
 import { db } from "../../../Firebase";
 import { doc , setDoc } from "firebase/firestore";
@@ -24,12 +24,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 //toastify importing
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { GCP_API_ONE_TO_ONE } from "../../../Data/Docs";
+// import {v4 as uuidv4} from 'uuid';
 
 function CreateSpare(){
     const sharedvalue = useContext(MyContext);
     const batch = writeBatch(db);
     // const navigate = useNavigate();
     const [showloading,setshowloading] = useState(false);
+    const [token,setToken] = useState('');
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Created the spare Quotation');
     const loginerror = () =>toast.error('Getting Error while Creating spare Quotation');
@@ -144,6 +147,72 @@ function CreateSpare(){
     //     return sharedvalue.machinesArray.filter((item)=>(item.sparepart===sparepart && item.sparemodel===sparemodel && item.sparesubtype===sparesubtype)).length>0?
     //     sharedvalue.machinesArray.filter((item)=>(item.sparepart===sparepart && item.sparemodel===sparemodel && item.sparesubtype===sparesubtype))[0].price:0;
     // }
+    //function to handle the notification
+    async function handleSendMsgToAdmin(data , notifyID , notmsg){
+        try{
+            
+            await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",notifyID));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+                const dataset = notifyDoc.data();
+                const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                // console.log(newNotify);
+                transaction.update(doc(db,"notifications",notifyID),{
+                    notify:[
+                        {
+                            time:formattedTime,
+                            date:formattedDate,
+                            title:notmsg,
+                            body:data.msg.body,
+                            nid:nuid,
+                            seen:false
+                        },
+                        ...newNotify
+                        ]
+                    })
+                })
+            // console.log('updated the lead',data);
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
     //function handle the submit data
     async function handlesubmitdata(event){
         event.preventDefault();
@@ -160,6 +229,18 @@ function CreateSpare(){
             ){
             const result = await fetchsparequotationid();
             if(result && result.id!==0){
+
+                const data = {
+                    regToken:'',
+                    msg:{
+                        title: `${sharedvalue.role} created the new Spare Quotation`,
+                        body: `${sharedvalue.workersdata[sharedvalue.uid].name} created the new Spare Quotation.[ID${result.id}]`,
+                        image: "your-image-url" // Optional
+                    } 
+                }
+                const notmsg = "new Spare Quotation Created";
+                await handleSendMsgToAdmin(data,'uEZqZKjorFWUmEQuBW5icGmfMrH3',notmsg);
+
                 if(result.count<=340){
                     await batch.update(doc(db,"sparequotation",`${result.docid}`),{
                         [result.id]:{

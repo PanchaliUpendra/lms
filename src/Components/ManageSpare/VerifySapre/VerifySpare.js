@@ -11,12 +11,13 @@ import MyContext from "../../../MyContext";
 // import { counrtycode } from "../../../Data/countrycode";
 
 // import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {  writeBatch } from "firebase/firestore";
+import {  runTransaction, writeBatch } from "firebase/firestore";
 // import { sparequotationid } from "../../../Data/Docs";
 import { db } from "../../../Firebase";
 import { doc} from "firebase/firestore";
 
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+import { GCP_API_ONE_TO_ONE } from "../../../Data/Docs";
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -33,6 +34,7 @@ function VerifySpare(){
     const navigate = useNavigate();
     const {spareid} = useParams();
     const [showloading,setshowloading] = useState(false);
+    const [token,setToken] = useState('');
     // adding notifications 
     const loginsuccess = () =>toast.success('Successfully Updated the spare Quotation');
     const loginerror = () =>toast.error('Getting Error while Creating spare Quotation');
@@ -53,37 +55,7 @@ function VerifySpare(){
         unitprice:0,
     }]);
 
-    //add element to an array
-    // function handleaddelement(e){
-    //     e.preventDefault();
-    //     setspares(prev=>([
-    //         ...prev,
-    //         {
-    //             id:spares.length,
-    //             sparepart:'',
-    //             qty:0,
-    //             unitprice:0,
-    //         }
-
-    //     ]))
-    // }
-
-    //delete the element
-    // function handleDeleteElement(id){
-    //     const temparr = spares.filter((item)=>item.id!==id);
-    //     setspares(temparr);
-    // }
-
-    //chnage the elements data
-    // function handleEachElementData(e,idx,field){
-    //     e.preventDefault();
-    //     const { value } = e.target;
-    //     setspares(prevSpares => {
-    //         const updatedItem = { ...prevSpares[idx], [field]: value };
-    //         return [...prevSpares.slice(0, idx), updatedItem, ...prevSpares.slice(idx + 1)];
-    //     });
-
-    // }
+    
     
     //whole form data
     const [sparequotedata,setsparequotedata] = useState({
@@ -105,24 +77,74 @@ function VerifySpare(){
         setmenutoggle(prev=>!prev);
     }
 
-    //function  to fetch the spare quotation id
-    // const fetchsparequotationid = async()=>{
-    //     try{
-    //         return new Promise((resolve,reject)=>{
-    //             onSnapshot(sparequotationid,(doc)=>{
-    //                 const temptexpid = doc.data();
-    //                 resolve({
-    //                     ...temptexpid,
-    //                     count:temptexpid.count+1,
-    //                     id:temptexpid.id+1
-    //                 });
-    //             })
-    //         })
-    //     }catch(err){
-    //         console.log('you got an error while fetching the spare quotation id : ',err);
-    //         invalidmail();
-    //     }
-    // }
+    //function to handle the notifications
+    async function handleSendMsgToAdmin(data , notifyID , notmsg){
+        try{
+            
+            await runTransaction(db,async(transaction)=>{
+                const notifyDoc = await transaction.get(doc(db,"notifications",notifyID));
+                if(!notifyDoc.exists()){
+                    return "Document does not exist!!";
+                }
+                const dataset = notifyDoc.data();
+                const newNotify = notifyDoc.data().notify;
+                if(Object.prototype.hasOwnProperty.call(dataset,'token')){
+                    setToken(dataset.token);
+                }
+                const now = new Date();
+                const options ={
+                    timeZone:'Asia/Kolkata',
+                    day:'2-digit',
+                    month:'2-digit',
+                    year:'numeric'
+                }
+                const formattedDate = now.toLocaleDateString('en-GB',options).split('/').join('-');
+                const options2 = {
+                    timeZone:'Asia/Kolkata',
+                    hour:'2-digit',
+                    minute:'2-digit',
+                    second:'2-digit',
+                    hour12:false
+                }
+                const formattedTime = now.toLocaleTimeString('en-GB',options2);
+                const nuid = uuidv4();
+                // console.log(newNotify);
+                transaction.update(doc(db,"notifications",notifyID),{
+                    notify:[
+                        {
+                            time:formattedTime,
+                            date:formattedDate,
+                            title:notmsg,
+                            body:data.msg.body,
+                            nid:nuid,
+                            seen:false
+                        },
+                        ...newNotify
+                        ]
+                    })
+                })
+            // console.log('updated the lead',data);
+            if(token!==''){
+                const newData={
+                    ...data,
+                    regToken:token
+                }
+                const response = await fetch(`${GCP_API_ONE_TO_ONE}/send-single-notification`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(newData)
+                });
+                console.log(await response.json());
+            }
+
+        }catch(e){
+            console.log('you got an error while send msg to adim..',e);
+        }
+    }
+    
+    
     //function handle the submit data
     async function handlesubmitdata(event){
         event.preventDefault();
@@ -138,9 +160,19 @@ function VerifySpare(){
                 sparequotedata.sparereqmachine!=='' &&
                 sparequotedata.sparestatus!==''
             ){
-            // const result = await fetchsparequotationid();
-            // if(result && result.id!==0){
-            //     if(result.count<=500){
+
+                if(sharedvalue.sparesdata[spareid].sparestatus!==sparequotedata.sparestatus){
+                    const data={
+                        regToken:'',
+                        msg:{
+                            title:`${sharedvalue.role} Verified the Spare Quotation`,
+                            body:`${sharedvalue.workersdata[sharedvalue.uid].name} Verified the Spare Quotation and changed the  Status to ${sparequotedata.sparestatus}.[ID${spareid}]`
+                        }
+                    }
+                    const notmsg = "Quotation verified";
+                    await handleSendMsgToAdmin(data,sharedvalue.sparesdata[spareid].sparecreatedby,notmsg)
+                }
+            
                     await batch.update(doc(db,"sparequotation",`${sharedvalue.sparesdata[spareid].docid}`),{
                         [spareid]:{
                             ...sharedvalue.sparesdata[spareid],
@@ -148,78 +180,10 @@ function VerifySpare(){
                             spareadmincommt:sparequotedata.spareadmincommt
                         }
                     })
-                    // await batch.update(sparequotationid,{
-                    //     ...result
-                    // })
+                    
                     await batch.commit();
                     window.scrollTo({top:0,behavior:'smooth'});
                     loginsuccess();
-                    // setsparequotedata(prev=>({
-                    //     ...prev,
-                    //     sparequottype:'',
-                    //     companyname:'',
-                    //     othercompanyname:'',
-                    //     sparecountry:'India',
-                    //     sparestate:'',
-                    //     sparedist:'',
-                    //     sparecity:'',
-                    //     sparereqmachine:'',
-                    // }));
-                    // setspares([{
-                    //     id:0,
-                    //     sparepart:'',
-                    //     qty:0,
-                    //     unitprice:0,
-                    //     totalprice:0
-                    // }]);
-            //     }else{
-            //         const id = uuidv4();
-            //         await setDoc(doc(db,'sparequotation',`${id}`),{
-            //             [result.id]:{
-            //                 sparequottype:sparequotedata.sparequottype,
-            //                 companyname:sparequotedata.companyname,
-            //                 othercompanyname:sparequotedata.othercompanyname,
-            //                 sparecountry:sparequotedata.sparecountry,
-            //                 sparestate:sparequotedata.sparestate,
-            //                 sparedist:sparequotedata.sparedist,
-            //                 sparecity:sparequotedata.sparecity,
-            //                 sparereqmachine:sparequotedata.sparereqmachine,
-            //                 spares:spares,
-            //                 docid:id,
-            //                 sparecreatedby:sharedvalue.uid,
-            //                 sparestatus:'open',
-            //                 spareadmincommt:''
-            //             }
-            //         });
-            //         await batch.update(sparequotationid,{
-            //             ...result,
-            //             count:0,
-            //             docid:id
-            //         })
-            //         await batch.commit();
-            //         window.scrollTo({top:0,behavior:'smooth'});
-            //         loginsuccess();
-            //         setsparequotedata(prev=>({
-            //             ...prev,
-            //             sparequottype:'',
-            //             companyname:'',
-            //             othercompanyname:'',
-            //             sparecountry:'India',
-            //             sparestate:'',
-            //             sparedist:'',
-            //             sparecity:'',
-            //             sparereqmachine:'',
-            //         }));
-            //         setspares([{
-            //             id:0,
-            //             sparepart:'',
-            //             qty:0,
-            //             unitprice:0,
-            //             totalprice:0
-            //         }]);
-            //     }
-                
-            // }
             }else{
                 loginformerror();
             }
