@@ -35,6 +35,18 @@ function Passwords(){
     // const loginformerror = () => toast.info('please fill the form correctly');
     const invalidmail = () => toast.warn('Invalid Mail');
 
+    //changing the time stamp to local date and time
+    function handletimestampDate(tsmpt){
+        const date = new Date(tsmpt);
+        const formttedDate = date.toLocaleDateString();
+        return formttedDate;
+    }
+    function handletimestampTime(tsmpt){
+        const date = new Date(tsmpt);
+        const formttedTime = date.toLocaleTimeString();
+        return formttedTime;
+    }
+
     async  function handleloginform(email,password){
         setOpen(true);
         try{
@@ -170,6 +182,17 @@ function Passwords(){
                                             <th>Profile</th>
                                             <th>Login</th>
                                             <th>promote to</th>
+                                            <th>
+                                                <p>last updated</p>
+                                                <p>location</p>
+                                            </th>
+                                            <th>
+                                                <p>generate</p>
+                                                <p>place</p>
+                                            </th>
+                                            <th>
+                                                request location
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -219,6 +242,29 @@ function Passwords(){
                                                         {
                                                             sharedvalue.workersdata[worker].role==='employee' && <button onClick={(e)=>convertEmployeeToManager(e,sharedvalue.workersdata[worker].uid)}>manager</button>
                                                         }
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[worker],'location')?
+                                                            <>
+                                                                <p style={{fontSize:'0.8rem',fontWeight:'500'}}><span style={{color:'grey',fontWeight:500,fontSize:'0.9rem'}}>Lat:</span> {sharedvalue.workersdata[worker].location.coords.latitude}</p>
+                                                                <p style={{fontSize:'0.8rem',fontWeight:'500'}}><span style={{color:'grey',fontWeight:500,fontSize:'0.9rem'}}>Lngt:</span> {sharedvalue.workersdata[worker].location.coords.longitude}</p>
+                                                                <p style={{fontSize:'0.8rem',fontWeight:'500'}}><span style={{color:'grey',fontWeight:500,fontSize:'0.9rem'}}>date:</span> {handletimestampDate(sharedvalue.workersdata[worker].location.timestamp)}</p>
+                                                                <p style={{fontSize:'0.8rem',fontWeight:'500'}}><span style={{color:'grey',fontWeight:500,fontSize:'0.9rem'}}>time:</span> {handletimestampTime(sharedvalue.workersdata[worker].location.timestamp)}</p>
+                                                            </>:
+                                                            <>
+                                                                <p>no location</p>
+                                                            </>
+                                                            
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        <button style={{border:'none',fontSize:'0.8rem',backgroundColor:'green',color:'white',padding:5,borderRadius:3}}>Show Place</button>
+                                                    </td>
+
+                                                    <td>
+                                                        <button style={{border:'none',fontSize:'0.8rem',backgroundColor:'blue',color:'white',padding:5,borderRadius:3}}>Request</button>
                                                     </td>
                                                 </tr>
                                             ))
