@@ -47,6 +47,23 @@ function Passwords(){
         return formttedTime;
     }
 
+    //hanlding user current location request
+    async function  handleRequestUserCurrentLocation(worker){
+        setOpen(true);
+        try{
+            batch.update(doc(db,"workers",`${sharedvalue.workersdata[worker].docid}`),{
+                [worker]:{
+                    ...sharedvalue.workersdata[worker],
+                    adlocreq:true
+                }
+            });
+            await batch.commit();
+        }catch(err){
+            console.log('you grettting error while requesting the user location ', err);
+        }
+        setOpen(false);
+    }
+
     async  function handleloginform(email,password){
         setOpen(true);
         try{
@@ -260,11 +277,34 @@ function Passwords(){
                                                     </td>
 
                                                     <td>
-                                                        <button style={{border:'none',fontSize:'0.8rem',backgroundColor:'green',color:'white',padding:5,borderRadius:3}}>Show Place</button>
+                                                        <button style={{border:'none',fontSize:'0.8rem',backgroundColor:'green',color:'white',padding:5,borderRadius:3,cursor:'pointer'}}>Show Place</button>
                                                     </td>
 
                                                     <td>
-                                                        <button style={{border:'none',fontSize:'0.8rem',backgroundColor:'blue',color:'white',padding:5,borderRadius:3}}>Request</button>
+                                                        {
+                                                           (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[worker],'adlocreq') && sharedvalue.workersdata[worker].adlocreq===true) === true?
+                                                            <button
+                                                            style={{
+                                                                border:'none',
+                                                                fontSize:'0.8rem', fontWeight:'600',
+                                                                backgroundColor:'#FFB140',
+                                                                color:'black',padding:5,
+                                                                borderRadius:3}}
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                            :
+                                                            <button 
+                                                            onClick={()=>handleRequestUserCurrentLocation(worker)}
+                                                            style={{
+                                                                border:'none',
+                                                                fontSize:'0.8rem',
+                                                                backgroundColor:'blue',
+                                                                color:'white',padding:5,
+                                                                borderRadius:3,cursor:'pointer'}}>
+                                                                    Request
+                                                            </button>
+                                                        }
                                                     </td>
                                                 </tr>
                                             ))
