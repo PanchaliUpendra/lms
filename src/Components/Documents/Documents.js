@@ -15,6 +15,7 @@ import { storage , db} from "../../Firebase";
 import { updateDoc, deleteField, writeBatch } from "firebase/firestore";
 import { documentsdoc } from "../../Data/Docs";
 import Notify from "../Notifications/Notify";
+import Linkify from 'react-linkify';
 function Documents(){
     const {category,subcategory} = useParams();
     const [grainsfilter,setgrainsfilter] = useState('');
@@ -59,6 +60,11 @@ function Documents(){
     }
     // toggle menu bar code ends here
 
+    const componentDecorator = (href, text, key) => (
+        <a href={href} key={key} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      );
    
     return(
         <>
@@ -208,9 +214,11 @@ function Documents(){
                                                         <p className="view-manager-list-name">{sharedvalue.documentsdata[item].adocname}</p>
                                                     </td>
                                                     <td>
-                                                        <p className="view-manager-list-email">
-                                                            {sharedvalue.documentsdata[item].adocdes}
-                                                        </p>
+                                                        <Linkify componentDecorator={componentDecorator}>
+                                                            <p className="view-manager-list-email">
+                                                                {sharedvalue.documentsdata[item].adocdes}
+                                                            </p>
+                                                        </Linkify>
                                                     </td>
                                                     <td>
                                                         <div className="documents-actions-div">
