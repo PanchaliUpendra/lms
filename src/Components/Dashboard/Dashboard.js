@@ -309,16 +309,18 @@ function Dashboard(){
                                                     </td>
                                                     {/* company name */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">
+                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].custcompanyname}|
                                                         </p>
+                                                        
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].contperson}|
                                                            
                                                         </p>
+                                                        
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].contcountrycode+"-"+ sharedvalue.leadsdata[lead].contmobilenum} 
-                                                        </p> 
+                                                        </p>
                                                         
                                                     </td>
                                                     {/* contact person */}
@@ -331,9 +333,12 @@ function Dashboard(){
                                                     {/* country */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].ofdcountry} |</p>
+                                                        
                                                         <p className="view-manager-list-name">
+                                                           
                                                             {sharedvalue.leadsdata[lead].ofdst} |
                                                         </p>
+                                                         
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].ofddst}
                                                         </p>
@@ -354,7 +359,8 @@ function Dashboard(){
                                                     </td> */}
                                                     {/* machine type */}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].machinereq}</p>
+                                                         <p className="view-manager-list-name">{sharedvalue.leadsdata[lead].machinereq}</p>
+                                                         
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].machinetype} - {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
@@ -364,12 +370,12 @@ function Dashboard(){
                                                         <p className="view-manager-list-name">
                                                             {sharedvalue.leadsdata[lead].chutes}
                                                         </p>
-                                                    </td> */}
+                                                    </td>  */}
                                                     
                                                     {/* next meeting date*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
-                                                        <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].custnextdate}
+                                                         <p className="view-manager-list-name">
+                                                            {sharedvalue.leadsdata[lead].custnextdate.toString()}
                                                         </p>
                                                     </td>
                                                     {/* latest title*/}
@@ -472,7 +478,7 @@ function Dashboard(){
                             </div> */}
                             {/* table starts from here */}
                             <div className="view-list-table-con">
-                                <table>
+                                <table >
                                     <thead>
                                         <tr className="table-head-row">
                                             <th>status</th>

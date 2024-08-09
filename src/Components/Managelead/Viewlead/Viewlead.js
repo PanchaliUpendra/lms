@@ -366,7 +366,7 @@ function Viewlead(){
                                                     {/* next meeting date*/}
                                                     <td onClick={()=>navigate(`/managelead/viewlead/${lead}`)}>
                                                         <p className="view-manager-list-name">
-                                                            {sharedvalue.leadsdata[lead].custnextdate}
+                                                            {sharedvalue.leadsdata[lead].custnextdate.toString()}
                                                         </p>
                                                     </td>
                                                     {/* latest title*/}
