@@ -56,90 +56,102 @@ import Notifications from './Components/Notifications/Notifications';
 //please remove after completed the design
 import Spinner from './Components/Spinner/Spinner';
 import Sruthitech from './Components/Managequotation/Sruthitech';
+
+//disable
+import Disable from './Error/Disbale';
  
 function App() {
   const sharedvalue = useContext(MyContext);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed)?<Dashboard/>:<Login/>}/>
+        <Route path='/' element={(sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false)?<Dashboard/>:((sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===true)?<Disable/>:<Login/>)}/>
         {/* manage lead nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
         || sharedvalue.role==='customer') && <Route path='/managelead/leadcreate' element={<Managelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
         || sharedvalue.role==='customer') && <Route path='/managelead/viewlead' element={<Viewlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
         || sharedvalue.role==='customer') && <Route path='/managelead/viewlead/:leadid' element={<Eachlead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
         || sharedvalue.role==='customer') && <Route path='managelead/updatelead/:leadid' element={<Updatelead/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false &&  (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="sales"):true) )
         || sharedvalue.role==='customer') && <Route path='managelead/viewlead/:leadid/meetingdetails' element={<Meetingdetails/>}/>}
+        
         {/* manage ticket navlinks */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
          || sharedvalue.role==='customer') && <Route path='/manageticket/createticket' element={<Createticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
          || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket' element={<Viewticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
          || sharedvalue.role==='customer') && <Route path='/manageticket/viewticket/:tktid' element={<Eachticket/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
+        
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||
         (sharedvalue.role==='employee' && (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[sharedvalue.uid], "ecat")?(sharedvalue.workersdata[sharedvalue.uid].ecat==="both"||sharedvalue.workersdata[sharedvalue.uid].ecat==="service"):true) )
          || sharedvalue.role==='customer') && <Route path='/manageticket/updateticket/:tktid' element={<Updateticket/>}/>}
+        
         {/* manager nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/managemanger/createmanger' element={<Createmanager/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/managemanger/viewmanger' element={<Viewmanager/>}/>}
         {/* emplpoyee nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager') && <Route path='/manageemployee/createemployee' element={<Createemployee/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager') && <Route path='/manageemployee/viewemployee' element={<Viewemployee/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager') && <Route path='/manageemployee/createemployee' element={<Createemployee/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager') && <Route path='/manageemployee/viewemployee' element={<Viewemployee/>}/>}
         {/* finance nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managefinance/createfinance' element={<Createfinance/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/managefinance/viewfinance' element={<Viewfinance/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/managefinance/createfinance' element={<Createfinance/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/managefinance/viewfinance' element={<Viewfinance/>}/>}
         {/* customer nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/createcustomer' element={<Createcustomer/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/viewcustomer' element={<Viewcustomer/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/createcustomer' element={<Createcustomer/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role === 'manager' || sharedvalue.role==='employee') &&<Route path='/managecustomer/viewcustomer' element={<Viewcustomer/>}/>}
         {/* expense nav links */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='finance' && <Route path='/manageexpense/financeverify/:expid' element={<Financeverify/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/createexpense' element={<Createexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/viewexpense' element={<Viewexpense/>}/> }
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin'  && <Route path='/manageexpense/verifyexpense/:expid' element={<Verifyexpense/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='finance' && <Route path='/manageexpense/financeverify/:expid' element={<Financeverify/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee' ||sharedvalue.role==='finance') && <Route path='/manageexpense/editexpense/:expid' element={<Editexpense/>}/> }
         {/* manage quotation nav links*/}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/verifyquotation/:quoteid' element={<Verifyquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/createquotation' element={<Createquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/viewquotation' element={<Viewquotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/updatequotation/:quoteid' element={<Updatequotation/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/verifyquotation/:quoteid' element={<Verifyquotation/>}/>}
         {/* {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/pdfview/:quoteid' element={<Comaasrgb/>}/>} */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/sruthipdf/:quoteid' element={<Sruthitech/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') &&  <Route path='/managequotation/sruthipdf/:quoteid' element={<Sruthitech/>}/>}
         {/* search bar nav link */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin'   && <Route path='/search' element={<Search/>} />}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/passwords' element={<Passwords/>}/>}
         {/* profile nav link */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/profile' element={<Profile/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/documents/:category/:subcategory' element={<Documents/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.role==='admin' && <Route path='/adddocuments' element={<AddDocuments/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && <Route path='/profile' element={<Profile/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && <Route path='/documents/:category/:subcategory' element={<Documents/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && sharedvalue.role==='admin' && <Route path='/adddocuments' element={<AddDocuments/>}/>}
         {/* managing amc */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/createamc' element={<CreateAmc/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updateamc/:amcid' element={<UpdateAmc/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/amcpdf/:amcid' element={<Amcquote/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/createamc' element={<CreateAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/viewamc' element={<ViewAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/verifyamc/:amcid' element={<VerifyAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updateamc/:amcid' element={<UpdateAmc/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/amcpdf/:amcid' element={<Amcquote/>}/>}
 
         {/* manage spare quotation */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/createspare' element={<CreateSpare/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/viewspare' element={<ViewSpare/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/sparepdf/:spareid' element={<Sparequote/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/createspare' element={<CreateSpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/viewspare' element={<ViewSpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/managespare/verifyspare/:spareid' element={<VerifySpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/updatespare/:spareid' element={<UpdateSpare/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && (sharedvalue.role==='admin' || sharedvalue.role==='manager' ||sharedvalue.role==='employee') && <Route path='/manageamc/sparepdf/:spareid' element={<Sparequote/>}/>}
 
         {/* notifications components */}
-        {sharedvalue.uid!=='' && sharedvalue.isAuthed && <Route path='/notifications' element={<Notifications/>}/>}
+        {sharedvalue.uid!=='' && sharedvalue.isAuthed && sharedvalue.workerskeys.length>0 && sharedvalue.workersdata[sharedvalue.uid].disable===false && <Route path='/notifications' element={<Notifications/>}/>}
 
         <Route path='/spinner' element={<Spinner/>}/>
         <Route path='/*' element={<Error/>}/>

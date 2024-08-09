@@ -7,26 +7,71 @@ import Sidenav from "../../Sidenav/Sidenav";
 import MyContext from "../../../MyContext";
 import Notify from "../../Notifications/Notify";
 //imported material ui 
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+// import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 // import { useNavigate } from "react-router-dom";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { writeBatch , doc } from "firebase/firestore";
+import { db } from "../../../Firebase";
 
 function Viewcustomer(){
     const sharedvalue = useContext(MyContext);
+    const batch = writeBatch(db);
     // const navigate = useNavigate();
     // search bar input 
     const [searchworker,setsearchworker]=useState('');
-    //deleting user input
-    const [workerdelete,setworkerdelete] = useState({
+    const [showprogress,setshowprogress]=useState(false);
+     //deleting user input
+     const [workerdelete,setworkerdelete] = useState({
         active:false,
         uid:''
     });
-    const deleteUserByUID = async (uidToDelete) => {
-        
-        setworkerdelete({
-            active:false,
-            uid:''
-        })
+    //enabling the users
+    const [workerEnable , setWorkerEnable] = useState({
+        active:false,
+        uid:''
+    });
+    //disabling the user
+    const deleteUserByUID = async () => {
+        setshowprogress(true)
+        try{
+            batch.update(doc(db,"workers",`${sharedvalue.workersdata[workerdelete.uid].docid}`),{
+                [workerdelete.uid]:{
+                    ...sharedvalue.workersdata[workerdelete.uid],
+                    "disable":true
+                }
+            });
+            await batch.commit();
+            setworkerdelete({
+                active:false,
+                uid:''
+            })
+        }catch(err){
+            console.log('you getting an error when changing the users status ',err);
+        }
+        setshowprogress(false)
       };
+    
+    //enabling the user
+    const enableUserByUID = async () =>{
+        setshowprogress(true)
+        try{
+            batch.update(doc(db,"workers",`${sharedvalue.workersdata[workerEnable.uid].docid}`),{
+                [workerEnable.uid]:{
+                    ...sharedvalue.workersdata[workerEnable.uid],
+                    "disable":false
+                }
+            });
+            await batch.commit();
+            setWorkerEnable({
+                active:false,
+                uid:''
+            })
+        }catch(err){
+            console.log("you getting an error while enabling the users data: ",err);
+        }
+        setshowprogress(false)
+    }
     //code only for toggle the menu bar
     const [menutoggle,setmenutoggle] = useState(false);
     function handlemenutoggle(){
@@ -35,7 +80,7 @@ function Viewcustomer(){
     // toggle menu bar code ends here
     return(
         <>
-            <div className={`manlead-con ${workerdelete.active===true?'manlead-con-inactive':''}`}>
+            <div className={`manlead-con ${(workerdelete.active===true||workerEnable.active===true)?'manlead-con-inactive':''}`}>
                 <Sidenav menutoggle={menutoggle} handlemenutoggle={handlemenutoggle}/>
                 <div className='manage-con-inner'>
 
@@ -106,13 +151,33 @@ function Viewcustomer(){
                                                         </p>
                                                     </td>
                                                     <td >
-                                                        <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} 
+                                                    <div style={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+                                                        {
+                                                            (Object.prototype.hasOwnProperty.call(sharedvalue.workersdata[worker],'disable') && sharedvalue.workersdata[worker].disable===true)===true?
+                                                            <p 
+                                                            style={{cursor:'pointer',padding:7,backgroundColor:'#EEAF00',fontSize:'0.8rem',fontWeight:'500',borderRadius:5,width:'fit-content'}}
+                                                            onClick={()=>setWorkerEnable(prev=>({
+                                                                ...prev,
+                                                                active:true,
+                                                                uid:worker
+                                                            }))}
+                                                            >Enable</p>:
+                                                            <p 
+                                                            style={{cursor:'pointer',padding:7,backgroundColor:'red',color:'white',fontSize:'0.8rem',fontWeight:'500',borderRadius:5,width:'fit-content'}}
+                                                            onClick={()=>setworkerdelete(prev=>({
+                                                                ...prev,
+                                                                active:true,
+                                                                uid:worker
+                                                            }))}>Disable</p>
+                                                        }
+                                                        </div>
+                                                        {/* <DeleteOutlineRoundedIcon sx={{color:'red',cursor:'pointer'}} 
                                                         onClick={()=>setworkerdelete(prev=>({
                                                             ...prev,
                                                             active:true,
                                                             uid:worker
                                                         }))}
-                                                        />
+                                                        /> */}
                                                     </td>
                                                 </tr>
                                             ))
@@ -128,9 +193,9 @@ function Viewcustomer(){
             </div>
             {/* popup to delete an item */}
             <div className={`view-manager-list-popup-delete ${workerdelete.active===true?'active-delete-popup':''}`}>
-                <p>Are You Sure You want to delete the user <span>{workerdelete.uid?sharedvalue.workersdata[workerdelete.uid].email:''}</span></p>
+                <p>Are You Sure You want to disable the user <span>{workerdelete.uid?sharedvalue.workersdata[workerdelete.uid].email:''}</span></p>
                 <div>
-                    <button onClick={()=>deleteUserByUID(workerdelete.uid)}>Yes</button>
+                    <button onClick={()=>deleteUserByUID()}>Yes</button>
                     <button onClick={()=>setworkerdelete(prev=>({
                         ...prev,
                         active:false,
@@ -138,6 +203,25 @@ function Viewcustomer(){
                     }))}>No</button>
                 </div>
             </div>
+            {/* popup to enable the user */}
+            <div className={`view-manager-list-popup-delete ${workerEnable.active===true?'active-delete-popup':''}`}>
+                <p>Are You Sure You want to enable the user <span>{workerEnable.uid?sharedvalue.workersdata[workerEnable.uid].email:''}</span></p>
+                <div>
+                    <button onClick={()=>enableUserByUID()}>Yes</button>
+                    <button onClick={()=>setWorkerEnable(prev=>({
+                        ...prev,
+                        active:false,
+                        uid:''
+                    }))}>No</button>
+                </div>
+            </div>
+            {/* bacdrop */}
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showprogress}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     );
 }
